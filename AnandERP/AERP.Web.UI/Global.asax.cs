@@ -30,7 +30,7 @@ namespace AERP.Web.UI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            SqlDependency.Start(connString);
+            //SqlDependency.Start(connString);
 
         }
         protected void Application_BeginRequest(Object sender, EventArgs e)

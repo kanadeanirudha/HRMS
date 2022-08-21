@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AERP.Web.UI</RootNamespace>
     <AssemblyName>AERP.Web.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <ProjectGuid>{1F6F25A1-A38C-4797-B819-E8B42C17BE6A}</ProjectGuid>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -183,6 +184,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Device" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -205,8 +207,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -219,9 +220,7 @@
       <HintPath>..\..\packages\Microsoft.AspNet.Providers.Core.1.0\lib\net40\System.Web.Providers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -259,6 +258,7 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
@@ -7672,36 +7672,6 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\AERP.Base.DTO\AERP.Base.DTO.csproj">
-      <Project>{cfcf47cc-de41-4f48-805c-9420b3716d1e}</Project>
-      <Name>AERP.Base.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Infrastructure\AERP.ExceptionManager\AERP.ExceptionManager.csproj">
-      <Project>{c93d4857-bbbc-4839-adc3-57212444ebae}</Project>
-      <Name>AERP.ExceptionManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AERP.Business\AERP.Business.csproj">
-      <Project>{a83756e3-9ff0-420e-9fad-e936b5507c3c}</Project>
-      <Name>AERP.Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AERP.Common\AERP.Common.csproj">
-      <Project>{c585a626-f8f4-4ba4-9b4c-497c52bb4e79}</Project>
-      <Name>AERP.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AERP.DataProvider\AERP.DataProvider.csproj">
-      <Project>{cc100e82-704a-4e52-ba07-13ef33a23fdc}</Project>
-      <Name>AERP.DataProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AERP.DTO\AERP.DTO.csproj">
-      <Project>{3b3c07e6-93af-48d2-8922-ab1969ee052a}</Project>
-      <Name>AERP.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AERP.ViewModel\AERP.ViewModel.csproj">
-      <Project>{fd66c34d-15f1-4b1e-b387-9dc58774e7ed}</Project>
-      <Name>AERP.ViewModel</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Report\AccountReports\AccountBalancesheetReport.rdlc" />
     <EmbeddedResource Include="Report\AccountReports\AccountBalancesheetReportAsset.rdlc" />
     <EmbeddedResource Include="Report\AccountReports\AccountBalancesheetReportAssetFormat2.rdlc" />
@@ -7758,6 +7728,40 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\AERP.Base.DTO\AERP.Base.DTO.csproj">
+      <Project>{cfcf47cc-de41-4f48-805c-9420b3716d1e}</Project>
+      <Name>AERP.Base.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\AERP.ExceptionManager\AERP.ExceptionManager.csproj">
+      <Project>{c93d4857-bbbc-4839-adc3-57212444ebae}</Project>
+      <Name>AERP.ExceptionManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\AERP.Infrastructure\AERP.Infrastructure.csproj">
+      <Project>{0ed1c20a-4330-4566-8fd3-24fe3c4b89c3}</Project>
+      <Name>AERP.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.Business\AERP.Business.csproj">
+      <Project>{a83756e3-9ff0-420e-9fad-e936b5507c3c}</Project>
+      <Name>AERP.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.Common\AERP.Common.csproj">
+      <Project>{c585a626-f8f4-4ba4-9b4c-497c52bb4e79}</Project>
+      <Name>AERP.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.DataProvider\AERP.DataProvider.csproj">
+      <Project>{cc100e82-704a-4e52-ba07-13ef33a23fdc}</Project>
+      <Name>AERP.DataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.DTO\AERP.DTO.csproj">
+      <Project>{3b3c07e6-93af-48d2-8922-ab1969ee052a}</Project>
+      <Name>AERP.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.ViewModel\AERP.ViewModel.csproj">
+      <Project>{fd66c34d-15f1-4b1e-b387-9dc58774e7ed}</Project>
+      <Name>AERP.ViewModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
