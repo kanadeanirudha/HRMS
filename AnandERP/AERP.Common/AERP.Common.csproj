@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AERP.Common</RootNamespace>
     <AssemblyName>AERP.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -41,12 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.en-us.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -60,8 +54,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="obj\Release\AERP.Common.Resources.en-us.resources" />
-    <EmbeddedResource Include="obj\Release\AERP.Common.Resources.resources" />
     <EmbeddedResource Include="Resources.en-us.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en-us.Designer.cs</LastGenOutput>
@@ -70,25 +62,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="bin\Debug\AERP.Common.dll" />
-    <Content Include="bin\Debug\AERP.Common.pdb" />
-    <Content Include="bin\Debug\en-us\AERP.Common.resources.dll" />
-    <Content Include="bin\Release\AERP.Common.dll" />
-    <Content Include="bin\Release\AERP.Common.pdb" />
-    <Content Include="bin\Release\en-us\AERP.Common.resources.dll" />
-    <Content Include="obj\Release\AERP.Common.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Release\AERP.Common.dll" />
-    <Content Include="obj\Release\AERP.Common.pdb" />
-    <Content Include="obj\Release\en-us\AERP.Common.resources.dll" />
-    <Content Include="obj\Release\TempPE\Resources.Designer.cs.dll" />
-    <Content Include="obj\Release\TempPE\Resources.en-us.Designer.cs.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="obj\Release\AERP.Common.csproj.GenerateResource.Cache" />
-    <None Include="obj\Release\AERP.Common.csprojResolveAssemblyReference.cache" />
-    <None Include="obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
