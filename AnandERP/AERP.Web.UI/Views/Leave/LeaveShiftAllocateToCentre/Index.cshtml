@@ -1,0 +1,38 @@
+﻿@*@model IEnumerable<AMS.ViewModel.LeaveShiftAllocateToCentreViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Leave/LeaveShiftAllocateToCentre.js")" type="text/javascript"></script>
+<div id="ListViewModel"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveShiftAllocateToCentre.LoadList();
+    });
+</script>*@
+
+@model IEnumerable<AERP.ViewModel.LeaveShiftAllocateToCentreViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Leave/LeaveShiftAllocateToCentre.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>*@
+
+<div id="ListViewModel" class="container">
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveShiftAllocateToCentre.LoadList();
+    });
+</script>
+
+
+

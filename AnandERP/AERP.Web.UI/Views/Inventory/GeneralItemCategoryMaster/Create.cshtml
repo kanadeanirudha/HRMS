@@ -1,0 +1,79 @@
+﻿@model AERP.ViewModel.GeneralItemCategoryMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Item Category</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralItemCategoryMaster" role="form">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ItemCategoryDescription, new { })
+                        @Html.TextBoxFor(model => model.ItemCategoryDescription, new { maxlength = "60", @class = "form-control input-sm typeahead" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemCategoryDescription)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ItemCategoryCode, new { })
+                        @Html.TextBoxFor(model => model.ItemCategoryCode, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemCategoryCode)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.MarchandiseGroupID, new { })
+                        @Html.DropDownListFor(model => model.SelectedMarchandiseGroupID, (SelectList)ViewBag.MarchandiseGroupList, "---Select Merchandise Group ---", new { @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SelectedMarchandiseGroupID)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.MerchandiseDepartmentID, new { })
+
+                        @Html.DropDownListFor(model => model.SelectedMerchandiseDepartmentID, (SelectList)ViewBag.MerchandiseDepartmentList, "--Select Merchandise Department--", new { @class = "form-control input-sm", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SelectedMerchandiseDepartmentID)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.MerchandiseCategoryID, new { })
+                        @Html.DropDownListFor(model => model.SelectedMerchandiseCategoryID, (SelectList)ViewBag.MerchantiseCategoryList, "---Select Merchandise Category---", new { @class = "form-control input-sm", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SelectedMerchandiseCategoryID)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.MarchandiseSubCategoryID, new { })
+                        @Html.DropDownListFor(model => model.SelectedMarchandiseSubCategoryID, (SelectList)ViewBag.MerchantiseSubCategoryList, "--Select Merchandise Sub Category--", new { @class = "form-control input-sm", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SelectedMarchandiseSubCategoryID)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.MarchandiseBaseCatgoryID, new { })
+                        @Html.DropDownListFor(model => model.SelectedMarchandiseBaseCatgoryID, (SelectList)ViewBag.MerchantiseBaseCategoryList, "--Select Merchandise Base Category--", new { @class = "form-control input-sm", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SelectedMarchandiseBaseCatgoryID)
+                </div>
+               
+               
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemCategoryMasterRecord" type="button" />
+                    </div>
+</form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralItemCategoryMaster.Initialize();
+    });
+</script>

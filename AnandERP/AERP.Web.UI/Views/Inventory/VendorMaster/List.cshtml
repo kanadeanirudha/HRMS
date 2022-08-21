@@ -1,0 +1,458 @@
+﻿@model AERP.ViewModel.VendorMasterViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/VendorMaster.js")" type="text/javascript"></script>
+
+<style type="text/css">
+    .mfp-content {
+        width: 50%;
+    }
+
+    .actions > li > a::before, .actions > a::before {
+        height: 120%;
+    }
+</style>
+
+<div id="custom-content">
+    <div class="block-header">
+
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Vendor Master</h2>
+
+        <ul class="actions">
+            <li>
+                <button style="margin-left:-65px;height:36px;" class="btn bgm-red waves-effect" id="DeleteVendor" data-val="true" data-toggle="tooltip" data-placement="top" data-original-title="Delete">
+                    <i class="zmdi zmdi-delete zmdi-hc-fw"></i>
+                </button>
+
+            </li>
+
+            <li>
+                <a href="@Url.Action("Download", "VendorMaster")">
+                    <button style="margin-left:-24px;height:36px;" class="btn bgm-orange waves-effect" data-val="true" data-toggle="tooltip" data-placement="top" data-original-title="Download Data Sheet"><i class="zmdi zmdi-download zmdi-hc-fw"></i></button>
+                </a>
+            </li>
+
+            <li>
+                <a title="Upload Excel" href="@Url.Action("UploadExcel", "VendorMaster", new { })" class="mfpAjaxModal">
+                    <i class="zmdi zmdi-plus-square btn btn-default waves-effect" style="padding-bottom:3px;"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="ha-search" style="float:right; margin-top:-58px;display:none">
+        <div class="fg-line">
+            <input class="form-control" type="text" placeholder="Search...">
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body card-padding">
+        @*<div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">X</span></button>
+                <p id="messageContent"></p>
+            </div>*@
+        <form id="FormCreateVendorMaster" role="form" class="row">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @*@Html.HiddenFor(model => model.VendorNumber)
+                            @Html.HiddenFor(model => model.VendorNumber)*@
+                        @Html.LabelFor(model => model.VendorNumber, new { })
+                        @Html.TextBoxFor(m => m.VendorNumber, new { @class = "form-control input-sm", maxLength = "10", disabled = "disabled" })
+                        @*@Html.TextBoxFor(m => m.VendorNumber, new { @class = "form-control input-sm", maxLength = "10", Value = "" })*@
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.VendorNumber)*@
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(model => model.VendorID)
+                        @Html.LabelFor(model => model.VendorName, new { })
+                        @Html.TextBoxFor(m => m.VendorName, new { maxlength = "100", @class = "form-control input-sm " })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.VendorName)
+                    <span id="DataValidationMessageForVendorName"></span>
+                </div> 
+
+            </div>
+        </form>
+        <hr />
+        <div class="card-body card-padding" style="margin-left:-10px;margin-top:-30px">
+            <div>
+                <ul class="tab-nav" id="TaskList">
+                    <li class="active" id="GeneralData" style="width:150px;">
+                        <a id="r1" href="GeneralData" aria-controls="GeneralData" role="tab" data-toggle="tab">&nbsp;&nbsp;General Data&nbsp;</a>
+                    </li>
+                    <li class="" id="ReplenishmentData">
+                        <a id="r2" href="ReplenishmentData" aria-controls="ReplenishmentData" role="tab" data-toggle="tab">&nbsp;Replenishment Data&nbsp;</a>
+                    </li>
+                    <li class="" id="FinanceData">
+                        <a id="r3" href="FinanceData" aria-controls="FinanceData" role="tab" data-toggle="tab">&nbsp;Finance Data&nbsp;</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="GeneralData" class="tab-pane active">
+
+                        @{Html.RenderAction("GeneralData", "VendorMaster"); }
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateVendorMasterRecord" type="button" />
+                    <input class="btn bgm-green " style="margin-left:1%" value="Save" id="SaveVendorMasterRecord" type="button" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        VendorMaster.Initialize();
+        //===============vendor Name=====================
+
+        var map = {};
+        debugger;
+        debugger;
+        var getVendorData = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/VendorMaster/GetVendorSearchList",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q },
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response) {
+                            if (substrRegex.test(response.name)) {
+                                map[response.name] = response;
+                                matches.push(response.name);
+
+
+                            }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+
+
+            };
+
+        };
+
+
+        $('#VendorName').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            source: getVendorData()
+        }).on("typeahead:selected", function (obj, item) {
+
+            $('#VendorID').val(map[item].id);
+            $('#VendorName').val(map[item].name);
+            $('#VendorNumber').val(map[item].VendorNumber);
+            $('#Address1').val(map[item].Address1);
+            $('#Address2').val(map[item].Address2);
+            $('#Address3').val(map[item].Address3);
+            $('#PhoneNumber').val(map[item].PhoneNumber);
+            $('#MobileNumber').val(map[item].MobileNumber);
+            $('#MerchandiseCategory').val(map[item].MerchandiseCategory);
+            $('#LeadTime').val(map[item].LeadTime);
+            $('#Country').val(map[item].Country);
+            $('#Currency').val(map[item].Currency);
+            $('#FirstName').val(map[item].FirstName);
+            $('#MiddleName').val(map[item].MiddleName);
+            $('#LastName').val(map[item].LastName);
+            $('#CityId').val(map[item].CityId);
+            $('#City').val(map[item].City);
+            $('#PinCode').val(map[item].PinCode);
+            $('#CPFirstName').val(map[item].CPFirstName);
+            $('#ContactPersonMobNumber').val(map[item].ContactPersonMobNumber);
+            $('#EmailID').val(map[item].EmailID);
+            $('#State').val(map[item].State);
+            $('#ReturnGoods').val(map[item].ReturnGoods);
+            $('#PersonDesgDesc').val(map[item].PersonDesgDesc);
+            $('#CashDiscount').val(map[item].CashDiscount);
+            $('#Rebate').val(map[item].Rebate);
+            if ($('#ReturnGoods').val() == "true") {
+                $('#ReturnGoods').prop('checked', true);
+            }
+            else {
+                $('#ReturnGoods').prop('checked', false);
+            }
+
+            $('#CreditLimit').val(map[item].CreditLimit);
+            $('#Incoterms').val(map[item].Incoterms);
+            $('#AccountNo').val(map[item].AccountNo);
+            $('#BankName').val(map[item].BankName);
+            $('#BranchName').val(map[item].BranchName);
+            $('#BankAddress').val(map[item].BankAddress);
+            $('#IFSCCode').val(map[item].IFSCCode);
+            $('#CPMiddleName').val(map[item].CPMiddleName);
+            $('#CPLastName').val(map[item].CPLastName);
+            $('#VendorCode').val(map[item].VendorCode);
+
+            $('#CurrentDatedCheque').val(map[item].CurrentDatedCheque);
+            if ($('#CurrentDatedCheque').val() == "true") {
+                $('#CurrentDatedCheque').prop('checked', true);
+            }
+            else {
+                $('#CurrentDatedCheque').prop('checked', false);
+            }
+
+            $('#CashOnDelivery').val(map[item].CashOnDelivery);
+            if ($('#CashOnDelivery').val() == "true") {
+                $('#CashOnDelivery').prop('checked', true);
+            }
+            else {
+                $('#CashOnDelivery').prop('checked', false);
+            }
+
+            $('#Credit').val(map[item].Credit);
+            if ($('#Credit').val() == "true") {
+                $('#Credit').prop('checked', true);
+            }
+            else {
+                $('#Credit').prop('checked', false);
+            }
+
+            var TaskCode = 'GeneralData';
+            $("li#" + TaskCode).click();
+            $('ul#TaskList li').removeClass("active");
+            $('ul#TaskList li:eq(0)').addClass("active");
+
+            $.ajax({
+                url: "/VendorMaster/GetVendorMasterListGeneralData",
+                type: "POST",
+                dataType: "json",
+                data: { VendorID: map[item].id },
+                success: function (data) {
+
+                    // iterate through the pool of strings and for any string that
+                    // contains the substring `q`, add it to the `matches` array
+                    $("#tblData tbody tr").remove();
+                    $.each(data, function (i, response) {
+
+                        var tr = '<tr>' + '<td>' + response.CPFirstName + '</td>' + '<td>' + response.CPMiddleName + '</td>' + '<td>' + response.CPLastName + '</td>' + '<td>' + response.ContactPersonMobNumber + '</td>' + '<td>' + response.EmailID + '</td>' + '<td>' + response.PersonDesgDesc + '</td>' + '</tr>';
+                        // alert(tr)
+                        $('#tblData tbody').append(tr);
+
+
+
+                    });
+                },
+
+            })
+            //  $.getJSON(url,function (data) {
+            //  var tr;
+            //  for (var i = 0; i < data.length; i++) {
+            //  tr = $('<tr/>');
+            //  tr.append("<td>" + data[i].Name + "</td>");
+            //  tr.append("<td>" + data[i].ContactPersonMobNumber + "</td>");
+            //  tr.append("<td>" + data[i].EmailID + "</td>");
+            //  $('tblData').append(tr);
+
+            //  }
+            //});
+            $.ajax({
+                url: "/VendorMaster/GetVendorMasterListPersonalDetails",
+                type: "POST",
+                dataType: "json",
+                data: { VendorID: map[item].id },
+                success: function (data) {
+
+                    // iterate through the pool of strings and for any string that
+                    // contains the substring `q`, add it to the `matches` array
+                    $("#tblData1 tbody tr").remove();
+                    $.each(data, function (i, response) {
+
+                        var tr = '<tr>' + '<td>' + response.MerchandiseCategory + '</td>' + '<td>' + response.LeadTime + '</td>' + '</tr>';
+                        // alert(tr)
+
+                        $('#tblData1 tbody').append(tr);
+
+
+
+                    });
+                },
+
+            })
+
+        });
+
+        //$('#VendorName').bind("paste", function (e) {
+        //    debugger;
+        //    debugger;
+        //   // e.preventDefault();
+        //   // alert("Copy or Paste Option is not Applicable")
+
+        //    var val = $(this).val();
+        //    alert(val)
+        //    var regex=/[a-zA-Z0-9\-\_]$/;
+        //    alert(regex.test(val));
+
+        //    //if (val.match("/[a-zA-Z0-9\-\_]$/")) {
+        //    //    alert('aplanumeric');
+
+        //    //}
+        //    //else {
+        //    //    alert('Not alphanumeric special charchters');
+        //    //    $('#VendorName').val("");
+        //    //}
+
+        //    //if (/[a-zA-Z0-9\-\_]$/.test(val)) {
+        //    //    alert("Please enter only letter and numeric characters");
+
+        //    //}
+        //    //else {
+        //    //    alert("error special char")
+        //    //    $('#VendorName').val("");
+        //    //}
+
+
+        //    //    });
+        //    //});
+
+        //});
+
+        $('#VendorName').bind('paste', function (e) {
+            var self = this;
+
+            $("#VendorID").val("0");
+            //$("#VendorName").val("");
+            $("#VendorNumber").val("");
+            $("#Address1").val("");
+            $('#Address2').val("");
+            $('#Address3').val("");
+            $('#PhoneNumber').val("");
+            $('#MobileNumber').val("");
+            $('#MerchandiseCategory').val("");
+            $('#LeadTime').val("");
+            $('#Country').val("");
+            $('#Currency').val("");
+            $("#tblData tbody tr").remove();
+            $("#tblData1 tbody tr").remove();
+            $('#FirstName').val("");
+            $('#MiddleName').val("");
+            $('#LastName').val("");
+            $('#CityId').val("");
+            $('#City').val("");
+            $('#PinCode').val("");
+            $("#ReturnGoods").removeAttr('checked');
+            $("#CreditLimit").val("");
+            $("#Incoterms").val("");
+            $("#AccountNo").val("");
+            $('#BankName').val("");
+            $('#BranchName').val("");
+            $('#BankAddress').val("");
+            $('#IFSCCode').val("");
+            $('#State').val("");
+            $('#Name').val("");
+            $('#ContactPersonMobNumber').val("");
+            $('#EmailID').val("");
+            $('#PersonDesgDesc').val("");
+            $('#Rebate').val("");
+            $('#CashDiscount').val("");
+
+            setTimeout(function (e) {
+                var val = $(self).val();
+                if (!/^[a-zA-Z0-9_/&',.() ]+$/.test(val)) {
+                    $('#DataValidationMessageForVendorName').text("Please enter alpha-numeric text.").css("color","red");
+                   return false;
+                }
+                $('#DataValidationMessageForVendorName').text("");
+            }, 0);
+        });
+
+        $('#VendorName').on("keydown", function (e) {
+          //  AERPValidation.AllowAlphaNumericOnly(e);
+            $('#DataValidationMessageForVendorName').text("");
+
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $("#VendorID").val("0");
+               $("#VendorName").val("");
+               $('#VendorName').typeahead('val', '');
+                $("#VendorNumber").val("");
+                $("#Address1").val("");
+                $('#Address2').val("");
+                $('#Address3').val("");
+                $('#PhoneNumber').val("");
+                $('#MobileNumber').val("");
+                $('#MerchandiseCategory').val("");
+                $('#LeadTime').val("");
+                $('#Country').val("");
+                $('#Currency').val("");
+                $("#tblData tbody tr").remove();
+                $("#tblData1 tbody tr").remove();
+               
+                $('#FirstName').val("");
+                $('#MiddleName').val("");
+                $('#LastName').val("");
+                $('#CityId').val("");
+                $('#City').val("");
+                $('#PinCode').val("");
+                $("#ReturnGoods").removeAttr('checked');
+                $("#CreditLimit").val("");
+                $("#Incoterms").val("");
+                $("#AccountNo").val("");
+                $('#BankName').val("");
+                $('#BranchName').val("");
+                $('#BankAddress').val("");
+                $('#IFSCCode').val("");
+                $('#State').val("");
+                $('#CPFirstName').val("");
+                $('#CPMiddleName').val("");
+                $('#CPLastName').val("");
+                $('#ContactPersonMobNumber').val("");
+                $('#EmailID').val("");
+                $('#PersonDesgDesc').val("");
+                $('#Rebate').val("");
+                $('#CashDiscount').val("");
+                $("#CashOnDelivery").removeAttr('checked');
+                $("#CurrentDatedCheque").removeAttr('checked');
+                $("#Credit").removeAttr('checked');
+
+                $('ul#TaskList li:eq(0)').addClass("active");
+                $('ul#TaskList li:eq(1)').removeClass("active");
+                $('ul#TaskList li:eq(2)').removeClass("active");
+
+                TaskCode = 'GeneralData'
+                $("#" + TaskCode).click();
+            }
+        });
+
+
+
+        VendorMaster.CreateTab();
+        VendorMaster.Save();
+        VendorMaster.Create();
+    });
+
+</script>

@@ -1,0 +1,99 @@
+﻿@model AERP.ViewModel.DashboardViewModel
+@{
+    Layout = null;
+}
+<style type="text/css">
+    .mfp-content {
+        width: 70%;
+    }
+</style>
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/General_Script/EmployeeDashboard.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/General_Script/_Header.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/sparklines/jquery.sparkline.min.js")" type="text/javascript"></script>
+@Html.HiddenFor(m => m.TaskCode)
+<div id="aaa">
+    <div class="">
+        <div class="block-header">
+            <h2>@Resources.MainMenu_Dashboard</h2>
+        </div>
+        <div class="mini-charts">
+            <div class="row">
+                @foreach (var item in Model.ModuleList)
+                {
+                    <a href="#">
+                        <div class="col-sm-6 col-md-3" style="">
+                            <div class="mini-charts-item @item.ModuleColorClass" id="@item.ModuleCode" style="border-radius:20px 0px;">
+                                <div>
+                                    <div class="count text-center">
+                                        <small class="f-15">@item.ModuleName</small>
+                                        <h2>&nbsp</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeDashboard.Initialize();
+
+        if ($('#ModuleCountFlag').val() == '0') {
+            $.ajax(
+               {
+                   cache: false,
+                   type: "GET",
+                   dataType: "html",
+                   data: { "LogoutType": 'Successfully', "Command": '' },
+                   url: 'Account/LogOff',
+                   success: function (result) {
+                       debugger;
+                       // Menus are not assigned to role,please contact administrator
+                       location.reload(true);
+                   }
+               });
+        }
+
+        $('.mini-charts-item').click(function () {
+            debugger;
+            //var ModuleID = $(this).attr('id');
+            var ModuleCode = $(this).attr('id');
+            var ModuleName = $(this).text().trim();
+            $.ajax(
+                {
+                    cache: false,
+                    type: "GET",
+                    dataType: "html",
+                    url: 'Base/CheckSessionStatus',
+                    success: function (result) {
+                        sessionStatus = result;
+                        if (sessionStatus == "1") {
+                            // _HeaderV2.LoadMenuListByModuleID(ModuleID, ModuleName);
+                            _Header.LoadMenuListByModuleCode(ModuleCode, ModuleName);
+                            $('ul#ModuleList li').each(function (i) {
+                                $(this).closest("li").find("a i").removeClass();
+                                if ($(this).closest("li").attr("id") == ModuleCode) {
+                                    $(this).closest("li").find("a i").addClass("zmdi zmdi-check-all");
+                                }
+                                else {
+                                    $(this).closest("li").find("a i").addClass("zmdi tm-icon zmdi-view-module zmdi-hc-fw")
+                                }
+                            });
+                        }
+                        else if (sessionStatus != "1") {
+                            location.reload();
+                        }
+
+                    }
+                });
+        });
+    });
+</script>
+
+

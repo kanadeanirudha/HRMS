@@ -1,0 +1,116 @@
+﻿
+@model AERP.ViewModel.SalesCustomerRecieptViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Sales/SalesCustomerReciept.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;View Contract Reciept </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditSalesCustomerReciept" role="form">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.VoucherNumber, new { })
+                            @Html.TextBoxFor(model => model.VoucherNumber, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PaidAmount, new { })
+                            @Html.TextBoxFor(model => model.PaidAmount, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CustomerName, new { })
+                            @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+
+                            @Html.LabelFor(model => model.BranchName, new { })
+                            @Html.TextBoxFor(model => model.BranchName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+
+                            @Html.LabelFor(model => model.PayementModeType, new { })
+                            @Html.TextBoxFor(model => model.PayementModeType, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <br />
+                    </div>
+                </div>
+                <h4>Contract Details</h4>
+
+                <table id="tblData" class="table">
+                    <thead>
+                        <tr>
+                            <th>Invoice Number</th>
+                            <th>Paid Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.ContactDetailsBySalesCustomerRecieptID)
+                        {
+                            <tr>
+                                <td style="vertical-align:middle;">@item.InvoiceNumber</td>
+                                <td style="vertical-align:middle;">@item.PaidInvoiceAmount</td>
+                                @if (@item.StatusFlag == 0)
+                                {
+                                    <td style="vertical-align:middle;"><span class='btn btn-xs btn-warning statusFlag'>Pending</span></td>
+
+                                }
+                                else if (@item.StatusFlag == 1)
+                                {
+                                    <td style="vertical-align:middle;"><span class='btn btn-xs btn-success statusFlag'>Complete</span></td>
+                                }
+
+                                else if (@item.StatusFlag == 2)
+                                {
+                                    <td style="vertical-align:middle;"><span class='btn btn-xs btn-primary statusFlag'>Partially Paid</span> </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        SalesCustomerReciept.Initialize();
+    });
+</script>
+
+

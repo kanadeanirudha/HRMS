@@ -1,0 +1,44 @@
+﻿@*@model IEnumerable<AMS.ViewModel.EmployeeDocumentRequiredViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/Vendors")
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeeDocumentRequired.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+<div id="ListViewModel">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        EmployeeDocumentRequired.LoadList();
+    });
+</script>*@
+
+
+@model IEnumerable<AERP.ViewModel.EmployeeDocumentRequiredViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+
+@Styles.Render("~/Content/Vendors")
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Employee/EmployeeDocumentRequired.js")" type="text/javascript"></script>
+
+@*<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+    <script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script> *@
+
+<div id="ListViewModel" class="container">
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeDocumentRequired.LoadList();
+    });
+</script>

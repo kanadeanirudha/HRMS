@@ -1,0 +1,40 @@
+﻿@model AERP.ViewModel.SaleContractJobWorkDataViewModel
+
+
+<div class="col-sm-12">
+    <table id="tblJobWorkDataData" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Job Work Item Name</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SaleContractJobWorkDataList)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@item.ID">
+                        <input type="hidden" value="@item.SaleContractJobWorkItemID">
+                        @item.SaleContractJobWorkItemName
+                    </td>
+                    <td>
+                        <input type="text" class="form-control input-sm" value="@item.Quantity">
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="col-sm-12">
+    <div class="form-group fg-line">
+        <button type="button" class="btn btn-primary m-t-20" id="SaveSaleContractJobWorkData">@Resources.ButtonAction_Save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractJobWorkData.Initialize();
+    });
+</script>

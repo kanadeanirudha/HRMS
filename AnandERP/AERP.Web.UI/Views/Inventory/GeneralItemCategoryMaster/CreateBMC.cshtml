@@ -1,0 +1,360 @@
+﻿@model AERP.ViewModel.GeneralItemCategoryMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Base Merchandise Category</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralItemCategoryMasterBMC" role="form">
+
+                @*GROUP*@
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group fg-line">
+                        @Html.HiddenFor(model => model.GroupCode)
+                        @Html.HiddenFor(model => model.SelectedMarchandiseGroupID)
+                        @Html.LabelFor(model => model.selectedGroupDescription, new { })
+                        @Html.TextBoxFor(model => model.selectedGroupDescription, new { maxlength = "50", @class = "form-control input-sm typeahead" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.selectedGroupDescription)
+                    </div>
+                    <div class="col-sm-2 pull-left" style="width:5%;">
+                        <button type="button" class="btn btn-login btn-success btn-float waves-effect waves-circle waves-float" id="addMarchandiseGroup" style="height: 40px; width: 40px; line-height: 35px !important;" value="@Resources.ButtonAction_AddRow" title="@Resources.ButtonAction_AddRow"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+
+                @*Div For Group Data*@
+                <div id="DivGroup" style="display:none">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.GroupDescription, new { })
+                                @Html.TextBoxFor(model => model.GroupDescription, new { maxlength = "200", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GroupDescription)
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MarchandiseGroupCode, new { })
+
+                                @Html.TextBoxFor(model => model.MarchandiseGroupCode, new { maxlength = "20", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MarchandiseGroupCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemCategoryMasterInsertGroupRecord" type="button" />
+                    </div>
+                    <hr />
+                </div>
+
+                @*Div For Group Data Ends*@
+                @*GROUP ENDS*@
+                @*---------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+                @*DEPARTMENT*@
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.MerchandiseDepartmentID, new { })
+                            @Html.DropDownListFor(model => model.SelectedMerchandiseDepartmentID, Enumerable.Empty<SelectListItem>(), "---Select Department ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SelectedMerchandiseDepartmentID)
+                    </div>
+                    <div class="col-sm-2 pull-left" style="width:5%;">
+                        <button type="button" class="btn btn-login btn-success btn-float waves-effect waves-circle waves-float" id="addMarchandiseDepartment" style="height: 40px; width: 40px; line-height: 35px !important;" value="@Resources.ButtonAction_AddRow" title="@Resources.ButtonAction_AddRow"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+
+                @*Div For Department Data*@
+                <div id="DivDepartment" style="display:none">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MerchantiseDepartmentName, new { })
+                                @Html.TextBoxFor(model => model.MerchantiseDepartmentName, new { maxlength = "200", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MerchantiseDepartmentName)
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MerchantiseDepartmentCode, new { })
+
+                                @Html.TextBoxFor(model => model.MerchantiseDepartmentCode, new { maxlength = "20", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MerchantiseDepartmentCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemCategoryMasterInsertDepartmentRecord" type="button" />
+                    </div>
+                </div>
+                @*Div For Department Data Ends*@
+                @*DEPARTMENT ENDS*@
+                @*---------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+                @*Category*@
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.MerchandiseCategoryID, new { })
+                            @Html.DropDownListFor(model => model.SelectedMerchandiseCategoryID, Enumerable.Empty<SelectListItem>(), "---Select Category ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SelectedMerchandiseCategoryID)
+                    </div>
+                    <div class="col-sm-2 pull-left" style="width:5%;">
+                        <button type="button" class="btn btn-login btn-success btn-float waves-effect waves-circle waves-float" id="addMarchandiseCategory" style="height: 40px; width: 40px; line-height: 35px !important;" value="@Resources.ButtonAction_AddRow" title="@Resources.ButtonAction_AddRow"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+
+                @*Div For Category Data*@
+                <div id="DivCategory" style="display:none">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MerchantiseCategoryName, new { })
+                              
+                                  @Html.TextBoxFor(model => model.MerchantiseCategoryName, new { maxlength = "200", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MerchantiseCategoryName)
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MerchantiseCategoryCode, new { })
+
+                                @Html.TextBoxFor(model => model.MerchantiseCategoryCode, new { maxlength = "20", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MerchantiseCategoryCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemCategoryMasterInsertCategoryRecord" type="button" />
+                    </div>
+                </div>
+                @*Div For Category Data Ends*@
+                @*CATEGORY ENDS*@
+                @*---------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+                @*SUB CATEGORY*@
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.MarchandiseSubCategoryID, new { })
+                            @Html.DropDownListFor(model => model.SelectedMarchandiseSubCategoryID, Enumerable.Empty<SelectListItem>(), "---Select Sub-Category ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                            
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SelectedMarchandiseSubCategoryID)
+                    </div>
+                    <div class="col-sm-2 pull-left" style="width:5%;">
+                        <button type="button" class="btn btn-login btn-success btn-float waves-effect waves-circle waves-float" id="addMarchandiseSubCategory" style="height: 40px; width: 40px; line-height: 35px !important;" value="@Resources.ButtonAction_AddRow" title="@Resources.ButtonAction_AddRow"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+
+                @*Div For Sub Category Data*@
+                <div id="DivSubCategory" style="display:none">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MarchantiseSubCategoryName, new { })
+                                @Html.TextBoxFor(model => model.MarchantiseSubCategoryName, new { maxlength = "200", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MarchantiseSubCategoryName)
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MerchantiseSubCategoryCode, new { })
+
+                                @Html.TextBoxFor(model => model.MerchantiseSubCategoryCode, new { maxlength = "20", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MerchantiseSubCategoryCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemCategoryMasterInsertSubCategoryRecord" type="button" />
+                    </div>
+                </div>
+                @*Div For Sub Category Data Ends*@
+                @*SUB CATEGORY ENDS*@
+                @*---------------------------------------------------------------------------------------------------------------------------------------------------------*@
+                @*BASE CATEGORY*@
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.MarchandiseBaseCatgoryID, new { })
+                            @Html.DropDownListFor(model => model.SelectedMarchandiseBaseCatgoryID, Enumerable.Empty<SelectListItem>(), "---Select Category ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SelectedMarchandiseBaseCatgoryID)
+                    </div>
+                    <div class="col-sm-2 pull-left" style="width:5%;">
+                        <button type="button" class="btn btn-login btn-success btn-float waves-effect waves-circle waves-float" id="addMarchandiseBaseCategory" style="height: 40px; width: 40px; line-height: 35px !important;" value="@Resources.ButtonAction_AddRow" title="@Resources.ButtonAction_AddRow"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+
+                @*Div For Base Category Data*@
+                <div id="DivBaseCategory" style="display:none">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MarchandiseBaseCategoryName, new { })
+                                @Html.TextBoxFor(model => model.MarchandiseBaseCategoryName, new { maxlength = "200", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MarchandiseBaseCategoryName)
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MarchandiseBaseCatgoryCode, new { })
+
+                                @Html.TextBoxFor(model => model.MarchandiseBaseCatgoryCode, new { maxlength = "20", @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MarchandiseBaseCatgoryCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemCategoryMasterInsertBaseCategoryRecord" type="button" />
+                    </div>
+                </div>
+                @*Div For Base Category Data Ends*@
+                @*BASE CATEGORY ENDS*@
+                @*---------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+                <div class="row" style="display:none">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ItemCategoryDescription, new { })
+                            @Html.TextBoxFor(model => model.ItemCategoryDescription, new { maxlength = "60", @class = "form-control input-sm typeahead" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ItemCategoryDescription)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ItemCategoryCode, new { })
+                            @Html.TextBoxFor(model => model.ItemCategoryCode, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ItemCategoryCode)
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                        <label>
+                            <input type="checkbox" id="IsConsumable">
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsConsumable, new { style = "" })
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsConsumable)
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                        <label>
+                            <input type="checkbox" id="IsMachine">
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsMachine, new { style = "" })
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsMachine)
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                        <label>
+                            <input type="checkbox" id="IsToner">
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsToner, new { style = "" })
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsToner)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemCategoryMasterRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralItemCategoryMaster.Initialize();
+        //=======================GroupCode Name=================================
+        var map = {};
+        var getVendorData = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/GeneralItemCategoryMaster/GetGroupCodeSearchList",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q },
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response) {
+                            if (substrRegex.test(response.name)) {
+                                map[response.name] = response;
+                                matches.push(response.name);
+                               
+
+                            }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+
+        $('#selectedGroupDescription').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            source: getVendorData()
+        }).on("typeahead:selected", function (obj, item) {
+            
+            $("#GroupCode").val(map[item].GroupCode);
+            $("#SelectedMarchandiseGroupID").val(map[item].id);
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "GroupCode": map[item].GroupCode },
+                url: '/GeneralItemCategoryMaster/GetDepartmentIDByGroupCode',
+                success: function (data) {
+                    var $ddlExam = $("#SelectedMerchandiseDepartmentID");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">--------Select Department-------</option>');
+                    $.each(data, function (id, option) {
+
+                        $ddlExam.append($('<option></option>').val(option.id).html(option.DepartmentName + '(' + option.name + ')'));
+                    });
+
+                    
+                }
+            });
+
+        });
+
+
+    });
+</script>
+

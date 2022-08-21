@@ -1,0 +1,88 @@
+﻿@model AERP.ViewModel.DashboardViewModel
+
+<button id="btnAllMarkAsRead" class="btn btn-success waves-effect" disabled>Mark All As Read</button>
+<input type="hidden" id="taskcode" value="LA" />
+
+<div class="card">
+
+    <table id="InformativeNotificationsList" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th style="">Notifications</th>
+                <th style="">Date </th>
+                <th class="" style="text-align: center;">@Resources.TableHeaders_Status</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+<script src="~/Scripts/AERP_Scripts/Dashboard/InformativeNotifications.js"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        InformativeNotifications.Initialize();
+        var isReloadedFromCookies;
+        var oTable = $('#InformativeNotificationsList').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "TaskNotification/AjaxHandlerInformativeNotificationsList",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "order": [[ 1, "desc" ]],
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": 50,
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "columnDefs": [
+
+                            {
+                                "targets": 0,
+                                "bSortable": false,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    var result = "<p  style=' height:5px;'>" + data[3] + "</p>";
+                                    return result;
+                                }
+                            },
+                             {
+                                 "targets": 1,
+                                 "bSortable": true,
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     var result = "<p  style=' height:5px;'>" + data[1] + "</p>";
+                                     return result;
+                                 }
+                             },
+                             {
+                                 "targets": 2,
+                                 "bSortable": false,
+                                 "orderable": false,
+
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     var chkStatus = '';
+                                     var result = '';
+                                     if (data[4] == "1") {
+                                         chkStatus = '@Resources.Displaychkstatus_Pending';
+                                         result = "<a href='javascript:void(0)' class='btn bgm-orange btn-xs markAsRead waves-effect'><i class='zmdi zmdi-check zmdi-hc-fw'></i></a>";
+                                         $('#btnAllMarkAsRead').prop('disabled',false);
+                                     }
+                                     else if (data[4] == "2") {
+                                         chkStatus = '@Resources.Displaychkstatus_Done';
+                                         result = "<button class='btn bgm-green btn-xs'><i class='zmdi zmdi-check-all zmdi-hc-fw'></i></button>";
+                                     }
+                                     var resultout = "<p  style='text-align: center; height:5px;'>" + result + "</p>";
+
+                                     return resultout;
+                                 }
+                             }
+                             
+            ]
+        });
+
+        DataTableSettings(oTable, "InformativeNotificationsList", "toggleTableColumn");
+    });
+</script>

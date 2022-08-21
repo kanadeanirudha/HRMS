@@ -1,0 +1,70 @@
+﻿@model AERP.ViewModel.GeneralTypeOfAccountViewModel
+<input type="hidden" id="DisplayFor" value="Edit" />
+<div id="custom-content">
+    <div class="block-header">
+        @Html.HiddenFor(model => model.GeneralTypeOfAccountId)
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Edit Account Type</h2>
+    </div>
+  
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditGeneralTypeOfAccount" role="form">
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(model => model.ID)
+                            @Html.LabelFor(model => model.Name, new { })
+                            @Html.TextBoxFor(model => model.Name, new { maxlength = "30", @class = "form-control input-sm" })
+                        </div>
+                    @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group select fg-line">
+                        @Html.LabelFor(model => model.AccountName, new { })
+                        @Html.DropDownListFor(model => model.AccountName, (SelectList)ViewBag.GeneralTypeOfAccountList, "---Select Account Name ---", new { @class = "form-control input-sm" ,disabled = "disabled"})
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AccountName)
+                </div>
+                        @*@if (@Model.GeneralTypeOfAccountDTO.IsActive)
+                    {
+
+                        <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                            <label>
+                                <input type="checkbox" id="IsActive" checked>
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsActive, new { style = "" })
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsActive)
+                        </div>
+
+                    }
+                    else {
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="IsActive">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.IsActive, new { style = "" })
+                                </label>
+                                @Html.ValidationMessageFor(model => model.IsActive)
+                            </div>
+                    }*@
+
+                        <div class="form-group">
+                            <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditGeneralTypeOfAccountRecord" type="button" />
+                        </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralTypeOfAccount.Initialize();
+    });
+</script>

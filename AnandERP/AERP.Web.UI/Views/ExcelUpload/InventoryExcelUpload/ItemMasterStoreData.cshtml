@@ -1,0 +1,70 @@
+﻿@model AERP.ViewModel.InventoryExcelUploadViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="ListViewModel" class="container">
+    @Html.HiddenFor(m => m.errorMessage)
+    <div id="custom-content">
+        <div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Item Master Store Data</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding">
+                <div id="displayErrorMessagee" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <div class="card-body card-padding" style="padding-bottom:20px;">
+                    <p>Download Excel</p>
+                    <a href="@Url.Action("DownloadItemMasterStoreDataExcel", "InventoryExcelUpload")" class="btn bgm-orange waves-effect">
+                        <i class="zmdi zmdi-download zmdi-hc-fw"></i>
+                    </a>
+                    @using (Html.BeginForm("UploadExcelForItemMasterStoreDataExcel", "InventoryExcelUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <form id="FormItemMasterStoreDateExcel" method="post">
+                            <br /><br />
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" style="padding:12px 2px;" for="inputEmail3"><span style="color:red;">*</span>Upload Excel</label>
+                                <div class="fileinput fileinput-new" data-provides="fileinput" style="padding-top: 11px;">
+                                    <span class="btn btn-primary btn-file m-r-10">
+                                        <span class="fileinput-new">Choose File</span>
+                                        <span class="fileinput-exists" style="padding-top: 11px;">Choose File</span>
+                                        @Html.FileFor(model => model.ExcelFile)
+                                    </span>
+                                    <span class="fileinput-filename"></span>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="top:18px;">&times;</a>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-right:800px;">
+                                <button class="btn btn-primary btn-sm m-t-10 waves-effect" style="margin-left:3%;" id="CreateItemMasterStoreDateExcel" type="button" onclick="this.disabled = true; this.text = 'Sending, please wait...'; this.form.submit();">@Resources.ButtonAction_Submit</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('input[name=errorMessage]').val() != "NoMessage") {
+                var splitedMsg = ($('input[name=errorMessage]').val()).split(',');
+                notify(splitedMsg[0], splitedMsg[1]);
+                $('input[name=errorMessage]').val("NoMessage");
+            }
+            //InventoryExcelUpload.Initialize();
+        });
+    </script>
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/Theme/vendors/fileinput/fileinput.min.js")" type="text/javascript"></script>
+
+
+
+
+
+
+
+

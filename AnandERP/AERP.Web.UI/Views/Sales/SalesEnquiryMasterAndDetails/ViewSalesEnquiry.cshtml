@@ -1,0 +1,143 @@
+﻿
+@model AERP.ViewModel.SalesEnquiryMasterAndDetailsViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Sales/SalesEnquiryMasterAndDetails.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;View Sales Enquiry </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditSalesEnquiryMasterAndDetails" role="form">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.CustomerMasterID)
+                            @Html.HiddenFor(model => model.SalesEnquiryMasterID)
+
+                            @Html.LabelFor(model => model.CustomerMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerMasterName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.CustomerBranchMasterID)
+                            @Html.LabelFor(model => model.CustomerBranchMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerBranchMasterName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ContactPersonID)
+                            @Html.LabelFor(model => model.CustomerContactPersonName, new { })
+                            @Html.TextBoxFor(model => model.CustomerContactPersonName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+
+                            @Html.LabelFor(model => model.TransactionDate, new { })
+                            @Html.TextBoxFor(model => model.TransactionDate, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+
+                            @Html.LabelFor(model => model.ReferenceBy, new { })
+                            @Html.DropDownList("ReferenceBy", ViewData["ReferenceBy"] as List<SelectListItem>, "--select--", new { style = "", @class = "form-control",disabled="disabled" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <br />
+                    </div>
+                </div>
+                <h4>List Of Items</h4>
+                <div class="row" style="display:none">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ItemNumber)
+                            @Html.LabelFor(model => model.ItemDescription, new { })
+                            @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @*@Html.LabelFor(model => model.AltQty, new { })*@
+                            @Html.LabelFor(model => model.Quantity, new { })
+                            @Html.TextBoxFor(model => model.Quantity, new { maxlength = "8", @class = "form-control input-sm typeahead" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.UOM, new { })
+                            @Html.DropDownListFor(model => model.UOM, Enumerable.Empty<SelectListItem>(), "---Select UomCode ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2" id="btnAdd1">
+                        <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                        <button type="button" title="Add row" class="btn bgm-green btn-float waves-effect waves-circle waves-float" id="btnAdd" style="margin-top:10px"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+
+                </div>
+
+                <table id="tblData" class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Description</th>
+                            <th>Quantity</th>
+                            <th>Units required</th>
+                            <th style="display:none">Action</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.ContactDetailsBySalesEnquiryMasterAndDetailsID)
+                        {
+                            <tr>
+                                <td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.ItemNumber"></td>
+                                <td style="vertical-align:middle;">@item.ItemDescription<input id="ItemDescription" style="display:none" type="text" value="@item.ItemDescription"></td>
+                                <td style="vertical-align:middle;"><input id="Quantity" type="text" class="form-control input-sm typeahead" value="@item.Quantity"></td>
+                                <td style="vertical-align:middle;">@item.UOM<input id="UOM" type="text" style="display:none" value="@item.UOM"></td>
+                                <td style="display:none">@item.SaleEnquiryDetailsID<input type="hidden" style="display:none" value="@item.SaleEnquiryDetailsID"></td>
+                                <td style="display:none"><i class='zmdi zmdi-delete zmdi-hc-fw deleteEnq' style='cursor:pointer' title='Delete' /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        SalesEnquiryMasterAndDetails.Initialize();
+    });
+</script>
+

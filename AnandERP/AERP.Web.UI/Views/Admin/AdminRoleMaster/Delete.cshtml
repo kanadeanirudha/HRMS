@@ -1,0 +1,21 @@
+﻿@model AMS.ViewModel.AdminRoleMasterViewModel
+
+
+@using (Ajax.BeginForm("Delete", "AdminRoleMaster", null,
+        new AjaxOptions
+        {
+            UpdateTargetId = "update-message",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "deleteSuccess"
+        }, new
+        {
+            @id = "FormAdminRoleMasterDelete"
+        }))
+{
+     @Html.HiddenFor(model => model.ID)  
+      <b>
+        <img src="~/Content/images/warning.png" />&nbsp;&nbsp;@Resources.DisplayName_DeleteMessage  </b>
+}
+
+<div id="update-message" class="error invisible"></div>

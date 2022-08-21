@@ -1,0 +1,34 @@
+﻿@model AERP.ViewModel.SaleContractMachineTransactionViewModel
+
+<table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+    <thead>
+        <tr>
+            <th>Machine Name</th>
+            <th>Total Days</th>
+            <th>Present Days</th>
+        </tr>
+    </thead>
+    @if (Model.ListSaleContractMachineTransaction.Count > 0)
+    {
+        decimal TotalDaysSum = 0; decimal TotalAttendanceSum = 0;
+        <tbody>
+            @foreach (var item in Model.ListSaleContractMachineTransaction)
+            {
+                TotalDaysSum = TotalDaysSum + item.TotalDays;
+                TotalAttendanceSum = TotalAttendanceSum + item.TotalAttendance;
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.TotalDays</td>
+                    <td>@item.TotalAttendance</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>@TotalDaysSum</th>
+                <th>@TotalAttendanceSum</th>
+            </tr>
+        </tfoot>
+    }
+</table>

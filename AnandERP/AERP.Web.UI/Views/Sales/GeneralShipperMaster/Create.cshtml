@@ -1,0 +1,67 @@
+﻿@model AERP.ViewModel.GeneralShipperMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Shipper Master </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralShipperMaster" role="form" class="row">
+                <div class="row">
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.CompanyName, new { })
+                        @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CompanyName)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Email, new { })
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+                    </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PhoneNumber, new { })
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PhoneNumber)
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.MobileNumber, new { })
+                            @Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.MobileNumber)
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralShipperMasterRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralShipperMaster.Initialize();
+    //    $('.mfpAjaxModal').magnificPopup('enableEscapeKey', false);
+    });
+</script>
+
+

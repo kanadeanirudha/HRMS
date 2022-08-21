@@ -1,0 +1,26 @@
+﻿@model AMS.ViewModel.InventoryRateTransactionViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 50%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/InventoryRateTransaction.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //InventoryRateTransaction.Initialize();
+        InventoryRateTransaction.LoadList();
+
+    });
+</script>
+
+
+
+

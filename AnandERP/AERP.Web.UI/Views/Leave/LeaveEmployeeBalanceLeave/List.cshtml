@@ -1,0 +1,258 @@
+﻿@*@model AMS.ViewModel.LeaveApplicationViewModel
+
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+<style type="text/css">
+    .ui-widget-header {
+        color: #333;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container-fluid">
+    <form id="EmployeeLeave">
+        <ul class="breadcrumb">
+            <li>@Resources.Mainheading_Leave<span class="divider">»</span></li>
+            <li class="active">Employee Balance Leave</li>
+        </ul>
+
+        <ul class="breadcrumb" style="height: 30px;">
+            <li>
+                &nbsp;&nbsp;&nbsp;
+                <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_CentreName &nbsp;: &nbsp;&nbsp;</span>
+                @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "----Select Centre----", new { id = "CentreCode", @class = "form-control chosen-select", style = "font-weight:bold;" })
+                @Html.HiddenFor(m => m.CentreCode)
+                @Html.HiddenFor(m => m.CentreName)
+                @Html.HiddenFor(m => m.LeaveSessionID)
+                
+            </li>
+
+            <li>
+                &nbsp;&nbsp;&nbsp;
+                <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                <span style="font-size: 12px; font-weight: bold;">@Resources.DisplayName_DepartmentName &nbsp;: &nbsp;&nbsp;</span>
+                
+                @Html.DropDownListFor(m => m.DepartmentID, Model.ListOrganisationDepartmentMasterItems, "All", new { id = "DepartmentID", @class = "form-control chosen-select", style = "font-weight:bold" })
+            </li>
+                       
+            <li>
+                <button type="button" id="ShowList" class="btn btn-primary" style="margin-bottom: 10%;">@Resources.ButtonAction_ShowList</button>
+            </li>
+        </ul>
+
+        <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-block">
+
+                    <div class="widget-head">
+                        <h5 id="hFive"><i class="black-icons users"></i>&nbsp; Employee Leave Balance</h5>
+
+                        <div class="pull-right" style="margin: -24px 15px 0px 10px;">
+                            <div class="input-append" id="" style="float: right; display:none;">
+                                <div style="display: none;">
+                                    <input type="hidden" name="_method" value="POST">
+                                </div>
+                                &nbsp;&nbsp;
+                                <input type="text" name="data[User][search]" class="search_query input-medium" placeholder="@Resources.GlobalProperties_Search..." size="16" autocomplete="off" id="UserSearch">
+                                <button class="btn" type="button" id="searchBtn"><i class="icon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-content">
+                        <div class="widget-box">
+                            <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                                <div class="table_content">
+                                    <table id="myDataTable" class="table user-tbl">
+                                        <thead id="myDataTable_thead">
+                                            <tr>
+
+                                                <th style="text-align: center; font-weight: bold; color: #000; line-height: 20px; text-transform:none;">@Resources.TableHeaders_EmployeeName</th>
+                                                @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                {
+                                                    for (int i = 0; i < Convert.ToInt32(ViewBag.numberOfcolumn); i++)
+                                                    {
+                                                        <th style="text-align: center; font-weight: bold; color: #000; line-height: 20px">@ViewBag.listLeaveType[i]</th>
+                                                    }
+                                                }
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                            {
+                                                for (int j = 0; j < Convert.ToInt32(ViewBag.TotalRecords); j++)
+                                                {
+                                                    <tr>
+                                                        <td>@ViewBag.ListLeavePost[j].EmployeeFirstName &nbsp; @ViewBag.ListLeavePost[j].EmployeeLastName</td>
+
+                                                        @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                        {
+                                                            var splitedLeaveList = ViewBag.ListLeavePost[j].LeaveList.Split(',');
+                                                            for (int k = 0; k < Convert.ToInt32(splitedLeaveList.Length); k++)
+                                                            {
+                                                                var splitedLeaveAndNumber = splitedLeaveList[k].Split('#');
+                                                                if (splitedLeaveAndNumber[5] == "-1")
+                                                                {
+                                                                    int aaa = Convert.ToInt32(@ViewBag.ListLeavePost[j].DOJAndCurrentSessionDifferenceInMonth);
+                                                                    double bbb = Convert.ToDouble(splitedLeaveAndNumber[1]);
+                                                                    double ccc = (bbb / 12) * aaa;
+
+                                                                    <td style="text-align: center; font-weight: bold; color: #000;padding:3px 0px 0px 0px"><input type="text" class="NumberOnly" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@ccc~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@ccc" style="width:15%;text-align:right;" disabled="disabled" maxlength="3" /></td>
+                                                                }                                                                
+                                                                else
+                                                                {
+                                                                    <td style="text-align: center; font-weight: bold; color: #000;padding:3px 0px 0px 0px"><input type="text" disabled="disabled" class="NumberOnly" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@splitedLeaveAndNumber[1]~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@splitedLeaveAndNumber[5]" style="width:15%;text-align:right;" maxlength="3" /></td>
+
+                                                                }
+                                                            }
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr><td>No data available in table</td></tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<br /><br /><br />
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveEmployeeBalanceLeave.Initialize();
+    });
+
+</script>*@
+
+@*-----------new code----------------*@
+
+
+@model AERP.ViewModel.LeaveApplicationViewModel
+
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+
+
+
+@*<div class="container">*@
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Employee Balance Leave</h2>
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <ul class="actions">
+            
+        </ul>
+    </div>
+
+    <div class="card-body card-padding">
+        <div class="row">
+            <div class="col-sm-4">
+                @Resources.TableHeaders_CentreName
+                <div class="form-group fg-line select">
+                    @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "----Select Centre----", new { id = "CentreCode", @class = "form-control", style = "" })
+                    @Html.HiddenFor(m => m.CentreCode)
+                    @Html.HiddenFor(m => m.CentreName)
+                    @Html.HiddenFor(m => m.LeaveSessionID)
+                </div>
+            </div>
+            <div class="col-sm-4">
+                @Resources.DisplayName_DepartmentName
+                <div class="form-group fg-line select">
+                    @Html.DropDownListFor(m => m.DepartmentID, Model.ListOrganisationDepartmentMasterItems, "All", new { id = "DepartmentID", @class = "form-control", style = "" })
+                </div>
+            </div>
+            <div class="col-sm-3" style="margin-top:10px;">
+                <button type="button" class="btn btn-primary" value="@Resources.GlobalProperties_ShowList" id="ShowList">@Resources.ButtonAction_ShowList</button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+    <table id="myDataTable" class="table table-hover">
+        <thead id="myDataTable_thead">
+            <tr>
+
+                <th class="success c-white" style="">@Resources.TableHeaders_EmployeeName</th>
+                @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                {
+                    for (int i = 0; i < Convert.ToInt32(ViewBag.numberOfcolumn); i++)
+                    {
+                        <th class="success c-white" style="">@ViewBag.listLeaveType[i]</th>
+                    }
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+            {
+                for (int j = 0; j < Convert.ToInt32(ViewBag.TotalRecords); j++)
+                {
+                    <tr>
+                        <td class="info">@ViewBag.ListLeavePost[j].EmployeeFirstName &nbsp; @ViewBag.ListLeavePost[j].EmployeeLastName</td>
+
+                        @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                        {
+                            var splitedLeaveList = ViewBag.ListLeavePost[j].LeaveList.Split(',');
+                            for (int k = 0; k < Convert.ToInt32(splitedLeaveList.Length); k++)
+                            {
+                                var splitedLeaveAndNumber = splitedLeaveList[k].Split('#');
+                                if (splitedLeaveAndNumber[5] == "-1")
+                                {
+                                    int aaa = Convert.ToInt32(@ViewBag.ListLeavePost[j].DOJAndCurrentSessionDifferenceInMonth);
+                                    double bbb = Convert.ToDouble(splitedLeaveAndNumber[1]);
+                                    double ccc = (bbb / 12) * aaa;
+
+                                    <td class="info" style="">
+                                        <div class="form-group fg-line">
+                                            <input type="text" class="form-control" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@ccc~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@ccc" style="text-align:right;" disabled="disabled" maxlength="3" />
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="info" style="">
+                                        <div class="form-group fg-line">
+                                            <input type="text" disabled="disabled" class="form-control" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@splitedLeaveAndNumber[1]~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@splitedLeaveAndNumber[5]" style="text-align:right;" maxlength="3" />
+                                        </div>
+                                    </td>
+
+                                }
+                            }
+                        }
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td class="active">No data available in table</td></tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+@*</div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveEmployeeBalanceLeave.Initialize();
+    });
+
+</script>

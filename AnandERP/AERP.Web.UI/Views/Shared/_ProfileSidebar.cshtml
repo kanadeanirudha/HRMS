@@ -1,0 +1,310 @@
+﻿<!-- left, vertical navbar -->
+@*<script src="@Url.Content("~/Scripts/AERP_Scripts/General_Script/_Header.js")" type="text/javascript"></script>*@
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Employee/ProfileReportOther.js")" type="text/javascript"></script>
+@*<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>*@
+
+<style>
+    .main-menu {
+        list-style: outside none none;
+        /*margin: 88px 0 0;*/
+        padding-left: 0;
+    }
+    .main-menu-margin-top{
+        margin: 88px 0 0;
+    }
+</style>
+
+@model AERP.ViewModel.EmpEmployeeMasterViewModel
+<section id="main" data-layout="layout-1">
+    <aside id="sidebar" class="sidebar c-overflow">
+        <div>
+            @{ Html.RenderAction("_EmployeePictureDetails", "EmployeeInformation", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+        </div>
+        @*<div class="profile-menu">
+                <a id="sidebarprofile" href="" title="@HttpContext.Current.Session["CurrentEmployeeID"].ToString()">
+
+                    <div>
+                        @{ Html.RenderAction("_EmployeePictureDetails", "EmployeeInformation", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+                    </div>
+
+                    <div class="profile-info" id="EmployeeName">
+                        @HttpContext.Current.Session["EmployeeFullName"].ToString()
+                        <i class="zmdi zmdi-caret-down"></i>
+                    </div>
+                </a>
+
+                <ul class="main-menu">
+
+                    <li>
+                    <a href="/"><i class="zmdi zmdi-home"></i>&nbsp;Home</a>
+                    </li>
+                    <li>
+                        <a class="mfpAjaxModal" href="@Url.Action("_ChangePassword", "EmployeeInformation", new { ID = Convert.ToInt32(HttpContext.Current.Session["UserID"]) })">
+                            <i class="zmdi zmdi-settings"></i>
+                            Change Password
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="zmdi zmdi-time-restore"></i><strong>@Resources.DisplayName_Logout</strong></a>
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "margin: 0px;background-color:#808080; color:#fff;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" id="latitude" value="" />
+                            <input type="hidden" id="longitude" value="" />
+                        }
+                    </li>
+
+
+                </ul>
+            </div>*@
+        @if (HttpContext.Current.Session["UserType"].ToString() == "A" || Convert.ToInt32(HttpContext.Current.Session["Admin Manager"]) > 0)
+        {
+            <div class="col-sm-12">
+                <div class="form-group" id="divEmpSearchList">
+                    <button type="button" id="BtnEmpSearchList" class="btn btn-default btn-block waves-effect">
+                        <i class="zmdi zmdi-search"></i> &nbsp;&nbsp;
+                        search employee
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group fg-line" id="EmployeeSearchList" style="display:none;">
+                    <div class="input-append">
+                        @Html.TextBoxFor(model => model.EmployeeFirstName, new { @class = "form-control typeahead", placeholder = "Search Employee" })
+                    </div>
+                </div>
+            </div>
+
+            <ul class="main-menu main-menu-margin-top">
+
+                <li><a href="@Url.Action("Index", "Home")"><i class="zmdi zmdi-home"></i>&nbsp;@Resources.MainMenu_Home</a></li>
+                <li class="sub-menu toggled">
+                    <a href="#" class="accordion-toggle"><span class="white-icons users"></span>@Resources.DisplayMenu_EmployeeInformation</a>
+
+                    <ul>
+                        <li>@Html.MenuItem(@Resources.DisplayMenu_Personal, "PersonalInformationHome/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeInformation") </li>
+                        @*<li>@Html.MenuItem(@Resources.DisplayMenu_PaperPresentation, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePaperPresent") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_SpecializationResearchArea, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeSpecializationResearchAreaDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_Dependents, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeDependents") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ChildrerenDetails, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeChildrenDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_Consultancy, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeConsultancyMaster") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ProfessionalBodies, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeAssociatesProfessionalBodies") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_CourseSubjectTaught, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeCourseSubjectTaught") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_Prizes, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePrizesWonDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ElectionNomineeBody, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeElectionNomineeBody") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_FinancialAssistance, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeOtherCollegeFinancialAssistanceDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_SpecialLectureDelivered, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeOtherCollegeSpecialLectureDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_PatentReceivedDetails, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePatentReceivedDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ProjectWork, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeProjectWorksMaster") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_PHDGuideDetails, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePHdGuideRecognisationDetails") </li>*@
+                    </ul>
+                </li>
+
+                <input type="hidden" id="personId" value=" @HttpContext.Current.Session["PersonId"] " />
+            </ul>
+        }
+        else
+        {
+            <ul class="main-menu">
+
+                <li><a href="@Url.Action("Index", "Home")"><i class="zmdi zmdi-home"></i>&nbsp;@Resources.MainMenu_Home</a></li>
+                <li class="sub-menu toggled">
+                    <a href="#" class="accordion-toggle"><span class="white-icons users"></span>@Resources.DisplayMenu_EmployeeInformation</a>
+
+                    <ul>
+                        <li>@Html.MenuItem(@Resources.DisplayMenu_Personal, "PersonalInformationHome/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeInformation") </li>
+                        @*<li>@Html.MenuItem(@Resources.DisplayMenu_PaperPresentation, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePaperPresent") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_SpecializationResearchArea, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeSpecializationResearchAreaDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_Dependents, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeDependents") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ChildrerenDetails, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeChildrenDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_Consultancy, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeConsultancyMaster") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ProfessionalBodies, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeAssociatesProfessionalBodies") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_CourseSubjectTaught, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeCourseSubjectTaught") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_Prizes, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePrizesWonDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ElectionNomineeBody, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeElectionNomineeBody") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_FinancialAssistance, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeOtherCollegeFinancialAssistanceDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_SpecialLectureDelivered, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeOtherCollegeSpecialLectureDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_PatentReceivedDetails, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePatentReceivedDetails") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_ProjectWork, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeeProjectWorksMaster") </li>
+                            <li>@Html.MenuItem(@Resources.DisplayMenu_PHDGuideDetails, "Index/" + HttpContext.Current.Session["CurrentEmployeeID"], "EmployeePHdGuideRecognisationDetails") </li>*@
+                    </ul>
+                </li>
+
+                <input type="hidden" id="personId" value=" @HttpContext.Current.Session["PersonId"] " />
+            </ul>
+        }
+
+       
+    </aside>
+
+
+
+
+
+</section>
+
+
+<script src="@Url.Content("~/Content/Theme/js/demo.js")" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+    // var a = 0;
+    ProfileReportOther.Initialize();
+    $(document).ready(function () {
+
+
+        //$(function () {
+
+        //    setNavigation();
+        //});
+
+
+
+        //function setNavigation() {
+
+        //    var href = '';
+        //    var path = window.location.pathname;
+
+        //    $(".main-menu li ul li a").each(function () {
+
+        //        href = $(this).attr("href");
+        //        if (path === href) {
+
+        //            $(this).closest('li ul li a').addClass('active');
+
+        //            $(this).closest("ul").css("display", "block");
+        //        } else {
+        //            //$(this).closest("ul").css("display", "block");
+
+        //            $(this).closest('.main-menu li').removeClass('toggled');
+        //            $(this).closest("ul").css("display", "block");
+        //            //$(".main-menu li").removeClass("toggled");
+        //            //$(this).closest("ul").css("display", "none");
+        //            //alert();
+        //        }
+        //    });
+
+        //}
+
+
+        //GeneralJobProfile.Initialize();
+        //  EmployeeInformation.Initialize();
+        //$('#BtnEmpSearchList').click(function () {
+        //    debugger;
+        //    if (a == 0) {
+        //        $('#EmployeeSearchList').show();
+        //        a = 1;
+        //    }
+        //    else {
+        //        $('#EmployeeSearchList').hide();
+        //        a = 0;
+        //    }
+        //});
+
+        //$("#prof-Id").click(function (evt) {
+        //    //do something
+        //    alert("cl");
+        //});
+
+        //$('#profId').on('click', '.upload-choices', function () {
+        //    alert('ok');
+        //});
+
+        $("#EmployeeFirstName").keyup(function () {
+            //var oTable = $("#myDataTable").dataTable();
+            //oTable.fnFilter(this.value);
+
+
+        });
+
+
+        var a = 0;
+        $("#BtnEmpSearchList").click(function () {
+
+            //alert('here');
+            if (a == 0) {
+
+                $('#EmployeeSearchList').show();
+                $('#EmployeeFirstName').focus();
+
+                a = 1;
+            }
+            else {
+                $('#EmployeeSearchList').hide();
+
+                a = 0;
+            }
+        });
+
+        /////////////new search functionality///////////////////////////////////
+
+        var getData = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+                map = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                //var valuCentreCode = $('#SelectedCentreCode :selected').val();
+                //var valuStudentType = $('#IsCurrentYearStudent').val();
+                $.ajax({
+                    url: "/EmployeeInformation/GetEmployees",
+                    type: "POST",
+                    data: { term: q, maxResults: 10 },
+                    //data: { term: request.term, centreCode: $("#CentreCode").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+
+                        //alert(data);
+
+                        $.each(data, function (i, response) {
+                            //alert(response.id);
+                            if (substrRegex.test(response.name)) {
+                                //EmployeeInformation.map[response.name] = response;
+                                map[response.name] = response;
+                                matches.push(response.name);
+
+                            }
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#EmployeeFirstName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getData()
+        }).on("typeahead:selected", function (obj, item) {
+            //alert(LeaveAttendanceExemption.map[item].id);
+            //$("#EmployeeID").val(EmployeeInformation.map[item].id);
+            //window.location.assign("/EmployeeInformation/PersonalInformationHome/" + EmployeeInformation.map[item].id);
+
+            $("#EmployeeID").val(map[item].id);
+            window.location.assign("/EmployeeInformation/PersonalInformationHome/" + map[item].id);
+
+        });
+        //end new search functionality
+
+
+
+
+
+    });
+</script>
+

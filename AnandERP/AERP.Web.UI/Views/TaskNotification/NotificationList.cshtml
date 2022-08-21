@@ -1,0 +1,133 @@
+﻿@model AERP.ViewModel.TaskNotificationViewModel
+@{
+
+    Layout = null;
+}
+<script src="~/Scripts/AERP_Scripts/General_Script/_Header.js"></script>
+<script src="~/Scripts/AERP_Scripts/General_Script/EmployeeDashboard.js"></script>
+@Html.HiddenFor(m => m.TaskCode)
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Notification</h2>
+        </div>
+        <div class="card-body card-padding">
+            <div>
+                <ul class="tab-nav" id="TaskList">
+                    <li class="active" id="infoNotifications"><a href="#infoNotifications" aria-controls="#infoNotifications" role="tab" data-toggle="tab">Notifications</a></li>
+                    @foreach (var item in Model.TaskCodeList)
+                    {
+                        @*if (Model.TaskCodeList[0].TaskCode == item.TaskCode)
+                            {
+                                <li class="active" id="@item.TaskCode">
+                                    <a href="#@item.TaskCode" aria-controls="#@item.TaskCode" role="tab" data-toggle="tab">@item.Description</a>
+                                </li>
+                            }
+                            else
+                            {*@
+                        <li class="" id="@item.TaskCode"><a href="#@item.TaskCode" aria-controls="#@item.TaskCode" role="tab" data-toggle="tab">@item.TaskDescription</a></li>
+                            @*}*@
+                    }
+                    @*@if (Model.TaskCodeList.Count > 0)
+                        {*@
+                    <li class="" id="RequestsTab"><a href="#RequestsTab" aria-controls="#RequestsTab" role="tab" data-toggle="tab">Requests Approval</a></li>
+                    @*}
+                        else
+                        {
+                            <li class="active" id="RequestsTab"><a href="#RequestsTab" aria-controls="#RequestsTab" role="tab" data-toggle="tab">Requests Approval</a></li>
+                        }*@
+
+                </ul>
+
+                <div class="tab-content">
+                    @*<div id="infoNotifications" class="tab-pane active">
+                        @Html.Partial("InformativeNotifications")
+                    </div>*@
+                    @foreach (var item1 in Model.TaskCodeList)
+                    {
+                      
+                        <div id="@item1.TaskCode" class="tab-pane">
+                            @if (item1.TaskCode == "LA")
+                            {
+                                @Html.Partial("PendingLeaveRequestV2", Model)
+                            }
+                            else if (item1.TaskCode == "PR")
+                            {
+                                @Html.Partial("PurchaseRequirementPendingRequest");
+                            }
+                            else if (item1.TaskCode == "PO")
+                            {
+                                @Html.Partial("PurchaseOrderPendingRequest")
+                            }
+                            else if (item1.TaskCode == "SO")
+                            {
+                                @Html.Partial("SalesOrderPendingRequest")
+                            }
+                           
+                        </div>
+                            @*}*@
+                    }
+                   
+                    @*<div id="RequestsTab" class="tab-pane">
+                        @Html.Partial("GeneralRequest")
+                    </div>*@
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeDashboard.Initialize();
+
+        if ($('#ModuleCountFlag').val() == '0') {
+            $.ajax(
+               {
+                   cache: false,
+                   type: "GET",
+                   dataType: "html",
+                   data: { "LogoutType": 'Successfully', "Command": '' },
+                   url: 'Account/LogOff',
+                   success: function (result) {
+                       debugger;
+                       // Menus are not assigned to role,please contact administrator
+                       location.reload(true);
+                   }
+               });
+        }
+
+        $('.dashboard-wid-content').click(function () {
+            debugger;
+            //var ModuleID = $(this).attr('id');
+            var ModuleCode = $(this).attr('id');
+            var ModuleName = $(this).text().trim();
+            $.ajax(
+                {
+                    cache: false,
+                    type: "GET",
+                    dataType: "html",
+                    url: 'Base/CheckSessionStatus',
+                    success: function (result) {
+                        sessionStatus = result;
+                        if (sessionStatus == "1") {
+                            // _HeaderV2.LoadMenuListByModuleID(ModuleID, ModuleName);
+                            _HeaderV2.LoadMenuListByModuleCode(ModuleCode, ModuleName);
+
+                        }
+                        else if (sessionStatus != "1") {
+                            location.reload();
+                        }
+
+                    }
+                });
+        });
+    });
+</script>
+
+

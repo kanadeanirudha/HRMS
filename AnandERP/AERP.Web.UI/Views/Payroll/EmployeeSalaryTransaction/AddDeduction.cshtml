@@ -1,0 +1,49 @@
+﻿@model AERP.ViewModel.EmployeeSalaryTransactionViewModel
+<style>
+    .form-control {
+        height: inherit;
+    }
+</style>
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Add Deduction</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                @Html.HiddenFor(m => m.EmployeeMasterID)
+                @Html.HiddenFor(m => m.EmployeeSalaryRulesID)
+                @Html.HiddenFor(m => m.CreatedBy)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group select fg-line">
+                            @Html.LabelFor(model => model.HeadName, new { })
+                            @Html.DropDownListFor(model => model.HeadName, (SelectList)ViewBag.SaleContractSalaryTransactionDeductionList, "--Select Deduction--", new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.HeadName)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-2" style="float:right;">
+                        <div class="form-group fg-line">
+                            <button type="button" class="btn btn-primary m-t-20" id="CreateSaleContractSalaryDeduction">@Resources.ButtonAction_Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeSalaryTransaction.Initialize();
+    });
+</script>

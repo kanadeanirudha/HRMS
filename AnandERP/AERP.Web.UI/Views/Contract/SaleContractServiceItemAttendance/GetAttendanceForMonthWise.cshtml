@@ -1,0 +1,94 @@
+﻿@model AERP.ViewModel.SaleContractServiceItemAttendanceViewModel
+
+<div class="col-sm-12">
+    <div class="col-sm-6">
+        <div class="select form-group fg-line">
+            <label>Total Days</label>
+            <input type="text" class="form-control input-sm" id="RandomDays" value="0" />
+        </div>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblAttendanceData" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Service Item</th>
+                <th>Total Days</th>
+                <th>Present Days</th>
+            </tr>
+        </thead>
+        @if (Model.ListSaleContractServiceItemAttendance.Count > 0)
+        {
+            decimal TotalDaysSum = 0; decimal TotalAttendanceSum = 0;
+            <tbody>
+
+                @foreach (var item in Model.ListSaleContractServiceItemAttendance)
+                {
+                    TotalDaysSum = TotalDaysSum + item.TotalDays;
+                    TotalAttendanceSum = TotalAttendanceSum + item.TotalAttendance;
+                    <tr>
+                        <td>
+                            <input type="hidden" value="@item.ItemNumber">
+                            <input type="hidden" value="@item.SaleContractServiceItemAttendanceID">
+                            @*<input type="hidden" value="@item.SaleContractEmployeeMasterID">*@
+                            <span class="SaleContractEmployeeMasterName">@item.ServiceItemName</span>
+                        </td>
+                        <td>
+                            <span class="OriTotalDays hidden">@item.TotalDays</span>
+                            <input type="text" class="form-control input-sm TotalDays" value="@item.TotalDays" disabled>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm TotalAttendance" value="@item.TotalAttendance">
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th><span>@TotalDaysSum</span></th>
+                    <th><span id="TotalAttendanceSum">@TotalAttendanceSum</span></th>
+                </tr>
+            </tfoot>
+        }
+    </table>
+</div>
+<div class="col-sm-12">
+    <div class="form-group fg-line">
+        <button type="button" class="btn btn-primary m-t-20" id="SaveSaleContractServiceItemAttendance">@Resources.ButtonAction_Save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractServiceItemAttendance.Initialize();
+
+        $(".TotalAttendance").keyup(function () {
+            var TotalAttendanceSum = 0.0;
+            $(".TotalAttendance").each(function () {
+                TotalAttendanceSum = (parseFloat(TotalAttendanceSum) + parseFloat($(this).val())).toFixed(2);
+            });
+            $("#TotalAttendanceSum").text(TotalAttendanceSum);
+        });
+
+        $("#RandomDays").keyup(function () {
+            var randomDays = $(this).val();
+
+            $(".TotalDays").each(function () {
+                if (parseInt(randomDays) > 0) {
+                    $(this).val(randomDays);
+                } else {
+                    $(this).val($(this).prev(".OriTotalDays").text());
+                }
+            });
+        });
+
+        $("#RandomDays").blur(function () {
+            if (parseInt($(this).val()) <= 0 || $(this).val() == '') {
+                $(this).val(0);
+                $("#RandomDays").keyup();
+            }
+        });
+    });
+</script>

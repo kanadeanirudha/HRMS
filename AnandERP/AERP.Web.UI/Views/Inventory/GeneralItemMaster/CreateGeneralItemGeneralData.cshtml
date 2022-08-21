@@ -1,0 +1,216 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<div id="custom-content">
+    @Html.HiddenFor(model => model.GeneralItemMasterID)
+    @Html.HiddenFor(model => model.GeneralItemGeneralDataID)
+  
+    <input type="hidden" id="TaskCode" value="GeneralItemGeneralData" />
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralItemMaster" role="form" class="row">
+                <div class="col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ManufacturerID, new { })
+                        @Html.TextBoxFor(model => model.ManufacturerID, new { @class = "form-control input-sm typeahead", Value = "", maxLength = "10" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ManufacturerID)
+                </div>
+                <div class="col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ShippingTypeId, new { })
+                        @Html.TextBoxFor(model => model.ShippingTypeId, new { @class = "form-control input-sm typeahead", Value = "", maxLength = "10" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ShippingTypeId)
+                </div>
+                
+              
+                @*<div class="col-sm-6" style="display:none">
+                    <div class="form-group select fg-line">
+                        @Html.LabelFor(model => model.ManagementMethod, new { })
+                        @Html.DropDownList("ManagementMethod", ViewData["ManagementMethod"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "ManagementMethod*" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ValuationMethod)
+                </div>*@
+                <div class="col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.IssueMethod, new { })
+                        @Html.TextBoxFor(model => model.IssueMethod, new { @class = "form-control input-sm", maxLength = "10" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.IssueMethod)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group select fg-line"><span style="color:red">*</span>
+                        @Html.LabelFor(model => model.ItemCategoryCode, new { })
+                        @Html.DropDownListFor(model => model.ItemCategoryCode, (SelectList)ViewBag.GeneralItemCategoryMasterList, "--Select Item Category--", new { @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemCategoryCode)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group select fg-line"><span style="color:red">*</span>
+                        @Html.LabelFor(model => model.Temprature, new { })
+                        @*@Html.DropDownList("Temprature", ViewData["Temprature"] as List<SelectListItem>, "--Select Temperature--", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Temprature*" })*@
+                        @Html.DropDownListFor(model => model.Temprature, (SelectList)ViewBag.GeneralTemperatureMasterMasterList, "--Select Temperature--", new { @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Temprature)
+                </div>
+                @*<div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TempratureFrom, new { })
+                        @Html.TextBoxFor(model => model.TempratureFrom, new { @class = "form-control input-sm", maxLength = "5" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.TempratureFrom)
+                </div>*@
+                @*<div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TempratureUpto, new { })
+                        @Html.TextBoxFor(model => model.TempratureUpto, new { @class = "form-control input-sm", maxLength = "5" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.TempratureUpto)
+                </div>*@
+                <div class="col-sm-6">
+                    <div class="form-group select fg-line"><span style="color:red">*</span>
+                       @Html.LabelFor(model => model.GenTaxGroupMasterID, new { })
+                        @Html.DropDownListFor(model => model.GenTaxGroupMasterID, (SelectList)ViewBag.GeneralTaxGroupMasterList, "-----Select Tax Group-----", new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GenTaxGroupMasterID)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group select fg-line"><span style="color:red">*</span>
+                        @Html.LabelFor(model => model.SerialAndBatchManagedBy, new { })
+                        @Html.DropDownList("SerialAndBatchManagedBy", ViewData["SerialAndBatchManagedBy"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "SerialAndBatchManagedBy*" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SerialAndBatchManagedBy)
+                </div>
+                @*<div class="form-group col-sm-12">
+                        <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemMasterRecord" type="button" />
+                    </div>*@
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.NetContentPerPiece, new { })
+                       @Html.TextBoxFor(model => model.NetContentPerPiece, new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.NetContentPerPiece)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.NetWeightPerPiece, new { })
+                        @Html.TextBoxFor(model => model.NetWeightPerPiece, new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.NetWeightPerPiece)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group select fg-line">
+                        @Html.LabelFor(model => model.NetContentUOM, new { })
+                        @*@Html.TextBoxFor(model => model.NetContentUOM, new { @class = "form-control input-sm" })*@
+                        @Html.DropDownListFor(model => model.NetContentUOM, (SelectList)ViewBag.InventoryUoMMasterForUomCodeList, "-----Select Uom Code-----", new { @class = "form-control input-sm" })
+                        
+                    </div>
+                    @Html.ValidationMessageFor(model => model.NetContentUOM)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.SpecialFeature, new { })
+                        @Html.TextBoxFor(model => model.SpecialFeature, new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SpecialFeature)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.ShortDescription, new { })
+                        @Html.TextBoxFor(model => model.ShortDescription, new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ShortDescription)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.ArabicTransalation, new { })
+                        @Html.TextBoxFor(model => model.ArabicTransalation, new { @class = "form-control input-sm",style="font-size:large" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ArabicTransalation)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.BrandName, new { })
+                        @Html.DropDownListFor(model => model.BrandName, (SelectList)ViewBag.GeneralItemBrandName, "--Select Brand--", new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.BrandName)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line"><span style="color:red">*</span>
+                        @Html.LabelFor(model => model.HSNCode, new { })
+                        @Html.TextBoxFor(model => model.HSNCode, new { @class = "form-control input-sm typeahead", maxLength = "40" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.HSNCode)
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //  GeneralItemMaster.Initialize();
+        $('#ItemCategoryCode').change(function () {
+            debugger;
+
+            var ItemCategoryCode = $("#ItemCategoryCode").val();
+
+
+
+            if (ItemCategoryCode != "") {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    dataType: "json",
+                    data: { "ItemCategoryCode": ItemCategoryCode },
+                    url: '/GeneralItemCategoryMaster/GetGeneralItemByCategoryCode',
+                    success: function (data) {
+
+                        if (data.IsConsumable == true) {
+                            $("#IsConsumable").prop("checked", true);
+                        }
+                        else {
+                            $("#IsConsumable").prop("checked", false);
+                        }
+                        if (data.IsMachine == true) {
+                            $("#IsMachine").prop("checked", true);
+                        }
+                        else {
+                            $("#IsMachine").prop("checked", false);
+                        }
+                        if (data.IsToner == true) {
+                            $("#IsToner").prop("checked", true);
+                            $("#IsToner").parent().parent("div").show();
+                        }
+                        else {
+                            $("#IsToner").prop("checked", false);
+                            $("#IsToner").parent().parent("div").hide();
+                        }
+
+                    }
+                });
+            }
+        });
+    });
+</script>
+

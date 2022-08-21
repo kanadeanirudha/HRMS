@@ -1,0 +1,122 @@
+﻿
+@model AERP.ViewModel.TaskNotificationViewModel
+
+<input type="hidden" id="hiddenTaskCode" value="PR" />
+<div class="card">
+
+    <table id="MyDataTablePendingRequest-PR" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th style="text-align: left">Purchase Requirement Number</th>
+                <th style="text-align: center">Trans Date</th>
+                <th style="text-align: center" class="">Status</th>
+                <th class="center" style="text-align: center">@Resources.DisplayName_Actions</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //PRPendingRequest.Initialize();
+        //PRPendingRequest.CheckedAll();
+        var isReloadedFromCookies;
+
+        var oTable = $('#MyDataTablePendingRequest-PR').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "TaskNotification/AjaxHandlerMyDataTablePurchaseRequirementRequest",
+            "bJQueryUI": true,
+            "bProcessing": true,
+            "bAutoWidth": true,
+            "iDisplayLength": 50,
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "TaskCode", "value": "PR" });
+            },
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "columnDefs": [
+                             {
+                                 "targets": 0,
+                                 "visible": false,
+                             },
+                             {
+                                 "targets": 1,
+                                 "bSortable": false,
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     var result = "<p  style='text-align: left; height:5px;'>" + data[18] + "</p>";
+                                     return result;
+                                 }
+                             },
+                             {
+                                 "targets": 2,
+                                 "bSortable": false,
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     var result = "<p  style='text-align: center; height:5px;'>" + data[19] + "</p>";
+                                     return result;
+                                 }
+                             },
+                             {
+                                 "targets": 3,
+                                 "bSortable": false,
+                                 "orderable": false,
+
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     var chkStatus = '';
+                                     var result = '';
+                                     if (data[1] == "1") {
+                                         chkStatus = '@Resources.Displaychkstatus_Pending';
+                                         result = "<button class='btn bgm-orange btn-xs'>" + chkStatus + "</button>";
+                                     }
+                                     else if (data[1] == "2") {
+                                         chkStatus = 'Approved';
+                                         result = "<button class='btn bgm-green btn-xs'>" + chkStatus + "</button>";
+                                     }
+                                     else if (data[1] == "3") {
+                                         chkStatus = 'Rejected';
+                                         result = "<button class='btn bgm-red btn-xs'>" + chkStatus + "</button>";
+                                     }
+                                     var resultout = "<p  style=' height:5px;text-align: center;'>" + result + "</p>";
+
+                                     return resultout;
+                                 }
+                             },
+                             {
+                                 "targets": 4,
+                                 "bSortable": false,
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+
+                                     var TaskCode = 'PR';
+
+                                     var result1 = '<a href="#" class="mfpAjaxModal btn btn-default waves-effect"><i class="zmdi zmdi-file"></i></a>';
+                                     result1 = result1.replace("#", data[2] + "&TNDID=" + data[3] + "&TNMID=" + data[4] + "&GTRDID1=" + data[5] + "&TaskCode=" + TaskCode + "&StageSequenceNumber=" + data[6] + "&IsLast=" + data[7]);
+                                     result1 = result1.replace('PurchaseRequirementRequestApproval', 'PurchaseRequirementRequestApproval');
+                                     var result2 = '<a href="javascript:void(0)" class="btn btn-default waves-effect"><i class="zmdi zmdi-lock" title="Application Is Taken By Another Approver"></i></a>';
+
+                                     if (data[9] == 'True') {
+                                         if (data[10] == 'True') {
+                                             var result = "<p style='text-align: center; height:5px;'>" + result1 + "</p>";
+                                         }
+                                         else {
+                                             var result = "<p style='text-align: center; height:5px;'>" + result2 + "</p>";
+                                         }
+                                     }
+                                     else {
+                                         var result = "<p style='text-align: center; height:5px;'>" + result1 + "</p>";
+                                     }
+                                     return result;
+                                 }
+                             }
+            ]
+        });
+
+        DataTableSettings(oTable, "MyDataTablePendingRequest-PR", "toggleTableColumn");
+    });
+</script>

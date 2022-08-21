@@ -1,0 +1,217 @@
+﻿@model AERP.ViewModel.EmployeeExperienceViewModel
+@{
+    Layout = null;
+}
+
+@*/////////////We use Employee Personal Details table for managing CONTACT details so here EmployeePersonalDetailsViewModel is used////////////////////*@
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Employee/EmployeeExperience.js")" type="text/javascript"></script>
+<script src="~/Scripts/fnGetColumnData.js"></script>
+
+<form id="FormEditEmployeeExperienceDetails" method="post" class="">
+    @Html.HiddenFor(model => model.EmployeeID)
+    @*<div class="container">*@
+
+
+    @*<div class="card">*@
+    <div class="card-header">
+        <div id="">
+            <ul class="actions">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown" title="Add New">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a class="mfpAjaxModal" href="@Url.Action("EmployeeExperienceCreate", "EmployeeExperience", new { EmployeeID = @Model.EmployeeID })">
+                                <i class="zmdi zmdi-plus-square"></i> &nbsp; @Resources.DisplayName_AddNew
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                    </div>
+                </div>
+                <div class="actions btn-group">
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumnExperience" class="dropdown-menu pull-right">
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Organisation Name">
+                                        Organisation Name<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="Designation">
+                                        Designation<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Experience Type">
+                                        Experience Type<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="Experience In Month">
+                                        Experience In Month<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="4" name="Status">
+                                        Job Status<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="5" name="Action">
+                                        @Resources.TableHeaders_Action<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTableEmployeeExperienceDetails" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>Organisation Name</th>
+                <th>Designation</th>
+                <th>Experience Type</th>
+                <th>Experience In Month</th>
+                <th>Job Status</th>
+                <th>@Resources.TableHeaders_Action</th>
+                <th style="display:none">EmployeeID</th>
+
+            </tr>
+        </thead>
+    </table>
+
+    @*</div>*@
+    @*</div>*@
+</form>
+
+<script type="text/javascript">
+    var oTable;
+    $(document).ready(function () {
+
+        //debugger;
+        oTable = $('#myDataTableEmployeeExperienceDetails').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/EmployeeExperience/AjaxHandlerEmployeeExperience",
+            "bProcessing": true,
+            "scrollY": "300x",
+            "dom": "frtiS",
+            "deferRender": true,
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "EmployeeID", "value": $('input[name=EmployeeID]').val() });
+
+            },
+            "columnDefs": [
+                             {
+                                 "targets": 0,
+                                 "bSearchable": true,
+                             },
+                             {
+                                 "targets": 1,
+                                 "bSearchable": true,
+                             },
+                             {
+                                 "targets": 2,
+                                 "bSearchable": true,
+                             },
+                             {
+                                 "targets": 3,
+                                 "bSearchable": true,
+                             },
+                             {
+                                  "targets": 4,
+                                  "bSearchable": true,
+                              },
+                            {
+                                "targets": 5,
+                                "bSortable": false,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+
+                                        var result1 = '@Html.ActionLink("Edit1", "EmployeeExperienceEdit", new { ID = '1' }, new { @class = "mfpAjaxModal" })';
+                                        result1 = result1.replace('1', data[5]);
+                                        //result1 = result1.replace("Edit1", '<i class="icon-edit" title="@Resources.ToolTip_Edit"></i>');
+                                        result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_Edit" class="btn btn-default"><i class="zmdi zmdi-edit"></i></button>');
+
+                                    var result = "<p  style=''>" + result1 + "</p>";
+                                    return result;
+
+                                }
+
+                            },
+                             {
+                                 "targets": 6,
+                                 "visible": false,
+                             },
+            ],
+            "order": [[0, 'asc']],
+
+        });
+        DataTableSettings(oTable, "myDataTableEmployeeExperienceDetails", "toggleTableColumnExperience");
+        EmployeeExperience.Initialize();
+    });
+
+
+</script>

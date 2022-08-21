@@ -1,0 +1,385 @@
+﻿@*
+    @model AMS.ViewModel.PurchaseRequirementMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("CreateExcel", "PurchaseRequirementMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Purchase/PurchaseRequirementMaster.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+
+<style>
+    .ui-front {
+        z-index: 9999;
+    }
+
+    .ui-datepicker {
+        font-size: 9pt !important;
+    }
+</style>
+
+
+
+<div class="container-fluid" id="DivVoucherView">
+   @Html.HiddenFor(m => m.errorMessage, new { id = "ErrorMsg" })
+    <div class="widget-block">
+        <div class="widget-head">
+            <div class="pull-left">
+                <h5 id="hFive"><i class="black-icons users"></i>&nbsp; Create Purchase Requirement</h5>
+            </div>
+            <div class="pull-right">
+                <div class="input-append" style="float: right;">
+                    <div class="widget-control pull-right">
+                        <a href="#" id="IconShowList" data-toggle="dropdown" class="btn dropdown-toggle" title="Purchase Requirement List"><i class="color-icons application_view_list_co"></i></a>
+                        <a href="~/PurchaseRequirementMaster" id="IconShowPurchaseRequirement" style="display: none" class="btn dropdown-toggle" title="Create Purchase Requirement"><i class="icon-plus-sign"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content" id="divContent">
+            <div class="widget-box">
+                <div id="msgDiv" style="display:none;color:#000" class="alert span8"></div>
+                <form id="FormCreatePurchaseRequirementMaster" class="form-horizontal well">
+                    <fieldset>
+                        <div class="row">
+                            <div class="span11">
+                            </div>
+                        </div>
+                        <div class="widget-box">
+
+                            <ul class="breadcrumb">
+                                @Html.HiddenFor(model => model.PolicyDefaultAnswerForExcel)
+                                @Html.HiddenFor(model => model.SelectedDepartmentIDs)
+                                
+                                <li>
+                                    <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                                    <span style="font-size: 12px; font-weight: bold;"> Date&nbsp; &nbsp;&nbsp;</span>
+                                    @Html.TextBoxFor(model => model.TransDate, new { Value = "" + DateTime.Now.ToString("dd MMM yyyy") + "", Readonly = "True", style = "font-weight: bold; width:120px;" })
+
+                                </li>
+                                <li>
+                                    <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                                    <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_CentreName &nbsp; &nbsp;&nbsp;</span>
+                                    @Html.DropDownListFor(m => m.SelectedCentreCode, Model.ListGetAdminRoleApplicableCentreItems, Resources.ddlHeaders_CentreName, new { @class = "form-control chosen-select", style = "font-weight:bold;width:175px;" })
+
+                                </li>
+
+                                <li>
+                                    &nbsp; &nbsp;
+                                    <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_Department&nbsp;: &nbsp;&nbsp;</span>
+                                    @Html.DropDownListFor(m => m.SelectedDepartmentID, Model.ListGetOrganisationDepartmentCentreAndRoleWiseItems, "--Select Department--", new { @class = "form-control chosen-select", style = "font-weight:bold;width:175px;" })
+                                </li>
+                            </ul>
+
+                        </div>
+
+
+                        <hr />
+                       
+
+                            <div class="row">
+                                <div class="span10">
+                                    <div class="row control-group">
+                                        <div class="span">&nbsp;</div>
+                                        <div id="divAttachedDocument" class="spanFullName span2" style="float:left">
+                                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                            @Html.LabelFor(model => model.UploadExcelID, new { style = "font-Weight:Bold; " })
+                                        </div>
+                                        <div class="span3">
+                                            @Html.FileFor(model => model.MyFile)
+                                            <br />
+                                            @Html.ValidationMessageFor(model => model.UploadExcelID)
+
+                                        </div>
+                                        <div class="spanFullName span2">
+                                            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                                            <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                                            <span style="font-size: 12px; font-weight: bold;">Download Excel &nbsp; &nbsp;&nbsp;</span>
+                                        </div>
+                                        <div class="span2">
+                                            <a href=" @Url.Action("Download", "PurchaseRequirementMaster") ">
+                                                <i class=" color-icons doc_excel_table_co" style="margin-top: 0px;" title="Download Data Sheet"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions" style="border: 1px solid #e5e5e5; text-align: right;display:none" id="CreatePurchaseByExcel" >
+                                <input type="submit" id="CreatePurchaseRequirementMasterRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+                            </div>
+                        <div class="row" style="display:none" id="purchaseList">
+                            <div class="span11">
+
+                                <div id="DivAddRowTable" style="height: 200px; overflow: auto">
+                                    <table id="tblData" class="table user-tbl " style="  border: 1px solid #dddddd">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: left; width: 30%">item</th>
+                                                <th style="text-align: left; width: 16%">Quantity</th>
+                                                <th style="text-align: left; width: 13%">Rate</th>
+                                                <th style="text-align: left; width: 16%">Expected Date</th>
+                                                <th style="text-align: left; width: 13%">Priority</th>
+                                                <th style="text-align: left; width: 15%">Location</th>
+                                                <th style="text-align: left; width: 13%">Remark</th>
+                                                <th style="text-align: center; width: 5px;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="overflow: auto">
+
+                                            @foreach (var item in Model.InventoryPurchaseRequirementList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName<input type="text" style="display:none" value="@item.ItemID"></td>
+                                                    @if (item.ApprovedStatus == 2)
+                                                    {
+                                                        <td><input type="text" id="Quantity" value="@item.Quantity" style="text-align:right; width: 60px; height: 15px;" /></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><input type="text" id="Quantity" disabled="disabled" value="@item.Quantity" style="text-align:right; width: 60px; height: 15px; " /></td>
+                                                    }
+                                                    <td>@item.Rate<input type="text" style="display:none" value="@item.Rate"></td>
+                                                    <td>@item.ExpectedDate<input type="text" style="display:none" value="@item.ExpectedDate"></td>
+                                                    
+                                                    @if (item.PriorityFlag == 1)
+                                                    {
+                                                        <td>High<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                    }
+                                                    else if (item.PriorityFlag == 2)
+                                                    {
+                                                        <td>Medium<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>Low<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                    }
+                                                    <td><input type="text" style="display:none" value="@item.StorageLocationID">@item.LocationName</td>
+                                                    <td>@item.Remark<input type="text" style="display:none" value="@item.Remark"></td>
+                                                    <td style='text-align:center; '><i class='icon-trash' style='cursor:pointer;' title=Delete></i></td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        PurchaseRequirementMaster.Initialize();
+        if ($('#ErrorMsg').val() != "NoMessage") {
+            var splitedMsg = ($('#ErrorMsg').val()).split(',');
+            $('#SuccessMessage').html(splitedMsg[0]);
+            $('#SuccessMessage').delay(400).slideDown(400).delay(2000).slideUp(400).css('background-color', splitedMsg[1]);
+        }
+      
+    });
+</script>
+    *@
+
+
+@model AMS.ViewModel.PurchaseRequirementMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+
+<div class="container" id="DivVoucherView">
+    @using (Html.BeginForm("CreateExcel", "PurchaseRequirementMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <script src="@Url.Content("~/Scripts/AMS_Scripts/Purchase/PurchaseRequirementMaster.js")" type="text/javascript"></script>
+        <link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+        <script src="@Url.Content("~/Content/materialtheme/vendors/fileinput/fileinput.min.js")" type="text/javascript"></script>
+
+
+
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Create Purchase Requirement</h2>
+        </div>
+        @Html.HiddenFor(m => m.errorMessage, new { id = "ErrorMsg" })
+        <div class="card" style="margin-bottom: 0px;">
+
+            <div class="lv-header-alt clearfix">
+                <ul class="lv-actions actions">
+                    <li>
+                        <button id="IconShowList" class="btn bgm-lightblue waves-effect" type="button" title="Purchase Requirement List"><i class="zmdi zmdi-view-headline zmdi-hc-fw"></i></button>
+                        @*<a href="~/PurchaseRequirementMaster" id="IconShowPurchaseRequirement" style="display: none" class="btn bgm-lightblue" title="Create Purchase Requirement"><i class="zmdi zmdi-plus"></i></a>*@
+                        <a href="~/PurchaseRequirementMaster" id="IconShowPurchaseRequirement" style="display: none; width:40px; height:32px;" class="btn bgm-lightblue waves-effect" title="Create Purchase Requirement"><i class="zmdi zmdi-plus" style="align-self:center"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="" id="divContent">
+                <form id="FormCreatePurchaseRequirementMaster">
+                    @Html.HiddenFor(model => model.PolicyDefaultAnswerForExcel)
+                    @Html.HiddenFor(model => model.SelectedDepartmentIDs)
+                    <div class="card-body card-padding">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line dtp-container">
+                                        @Html.TextBoxFor(model => model.TransDate, new { Value = "" + DateTime.UtcNow.ToString("dd MMM yyyy") + "", Readonly = "True", @class = "form-control", style = "background-color:#fff", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Date" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line select">
+                                        @Html.DropDownListFor(m => m.SelectedCentreCode, Model.ListGetAdminRoleApplicableCentreItems, Resources.ddlHeaders_CentreName, new { @class = "form-control", style = "", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Center Name" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line select">
+                                        @Html.DropDownListFor(m => m.SelectedDepartmentID, Model.ListGetOrganisationDepartmentCentreAndRoleWiseItems, "--Select Department--", new { @class = "form-control", style = "", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Department" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr /> <br />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="divAttachedDocument" class="col-sm-3" style="float:left">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    @Html.LabelFor(model => model.UploadExcelID, new { style = "font-Weight:Bold; " })
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput" style="padding-top: 11px;">
+                                        <span class="btn btn-primary btn-file m-r-10">
+                                            <span class="fileinput-new">Select file</span>
+                                            <span class="fileinput-exists" style="padding-top: 2px;">Choose File</span>
+                                            @Html.FileFor(model => model.MyFile)
+                                        </span>
+                                        <span class="fileinput-filename"></span>
+                                        <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="top:18px;">&times;</a>
+                                    </div>
+                                    @*@Html.FileFor(model => model.MyFile)*@
+                                   
+                                    @Html.ValidationMessageFor(model => model.UploadExcelID)
+
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <a href="@Url.Action("Download", "PurchaseRequirementMaster")"><i class="zmdi zmdi-file zmdi-hc-fw" style="width:50px;height:55px;" title="Download Data Sheet"></i></a>
+                                    <span style="font-size: 12px; font-weight: bold;">Download Excel</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="display:none" id="CreatePurchaseByExcel">
+                            <button type="submit" id="CreatePurchaseRequirementMasterRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        </div>
+
+                        <div class="row" style="display:none" id="purchaseList">
+                            <div id="DivAddRowTable">
+                                <div class="card-body table-responsive">
+                                    <table id="tblData" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>item</th>
+                                                <th>Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Rate</th>
+                                                <th>Expected Date</th>
+                                                <th>Priority</th>
+                                                <th>Location</th>
+                                                <th>Remark</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.InventoryPurchaseRequirementList)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName<input type="text" style="display:none" value="@item.ItemID"></td>
+                                                    @if (item.ApprovedStatus == 2)
+                                                    {
+                                                        <td><input type="text" id="Quantity" value="@Math.Round(item.Quantity,3)" style="text-align:right; width: 60px; height: 15px;" /></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><input type="text" id="Quantity" disabled="disabled" value="@Math.Round(item.Quantity,3)" style="text-align:right; width: 60px; height: 15px; " /></td>
+                                                    }
+                                                    <td>@item.Rate<input type="text" style="display:none" value="@Math.Round(item.Rate,2)"></td>
+                                                    <td>@item.ExpectedDate<input type="text" style="display:none" value="@item.ExpectedDate"></td>
+
+                                                    @if (item.PriorityFlag == 1)
+                                                    {
+                                                        <td>High<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                    }
+                                                    else if (item.PriorityFlag == 2)
+                                                    {
+                                                        <td>Medium<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>Low<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                    }
+                                                    <td><input type="text" style="display:none" value="@item.StorageLocationID">@item.LocationName</td>
+                                                    <td>@item.Remark<input type="text" style="display:none" value="@item.Remark"></td>
+                                                    <td style='text-align:center; '><i class='icon-trash' style='cursor:pointer;' title=Delete></i></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr /><br />
+
+                        @*<div class="row">
+                                <div class="col-sm-12" style="display:none;" id="CreatePurchaseByExcel">
+                                    <button type="button" id="CreatePurchaseRequirementMasterRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>*@
+
+
+
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+
+    }
+</div>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        PurchaseRequirementMaster.Initialize();
+        if ($('#ErrorMsg').val() != "NoMessage") {
+            var splitedMsg = ($('#ErrorMsg').val()).split(',');
+            //$('#SuccessMessage').html(splitedMsg[0]);
+            //$('#SuccessMessage').delay(400).slideDown(400).delay(2000).slideUp(400).css('background-color', splitedMsg[1]);
+            notify(splitedMsg[0], "danger");
+
+        }
+
+    });
+</script>
+

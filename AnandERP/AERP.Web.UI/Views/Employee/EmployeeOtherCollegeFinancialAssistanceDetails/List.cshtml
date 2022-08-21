@@ -1,0 +1,354 @@
+﻿@*@model AMS.ViewModel.EmployeeOtherCollegeFinancialAssistanceDetailsViewModel
+<style type="text/css">
+    .ui-widget-header {
+        color: #333;
+        font-weight: bold;
+    }
+</style>
+
+ @{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+<div class="container-fluid" >
+  
+      @Html.HiddenFor(model => model.EmployeeID)   
+    <div class="row-fluid">
+        <div class="span12">
+             
+            <div class="widget-block">
+                 <div style="display:none"> @Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+                
+                <div class="widget-head">
+                    <h5 id="hFive"><i class="black-icons users"></i> &nbsp;@Resources.Manage_OtherCollegeFinancialDetails </h5>
+                    <div class="pull-right" style="margin: -24px 60px 0px 10px;">
+                        <div class="input-append" id="" style="float: right;">
+                            <div style="display: none;">
+                                <input type="hidden" name="_method" value="POST">
+                            </div>
+                            <div>
+                                <select name="data[User][searchby]" class="" id="showrecord" tabindex="16" style="float: left;">
+                                    <option value="10">@Resources.GlobalProperties_ShowRecords</option>
+                                   <option value="10">@Resources.GlobalProperties_10</option>
+                                    <option value="50">@Resources.GlobalProperties_50</option>
+                                    <option value="100">@Resources.GlobalProperties_100</option>
+
+                                </select>
+                                &nbsp;&nbsp;
+                                <input type="text" name="data[User][search]" class="search_query input-medium" placeholder="@Resources.GlobalProperties_Search..." size="16" autocomplete="off" id="UserSearch">
+                                <button class="btn" type="button" id="searchBtn"><i class="icon-search"></i></button>
+                            </div>
+
+                            <div class="widget-control pull-right">
+                                <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-plus"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="ajax cboxElement" href="@Url.Action("Create", "EmployeeOtherCollegeFinancialAssistanceDetails", new { Id= Model.EmployeeID})"> <h6 style="color:#000;"><i class="icon-plus" style="padding-left:7px;"></i>@Resources.DisplayName_AddNew</h6></a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box">
+                        <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                            <div class="table_content">
+                                <table id="myDataTable" class="table table-striped table-bordered ">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:center">@Resources.TableHeaders_FundingAgency</th>
+                                             <th style="text-align:center">@Resources.TableHeaders_DateOfGrantReceived</th>
+                                            <th style="text-align:center">@Resources.TableHeaders_AmountOfGrant</th>
+                                             <th style="text-align:center">@Resources.TableHeaders_PurposeOfGrant</th>
+                                            <th style="text-align: center; width: 30px; line-height: 40px">@Resources.TableHeaders_Action</th>
+
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="widget-bottom">
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeOtherCollegeFinancialAssistanceDetails.Initialize();
+        var isReloadedFromCookies;
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/EmployeeOtherCollegeFinancialAssistanceDetails/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "EmployeeID", "value": $('#EmployeeID').val() });
+              
+
+            },
+            "columnDefs": [
+
+                             {
+                                 "targets": 0,
+                                 "bSearchable": true,
+                             },
+                            {
+                                "targets": 1,
+                                "bSearchable": true,
+                            },
+                            {
+                                "targets": 2,
+                                "bSearchable": true,
+                            },
+                            {
+                                "targets": 3,
+                                "bSearchable": true,
+                            },
+                            {
+                                "targets": 4,
+                                "bSortable": false,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    var result1 = '@Html.ActionLink("Edit1", "Edit", new { ID = '1' }, new { @class = "ajax  cboxElement" })';
+                                    result1 = result1.replace('1', data[4]);
+                                    result1 = result1.replace("Edit1", '<i class="icon-edit" title="View"></i>');
+
+                                    var result2 = '@Html.ActionLink("Delete1", "Delete", new { ID = '1' }, new { @class = "ajax  cboxElement" })';
+                                    result2 = result2.replace('1', data[4]);
+                                    result2 = result2.replace("Delete1", '<i class="icon-trash" title="@Resources.ToolTip_Delete"></i>');
+
+
+                                    var result = "<p  style='text-align: center; height:5px;'>" + result1 + "&nbsp;|&nbsp; " + result2 + "</p>";
+                                    return result;
+
+                                }
+                            }
+            ]
+        });
+
+    });
+
+
+</script>*@
+
+@*---------------------------new code----------------------*@
+
+
+@model AMS.ViewModel.EmployeeOtherCollegeFinancialAssistanceDetailsViewModel
+@{
+
+    Layout = null;
+}
+
+<style>
+    #main {
+        padding-bottom: 0;
+        padding-top: 60px;
+        position: relative;
+    }
+</style>
+
+
+@*<div class="container">*@
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.Manage_OtherCollegeFinancialDetails</h2>
+</div>
+
+<div class="card">
+    @Html.HiddenFor(model => model.EmployeeID)   
+    <div class="card-header">
+        <div id="CreateLeaveSession">
+            <ul class="actions">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown" title="Add New">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a class="mfpAjaxModal" href="@Url.Action("Create", "EmployeeOtherCollegeFinancialAssistanceDetails", new { Id = Model.EmployeeID })">
+                                <i class="zmdi zmdi-plus-square"></i> &nbsp; @Resources.DisplayName_AddNew
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div style="display:none"> @Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                    </div>
+                </div>
+                <div class="actions btn-group">
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Funding Agency">
+                                        @Resources.TableHeaders_FundingAgency<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="Date Of Grant Received">
+                                        @Resources.TableHeaders_DateOfGrantReceived<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Amount Of Grant">
+                                        @Resources.TableHeaders_AmountOfGrant<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="Purpose Of Grant">
+                                        @Resources.TableHeaders_PurposeOfGrant<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="4" name="Action">
+                                        @Resources.TableHeaders_Action<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>@Resources.TableHeaders_FundingAgency</th>
+                <th>@Resources.TableHeaders_DateOfGrantReceived</th>
+                <th>@Resources.TableHeaders_AmountOfGrant</th>
+                <th>@Resources.TableHeaders_PurposeOfGrant</th>
+                <th>@Resources.TableHeaders_Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@*</div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var oTable;
+        EmployeeOtherCollegeFinancialAssistanceDetails.Initialize();
+        var isReloadedFromCookies;
+        oTable = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/EmployeeOtherCollegeFinancialAssistanceDetails/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "EmployeeID", "value": $('#EmployeeID').val() });
+
+
+            },
+            "columnDefs": [
+
+                             {
+                                 "targets": 0,
+                                 "bSearchable": true,
+                             },
+                            {
+                                "targets": 1,
+                                "bSearchable": true,
+                            },
+                            {
+                                "targets": 2,
+                                "bSearchable": true,
+                            },
+                            {
+                                "targets": 3,
+                                "bSearchable": true,
+                            },
+                            {
+                                "targets": 4,
+                                "bSortable": false,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    var result1 = '@Html.ActionLink("Edit1", "Edit", new { ID = '1' }, new { @class = "mfpAjaxModal" })';
+                                    result1 = result1.replace('1', data[4]);
+                                    //result1 = result1.replace("Edit1", '<i class="icon-edit" title="View"></i>');
+                                    result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_View" class="btn btn-default"><i class="zmdi zmdi-edit"></i></button>');
+
+                                    var result2 = '@Html.ActionLink("Delete1", "Delete", new { ID = '1' }, new { @class = "mfpAjaxModal" })';
+                                    result2 = result2.replace('1', data[4]);
+                                    //result2 = result2.replace("Delete1", '<i class="icon-trash" title="@Resources.ToolTip_Delete"></i>');
+                                    result2 = " <a href=\"javascript:void(0);\" data-toggle=\"tooltip\" class=\"btn btn-default waves-effect\" onclick=\"fancyBoxPopUpAjax('Delete Employee Other College Financial Assistance Details','Do you want to delete Employee Other College Financial Assistance Details ?','error','btn-danger 2.','Yes!','/EmployeeOtherCollegeFinancialAssistanceDetails/Delete?ID=" + data[4] + "','content','page-loader','EmployeeOtherCollegeFinancialAssistanceDetails')\"><span class=\"zmdi zmdi-delete waves-effect\"></span></a>";
+
+
+                                    var result = "<p  style=''>" + result1 + "&nbsp;" + result2 + "</p>";
+                                    return result;
+
+                                }
+                            }
+            ]
+        });
+        DataTableSettings(oTable, "myDataTable", "toggleTableColumn");
+    });
+
+
+</script>

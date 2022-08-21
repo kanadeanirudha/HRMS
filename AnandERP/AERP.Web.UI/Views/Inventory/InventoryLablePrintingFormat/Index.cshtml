@@ -1,0 +1,322 @@
+﻿@model AERP.ViewModel.InventoryLablePrintingFormatViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+<style type="text/css">
+@@media print {
+body, html {
+margin-top:0px;
+padding-top:0px;
+}
+}
+</style>
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Label Printing Format </h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 0px;">
+        @Html.HiddenFor(m => m.errorMessage)
+        <form class="row" role="form">
+            <div class="card-body card-padding">
+                <div class="col-sm-3" style="display:none">
+                    @Html.LabelFor(model => model.ItemDescription, new { })
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(m => m.ItemNumber)
+                        @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group select fg-line">
+
+                        @Html.LabelFor(model => model.CentreCode, new { })
+                        @Html.DropDownListFor(m => m.SelectedCentreCode, Model.ListGetAdminRoleApplicableCentreItems, "--------Select Centre-------", new { id = "SelectedCentreCode", @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = " Centre Name" })
+
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    @Html.LabelFor(model => model.GeneralUnitsID, new { })
+                    <div class="form-group select fg-line">
+                        @Html.DropDownListFor(model => model.GeneralUnitsID, (SelectList)ViewBag.GeneralUnitsList, "---Select Store---", new { @class = "form-control input-sm AddGeneralUnitsID" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    @Html.LabelFor(model => model.FromItemNumber, new { })
+                    <div class="form-group fg-line">
+                        @Html.DropDownListFor(model => model.FromItemNumber, (SelectList)ViewBag.ItemNumberList, "---Select Item Number---", new { @class = "form-control input-sm AddGeneralUnitsID" })
+                    </div>
+                </div>
+                <div class="col-sm-2" >
+                    @Html.LabelFor(model => model.ToItemNumber, new { })
+                    <div class="form-group fg-line">
+                        @Html.DropDownListFor(model => model.ToItemNumber, (SelectList)ViewBag.ItemNumberList, "---Select Item Number---", new { @class = "form-control input-sm AddGeneralUnitsID" })
+                    </div>
+                </div>
+                <div class="col-sm-3"style="display:none">
+                    @Html.LabelFor(model => model.SalesUoM, new { })
+                    @Html.DropDownListFor(model => model.SalesUoM, Enumerable.Empty<SelectListItem>(), "---Select Sale UoM ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                </div>
+               
+                <div class="col-sm-2" style="margin-bottom:0px;">
+                    <button type="button" class="btn btn-primary" id="btnShowList">Print Label</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="ListViewModel">
+        @*@{Html.RenderAction("CurrentStock", "CurrentStockReport");}*@
+    </div>
+</div>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        debugger;
+        //CurrentStockReport.Initialize();
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                debugger;
+                $.ajax({
+                    url: "/InventoryLablePrintingFormat/GetItemSearchList",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, StorageLocationID: 0 },
+                    success: function (data) {
+                        debugger;
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.itemDescription] = response1;
+                            matches.push(response1.itemDescription);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+
+        $('#ItemDescription').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'states',
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            $('#GeneralItemMasterID').val(map[item].id);
+            $('#ItemNumber').val(map[item].itemNumber);
+
+            var ItemNumber=$('#ItemNumber').val()
+            $.ajax({
+               
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": ItemNumber },
+                url: '/InventoryLablePrintingFormat/GetSaleUomCodeList',
+                success: function (data) {
+                    var $ddlExam = $("#SalesUoM");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">--------Select Sale UoM-------</option>');
+                    $.each(data, function (id, option) {
+
+                        $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+                    });
+
+
+                }
+            });
+        });
+
+        $("#btnShowList").on("click", function () {
+            debugger;
+            var GeneralUnitsID = $('#GeneralUnitsID').val();
+            //var ItemNumber = $('#ItemNumber').val();
+            var FromItemNumber = $('#FromItemNumber').val();
+            var ToItemNumber = $('#ToItemNumber').val();
+            var SalesUoM = $('#SalesUoM').val();
+
+            if (GeneralUnitsID == "" || GeneralUnitsID == null)
+            {
+                notify("Please select Store.", 'warning');
+                return false;
+            }
+            if ((FromItemNumber == "" || FromItemNumber == null) || (ToItemNumber == "" || ToItemNumber == null))
+            {
+                notify("Please select Item Number.", 'warning');
+                return false;
+            }
+            if (parseInt(FromItemNumber) > parseInt(ToItemNumber)) {
+                notify("To Item number should be Greater than From Item number.", 'warning');
+                return false;
+            }
+
+
+            if (FromItemNumber != null && FromItemNumber != "" && GeneralUnitsID != null && GeneralUnitsID != "" ) {
+                $.ajax(
+               {
+                   cache: false,
+                   type: "GET",
+                   dataType:"json",
+                   url: "/InventoryLablePrintingFormat/GetInventoryLablePrintingFormatByGeneralunitsID",
+                   data: { "FromItemNumber": FromItemNumber, "ToItemNumber": ToItemNumber, "GeneralUnitsID": GeneralUnitsID, "SalesUoM": SalesUoM },
+                   success: function (data) {
+                       if (data != null) {
+                           if (data.length == 1)
+                            {
+                               var frame1 = $('<iframe />');
+                               frame1[0].name = "frame1";
+                               //frame1.css({ "position": "absolute", "top": "-100px", "vertical-align": "text-top" });
+                               frame1.css({ "position": "absolute", "top": "-1000000px", "vertical-align": "text-top" });
+
+                               $("body").append(frame1);
+                               var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+                               frameDoc.document.open();
+                               //Create a new HTML document.
+                               frameDoc.document.write('<html><head><meta charset="utf-8"><title></title>');
+                               //Append the external CSS .
+                               frameDoc.document.write('<style media="all" type="text/css">html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption { margin: 0;padding: 0;border: 0; outline: 0;font-size: 100%;vertical-align: baseline;background: transparent;} body { max-width:240px;text-transform: uppercase; margin:0 auto; text-align:center; color:#000; font-family: Arial, Helvetica, sans-serif; font-size:12px; }#wrapper { min-width: 240px;height:60px; margin: 0 auto; }#wrapper img { max-width: 300px; width: auto; }h2, h3, p { margin: 5px 0; }.left { width:60%; float:left; text-align:left; margin-bottom: 3px; }.right { width:40%; float:right; text-align:right; margin-bottom: 3px; }.table, .totals { width: 100%; margin:15px 0; border-top: 1px solid black;  }.table th { border-bottom: 1px solid #000; }.table td { padding:0; }.totals td { width: 24%; padding:0; }.table td:nth-child(2) { overflow:hidden; } print {body { text-transform: uppercase; }#buttons { display: none; }#wrapper { width: 100%; margin: 0; font-size:9px; }#wrapper img { max-width:300px; width: 80%; }#header,#footer {display:none}}</style>');
+                               frameDoc.document.write('</head><body>');
+                               //Append the DIV contents. 
+                               //frameDoc.document.write(contents);
+                               for (var i = 0; i < data.length; i++) {
+
+                                   frameDoc.document.write('<div id="wrapper"><span class="left" style="font-weight:bolder;font-size:12px;height:38px;">' + data[i].ItemDescription + '</span><span class="left" style="font-weight:bolder;font-size:14px;height:38px;">' + data[i].ArebicTransalation + '</span> <span class="right" style="font-weight:bolder;font-size:22px;"><span style="font-size:8px;">' + data[i].CurrencyCode + ' </span>' + data[i].SalesPrice + '/<span style="font-size:8px">' + data[i].SalesUoM + '</span></span><div style="clear:both;"></div>');
+                                   frameDoc.document.write('<table cellspacing="0" border="0" class="totals"><tbody style="font-size:10px"><tr><td style="text-align:left;font-size:13px;font-weight:bold">' + data[i].BarCode + '</td></tr><tr><td style="text-align:left;font-weight:bolder">' + data[i].ShelfNumber + '</td><td style="text-align:left;font-weight:bolder">' + data[i].ReorderPoint + '</td></tr></tbody></table></div>');
+                               // frameDoc.document.write('</tbody></table> <table cellspacing="0" border="0" style="margin-bottom:5px;" class="totals"><tbody style="font-size:10px"><tr><td style="text-align:left;"></td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + " " + '</td><td style="text-align:left; padding-left:1.5%;">Net Amt.</td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].NetAmount).toFixed(2) + '</td></tr><tr><td style="text-align:left;"></td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + " " + '</td><td style="text-align:left; padding-left:1.5%;">Tax </td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].TotalTaxAmount).toFixed(2) + '</td></tr><tr><td style="text-align:left;"></td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + " " + '</td><td style="text-align:left; padding-left:1.5%;">Delivery</td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].DeliveryCharge).toFixed(2) + '</td></tr><tr><td style="text-align:left;">Total Items</td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + data.length + '</td><td style="text-align:left; padding-left:1.5%;">Discount </td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].TotalDiscount).toFixed(2) + '</td></tr><tr><td style="text-align:left; font-weight:bold; border-top:1px solid #000; padding-top:5px;" colspan="2">Grand Total</td><td style="border-top:1px solid #000; padding-top:5px; text-align:right; font-weight:bold;" colspan="2">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].BillAmount).toFixed(2) + '</td></tr></tbody></table><div style="border-top:1px solid #000; padding-top:10px;"><p>Thank You Visit Again !</p>    </div></div>');
+                               }
+                               frameDoc.document.write('</body></html>');
+                                console.log(frameDoc.document)
+
+                               frameDoc.document.close();
+                               // alert(frameDoc.document.body.innerHTML)
+                               setTimeout(function () {
+                                   window.frames["frame1"].focus();
+                                   window.frames["frame1"].print();
+                                   frame1.remove();
+                               }, 500);
+                           }
+                           else {
+                               var frame1 = $('<iframe />');
+                               frame1[0].name = "frame1";
+                               frame1.css({ "position": "absolute", "top": "-100px", "vertical-align": "text-top" });
+
+
+                               $("body").append(frame1);
+                               var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+                               frameDoc.document.open();
+                               //Create a new HTML document.
+                               frameDoc.document.write('<html><head><meta charset="utf-8"><title></title>');
+                               //Append the external CSS .
+                               frameDoc.document.write('<style media="all" type="text/css">body { max-width:240px;text-transform: uppercase; margin:0 auto; text-align:center; color:#000; font-family: Arial, Helvetica, sans-serif; font-size:12px; }#wrapper { min-width: 240px; margin: 0 auto; }#wrapper img { max-width: 300px; width: auto; }h2, h3, p { margin: 5px 0; }.left { width:60%; float:left; text-align:left; margin-bottom: 3px; }.right { width:40%; float:right; text-align:right; margin-bottom: 3px; }.table, .totals { width: 100%; margin:10px 0; }.table th { border-bottom: 1px solid #000; }.table td { padding:0; }.totals td { width: 24%; padding:0; }.table td:nth-child(2) { overflow:hidden; } print {body { text-transform: uppercase; }#buttons { display: none; }#wrapper { width: 100%; margin: 0; font-size:9px; }#wrapper img { max-width:300px; width: 80%; }#header,#footer {display:none}}</style>');
+                               frameDoc.document.write('</head><body>');
+                               //Append the DIV contents.
+                               //frameDoc.document.write(contents);
+                               for (var i = 0; i < data.length; i++) {
+                                   frameDoc.document.write('<div id="wrapper" style="vertical-align:middle;"><span class="left" style="font-weight:bolder;font-size:12px;height:38px;">' + data[i].ItemDescription + '</span><span class="left" style="font-weight:bolder;font-size:14px;height:38px;">' + data[i].ArebicTransalation + '</span> <span class="right" style="font-weight:bolder;font-size:24px;"><span style="font-size:8px;">' + data[i].CurrencyCode + ' </span>' + data[i].SalesPrice + '/<span style="font-size:8px">' + data[i].SalesUoM + '</span></span><div style="clear:both;"></div><table cellspacing="0"  border="0" class="table" style="margin-bottom:0px"> <thead> <tr style="font-size:11px">  <th></th> <th></th> </tr> </thead> <tbody style="font-size:0px">');
+                                   frameDoc.document.write('</tbody></table> <table cellspacing="0" border="0" style="margin-bottom:17px;margin-top:0px" class="totals"><tbody style="font-size:10px"><tr><td style="text-align:left;font-size:13px;font-weight:bold">' + data[i].BarCode + '</td></tr><tr><td style="text-align:left;font-weight:bolder">' + data[i].ShelfNumber + '</td><td style="text-align:left;font-weight:bolder">' + data[i].ReorderPoint + '</td></tr></tbody></table></div>');
+
+                                   // frameDoc.document.write('</tbody></table> <table cellspacing="0" border="0" style="margin-bottom:5px;" class="totals"><tbody style="font-size:10px"><tr><td style="text-align:left;"></td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + " " + '</td><td style="text-align:left; padding-left:1.5%;">Net Amt.</td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].NetAmount).toFixed(2) + '</td></tr><tr><td style="text-align:left;"></td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + " " + '</td><td style="text-align:left; padding-left:1.5%;">Tax </td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].TotalTaxAmount).toFixed(2) + '</td></tr><tr><td style="text-align:left;"></td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + " " + '</td><td style="text-align:left; padding-left:1.5%;">Delivery</td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].DeliveryCharge).toFixed(2) + '</td></tr><tr><td style="text-align:left;">Total Items</td><td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">' + data.length + '</td><td style="text-align:left; padding-left:1.5%;">Discount </td><td style="text-align:right;">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].TotalDiscount).toFixed(2) + '</td></tr><tr><td style="text-align:left; font-weight:bold; border-top:1px solid #000; padding-top:5px;" colspan="2">Grand Total</td><td style="border-top:1px solid #000; padding-top:5px; text-align:right; font-weight:bold;" colspan="2">' + data[0].CurrencyCode + ' ' + parseFloat(data[0].BillAmount).toFixed(2) + '</td></tr></tbody></table><div style="border-top:1px solid #000; padding-top:10px;"><p>Thank You Visit Again !</p>    </div></div>');
+                               }
+                               frameDoc.document.write('</body></html>');
+                               console.log(frameDoc.document)
+
+                               frameDoc.document.close();
+                               // alert(frameDoc.document.body.innerHTML)
+                               setTimeout(function () {
+                                   window.frames["frame1"].focus();
+                                   window.frames["frame1"].print();
+                                   frame1.remove();
+                               }, 500);
+                           }
+                            
+                       }
+                   }
+               });
+               
+            }   
+            $('#ToItemNumber').val("");
+            $('#FromItemNumber').val("");
+            $('#GeneralUnitsID').val("");
+
+        });
+
+
+
+        $('#ItemName').on("keydown", function (e) {
+            AERPValidation.AllowAlphaNumericOnly(e);
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $("#ItemName").val("");
+                $("#SalesUoM").val("");
+                //$("#myDataTable tr").remove();
+
+            }
+        });
+
+
+        $("#SelectedCentreCode").change(function () {
+            var selectedItem = [];
+            var selectedItem = $(this).val();
+            var abc = selectedItem.split(':');
+            var selectedcentrecode = abc[0];
+            var $ddlGeneralUnitsID = $("#GeneralUnitsID");
+            var $GeneralUnitsIDProgress = $("#GeneralUnitsID-loading-progress");
+            $GeneralUnitsIDProgress.show();
+            if ($("#SelectedCentreCodeForSaleTab").val() !== "") {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '/GeneralItemMaster/GetGeneralUnitsForItemmasterList',
+                    data: { "centreCode": selectedcentrecode },
+                    success: function (data) {
+                        $ddlGeneralUnitsID.html('');
+                        $ddlGeneralUnitsID.append('<option value="">-------Select Unit------</option>');
+                        $.each(data, function (id, option) {
+
+                            $ddlGeneralUnitsID.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        $GeneralUnitsIDProgress.hide();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve GeneralUnitsID.');
+                        $GeneralUnitsIDProgress.hide();
+                    }
+                });
+            }
+            else {
+                $('#GeneralUnitsID').find('option').remove().end().append('<option value>-------Select General Unit------</option>');
+            }
+
+        });
+
+
+    });
+
+
+</script>

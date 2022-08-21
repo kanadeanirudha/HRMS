@@ -1,0 +1,62 @@
+﻿@model AMS.ViewModel.TillReportViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 70%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/TillReport.js")" type="text/javascript"></script>
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Till Report</h2>
+    </div>
+    <div class="card" style="margin-bottom: 0px;">
+        <div class="card-body card-padding">
+            <form class="row" role="form">
+                <div class="col-sm-4">
+                    Date
+                    <div class="select form-group fg-line">
+                        @Html.TextBoxFor(model => model.TransactionDate, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    Centre
+                    <div class="fg-line select form-group">
+                        @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "------Select Centre-------", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Centre *" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CentreCode)
+                </div>
+                <div class="col-sm-3">
+                    <div class="select form-group fg-line">
+                       Counter No
+                        @Html.DropDownListFor(model => model.CounterId, Model.ListGeneralCounterItems, "---Select Counter ---", new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-primary" id="btnShowCreateForm" style="margin-top: 20px;">Show</button>
+                    @*<button type="button" class="btn btn-primary" id="btnShowList" style="margin-top: 20px;">Show</button>*@
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="ListViewModel"> </div>
+</div>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#TransactionDate").datetimepicker({
+            format: 'DD MMM YYYY',
+            maxDate: moment()
+        }).on('dp.change', function () {
+            $("#ListViewModel").empty();
+        });
+        TillReport.Initialize();
+    });
+</script>
+
+

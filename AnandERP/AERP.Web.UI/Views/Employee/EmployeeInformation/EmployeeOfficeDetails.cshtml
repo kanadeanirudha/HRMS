@@ -1,0 +1,759 @@
+﻿@model AERP.ViewModel.EmpEmployeeMasterViewModel
+@{
+    Layout = null;
+}
+
+
+<div id="">
+
+
+    <form id="FormEditEmployeeOfficeDetails" method="post">
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.DepartmentName)
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                <span style="color:red;float:left;padding-left:1px;font-weight:bold">*</span>
+                @Html.LabelFor(model => model.CentreCode, new { style = "" })
+                <div class="form-group  fg-line select">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.organisationStudyCentreMasterList, Resources.ddlHeaders_CentreName, new { id = "CentreCodeOfficeDetails", style = "", @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.organisationStudyCentreMasterList, Resources.ddlHeaders_CentreName, new { id = "CentreCodeOfficeDetails", style = "", @class = "form-control", disabled = "disabled" })
+                    }
+                </div>
+                @Html.ValidationMessageFor(model => model.CentreCode)
+            </div>
+
+            <div class="col-sm-6">
+                <span style="color:red;float:left;padding-left:1px;font-weight:bold">*</span>
+                @Html.LabelFor(model => model.DepartmentName, new { style = "" })
+                <div class="form-group  fg-line select">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.organisationDepartmentMasterList, Resources.ddlHeaders_Department, new { @class = "form-control", style = "" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.organisationDepartmentMasterList, Resources.ddlHeaders_Department, new { @class = "form-control", style = "", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+                @Html.ValidationMessageFor(model => model.DepartmentID)
+            </div>
+
+            <div class="col-sm-6">
+                <span style="color:red;float:left;padding-left:1px;font-weight:bold">*</span>
+                @Html.LabelFor(model => model.EmployeeDesignationMasterID, new { style = "" })
+                <div class="form-group fg-line select">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.DropDownListFor(m => m.EmployeeDesignationMasterID, (SelectList)ViewBag.EmpDesignationMasterList, Resources.ddlHeaders_SelectDesignation, new { @class = "form-control", style = "" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.EmployeeDesignationMasterID, (SelectList)ViewBag.EmpDesignationMasterList, Resources.ddlHeaders_SelectDesignation, new { @class = "form-control", style = "", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+                @Html.ValidationMessageFor(model => model.EmployeeDesignationMasterID)
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.SalaryGradeCode, new { style = "" })
+                <div class="form-group  fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.SalaryGradeCode, new { @class = "form-control", maxlength = "10" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.SalaryGradeCode, new { @class = "form-control", maxlength = "10", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <span style="color:red;float:left;padding-left:1px;font-weight:bold">*</span>
+                @Html.LabelFor(model => model.JobProfileID, new { style = "" })
+                <div class="form-group  fg-line select">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.DropDownListFor(m => m.JobProfileID, (SelectList)ViewBag.generalJobProfileList, "---Select Job Profile---", new { @class = "form-control", style = "" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.JobProfileID, (SelectList)ViewBag.generalJobProfileList, "---Select Job Profile---", new { @class = "form-control", style = "", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+                @*@Html.LabelFor(model => model.JobStatus, new { style = "" })*@
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.JobStatus, new { style = "" })
+                <div class="form-group  fg-line select">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.DropDownListFor(m => m.JobStatusID, (SelectList)ViewBag.generalJobStatusList, "---Select Job Status---", new { @class = "form-control", style = "" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.JobStatusID, (SelectList)ViewBag.generalJobStatusList, "---Select Job Status---", new { @class = "form-control", style = "", disabled = ViewBag.IsFieldDisabled })
+                    }
+                    @Html.HiddenFor(m => m.JobStatus)
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.JoiningDate, new { style = "" })
+                <div class="col-sm-11">
+
+                    <div class="form-group  fg-line dtp-container">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                        }
+
+                    </div>
+                </div>
+
+
+                <div class="col-sm-1">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        <div class="form-group fg-line" style="padding-top: 5px;">
+                            <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="JoiningDate_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6" style="display:none">
+                @Html.LabelFor(model => model.AppointmentApprovalDate, new { style = "" })
+                <div class="col-sm-11">
+
+                    <div class="form-group  fg-line dtp-container">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.AppointmentApprovalDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.AppointmentApprovalDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-sm-1">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        <div class="form-group fg-line" style="padding-top: 5px;">
+                            <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="AppointmentApprovalDate_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            @if (Model.IsLeave == true)
+            {
+                <div class="col-sm-6">
+                    <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                        <label>
+                            @if (ViewBag.IsFieldDisabled == "")
+                            {
+                                <input type="checkbox" id="IsLeave" checked>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="IsLeave" checked disabled="disabled">
+                            }
+
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsLeave)
+                        </label>
+                    </div>
+                </div>
+            }
+            else
+            {
+
+                <div class="col-sm-6">
+                    <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                        <label>
+                            @if (ViewBag.IsFieldDisabled == "")
+                            {
+                                <input type="checkbox" id="IsLeave">
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="IsLeave" disabled="disabled">
+                            }
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsLeave)
+                        </label>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+        @if (Model.IsLeave == false)
+        {
+            <div class="col-sm-12" id="divLeavingReasonDate">
+                <div class="col-sm-6">
+                    @Html.LabelFor(model => model.ReasonOfLeaving, new { style = "" })
+                    <div class="form-group fg-line">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.ReasonOfLeaving, new { @class = "form-control", maxlength = "255" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.ReasonOfLeaving, new { @class = "form-control", maxlength = "255", disabled = ViewBag.IsFieldDisabled })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    @Html.LabelFor(model => model.DateOfLeaving, new { style = "" })
+                    <div class="col-sm-11">
+
+                        <div class="form-group fg-line dtp-container">
+                            @if (ViewBag.IsFieldDisabled == "")
+                            {
+                                @Html.TextBoxFor(model => model.DateOfLeaving, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.DateOfLeaving, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            <div class="form-group fg-line" style="padding-top: 5px;">
+                                <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="DateOfLeaving_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        }
+        else
+        {
+
+            <div class="col-sm-12" id="divLeavingReasonDate">
+                <div class="col-sm-6">
+                    @Html.LabelFor(model => model.ReasonOfLeaving, new { style = "" })
+                    <div class="form-group fg-line">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.ReasonOfLeaving, new { @class = "form-control", maxlength = "255" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.ReasonOfLeaving, new { @class = "form-control", maxlength = "255", disabled = ViewBag.IsFieldDisabled })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    @Html.LabelFor(model => model.DateOfLeaving, new { style = "" })
+                    <div class="col-sm-11">
+
+                        <div class="form-group fg-line dtp-container">
+                            @if (ViewBag.IsFieldDisabled == "")
+                            {
+                                @Html.TextBoxFor(model => model.DateOfLeaving, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.DateOfLeaving, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            <div class="form-group fg-line" style="padding-top: 5px;">
+                                <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="DateOfLeaving_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.DateOfRetirment, new { style = "" })
+                <div class="col-sm-11">
+
+                    <div class="form-group fg-line dtp-container">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.DateOfRetirment, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.DateOfRetirment, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-sm-1">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        <div class="form-group fg-line" style="padding-top: 5px;">
+                            <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="DateOfRetirment_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.TerminationDate, new { style = "" })
+                <div class="col-sm-11">
+
+                    <div class="form-group fg-line dtp-container">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.TerminationDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.TerminationDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-sm-1">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        <div class="form-group fg-line" style="padding-top: 5px;">
+                            <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="TerminationDate_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.EmployeeShiftApplicableMasterID, new { style = "" })
+                <div class="form-group fg-line select">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.DropDownListFor(m => m.EmployeeShiftApplicableMasterID, (SelectList)ViewBag.employeeShiftMasterList, new { @class = "form-control", style = "" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.EmployeeShiftApplicableMasterID, (SelectList)ViewBag.employeeShiftMasterList, new { @class = "form-control", style = "", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.PayScaleMstID, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.PayScaleMstID, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.PayScaleMstID, new { @class = "form-control", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.BasicSalary, new { style = "" }) (@Html.DisplayFor(model => model.CurrencyCode, new { Style = "" }))
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.BasicSalary, new { @class = "form-control", maxlength = "15", title = "Enter numbers only", Style = "" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.BasicSalary, new { @class = "form-control", maxlength = "15", title = "Enter numbers only", Style = "", disabled = ViewBag.IsFieldDisabled })
+                    }
+
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.ProvidentFundNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.ProvidentFundNumber, new { @class = "form-control", title = "Enter numbers only", Style = "", maxlength = "50" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.ProvidentFundNumber, new { @class = "form-control", title = "Enter numbers only", Style = "", maxlength = "50", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.ProvidentFundApplicableDate, new { style = "" })
+                <div class="col-sm-11">
+
+                    <div class="form-group fg-line dtp-container">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.ProvidentFundApplicableDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.ProvidentFundApplicableDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-sm-1">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        <div class="form-group fg-line" style="padding-top: 5px;">
+                            <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="ProvidentFundApplicableDate_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.UANNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.UANNumber, new { @class = "form-control", maxlength = "15", title = "Enter numbers only" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.UANNumber, new { @class = "form-control", maxlength = "15", title = "Enter numbers only", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.ESINumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.ESINumber, new { @class = "form-control", maxlength = "12", title = "Enter numbers only" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.ESINumber, new { @class = "form-control", maxlength = "12", title = "Enter numbers only", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.PanNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.PanNumber, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.PanNumber, new { @class = "form-control", maxlength = "10", style = "text-transform:uppercase", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+                @Html.ValidationMessageFor(model => model.PanNumber)
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.BankACNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.BankACNumber, new { @class = "form-control", maxlength = "18", style = "text-transform:uppercase" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.BankACNumber, new { @class = "form-control", maxlength = "18", style = "text-transform:uppercase", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.IFSCCode, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.IFSCCode, new { @class = "form-control", maxlength = "25", style = "text-transform:uppercase" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.IFSCCode, new { @class = "form-control", maxlength = "25", style = "text-transform:uppercase", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.AdharCardNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.AdharCardNumber, new { @class = "form-control", maxlength = "20", style = "text-transform:uppercase" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.AdharCardNumber, new { @class = "form-control", maxlength = "20", style = "text-transform:uppercase", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6" style="display:none">
+                @Html.LabelFor(model => model.SSNNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.SSNNumber, new { @class = "form-control", maxlength = "11", title = "Enter numbers only" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.SSNNumber, new { @class = "form-control", maxlength = "11", title = "Enter numbers only", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+                @Html.ValidationMessageFor(model => model.SSNNumber)
+            </div>
+
+            <div class="col-sm-6" style="display:none">
+                @Html.LabelFor(model => model.SINNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.SINNumber, new { @class = "form-control", maxlength = "11", title = "Enter numbers only" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.SINNumber, new { @class = "form-control", maxlength = "11", title = "Enter numbers only", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+                @Html.ValidationMessageFor(model => model.SINNumber)
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.DrivingLicenceNumber, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.TextBoxFor(model => model.DrivingLicenceNumber, new { @class = "form-control", maxlength = "20", style = "text-transform:uppercase" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.DrivingLicenceNumber, new { @class = "form-control", maxlength = "20", style = "text-transform:uppercase", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6" style="display:none">
+                @Html.LabelFor(model => model.DrivingLicenceExpireDate, new { style = "" })
+                <div class="col-sm-11">
+
+                    <div class="form-group fg-line dtp-container">
+                        @if (ViewBag.IsFieldDisabled == "")
+                        {
+                            @Html.TextBoxFor(model => model.DrivingLicenceExpireDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.DrivingLicenceExpireDate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-sm-1">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        <div class="form-group fg-line" style="padding-top: 5px;">
+                            <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Clear" id="DrivingLicenceExpireDate_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.PaymentMode, new { style = "" })
+                <div class="form-group fg-line">
+                    @if (ViewBag.IsFieldDisabled == "")
+                    {
+                        @Html.DropDownListFor(m => m.PaymentMode, ViewData["PaymentMode"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.PaymentMode, ViewData["PaymentMode"] as List<SelectListItem>, new { style = "", @class = "form-control", disabled = ViewBag.IsFieldDisabled })
+                    }
+                </div>
+            </div>
+
+          
+
+        </div>
+
+        <div class="col-sm-12">
+            @if (ViewBag.IsFieldDisabled == "")
+            {
+                <div class="form-group">
+                    <button type="button" id="UpdateEmployeeOfficeDetails" class="btn btn-primary">@Resources.ButtonAction_SaveChanges</button>
+                </div>
+            }
+        </div>
+    </form>
+
+
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#UpdateEmployeeOfficeDetails').on("click", function () {
+            debugger;
+            EmployeeInformation.ActionName = "EditEmployeeOfficeDetails";
+            EmployeeInformation.AjaxCallEmployeeInformation();
+        });
+
+        $('#JoiningDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            maxDate: moment(),
+        });
+
+        $("#JoiningDate").on("dp.hide", function (e) {
+
+            var minDate = new Date(e.date.valueOf());
+            $('#AppointmentApprovalDate').data("DateTimePicker").minDate(minDate);
+        });
+
+        $('#AppointmentApprovalDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //maxDate: moment(),
+        });
+
+        $('#DateOfLeaving').attr("readonly", true);
+        $('#DateOfLeaving').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //maxDate: moment(),
+        });
+
+        $('#DateOfRetirment').attr("readonly", true);
+        $('#DateOfRetirment').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //maxDate: moment(),
+        });
+
+        $('#TerminationDate').attr("readonly", true);
+        $('#TerminationDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //maxDate: moment(),
+        });
+
+        $('#ProvidentFundApplicableDate').attr("readonly", true);
+        $('#ProvidentFundApplicableDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //maxDate: moment(),
+        });
+
+
+
+        $('#TerminationDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //maxDate: moment(),
+        });
+
+        $('#DrivingLicenceExpireDate').attr("readonly", true);
+        $('#DrivingLicenceExpireDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //maxDate: moment(),
+        });
+
+        $("#JoiningDate_Clear").click(function () {
+            $('#JoiningDate').val("");
+        });
+
+        $("#TerminationDate_Clear").click(function () {
+            $('#TerminationDate').val("");
+        });
+
+        $("#AppointmentApprovalDate_Clear").click(function () {
+            $('#AppointmentApprovalDate').val("");
+        });
+
+        $("#ProvidentFundApplicableDate_Clear").click(function () {
+            $('#ProvidentFundApplicableDate').val("");
+        });
+
+        $("#DrivingLicenceExpireDate_Clear").click(function () {
+            $('#DrivingLicenceExpireDate').val("");
+        });
+
+        $("#DateOfLeaving_Clear").click(function () {
+            $('#DateOfLeaving').val("");
+        });
+
+        $("#DateOfRetirment_Clear").click(function () {
+            $('#DateOfRetirment').val("");
+        });
+
+        $("#OrderDate_Clear").click(function () {
+            $('#OrderDate').val("");
+        });
+
+        $("#UniversityApprovalDate_Clear").click(function () {
+            $('#UniversityApprovalDate').val("");
+        });
+
+        $("#CollegeApprovalDate_Clear").click(function () {
+            $('#CollegeApprovalDate').val("");
+        });
+
+        $("#ChargeTakingDate_Clear").click(function () {
+            $('#ChargeTakingDate').val("");
+        });
+
+        $("#PreviousPromotionDemotionDate_Clear").click(function () {
+            $('#PreviousPromotionDemotionDate').val("");
+        });
+
+        $("#PromotionDemotionDate_Clear").click(function () {
+            $('#PromotionDemotionDate').val("");
+        });
+
+        $("#GrantedPromotionDate_Clear").click(function () {
+            $('#GrantedPromotionDate').val("");
+        });
+
+
+
+    });
+
+</script>

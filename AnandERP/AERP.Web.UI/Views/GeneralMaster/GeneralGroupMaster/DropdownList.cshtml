@@ -1,0 +1,221 @@
+﻿@*
+    @model AMS.ViewModel.GeneralGroupMasterViewModel
+    @{
+        Layout = null;
+    }
+
+    <form id="FormCreateEmployeeGroupDetails" method="post" class="form-horizontal well">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model=>model.EmployeeGroupDetailsID)
+        @Html.HiddenFor(model => model.GroupDependentObject)
+        @Html.HiddenFor(model => model.GroupName)
+        <fieldset>
+
+            @if (Model.GroupDependentObject == "Department")
+            {
+                <legend>
+                    <h4>@Resources.Headers_AddDepartment</h4>
+                </legend>
+                <div class="row">
+                    <div class="span8">
+                        <div class="row control-group">
+                            <div class="span2">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.CentreCode, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span">
+                                @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.centreList, Resources.ddlHeaders_CentreName, new { @class = "form-control chosen-select", style = "font-weight:bold;", })
+                                <br />
+                                @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                            </div>
+
+                            <div class="span1">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.Department, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span">
+                                @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.departmentList, Resources.ddlHeaders_Department, new { @class = "form-control chosen-select", style = "font-weight:bold;", })
+                                <br />
+                                @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        }
+            @if (Model.GroupDependentObject == "Designation")
+            {
+                <legend>
+                    <h4>@Resources.Headers_AddDesignation</h4>
+                </legend>
+                <div class="row">
+                    <div class="span8">
+                        <div class="row control-group">
+                            <div class="span2">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.Designation, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span">
+                                @Html.DropDownListFor(m => m.DependentObjectID, (SelectList)ViewBag.designationList, Resources.ddlHeaders_SelectDesignation, new { @class = "form-control chosen-select", style = "font-weight:bold;", })
+                                <br />
+                                @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                            </div>
+                            <div class="span2">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.IsActive, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span">
+                                @Html.CheckBoxFor(m => m.IsActive, new { id="IsAct"})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        }
+            @if (Model.GroupDependentObject == "PayScale")
+            {
+                <legend>
+                    <h4>@Resources.Headers_AddPayscale</h4>
+                </legend>
+                <div class="row">
+                    <div class="span8">
+                        <div class="row control-group">
+                            <div class="span2">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.PayScale, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span">
+                                @Html.DropDownListFor(m => m.DependentObjectID, (SelectList)ViewBag.payScaleList, Resources.ddlHeaders_PayScale , new { @class = "form-control chosen-select", style = "font-weight:bold;", })
+                                <br />
+                                @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                        }
+
+            <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+                   <input type="hidden" id="mode" value="@ViewBag.mode" />
+
+                <input type="button" id="CreateEmployeeGroupDetailsRecord" value="@Resources.ButtonAction_Submit--" class="btn btn-primary" />
+            </div>
+        </fieldset>
+    </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            GeneralGroupMaster.Initialize();
+        });
+    </script>
+*@
+
+
+
+
+@model AERP.ViewModel.GeneralGroupMasterViewModel
+@{
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    @*<div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormCreate_EmployeeShiftApplicableMaster</h2>
+    </div>*@
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:100px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+
+            <form id="FormCreateEmployeeGroupDetails" method="post">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.EmployeeGroupDetailsID)
+                @Html.HiddenFor(model => model.GroupDependentObject)
+                @Html.HiddenFor(model => model.GroupName)
+
+                @if (Model.GroupDependentObject == "Department")
+                {
+                    
+                        <h5>@Resources.Headers_AddDepartment</h5>
+                    
+                    
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.CentreCode, new { style = "" })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.centreList, Resources.ddlHeaders_CentreName, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.Department, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.departmentList, Resources.ddlHeaders_Department, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                    </div>
+                    
+                    
+                }
+
+                @if (Model.GroupDependentObject == "Designation")
+                {
+                    
+                    <h5>@Resources.Headers_AddDesignation</h5>
+                    
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.Designation, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.DependentObjectID, (SelectList)ViewBag.designationList, Resources.ddlHeaders_SelectDesignation, new { @class = "form-control", style = "", })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="checkbox m-b-15" style="padding-top:02%;">
+                            <label>
+                                <input type="checkbox" id="IsAct">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsActive, new { style = "" })
+                            </label>
+                        </div>
+                    </div>
+                    
+                }
+
+                @if (Model.GroupDependentObject == "PayScale")
+                {
+                    
+                    <h5>@Resources.Headers_AddPayscale</h5>
+                    
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.PayScale, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.DependentObjectID, (SelectList)ViewBag.payScaleList, Resources.ddlHeaders_PayScale, new { @class = "form-control", style = "", })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.GroupDependentObject)
+                    </div>
+                }
+
+                <div class="col-sm-12">
+                    <div class="form-group pull-left">
+                        <input type="hidden" id="mode" value="@ViewBag.mode" />
+                        <button type="button" id="CreateEmployeeGroupDetailsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralGroupMaster.Initialize();
+    });
+</script>

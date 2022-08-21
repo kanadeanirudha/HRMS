@@ -1,0 +1,82 @@
+﻿using AMS.Base.DTO;
+using System;
+namespace AMS.DTO
+{
+    public class InventoryDimensionUnitMaster : BaseDTO
+    {
+        public Int16 ID
+        {
+            get;
+            set;
+        }
+        public string DimensionCode
+        {
+            get;
+            set;
+        }
+
+        public string DimensionDescription
+        {
+            get;
+            set;
+        }
+
+        public string SIUnit
+        {
+            get;
+            set;
+        }
+
+        public string SIDescription
+        {
+            get;
+            set;
+        }
+
+
+
+
+
+
+        //Feilds from GeneralUnitType//
+
+
+
+        public bool IsDeleted
+        {
+            get;
+            set;
+        }
+        public int CreatedBy
+        {
+            get;
+            set;
+        }
+        public DateTime CreatedDate
+        {
+            get;
+            set;
+        }
+        public int ModifiedBy
+        {
+            get;
+            set;
+        }
+        public DateTime ModifiedDate
+        {
+            get;
+            set;
+        }
+        public int DeletedBy
+        {
+            get;
+            set;
+        }
+        public DateTime DeletedDate
+        {
+            get;
+            set;
+        }
+        public string errorMessage { get; set; }
+    }
+}

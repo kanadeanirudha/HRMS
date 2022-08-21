@@ -1,0 +1,21 @@
+﻿@model AERP.ViewModel.GeneralUnitStorageLocationViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 45%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/GeneralUnitsStorageLocation.js")" type="text/javascript"></script>
+<div id="ListViewModel" class="container">
+     
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralUnitsStorageLocation.LoadList();
+    });
+</script>
+
+

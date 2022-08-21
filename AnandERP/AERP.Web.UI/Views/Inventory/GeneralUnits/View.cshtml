@@ -1,0 +1,84 @@
+﻿@model AERP.ViewModel.GeneralUnitsViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/GeneralUnits.js")" type="text/javascript"></script>
+@Html.HiddenFor(model => model.ID)
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;View Units</h2>
+    </div>
+    <div class="card">
+     
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralUnits" role="form">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line" style="display:none">
+                        @Html.LabelFor(model => model.CentreName, new { })
+                        @Html.TextBoxFor(model => model.CentreName, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line" style="display:none">
+                        @Html.LabelFor(model => model.DepartmentName, new { })
+                        @Html.TextBoxFor(model => model.DepartmentName, new { maxlength = "12", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+                @*<div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <br />
+                    </div>
+                </div>*@
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.UnitName, new { })
+                        @Html.TextBoxFor(model => model.UnitName, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.UnitType, new { })
+                        @Html.TextBoxFor(model => model.UnitType, new { maxlength = "12", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.RelatedwithUnitType, new { })
+                            @Html.TextBoxFor(model => model.RelatedwithUnitType, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+
+                <div class="col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.LocationAddress, new { })
+                        @Html.TextBoxFor(model => model.LocationAddress, new { maxlength = "12", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+                
+                <div class="col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.CityName, new { })
+                        @Html.TextBoxFor(model => model.CityName, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.LocationName, new { })
+                        @Html.TextBoxFor(model => model.LocationName, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralUnits.Initialize();
+    });
+</script>

@@ -1,0 +1,133 @@
+﻿@model AERP.ViewModel.CCRMMachineMasterViewModel
+<style>
+    .mfp-close-btn-in .mfp-close {
+        color: #eee;
+    }
+</style>
+<div class="mfp-content" style="background :#bfc6ca;width: 902px;margin: -10px 0px -10px -10px;height:610px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="background :#607d8b;color:white;margin-top: -10px;line-height: 2.5;width: 902px;margin-left: -10px;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Machine Master </h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="background:#bfc6ca;margin-top:-25px;margin-left: -10px;width: 902px;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormCreateCCRMMachineMaster">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+
+                    <div class="col-sm-12" style="height:530px;background:white;margin-left: -26px;margin-top:-22px;width: 902px;">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+
+                                @Html.HiddenFor(m => m.ItemNumber)
+                                @Html.LabelFor(model => model.ItemNumber, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ItemDescription)
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+
+                                <span style="color:red">*</span> @Html.LabelFor(model => model.MachineFamilyMasterID, new { })
+                                <div class="form-group fg-line">
+                                    @Html.DropDownListFor(model => model.MachineFamilyMasterID, (SelectList)ViewBag.CCRMMachineFamilyMasterList, "-----Select Machine Family-----", new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <span style="color:red">*</span>  @Html.LabelFor(model => model.MachineType, new { })
+                                <div class="form-group select fg-line">
+                                    @Html.DropDownList("MachineType", ViewData["MachineType"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "MachineType*" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.MachineType)
+                            </div>
+                            <div class="col-sm-6">
+                                <span style="color:red">*</span> @Html.LabelFor(model => model.ColorMono, new { })
+                                <div class="form-group select fg-line">
+                                    @Html.DropDownList("ColorMono", ViewData["ColorMono"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "ColorMono*" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ColorMono)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.PaperSize, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.PaperSize, new { @class = "form-control", maxlength = "100", style = "" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PaperSize)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.Warrenty, new { style = "" })
+                                <span style="color:red">(In Months)</span><div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.Warrenty, new { @class = "form-control", maxlength = "100", style = "" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Warrenty)
+                            </div>
+                            <div class="col-sm-6">
+                                <span style="color:red">*</span>@Html.LabelFor(model => model.LifeInYears, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.LifeInYears, new { @class = "form-control", maxlength = "100", style = "" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LifeInYears)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.lifeInCopies, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.lifeInCopies, new { @class = "form-control", maxlength = "100", style = "" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.lifeInCopies)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.PMPeriods, new { style = "" })
+                                <span style="color:red">(InDays)</span><div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.PMPeriods, new { @class = "form-control", maxlength = "100", style = "" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PMPeriods)
+                            </div>
+                            <div class="col-sm-6">
+
+                                <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                    <label>
+                                        <input type="checkbox" id="Isreturnable">
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.Isreturnable, new { style = "" })
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.Isreturnable)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <span style="color:red">*</span>@Html.LabelFor(model => model.Frequency, new { })
+                                <div class="form-group select fg-line">
+                                    @Html.DropDownList("Frequency", ViewData["Frequency"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Frequency*" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Frequency)
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" style="margin-left: 2%; ">
+                            <input class="btn btn-info" value="@Resources.ButtonAction_Submit" id="CreateCCRMMachineMasterRecord" type="button" style="margin-left:15px;" />
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CCRMMachineMaster.Initialize();
+        });
+    </script>
+</div>
+
+

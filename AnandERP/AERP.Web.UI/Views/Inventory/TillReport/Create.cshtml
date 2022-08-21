@@ -1,0 +1,72 @@
+﻿@model AMS.ViewModel.TillReportViewModel
+
+<div class="card">
+    <form id="FormCreateTillReport" role="form">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="text-align:center;">Retail</th>
+                            <th colspan="2" style="text-align:center;">Cafe</th>
+                        </tr>
+                        <tr>
+                            <th>Card</th>
+                            <th>Cash</th>
+                            <th>Card</th>
+                            <th>Cash</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Math.Round(Model.TotalBillRetailCard, 2)</td>
+                            <td>@Math.Round(Model.TotalBillRetailCash,2)</td>
+                            <td>@Math.Round(Model.TotalBillRestaurantCard,2)</td>
+                            <td>@Math.Round(Model.TotalBillRestaurantCash,2)</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" >Total <span style="float:right;">@Math.Round(Model.TotalReatailPayment,2)</span></td>
+                            <td colspan="2" style="text-align:right;">@Math.Round(Model.TotalRestaurantPayment,2)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="col-sm-12 p-t-25">
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;">Total Card</th>
+                            <th style="text-align:center;">Total Cash</th>
+                            <th style="text-align:center;">Cash Received</th>
+                            <th style="text-align:center;">Discrepancy in Cash</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;"><span id="TotalCardPayment">@Math.Round(Model.TotalCardPayment,2)</span></td>
+                            <td style="text-align:center;"><span id="TotalCashPayment">@Math.Round(Model.TotalCashPayment,2)</span></td>
+                            <td style="text-align:center;"><input type="text" class="form-control input-sm" id="CashReceived" style="text-align:center;" value="@Math.Round(Model.TotalCashPayment,2)" /></td>
+                            <td style="text-align:center;"><input type="text" class="form-control input-sm" id="DescripancyInCash" style="text-align:center;" disabled="disabled" value="0" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group col-sm-12 p-t-25">
+                <div class="col-sm-2 col-sm-offset-10">
+                    <input class="btn btn-primary waves-effect" value="@Resources.ButtonAction_Submit" id="CreateTillReport" type="button" />
+                </div>
+            </div>
+        </div>
+        
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        TillReport.Initialize();
+    });
+</script>

@@ -1,0 +1,206 @@
+﻿@model AERP.ViewModel.OrganisationDepartmentMasterViewModel
+
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Centre Wise Department</h2>
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <ul class="actions">
+            @*<li class="dropdown">
+                <a href="" data-toggle="dropdown" title="Add New">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a class="mfpAjaxModal" href="@Url.Action("Create", "OrganisationBranchMaster")">
+                            <i class="zmdi zmdi-plus-square"></i> &nbsp; @Resources.DisplayName_AddNew
+                        </a>
+                    </li>
+                </ul>
+            </li>*@
+        </ul>
+    </div>
+
+    <div class="card-body card-padding">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group fg-line select">
+                        @Html.DropDownListFor(m => m.SelectedCentreCode, Model.ListGetAdminRoleApplicableCentreItems, @Resources.ddlHeaders_CentreName, new { @class = "form-control", style = "" })
+                    </div>
+                </div>
+                
+                <div class="col-sm-3" style="margin-top:10px;">
+                    <button type="button" class="btn btn-primary" value="@Resources.GlobalProperties_ShowList" id="btnShowList">@Resources.GlobalProperties_ShowList</button>
+                </div>
+            </div>
+        </div>
+ 
+
+
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                    </div>
+                </div>
+                <div class="actions btn-group">
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Department ">
+                                        Department <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="AllocationStatus">
+                                        Allocation Status<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Action">
+                                       @Resources.TableHeaders_Action<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>Department  </th>
+                <th>Allocation Status </th>
+                <th>@Resources.TableHeaders_Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@*</div>*@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var oTable;
+        OrganisationCentrewiseDepartment.Initialize();
+        oTable = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "OrganisationCentrewiseDepartment/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "SelectedCentreCode", "value": $("#SelectedCentreCode").val() });
+
+            },
+            "columnDefs": [
+
+
+                 {
+                     "targets": 1,
+                     "bSortable": false,
+                     "data": null,
+                     "render": function (data, type, full, meta) {
+                         var chkStatus = '';
+                         if (data[1] == "True") {
+                             chkStatus = 'checked';
+                         }
+                         else {
+                             chkStatus = '';
+                         }
+                         //var result = "<p  style='text-align: center; height:5px;'>" + '<input id="IsActive" class="CheckBox" type="checkbox" disabled ' + chkStatus + ' />' + "</p>";
+                         var result = "<p  class='checkbox' style='margin-left: 10%; margin-top: 0%;'>" + '<input id="IsActive"  type="checkbox" disabled ' + chkStatus + ' /><i class="input-helper"></i>' + "</p>";
+
+                         return result;
+
+                     }
+                 },
+
+                 {
+                     "targets": 2,
+                     "bSortable": false,
+                     "data": null,
+                     "render": function (data, type, full, meta) {
+                         debugger;
+                         var statusFlag = data[1];
+                         if (statusFlag == "False") {
+                                        @*var result1 = '@Html.ActionLink("Create1", "Create", new { ID = "ID1", BranchDescription="BranchDescription1", CentreCode = Model.SelectedCentreCode, }, new { @class = "ajax  cboxElement", title="Allocate Course" })';*@
+                             var result1 = '@Html.ActionLink("Create1", "Create", new { ID = "ID1", CentreCode = Model.SelectedCentreCode, centreName = "ID2", DepartmentName = "ID3" }, new { @class = "mfpAjaxModal" })';
+                             result1 = result1.replace("ID1", data[3]);
+                             result1 = result1.replace("ID2", $("#SelectedCentreCode :selected").text().replace(/ /g, "~"));
+                             result1 = result1.replace("ID3", data[0].replace(/ /g, "~"));
+
+                             //var b = data[0];
+                             //result1 = result1.replace("bran", b);
+                             //result1 = result1.replace("BranchDescription1", data[0]);
+                             //result1 = result1.replace("Create1", '<i class="icon-plus" title="@Resources.ToolTip_Create" ></i>');
+                             result1 = result1.replace("Create1", '<button title="@Resources.ToolTip_Edit" class="btn btn-default"><i class="zmdi zmdi-plus"></i></button>');
+                         }
+                         else if (statusFlag == "True") {
+
+                             var result1 = '@Html.ActionLink("Edit1", "Edit", new { CentrewiseDepartmentID = "ID1", centreName = "ID2", DepartmentName = "ID3" }, new { @class = "mfpAjaxModal" })';
+                             result1 = result1.replace("ID1", data[2]);
+                             result1 = result1.replace("ID2", $("#SelectedCentreCode :selected").text().replace(/ /g, "~"));
+                             result1 = result1.replace("ID3", data[0].replace(/ /g, "~"));
+
+                             //result1 = result1.replace("Edit1", '<i class="icon-edit" title="@Resources.ToolTip_Edit"></i>');
+                             result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_Edit" class="btn btn-default"><i class="zmdi zmdi-edit"></i></button>');
+
+                         }
+                         var result = "<p  style=''>" + result1 + "</p>";
+                         return result;
+
+                     }
+                 }
+
+            ]
+        });
+
+        DataTableSettings(oTable, "myDataTable", "toggleTableColumn");
+    });
+</script>

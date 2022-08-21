@@ -1,0 +1,50 @@
+﻿@model AERP.ViewModel.PurchaseReportMasterViewModel
+
+<div class="card" id="DivBranchWiseJobOrder">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myDataTable">
+            <thead>
+                <tr>
+                    <th>Item Number</th>
+                    <th>Item Description</th>
+                    @*<th>Bar code</th>*@
+                    <th>Location Name</th>
+                    <th>Current Stock</th>
+
+                </tr>
+            </thead>
+            @if (Model.PurchaseReportMasterDetails != null)
+            {
+                <tbody style="overflow: auto" id="tbodyID">
+
+                    @for (int i = 0; i < Model.PurchaseReportMasterDetails.Count; i++)
+                    {
+
+                        <tr role="row" class="odd">
+
+                            <td>@Model.PurchaseReportMasterDetails[i].ItemNumber</td>
+                            <td>@Model.PurchaseReportMasterDetails[i].ItemDescription</td>
+                            @*<td>@Model.PurchaseReportMasterDetails[i].BarCode</td>*@
+                            <td>@Model.PurchaseReportMasterDetails[i].LocationName</td>
+                            <td>@Model.PurchaseReportMasterDetails[i].CurrentStockQty</td> @*Batch*@
+
+
+                        </tr>
+                    }
+
+                </tbody>
+            }
+        </table>
+    </div>
+</div>
+
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+
+
+</script>

@@ -1,0 +1,215 @@
+﻿
+@model AERP.ViewModel.CCRMTonerRequestAuthorisationViewModel
+
+<style>
+    .mfp-close-btn-in .mfp-close {
+        color: #eee;
+    }
+</style>
+<div class="mfp-content" style="background :#bfc6ca;width: 902px;margin: -10px 0px -10px -10px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="background :#607d8b;color:white;margin-top: -10px;line-height: 2.5;width: 902px;margin-left: -10px;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Toner Request Authorisation</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="background:white;margin-top:-25px;margin-left: -10px;width: 902px;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormEditCCRMTonerRequestAuthorisation">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.ID)
+
+
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.HiddenFor(model => model.ItemNumber)
+                            @Html.LabelFor(model => model.PartNO, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.PartNO, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PartNO)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.HiddenFor(model => model.MachineFamilyID)
+                            @Html.LabelFor(model => model.MachineFamilyName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.MachineFamilyName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MachineFamilyName)
+                        </div>
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.PartName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.PartName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PartName)
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.LastMtrRead, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.LastMtrRead, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.LastMtrRead)
+                        </div>
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.CurrentMeterRead, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CurrentMeterRead, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CurrentMeterRead)
+                        </div>
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.Consumption, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.Consumption, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Consumption)
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.StandardCopy, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.StandardCopy, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.StandardCopy)
+                        </div>
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.BalanceQuantity, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.BalanceQuantity, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BalanceQuantity)
+                        </div>
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.LastQuantity, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.LastQuantity, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.LastQuantity)
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+
+                            @Html.LabelFor(model => model.Quantity, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.Quantity, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Quantity)
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.Authorised, new { })
+                            <div class="form-group fg-line select">
+                                @Html.DropDownList("Authorised", ViewData["Authorised"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Authorised*" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Authorised)
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="FOC" >
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.FOC, new { style = "" })
+                                </label>
+                                @Html.ValidationMessageFor(model => model.FOC)
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.CallDate, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallDate, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallDate)
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.CallTktNo, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallTktNo, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallTktNo)
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span> @Html.LabelFor(model => model.MIFName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.MIFName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MIFName)
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            
+                            @*@Html.HiddenFor(model => model.ID)*@
+                            @Html.LabelFor(model => model.SerialNo, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.SerialNo, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SerialNo)
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.HiddenFor(model => model.ModelNo)
+                            @Html.LabelFor(model => model.ModelNo, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ItemDescription, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ItemDescription)
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.Remarks, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Remarks)
+                        </div>
+                    </div>
+
+                        <div class="form-group" style="margin-left: 2%; ">
+                            <input class="btn btn-info btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditCCRMTonerRequestAuthorisationRecord" type="button" style="margin-left:15px;" />
+                        </div>
+
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            CCRMTonerRequestAuthorisation.Initialize();
+        });
+</script>
+@*</div>*@
+
+
+
+
+
+
+
+
+
+
+

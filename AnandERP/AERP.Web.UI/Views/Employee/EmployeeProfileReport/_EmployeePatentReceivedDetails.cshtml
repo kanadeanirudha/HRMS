@@ -1,0 +1,133 @@
+﻿@*@model AMS.ViewModel.EmployeePatentReceivedDetailsViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <h3 class="my-caption">@Resources.DisplayName_PatentReceivedDetails  </h3>
+    
+    <div id="my-Subject" style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="nonboxy-widget">
+                    <div class="widget-head">
+                        <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.DisplayName_PatentReceivedDetails</h5>
+
+                    </div>
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                        <table id="DataTables_Table_0" class="data-tbl-striped table table-striped table-bordered dataTable">
+                            <thead>
+                                <tr role="row">
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 55%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_SubjectOfPatent</th>
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 15%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_DateOfApplication</th>
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 15%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_DateOfApprovalStatus</th>
+                                   <th aria-label=" Task : activate to sort column ascending" style="width: 15%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader"> @Resources.TableHeaders_PatentApprovalStatus</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in ViewBag.ListEmployeePatentReceivedDetails)
+                            {
+                                <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                    <tr class="odd">
+                                        <td style="text-align: left" class="">@item.SubjectOfPatent</td>
+                                        <td style="text-align: center" class="">@item.DateOfApplication</td>
+                                        <td style="text-align: center" class="">@item.DateOfApproval</td>
+                                        @if (@item.PatentApprovalStatus== "Approved")
+                                        {
+                                             <td style="text-align: left" >
+                                                 <p style="text-align: center; "><span style="text-align: center; " class="label label-success">@Resources.DisplayName_Approved</span></p>
+                                            </td>
+                                        }
+                                      else if (@item.PatentApprovalStatus=="Inprocess")
+                                        {
+                                             <td style="text-align: left" >
+                                                 <p style="text-align: center; "><span style="text-align: center; " class="label label-warning">@Resources.DisplayName_InProcess</span></p>
+                                            </td>
+                                        }
+                                        else  if (@item.PatentApprovalStatus=="Rejected")
+                                        {
+                                             <td style="text-align: left" >
+                                                 <p style="text-align: center; "><span style="text-align: center; " class="label label-important">@Resources.DisplayName_Rejected</span></p>'
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+@*----------------------------------------------new code-------------------------------------------------*@
+
+
+@model AMS.ViewModel.EmployeePatentReceivedDetailsViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <div class="col-sm-12">
+        <div class="card rating-list">
+            <div class="listview">
+                <div class="lv-header">
+                    <div class="m-t-0">
+                        @Resources.DisplayName_PatentReceivedDetails
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                @*<div class="lv-body">*@
+                <div class="table-responsive" id="DataTables_Table_0_wrapper">
+                    <table id="DataTables_Table_0" class="table">
+                        <thead>
+                            <tr class="warning c-white">
+                                <th>@Resources.TableHeaders_SubjectOfPatent</th>
+                                <th>@Resources.TableHeaders_DateOfApplication</th>
+                                <th>@Resources.TableHeaders_DateOfApprovalStatus</th>
+                                <th>@Resources.TableHeaders_PatentApprovalStatus</th>
+                            </tr>
+                        </thead>
+                         @foreach (var item in ViewBag.ListEmployeePatentReceivedDetails)
+                            {
+                            <tbody>
+                                <tr class="active">
+                                    <td>@item.SubjectOfPatent</td>
+                                    <td>@item.DateOfApplication</td>
+                                    <td>@item.DateOfApproval</td>
+                                    @if (@item.PatentApprovalStatus == "Approved")
+                                    {
+                                        <td>
+                                            <p style="text-align: center;"><button style="" class="btn btn-success btn-xs waves-effect">@Resources.DisplayName_Approved</button></p>
+                                        </td>
+                                    }
+                                    else if (@item.PatentApprovalStatus == "Inprocess")
+                                    {
+                                        <td>
+                                            <p style="text-align: center;"><button style="" class="btn btn-warning btn-xs waves-effect">@Resources.DisplayName_InProcess</button></p>
+                                        </td>
+                                    }
+                                    else if (@item.PatentApprovalStatus == "Rejected")
+                                    {
+                                        <td>
+                                            <p style="text-align: center;"><button style="" class="btn btn-danger btn-xs waves-effect">@Resources.DisplayName_Rejected</button></p>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+
+}

@@ -1,0 +1,85 @@
+﻿@model AERP.ViewModel.PurchaseReplenishmentViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 80%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Purchase/PurchaseReplenishment.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@*<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>*@
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Replenishment</h2>
+    </div>
+    <input type="hidden" id="StatusFlag" value=0 />
+    <div class="card" style="margin-bottom: 0px;">
+        @*<div class="card-header">
+                &nbsp;
+            </div>*@
+        <div class="card-body card-padding">
+            <form class="row" role="form">
+                <div class="row">
+
+                    @*<div class="form-group col-sm-1">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.GeneralUnitsID, new { })
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <div class="form-group select fg-line">
+                            @Html.DropDownListFor(model => model.GeneralUnitsID, (SelectList)ViewBag.GeneralUnitsList, new { @class = "form-control input-sm AddGeneralUnitsID" })
+                        </div>
+                    </div>*@
+                    <div class="col-sm-3">
+                        <div class="form-group select fg-line"> @*Replace Centre by store and Store by Location*@
+                            @Html.LabelFor(model => model.CentreCode, new { })
+                            @Html.DropDownListFor(m => m.SelectedCentreCode, Model.ListGetAdminRoleApplicableCentreItems, "--------Select Store-------", new { id = "SelectedCentreCode", @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = " Centre Name" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group select fg-line">
+
+                            @Html.LabelFor(model => model.GeneralUnitsID, new { })
+                            @*@Html.DropDownListFor(model => model.GeneralUnitsID, (SelectList)ViewBag.GeneralUnitsList, new { @class = "form-control input-sm AddGeneralUnitsID" })*@
+                            @Html.DropDownListFor(model => model.GeneralUnitsID, Model.ListGetGeneralUnitsItems, "---Select Location ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-1" style="margin-top:2%">
+                        <button type="button" class="btn btn-primary" id="btnShowList" style="height: 30px; width: 60px;" value="@Resources.GlobalProperties_ShowList">SHOW</button>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:1%">
+                        Date
+                        <div class="form-group">
+                            @String.Format("{0: d-MMM-yyyy}", DateTime.UtcNow)
+                        </div>
+                    </div>
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="ListViewModel"> </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+         PurchaseReplenishment.Initialize();
+        //PurchaseReplenishment.LoadList();
+         if ($("#SelectedCentreCode").val() != "" && $("#GeneralUnitsID").val() != "") {
+             $("#btnShowList").click();
+         }
+    });
+</script>
+
+

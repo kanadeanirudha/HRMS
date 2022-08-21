@@ -1,0 +1,111 @@
+﻿@*@model AMS.ViewModel.EmployeeProjectWorksMasterViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <h3 class="my-caption">@Resources.DisplayName_ProjectWorks </h3>
+    
+    <div id="my-Qualification" style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="nonboxy-widget">
+                    <div class="widget-head">
+                        <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.DisplayName_ProjectWorks</h5>
+
+                    </div>
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                        <table id="DataTables_Table_0" class="data-tbl-striped table table-striped table-bordered dataTable">
+                            <thead>
+                                <tr role="row">
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 65%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Html.LabelFor(m => m.ProjectWorkName, new { @class = "control-label", style = "font-weight:bold" })</th>
+                                    <th aria-label=" Dead Line : activate to sort column ascending" style="width: 20%; background-color: #fff;font-weight:bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_Duration</th>
+                                    <th aria-label=" Status : activate to sort column ascending" style="width: 15%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Html.LabelFor(m => m.ProjectStatus, new { @class = "control-label", style = "font-weight:bold" })</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in ViewBag.ListEmployeeProjectWorksMasterDetails)
+                            {
+                                <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                    <tr class="odd">
+                                        <td style="text-align:left">@item.ProjectWorkName</td>
+                                        <td class="center; ">@item.ProjectWorkFromDate - @item.ProjectWorkToDate </td>
+                                     
+                                        @if (@item.ProjectStatus == true)
+                                        {
+                                            <td class="center "><p  style="text-align: center; "><span style="text-align: center; height:5px;" class="label label-success">@Resources.DisplayName_Completed</span></p></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="center "><p  style="text-align: center; "><span style="text-align: center; height:5px;" class="label label-warning">@Resources.DisplayName_Ongoing</span></p></td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+@model AMS.ViewModel.EmployeeProjectWorksMasterViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <div class="col-sm-12">
+        <div class="card rating-list">
+            <div class="listview">
+                <div class="lv-header">
+                    <div class="m-t-0">
+                        @Resources.DisplayName_ProjectWorks
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                @*<div class="lv-body">*@
+                <div class="table-responsive" id="DataTables_Table_0_wrapper">
+                    <table id="DataTables_Table_0" class="table">
+                        <thead>
+                            <tr class="warning c-white">
+                                <th>@Html.LabelFor(m => m.ProjectWorkName)</th>
+                                <th>@Resources.TableHeaders_Duration</th>
+                                <th>@Html.LabelFor(m => m.ProjectStatus)</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in ViewBag.ListEmployeeProjectWorksMasterDetails)
+                        {
+                                <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                    <tr class="active">
+                                        <td>@item.ProjectWorkName</td>
+                                        <td>@item.ProjectWorkFromDate - @item.ProjectWorkToDate </td>
+
+                                        @if (@item.ProjectStatus == true)
+                                        {
+                                            <td>
+                                                <p style="text-align: center;"><button style="" class="btn btn-success btn-xs waves-effect">@Resources.DisplayName_Completed</button></p>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <p style="text-align: center;"><button style="" class="btn btn-warning btn-xs waves-effect">@Resources.DisplayName_Ongoing</button></p>
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                        }
+                    </table>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+
+}

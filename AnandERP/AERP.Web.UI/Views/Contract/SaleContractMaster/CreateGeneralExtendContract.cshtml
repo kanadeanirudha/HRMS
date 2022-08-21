@@ -1,0 +1,218 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div id="custom-content">
+    @Html.HiddenFor(model => model.ID)
+
+    <input type="hidden" id="TaskCode" value="GeneralExtendContract" />
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CentreCode, new { })
+                            @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "------Select Centre-------", new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CentreCode)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(m => m.CustomerMasterID)
+                            @Html.HiddenFor(m => m.CustomerType)
+                            @Html.LabelFor(model => model.CustomerMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerMasterName, new { maxlength = "50", @class = "form-control input-sm ", disabled = "disabled" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CustomerMasterName)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(m => m.CustomerBranchMasterID)
+                            @Html.LabelFor(model => model.CustomerBranchMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerBranchMasterName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CustomerBranchMasterName)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(m => m.CustomerContactPersonID)
+                            @Html.LabelFor(model => model.CustomerContactPersonName, new { })
+                            @Html.TextBoxFor(model => model.CustomerContactPersonName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CustomerContactPersonName)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ContractStartDate, new { })
+                            @Html.TextBoxFor(model => model.ContractStartDate, new { maxlength = "50", @class = "form-control input-sm", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContractStartDate)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ContractEndDate, new { })
+                            @Html.TextBoxFor(model => model.ContractEndDate, new { @class = "form-control input-sm" })
+                            <input type="hidden" value="@Model.ContractEndDate" id="OriginalContractEndDate" />
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContractEndDate)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.BillingType, new { })
+                            @Html.DropDownListFor(model => model.BillingType, (SelectList)ViewBag.BillingTypeList, new { @class = "form-control", style = "", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.BillingType)
+                    </div>
+                </div>
+                @if (Model.BillingType == 2)
+                {
+                    <div class="col-sm-12" id="divBillingFixedAmount">
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.FixedBillingType, new { })
+                                @Html.DropDownListFor(model => model.FixedBillingType, (SelectList)ViewBag.FixedBillingTypeList, new { @class = "form-control", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FixedBillingType)
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.BillingFixedAmount, new { })
+                                @Html.TextBoxFor(model => model.BillingFixedAmount, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BillingFixedAmount)
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.ShortExtraPostingRateAccTo, new { })
+                                @Html.DropDownListFor(model => model.ShortExtraPostingRateAccTo, (SelectList)ViewBag.ShortExtraPostingRateAccToList, new { @class = "form-control", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ShortExtraPostingRateAccTo)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-12" id="divBillingFixedAmount" style="display:none;">
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.FixedBillingType, new { })
+                                @Html.DropDownListFor(model => model.FixedBillingType, (SelectList)ViewBag.FixedBillingTypeList, new { @class = "form-control", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FixedBillingType)
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.BillingFixedAmount, new { })
+                                @Html.TextBoxFor(model => model.BillingFixedAmount, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BillingFixedAmount)
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.ShortExtraPostingRateAccTo, new { })
+                                @Html.DropDownListFor(model => model.ShortExtraPostingRateAccTo, (SelectList)ViewBag.ShortExtraPostingRateAccToList, new { @class = "form-control", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ShortExtraPostingRateAccTo)
+                        </div>
+                    </div>
+                }
+                <div class="col-sm-12">
+                    <div class="panel-group" role="tablist" aria-multiselectable="true">
+
+                        <div class="panel panel-collapse">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="HideShowModifyTermDetails" data-parent="#accordion" href="#accordionModifyTermDetails" aria-expanded="false" aria-controls="accordionModifyTermDetails">
+                                        Modify Term Details
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="accordionModifyTermDetails" class="collapse out" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="panel-body" id="SaleContractModifyTermDetails">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-12">
+    <button class="btn btn-primary" style="margin-left:1%" id="ExtendSaleContractMasterRecord" type="button">@Resources.ButtonAction_Submit</button>
+    @*<button class="btn bgm-bluegray" style="margin-left:1%" id="LoadSaleContractMasterRecord" type="button">Back</button>*@
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractMaster.Initialize();
+
+        var OriginalContractEndDate = $("#OriginalContractEndDate").val();
+        $('#ContractEndDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            minDate: OriginalContractEndDate,
+            ignoreReadonly: true,
+        });
+
+        var ShowModifyTermDetails = 0;
+        $("#HideShowModifyTermDetails").click(function () {
+
+            if (ShowModifyTermDetails == 0) {
+
+                $('#SaleContractModifyTermDetails').show();
+
+                var SaleContractMasterID = $('input[name=ID]').val();
+                var TaskCode = $("#TaskCode").val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { SaleContractMasterID: SaleContractMasterID, TaskCode: TaskCode },
+                     dataType: "html",
+                     url: '/SaleContractMaster/ModifyTermDetailsData',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#SaleContractModifyTermDetails').html(data);
+                         ShowModifyTermDetails = 1;
+                     }
+                 });
+            }
+            else {
+
+                var IsDataAdded = false;
+                $('#SaleContractModifyTermDetails input[type="text"]').each(function () {
+                    if ($(this).val() != 0 && $(this).val() != "") {
+                        IsDataAdded = true;
+                    }
+                })
+
+                if (IsDataAdded == true) {
+                    notify("Term Details are added in Contract. Term Details can not be closed until the contract is saved.", "warning");
+                    return false;
+                }
+
+                $('#SaleContractModifyTermDetails').hide();
+                ShowModifyTermDetails = 0;
+            }
+        });
+
+        $("#HideShowModifyTermDetails").click();
+    });
+</script>

@@ -1,0 +1,723 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div id="custom-content">
+    @Html.HiddenFor(model => model.CustomerMasterID)
+    @Html.HiddenFor(model => model.CustomerBranchMasterID)
+    @Html.HiddenFor(model => model.CentreCode)
+    <input type="hidden" id="TaskCode" value="GeneralRenewContract" />
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Narration, new { })
+                            @Html.TextBoxFor(model => model.Narration, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Narration)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(m => m.EmployeeMasterID)
+                            @Html.LabelFor(model => model.EmployeeMasterName, new { })
+                            @Html.TextBoxFor(model => model.EmployeeMasterName, new { @class = "form-control input-sm" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.EmployeeMasterName)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PurchaseOrderNumber, new { })
+                            @Html.TextBoxFor(model => model.PurchaseOrderNumber, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PurchaseOrderNumber)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PurchaseOrderDate, new { })
+                            @Html.TextBoxFor(model => model.PurchaseOrderDate, new { @class = "form-control input-sm " })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PurchaseOrderDate)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            <div class="checkbox">
+                                <label>
+                                    @if (Model.IsDisplayPurchaseDetails == true)
+                                    {
+                                        <input type="checkbox" value="" id="IsDisplayPurchaseDetails" checked>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" value="" id="IsDisplayPurchaseDetails">
+                                    }
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.IsDisplayPurchaseDetails, new { style = "" })
+                                </label>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.IsDisplayPurchaseDetails)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ContractStartDate, new { })
+                            @Html.TextBoxFor(model => model.ContractStartDate, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContractStartDate)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ContractEndDate, new { })
+                            @Html.TextBoxFor(model => model.ContractEndDate, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContractEndDate)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.BillingType, new { })
+                            @Html.DropDownListFor(model => model.BillingType, (SelectList)ViewBag.BillingTypeList, new { @class = "form-control", style = "", })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.BillingType)
+                    </div>
+                </div>
+                @if (Model.BillingType == 2)
+                {
+                    <div class="col-sm-12" id="divBillingFixedAmount">
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.FixedBillingType, new { })
+                                @Html.DropDownListFor(model => model.FixedBillingType, (SelectList)ViewBag.FixedBillingTypeList, new { @class = "form-control", style = "", })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FixedBillingType)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.HiddenFor(m => m.FixedBillingForManPowerItemID)
+                                @Html.LabelFor(model => model.FixedBillingForManPowerItemName, new { })
+                                @Html.TextBoxFor(model => model.FixedBillingForManPowerItemName, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FixedBillingForManPowerItemName)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.BillingFixedAmount, new { })
+                                @Html.TextBoxFor(model => model.BillingFixedAmount, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BillingFixedAmount)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.ShortExtraPostingRateAccTo, new { })
+                                @Html.DropDownListFor(model => model.ShortExtraPostingRateAccTo, (SelectList)ViewBag.ShortExtraPostingRateAccToList, new { @class = "form-control", style = "", })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ShortExtraPostingRateAccTo)
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                <div class="checkbox">
+                                    <label>
+                                        @if (Model.IsIncludeAllPostingForShortExtraRate == true)
+                                        {
+                                            <input type="checkbox" value="" id="IsIncludeAllPostingForShortExtraRate" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" value="" id="IsIncludeAllPostingForShortExtraRate">
+                                        }
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.IsIncludeAllPostingForShortExtraRate, new { style = "" })
+                                    </label>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.IsIncludeAllPostingForShortExtraRate)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-12" id="divBillingFixedAmount" style="display:none;">
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.FixedBillingType, new { })
+                                @Html.DropDownListFor(model => model.FixedBillingType, (SelectList)ViewBag.FixedBillingTypeList, new { @class = "form-control", style = "", })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FixedBillingType)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.HiddenFor(m => m.FixedBillingForManPowerItemID)
+                                @Html.LabelFor(model => model.FixedBillingForManPowerItemName, new { })
+                                @Html.TextBoxFor(model => model.FixedBillingForManPowerItemName, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FixedBillingForManPowerItemName)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.BillingFixedAmount, new { })
+                                @Html.TextBoxFor(model => model.BillingFixedAmount, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BillingFixedAmount)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.ShortExtraPostingRateAccTo, new { })
+                                @Html.DropDownListFor(model => model.ShortExtraPostingRateAccTo, (SelectList)ViewBag.ShortExtraPostingRateAccToList, new { @class = "form-control", style = "", })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ShortExtraPostingRateAccTo)
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                <div class="checkbox">
+                                    <label>
+                                        @if (Model.IsIncludeAllPostingForShortExtraRate == true)
+                                        {
+                                            <input type="checkbox" value="" id="IsIncludeAllPostingForShortExtraRate" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" value="" id="IsIncludeAllPostingForShortExtraRate">
+                                        }
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.IsIncludeAllPostingForShortExtraRate, new { style = "" })
+                                    </label>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.IsIncludeAllPostingForShortExtraRate)
+                        </div>
+                    </div>
+                }
+
+                <div class="col-sm-12">
+                    <div class="panel-group" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-collapse">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="HideShowTermDetails" data-parent="#accordion" href="#accordionTermDetails" aria-expanded="false" aria-controls="accordionTermDetails">
+                                        Term Details
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="accordionTermDetails" class="collapse out" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="panel-body" id="SaleContractTermDetails">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-collapse">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="HideShowModifyManPowerItem" data-parent="#accordion" href="#accordionModifyManPowerItem" aria-expanded="false" aria-controls="accordionModifyManPowerItem">
+                                        Modify Man Power Item
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="accordionModifyManPowerItem" class="collapse out" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="panel-body" id="SaleContractModifyManPowerItem">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-collapse">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="HideShowModifyMachineMaster" data-parent="#accordion" href="#accordionModifyMachineMaster" aria-expanded="false" aria-controls="accordionModifyMachineMaster">
+                                        Modify Assign Machine
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="accordionModifyMachineMaster" class="collapse out" role="tabpanel" aria-labelledby="headingFour">
+                                <div class="panel-body" id="SaleContractModifyMachineMaster">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-collapse">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="HideShowModifyJobWorkItem" data-parent="#accordion" href="#accordionModifyJobWorkItem" aria-expanded="false" aria-controls="accordionModifyJobWorkItem">
+                                        Modify Job Work Item
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="accordionModifyJobWorkItem" class="collapse out" role="tabpanel" aria-labelledby="headingFour">
+                                <div class="panel-body" id="SaleContractModifyJobWorkItem">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-collapse" style="display:none;">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="HideShowModifyFixItem" data-parent="#accordion" href="#accordionModifyFixItem" aria-expanded="false" aria-controls="accordionModifyFixItem">
+                                        Modify Fix Item
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="accordionModifyFixItem" class="collapse out" role="tabpanel" aria-labelledby="headingFour">
+                                <div class="panel-body" id="SaleContractModifyFixItem">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-collapse">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" id="HideShowModifyServiceItem" data-parent="#accordion" href="#accordionModifyServiceItem" aria-expanded="false" aria-controls="accordionModifyServiceItem">
+                                        Modify Service Item
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="accordionModifyServiceItem" class="collapse out" role="tabpanel" aria-labelledby="headingFour">
+                                <div class="panel-body" id="SaleContractModifyServiceItem">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-12">
+    <button class="btn btn-primary" style="margin-left:1%" id="RenewSaleContractMasterRecord" type="button">@Resources.ButtonAction_Submit</button>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractMaster.Initialize();
+
+        $('#PurchaseOrderDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        })
+
+        $('#ContractStartDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        }).on('dp.change', function () {
+            $("#SalaryEffectiveFromDate").val($(this).val());
+        });
+
+        $('#ContractEndDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        })
+
+        $("#BillingType").change(function () {
+            if ($(this).val() == "2") {
+                $("#divBillingFixedAmount").show();
+            } else {
+                $("#divBillingFixedAmount").hide();
+            }
+        });
+
+        mapEmployeeName = [];
+        var getDataEmployeeName = function () {
+            debugger;
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractMaster/GetEmployeeeMasterSearchList",
+                    type: "POST",
+                    data: { term: q, CentreCode: $("#CentreCode").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.EmployeeMasterName)) {
+                                mapEmployeeName[response.EmployeeMasterName] = response;
+                                matches.push(response.EmployeeMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#EmployeeMasterName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataEmployeeName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#EmployeeMasterID").val(mapEmployeeName[item].EmployeeMasterID);
+            $("#EmployeeMasterName").val(mapEmployeeName[item].EmployeeMasterName);
+        });
+
+        $('#EmployeeMasterName').on("keydown", function (e) {
+
+            if (e.keyCode == 8 || e.keyCode == 46) {
+
+                $('#EmployeeMasterName').typeahead('val', '');
+                $("#EmployeeMasterName").val("");
+                $("#EmployeeMasterID").val("0");
+            }
+        });
+
+        mapFixedBillingForManPowerItemName = [];
+        var getDataFixedBillingForManPowerItemName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractManPowerItem/GetSaleContractManPowerItemSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val(), CustomerBranchMasterID: $("#CustomerBranchMasterID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.SaleContractManPowerItemName)) {
+                                mapFixedBillingForManPowerItemName[response.SaleContractManPowerItemName] = response;
+                                matches.push(response.SaleContractManPowerItemName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#FixedBillingForManPowerItemName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataFixedBillingForManPowerItemName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#FixedBillingForManPowerItemID").val(mapFixedBillingForManPowerItemName[item].SaleContractManPowerItemID);
+            $("#FixedBillingForManPowerItemName").val(mapFixedBillingForManPowerItemName[item].SaleContractManPowerItemName);
+        });
+
+        $('#FixedBillingForManPowerItemName').on("keydown", function (e) {
+            if ($("#CustomerMasterID").val() == "0" || $("#CustomerMasterID").val() == "") {
+                notify("Please select Customer.", "warning");
+                return false;
+            }
+            if ($("#CustomerType").val() == "2" && ($("#CustomerBranchMasterID").val() == "" || $("#CustomerBranchMasterID").val() == "0")) {
+                notify("Please select Branch.", "warning");
+                return false;
+            }
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#FixedBillingForManPowerItemName').typeahead('val', '');
+                $("#FixedBillingForManPowerItemName").val("");
+                $("#FixedBillingForManPowerItemID").val("");
+            }
+        });
+
+        var ShowTermDetails = 0;
+        $("#HideShowTermDetails").click(function () {
+
+            if (ShowTermDetails == 0) {
+
+                $('#SaleContractTermDetails').show();
+
+                var SaleContractMasterID = $('input[name=ID]').val();
+                var TaskCode = $("#TaskCode").val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { SaleContractMasterID: SaleContractMasterID, TaskCode: TaskCode },
+                     dataType: "html",
+                     url: '/SaleContractMaster/TermDetailsData',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#SaleContractTermDetails').html(data);
+                         ShowTermDetails = 1;
+                     }
+                 });
+            }
+            else {
+                var IsDataAdded = false;
+                $('#SaleContractTermDetails input[type="text"]').each(function () {
+                    if ($(this).val() != 0 && $(this).val() != "") {
+                        IsDataAdded = true;
+                    }
+                })
+
+                if (IsDataAdded == true) {
+                    notify("Term Details are added in Contract. Term Details can not be closed until the contract is saved.", "warning");
+                    return false;
+                }
+
+                $('#SaleContractTermDetails').hide();
+                ShowTermDetails = 0;
+            }
+        });
+
+        var ShowModifyManPowerItem = 0;
+        $("#HideShowModifyManPowerItem").click(function () {
+
+            if (ShowModifyManPowerItem == 0) {
+
+                $('#SaleContractModifyManPowerItem').show();
+
+                var SaleContractMasterID = $('input[name=ID]').val();
+                var TaskCode = $("#TaskCode").val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { SaleContractMasterID: SaleContractMasterID, TaskCode: TaskCode },
+                     dataType: "html",
+                     url: '/SaleContractMaster/ModifyManPowerItemList',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#SaleContractModifyManPowerItem').html(data);
+                         ShowModifyManPowerItem = 1;
+                     }
+                 });
+            }
+            else {
+
+                var IsDataAdded = false;
+                var data = $('#tblManPowerItem tbody tr td  input').each(function () {
+                    IsDataAdded = true;
+                });
+
+                if (IsDataAdded == true) {
+                    notify("Man Power Items are added in Contract. Man Power Item can not be closed until the contract is saved.", "warning");
+                    return false;
+                }
+
+                $('#SaleContractModifyManPowerItem').hide();
+                ShowModifyManPowerItem = 0;
+            }
+        });
+
+        var ShowModifyMachineMaster = 0;
+        $("#HideShowModifyMachineMaster").click(function () {
+
+            if (ShowModifyMachineMaster == 0) {
+
+                $('#SaleContractModifyMachineMaster').show();
+
+                var SaleContractMasterID = $('input[name=ID]').val();
+                var TaskCode = $("#TaskCode").val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { SaleContractMasterID: SaleContractMasterID, TaskCode: TaskCode },
+                     dataType: "html",
+                     url: '/SaleContractMaster/ModifyMachineMasterList',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#SaleContractModifyMachineMaster').html(data);
+                         ShowModifyMachineMaster = 1;
+                     }
+                 });
+            }
+            else {
+                var IsDataAdded = false;
+                var data = $('#tblModifyMachineMaster tbody tr td  input').each(function () {
+                    IsDataAdded = true;
+                });
+
+                if (IsDataAdded == true) {
+                    notify("Machine are assigned in Contract. Assign Machine can not be closed until the contract is saved.", "warning");
+                    return false;
+                }
+
+                $('#SaleContractModifyMachineMaster').hide();
+                ShowModifyMachineMaster = 0;
+            }
+        });
+
+        var ShowModifyJobWorkItem = 0;
+        $("#HideShowModifyJobWorkItem").click(function () {
+
+            if (ShowModifyJobWorkItem == 0) {
+
+                $('#SaleContractModifyJobWorkItem').show();
+
+                var SaleContractMasterID = $('input[name=ID]').val();
+                var TaskCode = $("#TaskCode").val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { SaleContractMasterID: SaleContractMasterID, TaskCode: TaskCode },
+                     dataType: "html",
+                     url: '/SaleContractMaster/ModifyJobWorkItemList',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#SaleContractModifyJobWorkItem').html(data);
+                         ShowModifyJobWorkItem = 1;
+                     }
+                 });
+            }
+            else {
+                var IsDataAdded = false;
+                var data = $('#tblModifyJobWorkItem tbody tr td  input').each(function () {
+                    IsDataAdded = true;
+                });
+
+                if (IsDataAdded == true) {
+                    notify("Job Work Items are added in Contract. Add Job Work Item can not be closed until the contract is saved.", "warning");
+                    return false;
+                }
+
+                $('#SaleContractModifyJobWorkItem').hide();
+                ShowModifyJobWorkItem = 0;
+            }
+        });
+
+        var ShowModifyFixItem = 0;
+        $("#HideShowModifyFixItem").click(function () {
+
+            if (ShowModifyFixItem == 0) {
+
+                $('#SaleContractModifyFixItem').show();
+
+                var SaleContractMasterID = $('input[name=ID]').val();
+                var TaskCode = $("#TaskCode").val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { SaleContractMasterID: SaleContractMasterID, TaskCode: TaskCode },
+                     dataType: "html",
+                     url: '/SaleContractMaster/ModifyFixItemList',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#SaleContractModifyFixItem').html(data);
+                         ShowModifyFixItem = 1;
+                     }
+                 });
+            }
+            else {
+                var IsDataAdded = false;
+                var data = $('#tblModifyFixItem tbody tr td  input').each(function () {
+                    IsDataAdded = true;
+                });
+
+                if (IsDataAdded == true) {
+                    notify("Fix Items are added in Contract. Modify Fix Item can not be closed until the contract is saved.", "warning");
+                    return false;
+                }
+
+                $('#SaleContractModifyFixItem').hide();
+                ShowModifyFixItem = 0;
+            }
+        });
+
+        var ShowModifyServiceItem = 0;
+        $("#HideShowModifyServiceItem").click(function () {
+
+            if (ShowModifyServiceItem == 0) {
+
+                $('#SaleContractModifyServiceItem').show();
+
+                var SaleContractMasterID = $('input[name=ID]').val();
+                var TaskCode = $("#TaskCode").val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { SaleContractMasterID: SaleContractMasterID, TaskCode: TaskCode },
+                     dataType: "html",
+                     url: '/SaleContractMaster/ModifyServiceItemList',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#SaleContractModifyServiceItem').html(data);
+                         ShowModifyServiceItem = 1;
+                     }
+                 });
+            }
+            else {
+                var IsDataAdded = false;
+                var data = $('#tblModifyServiceItem tbody tr td  input').each(function () {
+                    IsDataAdded = true;
+                });
+
+                if (IsDataAdded == true) {
+                    notify("Service Items are added in Contract. Modify Service Item can not be closed until the contract is saved.", "warning");
+                    return false;
+                }
+
+                $('#SaleContractModifyServiceItem').hide();
+                ShowModifyServiceItem = 0;
+            }
+        });
+
+        $("#HideShowTermDetails").click();
+        $("#HideShowModifyManPowerItem").click();
+        $("#HideShowModifyMachineMaster").click();
+        $("#HideShowModifyJobWorkItem").click();
+        $("#HideShowModifyFixItem").click();
+        $("#HideShowModifyServiceItem").click();
+    });
+</script>

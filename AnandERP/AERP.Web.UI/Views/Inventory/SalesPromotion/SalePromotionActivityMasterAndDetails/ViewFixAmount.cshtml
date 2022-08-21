@@ -1,0 +1,85 @@
+﻿@model AMS.ViewModel.SalePromotionActivityMasterAndDetailsViewModel
+<input type="hidden" id="TaskCode" value="GeneralItemSalesData" />
+@*@Html.HiddenFor(model => model.SalePromotionActivityMasterID)*@
+<div id="custom-content">
+    <div class="block-header">
+        @*@Html.HiddenFor(model => model.IsDefaultCount)*@
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;View Fix Amount Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateSalePromotionActivity" role="form" class="row">
+                <div class="col-sm-12 row">
+                    <div id="ListViewModel1" class="table-responsive">
+                        <div id="DivAddRowTable">
+                            <table id="tblData" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Plan Name</th>
+                                        <th>Sub Activity Name</th>
+                                        <th>Bill Amt. Range From</th>
+                                        <th>Bill Amt. Range Upto</th>
+                                        <th>Discount Amt.</th>
+                                        <th>Is Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.GetFixAmountList)
+                                    {
+
+                                        <tr>
+
+                                            <td style="display:none"><input type="text" style="display:none" value="@Model.SalePromotionActivityMasterID"></td>
+                                            <td style="display:none">@item.SalePromotionPlanDetailsID<input type="text" style="display:none" value="@item.SalePromotionPlanDetailsID"></td>
+                                            <td>@item.PlanTypeName<input type="text" id="PlanTypeName" style="display:none" value="@item.PlanTypeName"></td>
+                                            <td>@item.SubActivityName<input type="text" id="PlanTypeName" style="display:none" value="@item.SubActivityName"></td>
+                                            <td>@item.BillAmountRangeFrom<input type="text" id="BillAmountRangeFrom" style="display:none" value="@item.BillAmountRangeFrom"></td>
+                                            <td>@item.BillAmountRangeUpto<input type="text" id="BillAmountRangeUpto" style="display:none" value="@item.BillAmountRangeUpto"></td>
+                                            <td>@item.BillDiscountAmount<input type="text" id="BillDiscountAmount" style="display:none" value="@item.BillDiscountAmount"></td>
+                                            @if (@item.IsPercentage == true) 
+                                            {
+                                                <td>
+                                                    <div class="checkbox col-sm-6">
+                                                        <input type="checkbox" value="" id="IP" disabled="disabled" checked>
+                                                        <i class="input-helper"></i>
+                                                    </div>
+
+                                                </td>
+                                            }
+                                            else
+                                             {
+                                                <td> <div class="checkbox col-sm-6">
+                                                         <input type="checkbox" value="" id="IP" disabled="disabled">
+                                                        <i class="input-helper"></i>
+                                                    </div>
+                                            </td>
+                                            }
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                          
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SalePromotionActivityMasterAndDetails.Initialize();
+
+    });
+</script>

@@ -1,0 +1,146 @@
+﻿@model AERP.ViewModel.PurchaseReportMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Item Movement Report</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 0px;">
+        @Html.HiddenFor(m => m.errorMessage)
+        <form class="row" role="form">
+            <div class="card-body card-padding">
+                <div class="col-sm-5">
+                    <div class="form-group fg-line">
+                        @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "--------Select Centre-------", new { id = "CentreCode", @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = " Centre Name" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(m => m.ItemNumber)
+                        @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3" style="margin-bottom:0px;">
+                    <button type="button" class="btn btn-primary" id="btnShowList">@Resources.GlobalProperties_ShowList</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div id="ListViewModel">
+        @{Html.RenderAction("ArticalMovement", "ArticalReportMaster");}
+    </div>
+</div>
+
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        debugger;
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                debugger;
+                $.ajax({
+                    url: "/ArticalReportMaster/GetItemSearchList",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q,StorageLocationID : 0,CentreCode : $('#CentreCode').val() },
+                    success: function (data) {
+                        debugger;
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.itemDescription] = response1;
+                            matches.push(response1.itemDescription);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+
+        $('#ItemName').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'states',
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            $('#GeneralItemMasterID').val(map[item].id);
+            $('#ItemNumber').val(map[item].itemNumber);
+
+
+
+
+        });
+
+        $('#btnShowList').click(function () {
+            var ItemNumber = $('#ItemNumber').val();
+            var selectedItem = [];
+            var selectedItem = $('#CentreCode').val();
+            var abc = selectedItem.split(':');
+            var selectedcentrecode = abc[0];
+
+            debugger;
+                    $.ajax(
+                        {
+                            cache: false,
+                            type: "POST",
+                            data: { ItemNumber: ItemNumber, CentreCode: selectedcentrecode },
+                            dataType: "html",
+                            url: '/ArticalReportMaster/ArticalMovement',
+                            success: function (data) {
+                                //Rebind Grid Data
+                                $('#ListViewModel').html(data);
+                            }
+                        });
+
+
+
+        })
+
+        $('#ItemName').on("keydown", function (e) {
+            if ($('#CentreCode').val() == "") {
+                notify("Please select Centre", "warning");
+                return false;
+            }
+            AERPValidation.AllowAlphaNumericOnly(e);
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $("#ItemName").val("");
+                $("#myDataTable tr").remove();
+                $('#ItemName').typeahead('val', '');
+            }
+        });
+
+        $('#CentreCode').on("change", function () {
+            $("#ItemName").val("");
+            $("#myDataTable tr").remove();
+            $('#ItemName').typeahead('val', '');
+        })
+    });
+</script>

@@ -1,0 +1,27 @@
+﻿@model AMS.ViewModel.BOMAndRecipeDetailsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 65%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/BOMAndRecipeDetails.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //BOMAndRecipeDetails.Initialize();
+        BOMAndRecipeDetails.LoadList();
+
+    });
+</script>
+
+
+
+
+

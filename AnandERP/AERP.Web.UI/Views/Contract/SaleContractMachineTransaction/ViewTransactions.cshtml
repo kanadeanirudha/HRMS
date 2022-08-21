@@ -1,0 +1,86 @@
+﻿@model AERP.ViewModel.SaleContractMachineTransactionViewModel
+
+<div id="custom-content">
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <table id="myDataTableTra" class="table table-striped table-vmiddle table-responsive">
+                <thead>
+                    <tr>
+                        <th>Machine Name</th>
+                        <th>Machine Assign Date</th>
+                        <th>Machine Removal Date</th>
+                        <th>Is Active</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ListSaleContractMachineTransaction)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.MachineAssignFromDate</td>
+                            <td>@item.MachineAssignUptoDate</td>
+                            <td>@item.IsActive</td>
+                            <td>
+                                @if (item.IsActive == true)
+                                {
+                                    <input type="hidden" value="@item.SaleContractMachineAssignID" /><button title="@Resources.ToolTip_Edit" class="btn btn-default RemoveMachineFromContract"> <i class="zmdi zmdi-edit"></i></button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col-sm-12" id="RemovalDate" style="display:none;">
+                <div class="col-sm-6">
+                    <div class="select form-group fg-line">
+                        @Html.HiddenFor(m => m.SaleContractMachineAssignID)
+                        @Html.LabelFor(model => model.MachineAssignUptoDate, new { })
+                        @Html.TextBoxFor(model => model.MachineAssignUptoDate, new { @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MachineAssignUptoDate)
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        <button type="button" class="btn btn-primary m-t-20" id="btnRemoveMachine">Remove</button>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        <button type="button" class="btn btn-primary m-t-20" id="btnCancelRemoveMachine">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractMachineTransaction.Initialize();
+        $('#MachineAssignUptoDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            maxDate: moment(),
+            ignoreReadonly: true,
+        });
+
+        $(".RemoveMachineFromContract").click(function () {
+            $("#RemovalDate").show();
+            $(".RemoveMachineFromContract").prop("disabled", true);
+            $("#SaleContractMachineAssignID").val($(this).prev('input').val());
+        })
+
+        $("#btnCancelRemoveMachine").click(function () {
+            $("#RemovalDate").hide();
+            $(".RemoveMachineFromContract").prop("disabled", false);
+        })
+    });
+</script>

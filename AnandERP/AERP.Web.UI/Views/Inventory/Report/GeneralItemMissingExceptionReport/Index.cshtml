@@ -1,0 +1,105 @@
+﻿@model AERP.ViewModel.InventoryReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/Reports/GeneralItemMissingExceptionReport.js")" type="text/javascript"></script>
+
+<div class="container">
+    @using (Html.BeginForm("Index", "GeneralItemMissingExceptionReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Inventory Item Master Report</h2>
+        </div>
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding" style="padding-bottom:5%;">
+                @Html.HiddenFor(m => m.IsPosted)
+                @Html.HiddenFor(m => m.CentreName)
+                <div class="row col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownList("ItemReportList", ViewData["ItemReportList"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Item Type*" })
+                        </div>
+                    </div>
+                    @if (Model.ItemReportList == "SaleDetails" || Model.ItemReportList == "StoreDetails")
+                    {
+                        <div class="col-sm-4" id="CentreCodeList">
+                            <div class="fg-line select form-group">
+                                @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Centre *" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CentreCode)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-4" id="CentreCodeList" style="display:none;">
+                            <div class="fg-line select form-group">
+                                @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Centre *" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CentreCode)
+                        </div>
+                    }
+                    <div class="col-sm-2">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" id="btnVendorMasterReportSubmit" class="btn-primary btn">Show</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="container">
+
+    <div id="aaa">
+        <div class="card">
+            @*<div class="card-header"></div>*@
+            <div class="card-body card-padding">
+
+                @if (Model.ReportFor == "All")
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/GeneralItemMissingExceptionReport.aspx")
+                }
+                else if (Model.ReportFor == "CategoryDetails")
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/ItemMasterReportForCategoryDetails.aspx");
+                }
+                else if (Model.ReportFor == "UOMDetails")
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/ItemMasterReportForUoMDetails.aspx");
+                }
+                else if (Model.ReportFor == "VendorDetails")
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/ItemMasterReportForVendorDetails.aspx");
+                }
+                else if (Model.ReportFor == "SaleDetails")
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/ItemMasterReportForSaleDetails.aspx");
+                }
+                else if (Model.ReportFor == "StoreDetails")
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/ItemMasterReportForStoreDetails.aspx");
+                }
+                else if (Model.ReportFor == "RestaurantDetails")
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/ItemMasterReportForRestaurantDetails.aspx");
+                }
+                else
+                {
+                    @Html.Partial("/Views/Inventory/Report/GeneralItemMissingExceptionReport/GeneralItemMissingExceptionReport.aspx")
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralItemMissingExceptionReport.Initialize();
+
+
+    });
+</script>

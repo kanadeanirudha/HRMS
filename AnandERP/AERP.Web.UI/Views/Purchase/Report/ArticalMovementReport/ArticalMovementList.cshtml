@@ -1,0 +1,151 @@
+﻿@model AERP.ViewModel.PurchaseReportMasterViewModel
+
+<div class="card" id="DivBranchWiseJobOrder">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myDataTable">
+            <thead>
+                <tr>
+                    <th>Posting Date</th>
+                    <th style="width:5%">Movement Code</th>
+                    <th>SLoc</th>
+                    <th>Batch</th>
+                    <th style="width:12%">Tran Date</th>
+                    <th>Tran UOM</th>
+                    <th>Quantity EUn</th>
+                    <th>Quantity BUn</th>
+                     
+                    <th>Amount</th>
+                    <th style="width:12%">Vendor PO</th>
+                    <th>Vendor No.</th>
+                </tr>
+            </thead>
+            @if (Model.PurchaseReportMasterDetails != null)
+            {
+                <tbody style="overflow: auto" id="tbodyID">
+
+                    @for (int i = 0; i < Model.PurchaseReportMasterDetails.Count; i++)
+                    {
+                        if (@Model.PurchaseReportMasterDetails[i].TransactionTypeId == 2)
+                        { 
+                        <tr role="row" class="odd">
+                         
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].TransDate</span></td>
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].MovementTypeCode</span></td>
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].LocationName</span></td>
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].BatchNumber</span></td> @*Batch*@
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].TransDate</span></td>
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].TransactionUOM</span></td>
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].TransactionQuantity</span></td>
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].Quantity</span></td>
+                         @*   <td>@Model.PurchaseReportMasterDetails[i].CurrentStockQty</td>*@
+                            <td style="width:5%"><span style="color:red">@Math.Round((@Model.PurchaseReportMasterDetails[i].Rate * @Model.PurchaseReportMasterDetails[i].TransactionQuantity), 3)</span></td> @*Amount*@
+                            <td style="width:17%"><span style="color:red">@Model.PurchaseReportMasterDetails[i].PurchaseOrderNumber</span></td>  @*VendorPO number*@
+                            <td><span style="color:red">@Model.PurchaseReportMasterDetails[i].VendorNumber</span></td>  @*Vendor number*@
+                        </tr>
+                        }
+                        else if (@Model.PurchaseReportMasterDetails[i].TransactionTypeId == 3)
+                        {
+                            <tr role="row" class="odd">
+
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].TransDate</span></td>
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].MovementTypeCode</span></td>
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].LocationName</span></td>
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].BatchNumber</span></td> @*Batch*@
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].TransDate</span></td>
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].TransactionUOM</span></td>
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].TransactionQuantity</span></td>
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].Quantity</span></td>
+                                @*   <td>@Model.PurchaseReportMasterDetails[i].CurrentStockQty</td>*@
+                                <td style="width:5%"><span style="color:green">@Math.Round((@Model.PurchaseReportMasterDetails[i].Rate * @Model.PurchaseReportMasterDetails[i].TransactionQuantity), 3)</span></td> @*Amount*@
+                                <td style="width:17%"><span style="color:green">@Model.PurchaseReportMasterDetails[i].PurchaseOrderNumber</span></td>  @*VendorPO number*@
+                                <td><span style="color:green">@Model.PurchaseReportMasterDetails[i].VendorNumber</span></td>  @*Vendor number*@
+                            </tr>
+                        }
+                        else 
+                        {
+                            <tr role="row" class="odd">
+
+                                <td>@Model.PurchaseReportMasterDetails[i].TransDate</td>
+                                <td>@Model.PurchaseReportMasterDetails[i].MovementTypeCode</td>
+                                <td>@Model.PurchaseReportMasterDetails[i].LocationName</td>
+                                <td>@Model.PurchaseReportMasterDetails[i].BatchNumber</td> @*Batch*@
+                                <td>@Model.PurchaseReportMasterDetails[i].TransDate</td>
+                                <td>@Model.PurchaseReportMasterDetails[i].TransactionUOM</td>
+                                <td>@Model.PurchaseReportMasterDetails[i].TransactionQuantity</td>
+                                <td>@Model.PurchaseReportMasterDetails[i].Quantity</td>
+                                @*   <td>@Model.PurchaseReportMasterDetails[i].CurrentStockQty</td>*@
+                                <td style="width:5%">@Math.Round((@Model.PurchaseReportMasterDetails[i].Rate * @Model.PurchaseReportMasterDetails[i].TransactionQuantity), 3)</td> @*Amount*@
+                                <td style="width:17%">@Model.PurchaseReportMasterDetails[i].PurchaseOrderNumber</td>  @*VendorPO number*@
+                                <td>@Model.PurchaseReportMasterDetails[i].VendorNumber</td>  @*Vendor number*@
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            }
+        </table>
+    </div>
+</div>
+
+<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+        //debugger;
+        //var map = {};
+        //var getData1 = function () {
+        //    return function findMatches(q, cb) {
+        //        var matches, substringRegex;
+                
+        //        // an array that will be populated with substring matches
+        //        matches = [];
+
+        //        // regex used to determine if a string contains the substring `q`
+        //        substrRegex = new RegExp(q, 'i');
+        //        debugger;
+        //        $.ajax({
+        //            url: "/ArticalReportMaster/GetItemSearchList",
+        //            type: "POST",
+        //            dataType: "json",
+        //            data: { term: q,StorageLocationID : 0 },
+        //            success: function (data) {
+        //                debugger;
+        //                // iterate through the pool of strings and for any string that
+        //                // contains the substring `q`, add it to the `matches` array
+        //                $.each(data, function (i, response1) {
+        //                    // if (substrRegex.test(response.name)) {
+        //                    map[response1.itemDescription] = response1;
+        //                    matches.push(response1.itemDescription);
+        //                    // }
+        //                });
+        //            },
+        //            async: false
+        //        })
+        //        cb(matches);
+        //    };
+        //};
+
+
+        //$('#ItemName').typeahead({
+        //    hint: true,
+        //    highlight: true,
+        //    minLength: 1
+        //},
+        //{
+        //    name: 'states',
+        //    source: getData1()
+        //}).on("typeahead:selected", function (obj, item) {
+        //    $('#GeneralItemMasterID').val(map[item].id);
+        //    $('#ItemNumber').val(map[item].itemDescription);
+        //    alert($('#ItemNumber').val())
+            
+
+
+        //});
+
+    });
+
+
+</script>

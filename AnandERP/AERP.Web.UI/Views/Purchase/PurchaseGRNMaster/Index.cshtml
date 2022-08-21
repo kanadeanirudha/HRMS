@@ -1,0 +1,132 @@
+﻿@model AERP.ViewModel.PurchaseGRNMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 80%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Purchase/PurchaseGRNMaster.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script> 
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Manage Purchase GRN</h2>
+    </div>
+    <div class="card" style="margin-bottom: 0px;">
+        @*<div class="card-header">
+                &nbsp;
+            </div>*@
+        <div class="card-body card-padding">
+            <form class="row" role="form">
+                <div class="col-sm-2">
+                    
+                    <div class="select form-group fg-line">
+                        @Html.DropDownList("POStatus", ViewData["POStatus"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "GRN Status" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                        <div class="form-group fg-line ">
+                             @Html.HiddenFor(m => m.ID)
+                            @Html.TextBoxFor(m => m.Vender, new { @class = "form-control input-sm typeahead",placeholder="Vendor"})
+                        </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        @Html.DropDownList("MonthName", ViewData["MonthName"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "MonthList*" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MonthName)
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        @Html.DropDownList("MonthYear", ViewData["MonthYear"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "YearList*" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MonthYear)
+                </div>
+                
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-primary" id="btnShowList">@Resources.GlobalProperties_ShowList</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="ListViewModel"> </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        PurchaseGRNMaster.LoadList();
+       
+        $("#btnShowList").on('click', function () {
+
+            PurchaseGRNMaster.LoadList();
+        });
+        var getDataVender = function () {
+        
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+
+                $.ajax({
+                    url: "/PurchaseGRNMaster/GetVendorSearchList",
+                    type: "POST",
+                    data: { SearchWord: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.name)) {
+                                PurchaseGRNMaster.map[response.name] = response;
+                                matches.push(response.name);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+       
+        $("#Vender").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataVender()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#ID").val(parseFloat(PurchaseGRNMaster.map[item].id));
+            $("#Vender").val(parseFloat(PurchaseGRNMaster.map[item].name));
+            $("#VendorNumber").val(parseFloat(PurchaseGRNMaster.map[item].VendorNumber));
+        });
+        $('#Vender').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                //$("#Vender").val("");
+                $('#Vender').typeahead('val', '');
+                $("#ID").val(0);
+                $("#VendorNumber").val(0);
+            }
+
+        });
+    });
+</script>
+
+

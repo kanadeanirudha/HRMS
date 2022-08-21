@@ -1,0 +1,208 @@
+﻿@*
+    @model AMS.ViewModel.LeaveRuleExemptedEmployeeViewModel
+    <form id="FormCreateLeaveRuleExemptedEmployee" method="post">
+        <style>
+            .ui-front {
+                /*z-index:10000;*/
+                z-index: 9999;
+            }
+        </style>
+        <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.EmployeeID)
+        <div class="widget-block" style="width: auto; height: auto;">
+            <div class="widget-head">
+                <h5> @Resources.FormName_CreateLeaveRuleExemptedEmployee</h5>
+            </div>
+            <div class="widget-content">
+                <div id="update-message" class="alert" style="display: none; color: #000"></div>
+                <div class="widget-box" style="padding: 15px">
+
+                    <div class="control-group control-label">
+                        @Html.LabelFor(model => model.CentreName, new { style = "font-Weight:Bold;" })&nbsp
+                         <span style="float: left; padding-left: 1px; font-weight: bold"> @Html.DisplayFor(model => model.CentreName)</span>
+
+                    </div>
+                    <div class="control-group control-label">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.EmployeeFullName, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.TextBoxFor(model => model.EmployeeFullName, new { style = "font-Weight:Bold;", maxlength = "50" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.EmployeeFullName)
+                        </div>
+                    </div>
+                    <div class="control-group control-label">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.LeaveRuleMasterID, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            <div id="DivDropdownlist">
+                            @{ Html.RenderAction("GetLeaveRuleByEmployeeID", "LeaveRuleExemptedEmployee", new { EmployeeID = Model.EmployeeID, CentreCode = Model.CentreCode }); }
+                           </div>
+
+                        </div>
+                    </div>
+                    <div class="control-group control-label" style="margin-bottom: 0px; display: none">
+                        @Html.LabelFor(model => model.IsActive, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.EditorFor(model => model.IsActive)
+                        </div>
+                    </div>
+                    <div class="control-group control-label">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.FromDate, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.TextBoxFor(model => model.FromDate, new { style = "font-Weight:Bold;", ReadOnly = "true" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.FromDate)
+                        </div>
+                    </div>
+                    <div class="control-group control-label">
+                        @Html.LabelFor(model => model.UptoDate, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.TextBoxFor(model => model.UptoDate, new { style = "font-Weight:Bold;", ReadOnly = "true" })
+                            &nbsp;
+                            <img id="UptoDate_Clear" alt="Clear" style="width: 25px; height: 25px; margin-bottom: 10px;" title="Clear" src="~/Content/images/clean.png" />
+                        </div>
+                    </div>
+                    <div class="form-actions" style="border: 1px solid #e5e5e5; text-align: right">
+                        <input type="button"  id="CreateLeaveRuleExemptedEmployeeRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            LeaveRuleExemptedEmployee.Initialize();
+       //     $('#LeaveRuleMasterID').multipleSelect();
+        });
+    </script>
+
+*@
+
+@model AERP.ViewModel.LeaveRuleExemptedEmployeeViewModel
+@{
+    Layout = null;
+}
+
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormName_CreateLeaveRuleExemptedEmployee</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:350px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+            <form id="FormCreateLeaveRuleExemptedEmployee" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.ID)
+                @Html.HiddenFor(m => m.EmployeeID)
+                
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <p class="f-500 c-black m-b-15">  @Html.LabelFor(model => model.CentreName, new { style = "" }) : @Html.DisplayFor(model => model.CentreName)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.EmployeeFullName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.EmployeeFullName, new { @class = "form-control", style = "", maxlength = "50" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.EmployeeFullName)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.LeaveRuleMasterID, new { style = "" })
+                        <div class="form-group  fg-line" id="DivDropdownlist">
+                            @{ Html.RenderAction("GetLeaveRuleByEmployeeID", "LeaveRuleExemptedEmployee", new { EmployeeID = Model.EmployeeID, CentreCode = Model.CentreCode }); }
+                        </div>
+                    </div>
+
+                    @*<div class="col-sm-6">
+                        <div id="checkboxlist" class="form-group">
+                            @Html.LabelFor(model => model.LeaveRuleMasterID, new { style = "" })
+                            <p id="e5_f">
+                                <select id="DivDropdownlist" class="form-group selectpicker" multiple name="LeaveRuleExemptedEmployee">
+                                    @{ Html.RenderAction("GetLeaveRuleByEmployeeID", "LeaveRuleExemptedEmployee", new { EmployeeID = Model.EmployeeID, CentreCode = Model.CentreCode }); }
+                                </select>
+                            </p>
+                        </div>
+                    </div>*@
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.FromDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.FromDate, new { @class = "form-control", style = "background-color:#fff;", ReadOnly = "true" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FromDate)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.UptoDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.UptoDate, new { @class = "form-control", style = "background-color:#fff;", ReadOnly = "true" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FromDate)
+                    </div>
+
+                    <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                        <label>
+                            <input type="checkbox" id="IsActive">
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsActive, new { style = "" })
+                        </label>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="CreateLeaveRuleExemptedEmployeeRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                             <button type="button" id="ResetLeaveRuleExemptedEmployeeRecord" class="btn btn-default">@Resources.ButtonAction_Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+
+                
+
+                @*<div class="col-sm-1">
+                    <img id="UptoDate_Clear" alt="Clear" style="width: 25px; height: 25px; margin-bottom: 10px;" title="Clear" src="~/Content/images/clean.png" />
+                </div>*@
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+@*<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>*@
+
+@*<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('.selectpicker').selectpicker();
+        LeaveRuleExemptedEmployee.Initialize();
+             //$('#LeaveRuleMasterID').multipleSelect();
+    });
+</script>

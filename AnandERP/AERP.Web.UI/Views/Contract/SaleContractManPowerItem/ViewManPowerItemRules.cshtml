@@ -1,0 +1,148 @@
+﻿@model AERP.ViewModel.SaleContractManPowerItemViewModel
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;View Contract Posts Rule</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateSaleContractManPowerItemRules">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Rule Type
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.RuleType, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.HeadName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.HeadName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Fixed Amount
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.FixedAmount, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        Percentage
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.Percentage, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Calculate On
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.CalculateOnString, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        Calculate On Fixed Amount
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.CalculateOnFixedAmount, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Is Gender Specific
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.IsGenderSpecific, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        Gender
+                        <div class="form-group  fg-line">
+                            @if (Model.Gender == 1)
+                            {
+                                <input type="text" value="Male" class="form-control" />
+                            }
+                            else if (Model.Gender == 2)
+                            {
+                                <input type="text" value="Female" class="form-control" />
+                            }
+                            else if (Model.Gender == 3)
+                            {
+                                <input type="text" value="Third Gender" class="form-control" />
+                            }
+                            else
+                            {
+                                <input type="text" value="" class="form-control" />
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Range From
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.RangeFrom, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        Range Upto
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.RangeUpto, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        Contribution Type
+                        <div class="form-group  fg-line">
+                            @if (Model.ContributionType == 1)
+                            {
+                                <input type="text" value="Employee" class="form-control" />
+                            }
+                            else if (Model.ContributionType == 2)
+                            {
+                                <input type="text" value="Employer" class="form-control" />
+                            }
+                            else
+                            {
+                                <input type="text" value="" class="form-control" />
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Contribution Type
+                        <div class="form-group  fg-line">
+                            @if (Model.ContributionType == 1)
+                            {
+                                <input type="text" value="Employee" class="form-control" />
+                            }
+                            else if (Model.ContributionType == 2)
+                            {
+                                <input type="text" value="Employer" class="form-control" />
+                            }
+                            else
+                            {
+                                <input type="text" value="" class="form-control" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

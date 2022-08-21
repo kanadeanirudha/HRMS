@@ -1,0 +1,633 @@
+﻿@*@model AMS.ViewModel.EmployeeServiceDetailsViewModel
+@{
+    Layout = null;
+}
+
+
+<div class="widget-block">
+    <div class="widget-head">
+        <h5 id="hFive">
+            @Resources.FormName_ServiceDetails
+
+    </h5>
+
+</div>
+<div class="widget-box" id="EmployeeServiceDetails">
+</div>
+
+<form id="FormEditEmployeeServiceDetailsInfo" method="post" class="form-horizontal well">
+    @Html.HiddenFor(model => model.EmployeeID)
+    @Html.HiddenFor(model=>model.OldDepartmentID)
+    @Html.HiddenFor(model=>model.CentreCode)
+    @Html.HiddenFor(model=>model.IsCurrentFlag)
+    @Html.HiddenFor(model=>model.EmployeeDesignationMasterID)
+    @Html.HiddenFor(model=>model.ID)
+    @Html.HiddenFor(model=>model.OldCentreCode)
+    @Html.HiddenFor(model=>model.CurrentID)
+
+
+
+
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.OrderNumber, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.OrderNumber, new { @class = "txtbox",disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.OrderDate, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.OrderDate, new {  @class = "txtbox",disabled="disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.AcceptedByEmployee, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.DropDownList("AcceptedByEmployee", ViewData["AcceptedByEmployee"] as List<SelectListItem>, new { style = "width:220px;font-weight:bold;", @class = "dropdown1" ,disabled="disabled"})
+
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.ApprovedBy, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.ApprovedBy, new { @class = "txtbox" ,disabled="disabled"})
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.PromotionDemotionFlag, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+
+                    @Html.DropDownList("PromotionDemotionFlag", ViewData["PromotionDemotionFlag"] as List<SelectListItem>, new { style = "width:220px;font-weight:bold;", @class = "dropdown1",disabled="disabled" })
+
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.PromotionDemotionDate, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.PromotionDemotionDate, new { @class = "txtbox",disabled="disabled" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.OldDesignationID, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.DropDownListFor(model => model.OldDesignationID, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "width:220px;font-weight:bold;", @class = "dropdown1",Readonly=true,disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    <label for="input01"><b>New Designation</b></label>
+                </div>
+                <div class="span2">
+                    @Html.DropDownListFor(model => model.EmployeeDesignationMasterID, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "width:220px;font-weight:bold;", @class = "dropdown1" ,disabled="disabled"})
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @if(Model.IsCurrentFlag == true)
+     {
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    <label for="input01">Current Centre Name</label>
+                </div>
+                <div class="span3">
+                    @if(Model.IsCurrentFlag == true)
+
+                        {
+                        @Html.TextBoxFor(m => m.CentreName, new {disabled="disabled" })
+                        }
+                        else
+                        {
+                        @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.organisationStudyCentreMasterList, Resources.ddlHeaders_CentreName, new { id = "CurrentCentreCode", style = "font-weight:bold;font-weight:bold;", @class = "dropdown1",disabled="disabled" })
+                        }
+                </div>
+                <div class="spanFullName">
+                    <label for="input01">Current Department</label>
+                </div>
+                <div class="span2">
+                    @if(Model.IsCurrentFlag == true)
+                         {
+                        @Html.TextBoxFor(m => m.OldDepartmentName, new { style = "width:230px;font-weight:bold;",disabled="disabled" })
+                         }
+                        else
+                        {
+                        @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.organisationDepartmentMasterList, Resources.ddlHeaders_Department, new { @class = "form-control chosen-select", style = "font-weight:bold;font-weight:bold;", disabled="disabled"})
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+     }
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.CentreCode, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.organisationStudyCentreMasterList, Resources.ddlHeaders_CentreName, new { id = "CentreCodeForServiceDetails", style = "font-weight:bold;font-weight:bold;", @class = "dropdown1",disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.DepartmentID, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.organisationDepartmentMasterList, Resources.ddlHeaders_Department, new { id = "DepartmentIDForServiceDetails",@class = "form-control chosen-select", style = "font-weight:bold;font-weight:bold;",disabled="disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.PreviousPromotionDemotionDate, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.PreviousPromotionDemotionDate, new { @class = "txtbox" ,disabled="disabled"})
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.BasicAmount, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(m => m.BasicAmount, new { disabled="disabled"})
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.ChargeTakingDate, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.ChargeTakingDate, new {@class = "txtbox" ,disabled="disabled"})
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.NatureOfAppointment, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+
+                    @Html.DropDownList("NatureOfAppointment", ViewData["NatureOfAppointment"] as List<SelectListItem>, new { style = "width:220px;font-weight:bold;", @class = "dropdown1",disabled="disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.NatureOfDuty, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.NatureOfDuty, new { @class = "txtbox",disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.CollegeApprovalNumber, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.CollegeApprovalNumber, new { @class = "txtbox",disabled="disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.CollegeApprovalDate, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.CollegeApprovalDate, new { @class = "txtbox",disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.UniversityApprovalType, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.DropDownList("UniversityApprovalType", ViewData["UniversityApprovalType"] as List<SelectListItem>, new { style = "width:220px;font-weight:bold;", @class = "dropdown1",disabled="disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.UniversityApprovalNumber, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.UniversityApprovalNumber, new { @class = "txtbox",disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.UniversityApprovalDate, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.UniversityApprovalDate, new { @class = "txtbox",disabled="disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.GeneralBoardUniversityID, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.DropDownListFor(m => m.GeneralBoardUniversityID, (SelectList)ViewBag.generalBoardUniversityMasterList, Resources.ddlHeaders_UniversityName, new { @class = "form-control chosen-select", style = "width:220px;font-weight:bold;",disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.SubjectForApproval, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.SubjectForApproval, new { @class = "txtbox",disabled="disabled" })
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.GrantedPromotionDate, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.GrantedPromotionDate, new {  @class = "txtbox",disabled="disabled" })
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.GrantedPromotionDesignationID, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.DropDownListFor(model => model.GrantedPromotionDesignationID, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "width:220px;font-weight:bold;", @class = "dropdown1",disabled="disabled"})
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.GrantedPromotionLevel, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span3">
+                    @Html.DropDownListFor(m => m.GrantedPromotionLevel, ViewData["GrantedPromotionLevel"] as List<SelectListItem>, new { style = "width:220px;font-weight:bold;", @class = "dropdown1", disabled="disabled"})
+                </div>
+                <div class="spanFullName">
+                    @Html.LabelFor(model => model.IsActive, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.CheckBoxFor(m => m.IsActive,new {disabled="disabled"})
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        EmployeeInformation.Initialize();
+    });
+</script>*@
+
+<!----------------------------------------new code------------------------------------------------------------------>
+@model AMS.ViewModel.EmployeeServiceDetailsViewModel
+@{
+    Layout = null;
+}
+<style type="text/css">
+    .mfp-content {
+        width: 80%;
+    }
+</style>
+
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;FormName_ServiceDetails</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:780px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+            <div class="" id="EmployeeServiceDetails">
+            </div>
+            <form id="FormEditEmployeeServiceDetailsInfo" method="post" class="form-horizontal well">
+                @Html.HiddenFor(model => model.EmployeeID)
+                @Html.HiddenFor(model => model.OldDepartmentID)
+                @Html.HiddenFor(model => model.CentreCode)
+                @Html.HiddenFor(model => model.IsCurrentFlag)
+                @Html.HiddenFor(model => model.EmployeeDesignationMasterID)
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.OldCentreCode)
+                @Html.HiddenFor(model => model.CurrentID)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.OrderNumber, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.OrderNumber, new { @class = "form-control", maxlength = "20", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.OrderNumber)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.OrderDate, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.OrderDate, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.OrderDate)
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.AcceptedByEmployee, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("AcceptedByEmployee", ViewData["AcceptedByEmployee"] as List<SelectListItem>, new { style = "", @class = "form-control", disabled = "disabled" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.ApprovedBy, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ApprovedBy, new { @class = "form-control", maxlength = "50", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.PromotionDemotionFlag, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownList("PromotionDemotionFlag", ViewData["PromotionDemotionFlag"] as List<SelectListItem>, new { style = "", @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.PromotionDemotionDate, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.PromotionDemotionDate, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PromotionDemotionDate)
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.OldDesignationID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @if (ViewBag.IsNewEmployee == 0)
+                                {
+                                    @Html.DropDownListFor(model => model.OldDesignationID, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "", @class = "form-control", disabled = "disabled" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(model => model.OldDesignationID, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "", @class = "form-control", disabled = "disabled" })
+
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.EmployeeDesignationMasterID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(model => model.EmployeeDesignationMasterID, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "", @class = "form-control", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmployeeDesignationMasterID)
+                        </div>
+
+                        @if (Model.IsCurrentFlag == true)
+                        {
+
+                            <div class="col-sm-4">
+                                <span style="color:red">*</span>
+                                @Html.LabelFor(model => model.CentreName, new { style = "" })
+                                <div class="form-group  fg-line select">
+                                    @if (Model.IsCurrentFlag == true)
+                                    {
+                                        @Html.TextBoxFor(m => m.CentreName, new { ReadOnly = "True", @class = "form-control", disabled = "disabled" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.organisationStudyCentreMasterList, Resources.ddlHeaders_CentreName, new { id = "CurrentCentreCode", style = "", @class = "form-control", disabled = "disabled" })
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <span style="color:red">*</span>
+                                @Html.LabelFor(model => model.OldDepartmentName, new { style = "" })
+                                <div class="form-group  fg-line select">
+                                    @if (Model.IsCurrentFlag == true)
+                                    {
+                                        @Html.TextBoxFor(m => m.OldDepartmentName, new { ReadOnly = "True", @class = "form-control", disabled = "disabled" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.organisationDepartmentMasterList, Resources.ddlHeaders_Department, new { @class = "form-control", style = "",disabled="disabled" })
+                                    }
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.CentreCode, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.DropDownListFor(m => m.CentreCode, (SelectList)ViewBag.organisationStudyCentreMasterList, Resources.ddlHeaders_CentreName, new { id = "CentreCodeForServiceDetails", style = "", @class = "form-control", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CentreCode)
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.DepartmentID, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.DropDownListFor(m => m.DepartmentID, (SelectList)ViewBag.organisationDepartmentMasterList, Resources.ddlHeaders_Department, new { id = "DepartmentIDForServiceDetails", @class = "form-control", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DepartmentID)
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.PreviousPromotionDemotionDate, new { style = "" })
+                                <div class="form-group  fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.PreviousPromotionDemotionDate, new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.OrderDate)
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.BasicAmount, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(m => m.BasicAmount, new { @class = "form-control", style = "", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.ChargeTakingDate, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.ChargeTakingDate, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ChargeTakingDate)
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.NatureOfAppointment, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownList("NatureOfAppointment", ViewData["NatureOfAppointment"] as List<SelectListItem>, new { style = "", @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.NatureOfDuty, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.NatureOfDuty, new { @class = "form-control", maxlength = "100", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.CollegeApprovalNumber, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CollegeApprovalNumber, new { @class = "form-control", maxlength = "30", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.CollegeApprovalDate, new { style = "" })
+                                <div class="form-group  fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.CollegeApprovalDate, new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.UniversityApprovalType, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownList("UniversityApprovalType", ViewData["UniversityApprovalType"] as List<SelectListItem>, new { style = "", @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.UniversityApprovalNumber, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.UniversityApprovalNumber, new { @class = "form-control", maxlength = "30", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.UniversityApprovalDate, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.UniversityApprovalDate, new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="col-sm-12">
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.GeneralBoardUniversityID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.GeneralBoardUniversityID, (SelectList)ViewBag.generalBoardUniversityMasterList, Resources.ddlHeaders_UniversityName, new { @class = "form-control", style = "", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GeneralBoardUniversityID)
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.SubjectForApproval, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.SubjectForApproval, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.GrantedPromotionDate, new { style = "" })
+                            
+                                <div class="form-group  fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.GrantedPromotionDate, new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.GrantedPromotionDesignationID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(model => model.GrantedPromotionDesignationID, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "", @class = "form-control", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GrantedPromotionDesignationID)
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.GrantedPromotionLevel, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.GrantedPromotionLevel, ViewData["GrantedPromotionLevel"] as List<SelectListItem>, new { style = "", @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                            <label>
+                                <input type="checkbox" id="IsActive" disabled>
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsActive, new { style = "" })
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="btnUpdateEmployeeServiceDetailsCreate" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        </div>
+                    </div>*@
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeInformation.Initialize();
+    });
+</script>

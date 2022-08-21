@@ -1,0 +1,108 @@
+﻿
+@model AERP.ViewModel.CCRMLocationTypeMasterViewModel
+<style>
+    .mfp-close-btn-in .mfp-close {
+        color: #eee;
+    }
+</style>
+<div class="mfp-content" style="background :#bfc6ca;width: 902px;margin: -10px 0px -10px -10px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="background :#607d8b;color:white;margin-top: -10px;line-height: 2.5;width: 902px;margin-left: -10px;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Location Type Master</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="background:#bfc6ca;margin-top:-25px;margin-left: -10px;width: 902px;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormEditCCRMLocationTypeMaster">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.ID)
+
+                    <div class="col-sm-12" style="height:365px;background: white;margin-left: -27px;margin-top:-23px;width: 902px;">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.LocationTypeCode, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.LocationTypeCode, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LocationTypeCode)
+                            </div>
+
+                            <div class="col-sm-6">
+                                <span style="color:red">*</span>@Html.LabelFor(model => model.LocationType, new { style = "" })
+                                <div class="form-group  fg-line select">
+                                    @Html.DropDownList("LocationType", ViewData["LocationType"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LocationType)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.LocationTypeDesc, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.LocationTypeDesc, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LocationTypeDesc)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.ResponseTime, new { style = "" })<span style="color:red"> ( In Hrs) </span>
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.ResponseTime, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ResponseTime)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.ResponseUnit, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.ResponseUnit, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ResponseUnit)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.CallCharges, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.CallCharges, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CallCharges)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(model => model.Distance, new { style = "" })<span style="color:red"> ( In Km) </span>
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.Distance, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Distance)
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group" style="margin-left: 2%; ">
+                            <input class="btn btn-info" value="@Resources.ButtonAction_Submit" id="EditCCRMLocationTypeMasterRecord" type="button" style="margin-left:15px;" />
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CCRMLocationTypeMaster.Initialize();
+        });
+    </script>
+</div>
+
+
+
+
+
+
+
+
+
+

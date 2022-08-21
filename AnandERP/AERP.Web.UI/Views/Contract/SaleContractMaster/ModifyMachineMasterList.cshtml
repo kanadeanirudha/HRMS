@@ -1,0 +1,200 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <div class="form-group fg-line">
+            @Html.HiddenFor(m => m.SaleContractMachineMasterID)
+            @Html.LabelFor(model => model.SaleContractMachineMasterName, new { })
+            @Html.TextBoxFor(model => model.SaleContractMachineMasterName, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractMachineMasterName)
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractMachineMasterSerialNumber, new { })
+            @Html.TextBoxFor(model => model.SaleContractMachineMasterSerialNumber, new { @class = "form-control input-sm",disabled= "disabled" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractMachineMasterSerialNumber)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractMachineMasterRate, new { })
+            @Html.TextBoxFor(model => model.SaleContractMachineMasterRate, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractMachineMasterRate)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.MachineAssignFromDate, new { })
+            @Html.TextBoxFor(model => model.MachineAssignFromDate, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.MachineAssignFromDate)
+    </div>
+    <div class="col-sm-2">
+        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAssignMachineMaster"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblModifyMachineMaster" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Machine Name</th>
+                <th>Serial Number</th>
+                <th>Machine Rate</th>
+                <th>From Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.SaleContractMasterListForMachineMaster)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@item.SaleContractRequirementDetailsID" />
+                        <input type="hidden" value="@item.SaleContractMachineMasterID" />@item.SaleContractMachineMasterName
+                    </td>
+                    <td><input type="hidden" value="@item.SaleContractMachineMasterSerialNumber" />@item.SaleContractMachineMasterSerialNumber</td>
+                    <td><input type="hidden" value="@item.SaleContractMachineMasterRate" />@Math.Round(item.SaleContractMachineMasterRate,2)</td>
+                    <td><input type="hidden" value="@item.MachineAssignFromDate" />@item.MachineAssignFromDate</td>
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title='Delete'></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+
+        $('#MachineAssignFromDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        })
+
+        mapMachineMasterName = [];
+        var getDataMachineMasterName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractMachineMaster/GetMachineMasterSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.MachineMasterName)) {
+                                mapMachineMasterName[response.MachineMasterName] = response;
+                                matches.push(response.MachineMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SaleContractMachineMasterName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataMachineMasterName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SaleContractMachineMasterID").val(mapMachineMasterName[item].MachineMasterID);
+            $("#SaleContractMachineMasterName").val(mapMachineMasterName[item].MachineMasterName);
+            $("#SaleContractMachineMasterSerialNumber").val(mapMachineMasterName[item].MachineMasterSerialNumber);
+        });
+
+        $('#SaleContractMachineMasterName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SaleContractMachineMasterName').typeahead('val', '');
+                $("#SaleContractMachineMasterName").val("");
+                $("#SaleContractMachineMasterID").val("");
+            }
+        });
+
+        $("#tblModifyMachineMaster tbody").on("click", "tr td i", function () {
+            $(this).closest('tr').remove();
+        });
+
+        $('#btnAssignMachineMaster').on("click", function () {
+            if ($('#SaleContractMachineMasterName').val() == "" && ($('#SaleContractMachineMasterID').val() == "0" || $('#SaleContractMachineMasterID').val() == "")) {
+                notify("Please Select Machine.", "warning");
+                return false;
+            }
+            if ($('#SaleContractMachineMasterRate').val() == "" || $('#SaleContractMachineMasterRate').val() == 0) {
+                notify("Please Enter Machine Rate.", "warning");
+                return false;
+            }
+            if ($('#MachineAssignFromDate').val() == "" ) {
+                notify("Please Enter Assign From Date.", "warning");
+                return false;
+            } 
+            // alert($('#AttributeName :selected').val())
+
+            var DataArray = [];
+            var data = $('#tblModifyMachineMaster tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 5) {
+                if (DataArray[i+1] == $('#SaleContractMachineMasterID').val()) {
+                    notify("You Cannot Enter the Same Machine.", "warning");
+                    $("#SaleContractMachineMasterName").typeahead('val', '');
+                    $("#SaleContractMachineMasterName").val("");
+                    $("#SaleContractMachineMasterID").val("");
+                    $('#SaleContractMachineMasterRate').val('');
+                    $('#SaleContractMachineMasterSerialNumber').val('');
+                    return false;
+                }
+            }
+            $("#tblModifyMachineMaster tbody").append(
+                                                   "<tr>" +
+                                                    "<td><input type='hidden' value='0' /><input type='hidden' value='" + $("#SaleContractMachineMasterID").val() + "'  />" + $('#SaleContractMachineMasterName').val() + "</td>" +
+
+                                                   "<td><input type='hidden' value='" + $('#SaleContractMachineMasterSerialNumber').val() + "' />" + $('#SaleContractMachineMasterSerialNumber').val() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#SaleContractMachineMasterRate').val() + "' />" + $('#SaleContractMachineMasterRate').val() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#MachineAssignFromDate').val() + "' />" + $('#MachineAssignFromDate').val() + "</td>" +
+                                                   "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                                                   "</tr>"
+                                                  );
+            $("#tblModifyMachineMaster tbody").on("click", "tr td i", function () {
+                $(this).closest('tr').remove();
+            });
+
+            $("#SaleContractMachineMasterName").typeahead('val', '');
+            $("#SaleContractMachineMasterName").val("");
+            $("#SaleContractMachineMasterID").val("");
+            $('#SaleContractMachineMasterRate').val('');
+            $('#SaleContractMachineMasterSerialNumber').val('');
+        });
+    })
+</script>

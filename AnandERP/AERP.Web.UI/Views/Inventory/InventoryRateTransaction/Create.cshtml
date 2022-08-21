@@ -1,0 +1,101 @@
+﻿@model AMS.ViewModel.InventoryRateTransactionViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Inventory Rate Transaction</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateInventoryRateTransaction" role="form" class="row">
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.ItemNumber, new { })
+                        @Html.TextBoxFor(model => model.ItemNumber, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemNumber)
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.ItemBarCodeId, new { })
+                        @Html.TextBoxFor(model => model.ItemBarCodeId, new { maxlength = "20", minlength = "2", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemBarCodeId)
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.InventoryLocationMasterID, new { })
+                        @Html.TextBoxFor(model => model.InventoryLocationMasterID, new { maxlength = "20", minlength = "2", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.InventoryLocationMasterID)
+                </div>
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.BalancesheetID, new { })
+                        @Html.TextBoxFor(model => model.BalancesheetID, new { maxlength = "20", minlength = "2", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.BalancesheetID)
+                </div>
+
+
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.TransactionDate, new { })
+                        @Html.TextBoxFor(model => model.TransactionDate, new { maxlength = "20", minlength = "2", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.TransactionDate)
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.PurchaseRate, new { })
+                        @Html.TextBoxFor(model => model.PurchaseRate, new { maxlength = "20", minlength = "2", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PurchaseRate)
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.SaleRate, new { })
+                        @Html.TextBoxFor(model => model.SaleRate, new { maxlength = "20", minlength = "2", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SaleRate)
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.EffectDueTo, new { })
+                        @Html.TextBoxFor(model => model.EffectDueTo, new { maxlength = "20", minlength = "2", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.EffectDueTo)
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateInventoryRateTransactionRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        InventoryRateTransaction.Initialize();
+    });
+</script>
+
+
+

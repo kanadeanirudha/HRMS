@@ -1,0 +1,61 @@
+﻿@model AERP.ViewModel.SaleContractAttendanceViewModel
+
+<div id="custom-content">
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.AttendanceDate, new { })
+                            @Html.TextBoxFor(model => model.AttendanceDate, new { @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.AttendanceDate)
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            <button type="button" class="btn btn-primary m-t-20" id="btnShowAttendance">@Resources.GlobalProperties_ShowList</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="AttendanceStatusForDay">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractAttendance.Initialize();
+
+        $('#AttendanceDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            maxDate: moment(),
+            ignoreReadonly: true,
+        });
+
+        $("#btnShowAttendance").click(function () {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                dataType: "html",
+                data: { "AttendanceDate": $('#AttendanceDate').val(), "SaleContractMasterID": $("#SaleContractMasterID").val() },
+                url: '/SaleContractAttendance/GetAttendanceForAttendanceDate',
+                success: function (data) {
+                    $("#AttendanceStatusForDay").html('');
+                    $("#AttendanceStatusForDay").html(data);
+                }
+            });
+        })
+        
+    });
+</script>

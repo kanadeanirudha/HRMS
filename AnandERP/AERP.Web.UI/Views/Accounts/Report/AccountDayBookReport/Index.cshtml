@@ -1,0 +1,174 @@
+﻿@model AERP.ViewModel.AccountDayBookReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+    @using (Html.BeginForm("Index", "AccountDayBookReport", FormMethod.Post, new { enctype = "multipart/form-data", id = "GroupForm" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Account Subsidiary Reports</h2>
+        </div>
+
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.AccBalsheetMstID)
+                @Html.HiddenFor(m => m.AccSessionID)
+                @Html.HiddenFor(m => m.AccountIDsXmlString)
+                @Html.HiddenFor(m => m.TransactionTypeXmlString)
+                @Html.HiddenFor(m => m.IsPosted)
+                <div class="row col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(m => m.SelectedAccountSessionID, Model.AccountSessionMasterReportItems, "-------Select Account Session---------", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Account Session*" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SelectedAccountSessionID)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("Pattern", ViewData["Pattern"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Pattern" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Pattern)
+                    </div>
+                    
+
+                </div>
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(m => m.SessionFromDate, new { @class = "form-control input-sm", @readonly = "readonly", @placeholder = "Session from date", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Session from date*", style = "background-color:white" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SessionFromDate)
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(m => m.SessionUptoDate, new { @class = "form-control input-sm", @readonly = "readonly", @placeholder = "Session upto date", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Session upto date*", style = "background-color:white" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SessionUptoDate)
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="checkboxlistAccountMaster" class="form-group">
+                            <p id="e5_f">
+                                <select id="checkboxlist1" class="form-group selectpicker" multiple="multiple" name="selectDisplayFormat">
+                                    @foreach (var item in Model.ListAccountMasterReport)
+                                    {
+                                        if (@item.IsActive == true)
+                                        {
+                                            <option id="@item.ID" value="@item.ID" selected="selected">@item.AccountName</option>
+
+                                        }
+
+                                        else
+                                        {
+                                            <option id="@item.ID" value="@item.ID"> @item.AccountName </option>
+
+                                        }
+
+                                    }
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="checkboxlistTransactionType" class="form-group">
+                            <p id="e5_f">
+                                <select id="checkboxlist2" class="form-group selectpicker" multiple="multiple" name="selectDisplayFormat">
+                                    @foreach (var item in Model.ListTransactionTypeMasterReport)
+                                    {
+                                        if (@item.IsActive == true)
+                                        {
+                                            <option id="@item.TransactionTypeCode" value="@item.TransactionTypeCode" selected="selected">@item.TransactionTypeName</option>
+                                           
+                                        }
+
+                                        else
+                                        {
+                                            <option id="@item.TransactionTypeCode" value="@item.TransactionTypeCode"> @item.TransactionTypeName </option>
+                                           
+                                        }
+
+                                    }
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+
+                    
+
+                    <div class="row" style="margin-left:1%;">
+                        <button type="submit" id="btnDayBookSubmit" name="submit" class="btn btn-primary">Show</button>
+                    </div>
+
+                </div>
+        </div>
+    }
+
+
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.Partial("/Views/Accounts/Report/AccountDayBookReport/AccountDayBookReport.aspx")
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/AccountDayBookReport.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountDayBookReport.Initialize();
+
+        $('#SessionFromDate').attr("readonly", true);
+
+        $('#SessionFromDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+
+        $("#SessionUptoDate").datetimepicker({
+            format: "DD MMMM YYYY",
+            ignoreReadonly: true,
+        });
+
+
+        //$('#checkboxlist1').multipleSelect();
+        //$('#checkboxlist2').multipleSelect();
+
+    });
+</script>
+<script type="text/javascript">
+    $("#printDiv").on("click", function () {
+        var divContents = $("table[cellspacing='0'] tbody").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>DIV Contents</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+</script>

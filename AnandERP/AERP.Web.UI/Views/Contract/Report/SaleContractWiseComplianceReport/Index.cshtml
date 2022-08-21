@@ -1,0 +1,166 @@
+﻿@model AERP.ViewModel.SaleContractWiseComplianceReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/SaleContractWiseComplianceReport.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<div class="container" style="padding-bottom:10px;">
+    @using (Html.BeginForm("Index", "SaleContractWiseComplianceReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Contract Wise Compliance Report</h2>
+        </div>
+
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(m => m.IsPosted)
+                            @Html.HiddenFor(m => m.SalaryMonthDisplay)
+                            <div class="form-group fg-line select">
+                                @Html.DropDownList("ReportType", ViewData["ReportType"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "ReportType" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ReportType)
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("SalaryMonth", ViewData["SalaryMonth"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Salary Month" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ReportType)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("SalaryYear", ViewData["SalaryYear"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Salary Year" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ReportType)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" id="btnSaleContractWiseComplianceReportSubmit" class="btn-primary btn">Show</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="container" style="margin-top:-10px">
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.Partial("/Views/Contract/Report/SaleContractWiseComplianceReport/SaleContractWiseComplianceReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#btnSaleContractWiseComplianceReportSubmit").click(function () {
+            $("#IsPosted").val(true);
+            $("#SalaryMonthDisplay").val($("#SalaryMonth :selected").text());
+        })
+
+        mapContractNumber = [];
+        var getDataContractNumber = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractMaster/GetContractNumberSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.ContractNumber)) {
+                                mapContractNumber[response.ContractNumber] = response;
+                                matches.push(response.ContractNumber);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#ContractNumber").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataContractNumber()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SaleContractMasterID").val(mapContractNumber[item].ID);
+            $("#ContractNumber").val(mapContractNumber[item].ContractNumber);
+            $("#btnCreateList").attr("href", "/SaleContractAttendance/AddAttendanceMonthWise?SaleContractMasterID=" + mapContractNumber[item].ID);
+            $("#AddNewButton").show();
+            $("#btnSplitSpan").attr("href", "/SaleContractAttendance/SplitSalarySpan?SaleContractMasterID=" + mapContractNumber[item].ID);
+            $("#SplitSpanButton").show();
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "SaleContractMasterID": mapContractNumber[item].ID },
+                url: '/SaleContractAttendance/GetSpanBySaleContractMasterID',
+                success: function (data) {
+                    var $ddlExam = $("#SaleContractBillingSpanID");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">---Select Span---</option>');
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                            $ddlExam.append($('<option></option>').val(option.id).html(option.name));
+
+                        });
+                    }
+                    else {
+                        // $ddlExam.append('<option value="EA">EA</option>');
+                    }
+                }
+            });
+        });
+
+        $('#ContractNumber').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+
+                $('#ContractNumber').typeahead('val', '');
+                $("#ContractNumber").val("");
+                $("#SaleContractMasterID").val("0");
+                $("#SaleContractBillingSpanID").val("");
+                $('#ListViewModel').html('');
+                $("#AddNewButton").hide();
+                $("#SplitSpanButton").hide();
+            }
+        });
+    });
+</script>
+
+
+
+
+
+

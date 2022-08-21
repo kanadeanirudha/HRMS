@@ -1,0 +1,296 @@
+﻿@model AERP.ViewModel.SaleContractSalaryTransactionViewModel
+
+<div class="card">
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control" style="z-index:1">
+                    </div>
+                </div>
+                <div class="actions btn-group">
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group" style="display:none;">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Employee Name">
+                                        Employee Name<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="Total Days">
+                                        Total Days<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Attendance">
+                                        Attendance<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="Basic Salary Amount">
+                                        Basic Salary Amount<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="4" name="Total Amount">
+                                        Total Amount<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="5" name="Actions">
+                                        @Resources.DisplayName_Actions<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="btn-group m-l-5">
+                    <a id="btnCreateList" class="btn btn-primary mfpAjaxModal" href="@Url.Action("GenerateBulkSalary", "SaleContractSalaryTransaction", new { SaleContractMasterID = Model.SaleContractMasterID, SaleContractBillingSpanID = Model.SaleContractBillingSpanID })">
+                        Generate Bulk Salary
+                    </a>
+                </div>
+                <div class="btn-group m-l-0">
+                    <a id="btnCreateList" class="btn btn-primary mfpAjaxModal" href="@Url.Action("DownloadOption", "SaleContractSalaryTransaction", new { SaleContractMasterID = Model.SaleContractMasterID, SaleContractBillingSpanID = Model.SaleContractBillingSpanID })">
+                        Download Summary
+                    </a>
+                </div>
+                <div class="btn-group m-l-0">
+                    <a id="btnCreateList" class="btn btn-primary mfpAjaxModal" href="@Url.Action("NRDownloadOption", "SaleContractSalaryTransaction", new { SaleContractMasterID = Model.SaleContractMasterID, SaleContractBillingSpanID = Model.SaleContractBillingSpanID })">
+                        NR Sheet
+                    </a>
+                </div>
+                <div class="btn-group m-l-0">
+                    <a id="btnCreateList" class="btn btn-primary mfpAjaxModal" href="@Url.Action("AddDeduction", "SaleContractSalaryTransaction", new { SaleContractMasterID = Model.SaleContractMasterID, SaleContractBillingSpanID = Model.SaleContractBillingSpanID })">
+                        Add Deduction
+                    </a>
+                </div>
+                <div class="btn-group m-l-0">
+                    <a id="btnSalarySlipExcel" class="btn btn-warning" target="_blank" title="Download Salary Slip Excel" href="@Url.Action("SalarySlipExcel", "SaleContractSalaryTransaction", new { SaleContractMasterID = Model.SaleContractMasterID, SaleContractBillingSpanID = Model.SaleContractBillingSpanID })">
+                        <span class="zmdi zmdi-download"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>Post</th>
+                <th>Employee Name</th>
+                <th>Total Days</th>
+                <th>Attendance</th>
+                <th>Basic Salary Amount</th>
+                <th>Total Amount</th>
+                <th>@Resources.DisplayName_Actions</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@*</div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var oTable;
+        SaleContractSalaryTransaction.Initialize();
+        var isReloadedFromCookies;
+        oTable = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "SaleContractSalaryTransaction/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "SaleContractMasterID", "value": $("#SaleContractMasterID").val() });
+                aoData.push({ "name": "SaleContractBillingSpanID", "value": $("#SaleContractBillingSpanID").val() });
+            },
+            "columnDefs": [
+                                {
+                                    "targets": 0,
+                                    "visible": false,
+                                },
+                             {
+                                 "targets": 1,
+                                 "visible": true,
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     if (data[2] != "") {
+                                         var result = "<p  style=' height:5px;'>" + data[2] + "</p>";
+                                         return result;
+                                     }
+                                     else {
+                                         return null;
+                                     }
+                                 }
+                             },
+                            {
+                                "targets": 2,
+                                "bSortable": false,
+                                "visible": true,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    if (data[3] != "") {
+                                        var result = "<p  style=' height:5px;'>" + data[3] + "</p>";
+                                        return result;
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                }
+                            },
+                            {
+                                "targets": 3,
+                                "bSortable": false,
+                                "visible": true,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    if (data[4] != "") {
+                                        var result = "<p  style=' height:5px;'>" + data[4] + "</p>";
+                                        return result;
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                }
+                            },
+                            {
+                                "targets": 4,
+                                "bSortable": false,
+                                "visible": true,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    if (data[5] != "" && data[10] != 0) {
+                                        var result = "<p  style=' height:5px;'>" + data[5] + "</p>";
+                                        return result;
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                }
+                            },
+                            {
+                                "targets": 5,
+                                "bSortable": false,
+                                "visible": true,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    if (data[6] != "" && data[6] != 0) {
+                                        var result = "<p  style=' height:5px;'>" + data[6] + "</p>";
+                                        return result;
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                }
+                            },
+                            {
+                                "targets": 6,
+                                "bSortable": false,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+
+                                    if (data[0] != 0) {
+                                        var result1 = '@Html.ActionLink("Edit1", "ViewSalaryDetails", new { ID = "ID1"}, new { @class = "mfpAjaxModal" })';
+                                        result1 = result1.replace('ID1', data[0]);
+                                        result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_View" class="btn btn-default"><i class="zmdi zmdi-zoom-in"></i></button>');
+
+                                        var result2 = '@Html.ActionLink("Edit1", "Download", new { ID = "IDs1" }, new { @class = "btn btn-default waves-effect" })';
+                                        result2 = result2.replace('IDs1', data[0]);
+                                        result2 = result2.replace("Edit1", '<span class="zmdi zmdi-download" title="Download PDF"></span>');
+
+
+                                        var result = "<p  style=''>" + result1 + " " + result2 + "</p>";
+                                        return result;
+                                    } else {
+                                        var result1 = '@Html.ActionLink("Edit1", "GenerateSalary", "SaleContractSalaryTransaction", new { SaleContractEmployeeMasterID = "SaleContractEmployeeMasterID1", SaleContractMasterID = "SaleContractMasterID1", SaleContractBillingSpanID= "SaleContractBillingSpanID1" , SaleContractManPowerItemID= "SaleContractManPowerItemID1" }, new { @class = "mfpAjaxModal" })';
+                                        result1 = result1.replace('SaleContractEmployeeMasterID1', data[1]);
+                                        result1 = result1.replace('SaleContractMasterID1', $("#SaleContractMasterID").val());
+                                        result1 = result1.replace('SaleContractBillingSpanID1', $("#SaleContractBillingSpanID").val());
+                                        result1 = result1.replace('SaleContractManPowerItemID1', data[7]);
+                                        result1 = result1.replace("Edit1", '<button title="Generate Salary" class="btn btn-default"><i class="zmdi zmdi-plus"></i></button>');
+
+                                        var result = "<p  style=''>" + result1 + "</p>";
+                                        return result;
+                                    }
+                                }
+                            }
+            ],
+            "drawCallback": function (settings) {
+                //debugger; debugger;
+                var api = this.api();
+                var rows = api.rows({ page: 'current' }).nodes();
+                var last = null;
+                var table = $('#myDataTable').dataTable();
+                //debugger;
+                api.column(1, { page: 'current' }).data().each(function (group, i) {
+
+                    var array = String(group).split(',');
+
+                    if (last !== array[7]) {
+
+                        var result1 = '@Html.ActionLink("Edit1", "GenerateBulkSalary", "SaleContractSalaryTransaction", new { SaleContractManPowerItemID = "SaleContractManPowerItemID1", SaleContractMasterID = "SaleContractMasterID1", SaleContractBillingSpanID= "SaleContractBillingSpanID1" }, new { @class = "mfpAjaxModal" })';
+                        result1 = result1.replace('SaleContractManPowerItemID1', array[7]);
+                        result1 = result1.replace('SaleContractMasterID1', $("#SaleContractMasterID").val());
+                        result1 = result1.replace('SaleContractBillingSpanID1', $("#SaleContractBillingSpanID").val());
+                        result1 = result1.replace("Edit1", '<button title="Generate Salary" class="btn btn-default"><i class="zmdi zmdi-plus"></i></button>');
+
+                        $(rows).eq(i).before(
+
+                        '<tr class="group"><td colspan="6"  style="font-weight:bold;background-color:rgba(128,128,128,0.2);color:#000;font-size:12px;font-family: verdana;" >' + array[8] + '</td></tr>'
+                        );
+
+                        last = array[7];
+                    }
+                });
+            }
+        });
+        DataTableSettings(oTable, "myDataTable", "toggleTableColumn");
+
+    });
+
+
+</script>

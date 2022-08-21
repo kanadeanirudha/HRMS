@@ -1,0 +1,197 @@
+﻿@model AMS.ViewModel.InventoryVariationMasterViewModel
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Manage Recipe Variations</h2>
+</div>
+<div class="card">
+    <div class="card-header">
+        <ul class="actions">
+            <li class="dropdown">
+                <a href="" data-toggle="dropdown">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a class="mfpAjaxModal" title="Add New" href="@Url.Action("Create","InventoryVariationMaster")">
+                            <i class="zmdi zmdi-plus-square"></i>&nbsp;Add New
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                    </div>
+                </div>
+                <div class="actions btn-group">
+                    @*   <button title="Refresh" type="button" class="btn btn-default">
+                            <span class="zmdi icon zmdi zmdi-refresh zmdi-hc-fw"></span>
+                        </button>*@
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                            @*<li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="-1">All</a></li>*@
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Title">
+                                         Title<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="Description">
+                                        Description<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="RecipeVariationTitle">
+                                        Recipe Variation Title<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="Action">
+                                        @Resources.TableHeaders_Action<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Recipe Variation Title</th>
+                <th width="15%" align="center">@Resources.TableHeaders_Action</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var oTable;
+        InventoryVariationMaster.Initialize();
+
+        oTable = $('#myDataTable').DataTable({
+
+            "bServerSide": true,
+            "sAjaxSource": "InventoryVariationMaster/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "columnDefs": [
+                              {
+                                  "targets": 0,
+
+                                  "data": null,
+                                  "render": function (data, type, full, meta) {
+                                      var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[0] + "</p>";
+                                      return result;
+                                  }
+                              },
+
+                               {
+                                   "targets": 1,
+                                   "bSortable": true,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       if (data[1] != "") {
+                                           var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[1] + "</p>";
+                                           return result;
+                                       }
+                                       else {
+                                           return null;
+                                       }
+                                   }
+                               },
+                               {
+                                   "targets": 2,
+                                   "bSortable": true,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       if (data[2] != "") {
+                                           var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[2] + "</p>";
+                                           return result;
+                                       }
+                                       else {
+                                           return null;
+                                       }
+                                   }
+                               },
+                              {
+
+
+
+                                  "targets": 3,
+                                  "bSortable": false,
+                                  "data": null,
+                                  "render": function (data, type, full, meta) {
+                                      var result = null;
+
+
+                                     // result = " <a href=\"javascript:void(0);\" data-toggle=\"tooltip\" class=\"btn btn-default waves-effect\" onclick=\"fancyBoxPopUpAjax('Delete Recipe Variation','Are you sure? want to delete  " + data[1] + " Recipe Variation?','error','btn-danger','Yes!','/InventoryVariationMaster/Delete/" + data[3] + "','content','page-loader','InventoryVariationMaster')\"><span class=\"zmdi zmdi-delete\"></span></a>";
+                                      result1 = '@Html.ActionLink("ViewDetails1", "ViewDetails", new { ID = "ID1" }, new { @class = "mfpAjaxModal btn btn-default waves-effect" })';
+                                      result1 = result1.replace('ID1', data[3]);
+                                      result1 = result1.replace("ViewDetails1", '<span class=\"zmdi zmdi-view-toc\" title =\"@Resources.ToolTip_View\"></span>');
+
+                                      result2 = " <a href=\"javascript:void(0);\" data-toggle=\"tooltip\" class=\"btn btn-default waves-effect\" onclick=\"fancyBoxPopUpAjax('Delete Recipe Variation','Are you sure? want to delete  " + data[1] + " Recipe Variation?','error','btn-danger','Yes!','/InventoryVariationMaster/Delete/" + data[3] + "','content','page-loader','InventoryVariationMaster')\"><span class=\"zmdi zmdi-delete\"></span></a>";
+                                      result = result1 + result2;
+
+                                      return result;
+
+                                  }
+                              }
+            ],
+        });
+        DataTableSettings(oTable, 'myDataTable', 'toggleTableColumn');
+    });
+
+
+</script>
+
+

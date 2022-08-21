@@ -1,0 +1,198 @@
+﻿@model AERP.ViewModel.AddCentreOpeningBalanceForInventoryViewModel
+@*<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp; Opening Balance For Inventory</h2>
+</div>*@
+<div class="card">
+    @*<div class="card-header">*@
+        <ul class="actions">
+            <li class="dropdown" style="display:none">
+                <a href="" data-toggle="dropdown">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a class="mfpAjaxModal" title="Add New" href="@Url.Action("Create","AddCentreOpeningBalanceForInventory")">
+                            <i class="zmdi zmdi-plus-square"></i>&nbsp;Add New
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    @*</div>*@
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                    </div>
+                </div>
+                <div class="actions btn-group" style="display:none">
+                    @*   <button title="Refresh" type="button" class="btn btn-default">
+                            <span class="zmdi icon zmdi zmdi-refresh zmdi-hc-fw"></span>
+                        </button>*@
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                            @*<li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="-1">All</a></li>*@
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Brand Name">
+                                        Brand Name<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="Action">
+                                        @Resources.TableHeaders_Action<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>Item Description</th>
+                <th>Base UoM Code</th>
+                <th>Location Name</th>
+                <th>Opening Balance</th>
+            </tr>
+        </thead>
+    </table>
+    <div class="col-sm-12">
+        <div class="form-group pull-right" style="text-align: center">
+            <input class="btn bgm-blue btn-sm m-t-10 waves-effect" value="Add Opening balance" id="CreateAddCentreOpeningBalanceForInventoryRecord" type="button" />
+        </div>
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var oTable;
+        debugger;
+        AddCentreOpeningBalanceForInventory.Initialize();
+
+        oTable = $('#myDataTable').DataTable({
+
+            "bServerSide": true,
+            "sAjaxSource": "AddCentreOpeningBalanceForInventory/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            //"sPaginationType": "full_numbers",
+            //"bPaginate": false,
+            //'iDisplayStart': 1,
+            'iDisplayLength': 1000000000,
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "LocationID", "value": $("#GeneralLocationList").val() });
+            },
+            "columnDefs": [
+                              {
+                                  "targets": 0,
+                                  "bSortable": true,
+                                  "data": null,
+                                  "render": function (data, type, full, meta) {
+                                      var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[2] + "</p>";
+                                      return result;
+                                  }
+                              },
+                               {
+                                   "targets": 1,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[5] + "</p>";
+                                       return result;
+                                   }
+                               },
+                               {
+                                   "targets": 2,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[3] + "</p>";
+                                       return result;
+                                   }
+                               },
+                               {
+                                   "targets": 3,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       debugger;
+                                       if (data[8] == "False")
+                                           {
+                                           var result = "<div  style='text-align: left;'>" + "<input id='OpeningBalanceQty' type='text'  maxlength='6' value=" + data[6] + "  style=' font-weight: bold;text-align:right;margin-bottom:0px' class = 'form-control input-sm' /><input type='text' style='display:none' id='ItemNumber' value=" + data[1] + "  style=' font-weight: bold;text-align:right;'/><input type='text'  id='InventoryStockMasterID' style='display:none' value=" + data[7] + "  style=' font-weight: bold;text-align:right;'/><input type='text'  id='StatusFlag' style='display:none' value=" + data[8] + "  style=' font-weight: bold;text-align:right;'/>" + "</div>";
+                                       }
+                                       else
+                                       {
+                                           var result = "<div  style='text-align: left;'>" + "<input id='OpeningBalanceQty' type='text' disabled='disabled' maxlength='6' value=" + data[6] + "  style=' font-weight: bold;text-align:right;margin-bottom:0px' class = 'form-control input-sm'  /><input type='text' id='ItemNumber' style='display:none' value=" + data[1] + "  style=' font-weight: bold;text-align:right;'   /><input type='text'  id='InventoryStockMasterID' style='display:none' value=" + data[7] + "  style=' font-weight: bold;text-align:right;'   /><input type='text'  id='StatusFlag' style='display:none' value=" + data[8] + "  style=' font-weight: bold;text-align:right;'/>" + "</div>";
+                                       }
+
+
+                                       $('input[id^=OpeningBalanceQty]').on("keydown keyup keypress", function (e) {
+                                           //AERPValidation.AllowNumbersWithDecimalOnly(e);
+                                           AERPValidation.NotAllowSpaces(e);
+                                           parseFloat($('input[id^=OpeningBalanceQty]').val()).toFixed(3);
+                                           var inputKeyCode = e.keyCode ? e.keyCode : e.which;
+                                           if (inputKeyCode == 45 || inputKeyCode == 95) {
+                                               return false;
+                                           }
+                                       });
+
+                                       return result;
+                                   }
+                               },
+
+
+
+            ],
+        });
+        DataTableSettings(oTable, 'myDataTable', 'toggleTableColumn');
+    });
+
+
+</script>
+
+
+

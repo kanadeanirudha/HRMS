@@ -1,0 +1,21 @@
+﻿@model AMS.ViewModel.OrganisationDepartmentMasterViewModel
+
+@Html.HiddenFor(x => x.ID)
+@Html.HiddenFor(x => x.CentrewiseDepartmentID)
+@Html.HiddenFor(x => x.DepartmentName)
+<tr>
+
+
+    <td>
+        @Html.DisplayFor(x => x.DepartmentName)
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.DepartmentSeqNo)
+    </td>
+    <td>
+        @Html.CheckBoxFor(x => x.CentrewiseDepartmentStatus)
+    </td>
+    <td >
+           @Html.HiddenFor(x => x.ID)
+    </td>
+</tr>

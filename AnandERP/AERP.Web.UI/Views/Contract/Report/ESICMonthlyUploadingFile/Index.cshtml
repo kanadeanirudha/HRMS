@@ -1,0 +1,51 @@
+﻿@model AERP.ViewModel.ESICMonthlyUploadingFileViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Contract/Report/ESICMonthlyUploadingFile.js")" type="text/javascript"></script>
+<div id="ListViewModel" class="container">
+    @Html.HiddenFor(m => m.errorMessage)
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;ESIC Monthly Upload File</h2>
+    </div>
+    <div class="card">
+        <div class="card-header">
+        </div>
+        <div class="card-body card-padding">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        <label>@Html.LabelFor(model => model.MonthName, new { })</label>
+                        @Html.DropDownList("MonthName", ViewData["MonthName"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "MonthList*" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MonthName)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        <label>@Html.LabelFor(model => model.Monthyear, new { })</label>
+                        @Html.DropDownList("MonthYear", ViewData["MonthYear"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "YearList*" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Monthyear)
+                </div>
+                <div class="col-sm-3" style="margin-top:25px;">
+                    <div class="fg-line">
+                        <button type="submit" name="submit" id="btnShowDetails" class="btn-primary btn">Show Details</button>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="margin-top:25px;display:none" id="UploadFile">
+                    <a href="@Url.Action("DownloadExcel", "ESICMonthlyUploadingFile")" id="UploadFilelink" class="btn bgm-orange waves-effect">
+                        <i class="zmdi zmdi-download zmdi-hc-fw"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Content/Theme/vendors/fileinput/fileinput.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        ESICMonthlyUploadingFile.Initialize();
+       
+    });
+</script>

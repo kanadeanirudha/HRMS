@@ -1,0 +1,410 @@
+﻿@model AERP.ViewModel.VendorMasterViewModel
+<input type="hidden" id="TaskCode" value="GeneralData" />
+@Html.HiddenFor(model => model.TaskCode)
+@Html.HiddenFor(model => model.VendorID)
+@Html.HiddenFor(model => model.VendorNumber)
+<div id="custom-content">
+    @*<div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Movement Type</h2>
+        </div>*@
+    <div class="card">
+        <div class="card-body card-padding">
+            @*<div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>*@
+            <form id="FormCreateVendorMaster" role="form" class="row">
+                <div class="row">
+                    <div class="col-sm-4" style="display:none">
+                        <div class="form-group fg-line">
+
+                            @Html.LabelFor(model => model.FirstName, new { })
+                            @Html.TextBoxFor(model => model.FirstName, new { maxlength = "50", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FirstName)
+                    </div>
+                    <div class="col-sm-4" style="display:none">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.MiddleName, new { })
+                            @Html.TextBoxFor(model => model.MiddleName, new { maxlength = "50", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.MiddleName)
+                    </div>
+                    <div class="col-sm-4" style="display:none">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.LastName, new { })
+                            @Html.TextBoxFor(model => model.LastName, new { maxlength = "50", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.LastName)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.VendorID)
+                            @Html.LabelFor(model => model.Address1, new { })
+                            @Html.TextBoxFor(model => model.Address1, new { maxlength = "50", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Address1)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Address2, new { })
+                            @Html.TextBoxFor(model => model.Address2, new { maxlength = "50", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Address2)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Address3, new { })
+                            @Html.TextBoxFor(model => model.Address3, new { maxlength = "50", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Address3)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group select fg-line">
+                            @Html.LabelFor(model => model.Country, new { })
+                            @Html.DropDownListFor(model => model.Country, (SelectList)ViewBag.GeneralCountryMasterList, "---Select Country ---", new { @class = "form-control input-sm" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Country)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.State, new { })
+                            @*@Html.TextBoxFor(model => model.State, new { maxlength = "50", @class = "form-control input-sm " })*@
+                            @Html.DropDownListFor(m => m.State, (SelectList)ViewBag.GeneralRegionMaster, Resources.ddlHeaders_RegionName, new { @class = "form-control", style = "" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.State)
+                        <span id="DataValidationMessageForState"></span>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @*@Html.HiddenFor(model => model.CityId)*@
+                            @Html.LabelFor(model => model.City, new { })
+                            @*@Html.TextBoxFor(model => model.City, new { maxlength = "50", @class = "form-control input-sm " })*@
+                            @Html.DropDownListFor(m => m.City, (SelectList)ViewBag.GeneralCityMaster, Resources.ddlHeaders_CityName, new { @class = "form-control", style = "" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.City)
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PinCode, new { })
+                            @Html.TextBoxFor(model => model.PinCode, new { maxlength = "10", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PinCode)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group select fg-line">
+                            @Html.LabelFor(model => model.Currency, new { })
+                            @Html.DropDownListFor(model => model.Currency, (SelectList)ViewBag.GeneralCurrencyMasterList, "---Select Currency ---", new { @class = "form-control input-sm" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Currency)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PhoneNumber, new { })
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { maxlength = "20", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PhoneNumber)
+                        <span id="DataValidationMessageForPhoneNumber"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.MobileNumber, new { })
+                            @Html.TextBoxFor(model => model.MobileNumber, new { minlength = "4", maxlength = "35", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.MobileNumber)
+                        <span id="DataValidationMessageForMobileNumber"></span>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.VendorCode, new { })
+                            @Html.TextBoxFor(model => model.VendorCode, new { disabled = "disabled", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.VendorCode)
+
+                    </div>
+                    <div class="checkbox col-sm-3">
+
+                        <label style="margin-top: 5%; margin-bottom: 3%;">
+                            @if (Model.IsCentre == true)
+                            {
+                                <input type="checkbox" id="IsCentre" name="IsCentre" checked>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="IsCentre" name="IsCentre">
+                            }
+                            <i class="input-helper"></i>
+
+                            @Html.LabelFor(model => model.IsCentre, new { style = "padding-left: 0px; margin-top:2%;" })
+                        </label>
+
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CentreCode, new { })
+                            @Html.TextBoxFor(model => model.CentreCode, new { @class = "form-control input-sm " })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CentreCode)
+                    </div>
+                </div>
+
+            </form>
+            <hr />
+            <h4>Contact Person Information</h4><br /><br />
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.CPFirstName, new { })
+                        @Html.TextBoxFor(model => model.CPFirstName, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CPFirstName)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.CPMiddleName, new { })
+                        @Html.TextBoxFor(model => model.CPMiddleName, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CPMiddleName)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.CPLastName, new { })
+                        @Html.TextBoxFor(model => model.CPLastName, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CPLastName)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ContactPersonMobNumber, new { })
+                        @Html.TextBoxFor(model => model.ContactPersonMobNumber, new { minlength = "4", maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ContactPersonMobNumber)
+                    <span id="DataValidationMessageForContactPersonMobNumber"></span>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.EmailID, new { })
+                        @Html.TextBoxFor(model => model.EmailID, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.EmailID)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.PersonDesgDesc, new { })
+                        @*@Html.DropDownListFor(model => model.PersonDesg, (SelectList)ViewBag.EMPDesignationMasterList, "--Select Designation--", new { @class = "form-control input-sm" })*@
+                        @Html.TextBoxFor(model => model.PersonDesgDesc, new { maxlength = "50", @class = "form-control input-sm " })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PersonDesgDesc)
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAdd2"><i class="zmdi zmdi-plus"></i></button>
+                </div>
+            </div>
+            <br />
+            <table id="tblData" class="table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile Number</th>
+                        <th>Email ID</th>
+                        <th>Designation</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.VendorMasterListForGeneralData)
+                    {
+                        <tr>
+                            <td style="display:none">@item.VendorContactPersoninfoID<input type="hidden" style="display:none" value="@item.VendorContactPersoninfoID"></td>
+                            <td style="display:none">@item.VendorID<input type="hidden" style="display:none" value="@item.VendorID"></td>
+                            <td>@item.CPFirstName<input type="text" style="display:none" value="@item.CPFirstName"></td>
+                            <td>@item.CPMiddleName<input type="text" style="display:none" value="@item.CPMiddleName"></td>
+                            <td>@item.CPLastName<input type="text" style="display:none" value="@item.CPLastName"></td>
+                            <td>@item.ContactPersonMobNumber<input type="text" style="display:none" value="@item.ContactPersonMobNumber"></td>
+                            <td>@item.EmailID<input type="text" style="display:none" value="@item.EmailID"></td>
+                            <td>@item.PersonDesgDesc<input type="text" style="display:none" value="@item.PersonDesgDesc"></td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table><br />
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        VendorMaster.Initialize();
+
+        $("#Country").change(function () {
+
+            $('#City').find('option').remove().end().append('<option value>----Select City----</option>');
+            $("#City").prop("disabled", true);
+            var selectedItem = $(this).val();
+            if (selectedItem != "") {
+                var $ddlRegion = $("#State");
+                var $RegionProgress = $("#states-loading-progress");
+                $RegionProgress.show();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "/VendorMaster/GetRegionByCountryID",
+                    data: { "Country": selectedItem },
+                    success: function (data) {
+                        $ddlRegion.html('');
+                        $('#State').append('<option value>----Select State----</option>');
+                        $.each(data, function (id, option) {
+
+                            $ddlRegion.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        $RegionProgress.hide();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve Region.');
+                        $RegionProgress.hide();
+                    }
+                });
+            }
+            else {
+                $('#State').find('option').remove().end().append('<option value>----Select State----</option>');
+                $('#City').find('option').remove().end().append('<option value>----Select City----</option>');
+            }
+        });
+
+        $("#State").unbind('change').change(function () {
+
+            var selectedItem = $(this).val();
+            if (selectedItem != "") {
+                $("#City").prop("disabled", false);
+                var $ddlCity = $("#City");
+                var $CityProgress = $("#states-loading-progress");
+                $CityProgress.show();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "/VendorMaster/GetCityByRegionID",
+                    data: { "State": selectedItem },
+                    success: function (data) {
+                        $ddlCity.html('');
+                        $('#City').append('<option value>----Select City----</option>');
+                        $.each(data, function (id, option) {
+
+                            $ddlCity.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        $CityProgress.hide();
+
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve City.');
+                        $CityProgress.hide();
+                    }
+                });
+            }
+            else {
+                $('#City').find('option').remove().end().append('<option value>----Select City----</option>');
+            }
+        });
+
+
+        //=======================CityName=================================
+
+        //var map = {};
+        //var getData = function () {
+        //    return function findMatches(q, cb) {
+
+        //        var matches, substringRegex;
+
+        //        // an array that will be populated with substring matches
+        //        matches = [];
+
+        //        // regex used to determine if a string contains the substring `q`
+        //        substrRegex = new RegExp(q, 'i');
+
+        //        $.ajax({
+        //            url: "/VendorMaster/GetCityList",
+        //            type: "POST",
+        //            dataType: "json",
+        //            data: { term: q },
+        //            success: function (data) {
+
+        //                // iterate through the pool of strings and for any string that
+        //                // contains the substring `q`, add it to the `matches` array
+        //                $.each(data, function (i, response) {
+        //                    if (substrRegex.test(response.name)) {
+        //                        map[response.name] = response;
+        //                        matches.push(response.name);
+        //                        $('#CityId').val(response.id);
+
+        //                    }
+        //                });
+        //            },
+        //            async: false
+        //        })
+        //        cb(matches);
+        //    };
+
+        //};
+
+
+        //$('#City').typeahead({
+        //    hint: true,
+        //    highlight: true,
+        //    minLength: 1
+        //},
+        //{
+        //    source: getData()
+        //}).on("#City", function (obj, item) {
+        //    $('#CityId').val(map[item].id);
+        //});
+
+    });
+</script>
+

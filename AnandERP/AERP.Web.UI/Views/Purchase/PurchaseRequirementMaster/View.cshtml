@@ -1,0 +1,117 @@
+﻿@model AERP.ViewModel.PurchaseRequirementMasterViewModel
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Purchase/PurchaseRequirementMaster.js")" type="text/javascript"></script>
+<div id="custom-content">
+    @Html.HiddenFor(model => model.ID)
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; View Purchase Requirement Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreatePurchaseOrderMasterAndDetails" role="form">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PurchaseRequirementNumber, new { })
+                            @Html.TextBoxFor(model => model.PurchaseRequirementNumber, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TransDate, new { })
+                        @Html.TextBoxFor(m => m.TransDate, new { @class = "form-control", @disabled = "disabled" })
+                     <br />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <br />
+                    </div>
+                </div>
+                <h4>Purchase Requirement Details</h4>
+                <table id="myDataTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>item</th>
+                            <th>Quantity</th>
+                            <th>Expected Date</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.InventoryPurchaseRequirementList)
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td>@Math.Round(@item.Quantity, 3)</td>
+                                <td>@item.ExpectedDate</td>
+                                @if (item.PriorityFlag == 1)
+                                {
+                                    <td><span class="btn btn-xs btn-danger">High</span> </td>
+                                }
+                                else if (item.PriorityFlag == 2)
+                                {
+                                    <td> <span class="btn btn-xs btn-primary">Medium</span></td>
+                                }
+                                else
+                                {
+                                    <td> <span class="btn btn-xs btn-success">Low</span></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        PurchaseRequirementMaster.Initialize();
+    })
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

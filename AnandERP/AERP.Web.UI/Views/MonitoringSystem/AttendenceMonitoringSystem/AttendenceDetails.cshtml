@@ -1,0 +1,288 @@
+﻿@*@model AMS.ViewModel.AttendenceMonitoringSystemViewModel
+
+<link href="~/Content/fullcalendar.css" rel="stylesheet" />
+<script src="~/Scripts/fullcalendar.js"></script>
+<style>
+    .red {
+        background-color: red;
+    }
+
+    .green {
+        background-color: green;
+    }
+
+    .fc-event-title {
+        background-color: none;
+        border: none;
+        color: white;
+        font-family: Verdana;
+        cursor: default;
+        font-size: 1.2em;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    }
+</style>
+
+<div class="container-fluid">
+    <ul class="breadcrumb">
+        <li><a href="#">@Resources.MainMenu_MonitoringSystem</a><span class="divider">»</span></li>
+        <li>@Html.ActionLink(Resources.FormName_AttendanceMonitoringReport, "Index")<span class="divider">»</span></li>
+        <li class="active">@Resources.FormName_AttendenceDetails</li>
+        <li>
+            <h5>(@Html.DisplayFor(m => Model.EmployeeFullName))</h5>
+        </li>
+        <div style="float: right">
+            <li><span class="label label-success" style="background-color: #5bb75b">Present</span></li>
+            <li><span class="label label-warning" style="background-color: #da4f49">Weekly Off</span></li>
+            <li><span class="label label-warning" style="background-color: #faa732">Holiday</span></li>
+            <li><span class="label label-warning" style="background-color: grey">Full Day Leave</span></li>
+            <li><span class="label label-warning" style="background-color: #00BFFF">Half Day Leave</span></li>
+            <li><span>W.H.</span> <span class="divider">»</span>Working Hours</li>
+
+        </div>
+    </ul>
+
+
+
+    <div class="row-fluid">
+        @Html.HiddenFor(m => m.EmployeeID)
+        <div id='calendar' style="width: 70%"></div>
+
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+</div>*@
+
+@*------------new code--------*@
+
+
+
+
+@model AERP.ViewModel.AttendenceMonitoringSystemViewModel
+
+<link href="~/Content/fullcalendar.css" rel="stylesheet" />
+<script src="~/Scripts/fullcalendar.js"></script>
+
+
+@*<div class="container">*@
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormName_EmployeeCentreWiseAttendanceStatistics</h2>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <ol class="breadcrumb" style="padding-left: 0%; padding-right: 10%;">
+            <li><a href="#">@Resources.MainMenu_MonitoringSystem</a></li>
+            <li>@Html.ActionLink(Resources.FormName_AttendanceMonitoringReport, "Index")</li>
+            <li class="active">@Resources.FormName_AttendenceDetails</li>
+            <li>
+                <h5>(@Html.DisplayFor(m => Model.EmployeeFullName))</h5>
+            </li>
+        </ol>
+
+        <ol class="breadcrumb" style="padding-left: 0%; padding-right: 10%;">
+            <li><button class="btn btn-success waves-effect">Present</button> </li>
+            <li><button class="btn btn-danger waves-effect">Weekly Off</button> </li>
+            <li><button class="btn btn-warning waves-effect">Holiday</button> </li>
+            <li><button class="btn btn-bluegray waves-effect">Full Day Leave</button> </li>
+            <li><button class="btn btn-info waves-effect">Half Day Leave</button> </li>
+            <li><button class="btn waves-effect" style="background-color:#2BBBAD;color:white">Discrepancy</button> </li>
+            <li>W.H. <span> [Working Hours] </span><button class="btn bgm-teal btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-time-countdown zmdi-hc-fw"></i></button></li>
+        </ol>
+
+    </div>
+
+
+
+    
+
+    <div class="container c-alt">
+        @Html.HiddenFor(m => m.EmployeeID)
+        <div id='calendar' style="width: 83%"></div>
+    </div>
+</div>
+@*</div>*@
+
+
+<script>
+    $(document).ready(function () {
+
+        var sourceFullView = { url: '/AttendenceMonitoringSystem/GetAttendenceDetails/' };
+        var sourceSummaryView = { url: '/AttendenceMonitoringSystem/GetAttendenceDetails/' };
+        var CalLoading = true;
+
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+
+        
+
+        $('#calendar').fullCalendar({
+
+            events: {
+                url: '/AttendenceMonitoringSystem/GetAttendenceDetails/',
+                dataType: 'json',
+                lazyFetching: true,
+                data: {
+                    employeeID: $("#EmployeeID").val(),
+                },
+                ignoreTimezone: false,
+                error: function () {
+                    alert('there was an error while fetching events!');
+                },
+                success: function (doc) {
+
+                    var events = [];
+                    debugger;
+                    for (var i = 0; i < doc.length; i++) {
+
+                        if (doc[i].attendanceDescription != null) {
+                            //alert(doc[i].attendanceDescription);
+                            var CheckInTime = "\n In - " + doc[i].checkInTime;
+                            var CheckOutTime = "\n Out - " + doc[i].checkOutTime;
+                            var WorkingHour = "\n W.H. - " + doc[i].workingHour;
+                            switch (doc[i].attendanceDescription) {
+                                case "Present":
+                                    events.push({
+                                        title: CheckInTime + CheckOutTime + WorkingHour,
+                                        allDay: doc[i].allDay,
+                                        editable: doc[i].editable,
+                                        start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),
+                                    });
+                                    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "#5bb75b");
+                                    break;
+                                case "Absent":
+                                    events.push({
+                                        title: "OnLeave" + doc[i].leaveCode,
+                                        allDay: doc[i].allDay,
+                                        editable: doc[i].editable,
+                                        start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),
+                                    });
+                                    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "grey");
+                                    break;
+                                case "Absent First Half":
+                                    events.push({
+                                        title: "Present In Second Half" + CheckInTime + CheckOutTime + WorkingHour,
+                                        allDay: doc[i].allDay,
+                                        editable: doc[i].editable,
+                                        start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),
+                                    });
+                                    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "#00BFFF");
+                                    break;
+                                case "Absent Second Half":
+                                    events.push({
+                                        title: "Present In First Half" + CheckInTime + CheckOutTime + WorkingHour,
+                                        allDay: doc[i].allDay,
+                                        editable: doc[i].editable,
+                                        start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),
+                                    });
+                                    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "#00BFFF");
+                                    break;
+                                case "WeeklyOff":
+                                    events.push({
+                                        title: CheckInTime + CheckOutTime + WorkingHour,
+                                        allDay: doc[i].allDay,
+                                        editable: doc[i].editable,
+                                        start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),
+                                    });
+                                    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "#da4f49");
+                                    break;
+                                case "Holiday":
+                                    events.push({
+                                        title: doc[i].holidayDescription + CheckInTime + CheckOutTime + WorkingHour,
+                                        allDay: doc[i].allDay,
+                                        editable: doc[i].editable,
+                                        start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),
+                                    });
+                                    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "#faa732");
+                                    break;
+                                case "Discrepancy":
+                                    events.push({
+                                        title:  CheckInTime + CheckOutTime + WorkingHour,
+                                        allDay: doc[i].allDay,
+                                        editable: doc[i].editable,
+                                        start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),
+                                    });
+                                    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "#2BBBAD");
+                                    break;
+                                default:
+                                    // return false;
+
+                            }
+
+                            //events.push({
+                            //    title: doc[i].title,
+                            //    // color: doc[i].color,
+                            //    allDay: doc[i].allDay,
+                            //    editable: doc[i].editable,
+                            //    // backgroundColor: doc[i].backgroundColor,
+                            //    //  borderColor: doc[i].borderColor,
+                            //    start: new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])),// will be parsed
+                            //});
+                            ////alert(doc[i].weeklyOffStatus);
+                            //// $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "red");
+
+
+                            //$("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").css("background-color", "#F2E7EC");
+                            //    //    $("[data-date=" + $.fullCalendar.formatDate(new Date(parseInt(doc[i].start.split('(')[1].split(')')[0])), "yyyy-MM-dd") + "]").closest('td').find('fc-day-content').css("class", "'dashboard-icons-colors check_sl'");
+
+
+                        }
+
+
+                    } $(".fc-border-separate").removeClass('fc-event');
+                    return events;   //<------- events render in view by returning it.
+
+                },
+                //color: 'yellow',   // a non-ajax option
+                //textColor: 'black' // a non-ajax option
+            },
+            //viewRender: function (view, element) {
+            //    alert("1");
+            //    $("#DepartmentID").val($('#calendar').fullCalendar('getDate'));
+            //    //alert(b);
+            //    //b = b.getMonth();
+            //    //alert(b.getMonth() );
+            //   // $("#DepartmentID").val(b.getMonth() );
+            //},
+
+            //viewRender: function (date) {
+            //    alert("A");
+            //    $("[data-date=" + $.fullCalendar.formatDate(new Date(), "yyyy-MM-dd") + "]").css("background-color", "red");
+            //},
+
+        });
+
+        
+
+        CalLoading = false;
+
+
+    });
+
+    
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

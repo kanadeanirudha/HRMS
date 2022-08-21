@@ -1,0 +1,292 @@
+﻿@model AERP.ViewModel.DashboardViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .mfp-content {
+        width: 70%;
+    }
+</style>
+<script src="~/Scripts/plugin/GraphAndChart/highcharts.js"></script>
+<script src="~/Scripts/plugin/GraphAndChart/exporting.js"></script>
+<script src="~/Content/Theme/vendors/sparklines/jquery.sparkline.min.js"></script>
+<script src="~/Scripts/fullcalendar.js"></script>
+<link href="~/Content/fullcalendar.css" rel="stylesheet" />
+
+@if (ViewBag.ReturnUrl != null && ViewBag.ReturnUrl != "")
+{
+    <input type="hidden" id="ReturnUrl" value="@ViewBag.ReturnUrl" />
+}
+else
+{
+    <div class="container">
+        <div class="block-header">
+            <h2>Dashboard</h2>
+            @{string chartList = string.Empty;
+                Int16 ChartCount = 0;
+                Int16 StatsCount = 0;
+                Int16 RemindersCount = 0;
+                Int16 WeeklyCount = 0;
+                Int16 MonthlyCount = 0;}
+            @foreach (var item in Model.DashboardContentList)
+            {
+                if (item.ContentCode == "SCONTRACT_MWMPS" || item.ContentCode == "INVENTORY_MSVSP" || item.ContentCode == "CRM_CAVSP" || item.ContentCode == "CRM_ACCC" || item.ContentCode == "CRM_CCR" || item.ContentCode == "CRM_NCCD" || item.ContentCode == "PURCHASE_TFV" || item.ContentCode == "PURCHASE_MPD" || item.ContentCode == "PURCHASE_RCR" || item.ContentCode == "PURCHASE_POCR" || item.ContentCode == "PURCHASE_MMD" || item.ContentCode == "PURCHASE_MPOD" || item.ContentCode == "INVENTORY_V2_MSD" || item.ContentCode == "INVENTORY_V2_TFP" || item.ContentCode == "INVENTORY_V2_TSPPC" || item.ContentCode == "INVENTORY_V2_TAFDPC")
+                {
+                    ChartCount = 1;
+                }
+                if (item.ContentCode == "SCONTRACT_TSC" || item.ContentCode == "CRMSales_AT" || item.ContentCode == "CRMSales_BT" || item.ContentCode == "CRMSales_TS" || item.ContentCode == "CRMSales_HA" || item.ContentCode == "CRMSales_CA" || item.ContentCode == "CRMSales_EA" || item.ContentCode == "CRMSales_TE" || item.ContentCode == "CRMSales_CR" || item.ContentCode == "CRM_PND" || item.ContentCode == "CRM_CC" || item.ContentCode == "CRM_TAC" || item.ContentCode == "CRM_TCC" || item.ContentCode == "PURCHASE_TOTV" || item.ContentCode == "PURCHASE_TPO" || item.ContentCode == "PURCHASE_TR" || item.ContentCode == "PURCHASE_TMR" || item.ContentCode == "PURCHASE_TIBSS" || item.ContentCode == "PURCHASE_TIBRP" || item.ContentCode == "PURCHASE_TPPO" || item.ContentCode == "INVENTORY_V2_TIC" || item.ContentCode == "INVENTORY_V2_TIA" || item.ContentCode == "INVENTORY_V2_TRI" || item.ContentCode == "INVENTORY_V2_TRSI" || item.ContentCode == "INVENTORY_V2_TCSA" || item.ContentCode == "INVENTORY_V2_TRSA")
+                {
+                    StatsCount = 1;
+                }
+                if (item.ContentCode == "CRMSales_R" || item.ContentCode == "CRMSales_SC")
+                {
+                    RemindersCount = 1;
+                }
+                if (item.ContentCode == "CRMSales_WP")
+                {
+                    WeeklyCount = 1;
+                }
+                if (item.ContentCode == "CRMSales_MP")
+                {
+                    MonthlyCount = 1;
+                }
+            }
+            <ul class="actions" style="font-size: 15px; padding-right: 32px; position: fixed; right: 0; top: 87px; z-index: 3;">
+                <li class="dropdown">
+                    <a data-toggle="dropdown" href="" marked="1" aria-expanded="false">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        @if (StatsCount == 1)
+                        {
+                            <li>
+                                <a class="dashboardReportSelect" title="" href="#statusCount">Status and Counts</a>
+                            </li>
+                        }
+                        @if (ChartCount == 1)
+                        {
+                            <li>
+                                <a class="dashboardReportSelect" title="" href="#chartsDashboard">Charts</a>
+                            </li>
+                        }
+                        @if (RemindersCount == 1)
+                        {
+                            <li>
+                                <a class="dashboardReportSelect" title="" href="#callsReminder">Calls and Reminders</a>
+                            </li>
+                        }
+                        @if (WeeklyCount == 1)
+                        {
+                            <li>
+                                <a class="dashboardReportSelect" title="" href="#weeklyPlanner">Weekly Planner</a>
+                            </li>
+                        }
+                        @if (MonthlyCount == 1)
+                        {
+                            <li>
+                                <a class="dashboardReportSelect" title="" href="#monthlyPlanner">Monthly Planner</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="mini-charts" id="statusCount">
+            <div class="row">
+                @foreach (var item in Model.DashboardContentList)
+                {
+                    switch (item.ContentCode)
+                    {
+                        case "SCONTRACT_TSC":
+                            { Html.RenderAction("TotalSaleContract", "SaleContractDashboard"); }
+                            continue;
+                        case "CRMSales_AT":
+                            { Html.RenderAction("AccountTarget", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRMSales_BT":
+                            { Html.RenderAction("BillingTarget", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRMSales_TS":
+                            { Html.RenderAction("TotalSales", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRMSales_HA":
+                            { Html.RenderAction("TotalHotAccount", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRMSales_CA":
+                            { Html.RenderAction("TotalColdAccount", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRMSales_EA":
+                            { Html.RenderAction("TotalExistingAccount", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRMSales_TE":
+                            { Html.RenderAction("TotalEnquiries", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRMSales_CR":
+                            { Html.RenderAction("ConversionRate", "CRMSaleDashboard"); }
+                            continue;
+                        case "CRM_PND":
+                            { Html.RenderAction("PendingCalls", "CRMDashboard"); }
+                            continue;
+                        case "CRM_CC":
+                            { Html.RenderAction("CallbackCalls", "CRMDashboard"); }
+                            continue;
+                        case "CRM_TAC":
+                            { Html.RenderAction("TotalAllocatedCall", "CRMDashboard"); }
+                            continue;
+                        case "CRM_TCC":
+                            { Html.RenderAction("TotalCallbackCall", "CRMDashboard"); }
+                            continue;
+                        case "PURCHASE_TOTV":
+                            { Html.RenderAction("TotalVendor", "PurchaseReport"); }
+                            continue;
+                        case "PURCHASE_TPO":
+                            { Html.RenderAction("TotalPurchaseOrder", "PurchaseReport"); }
+                            continue;
+                        case "PURCHASE_TR":
+                            { Html.RenderAction("TotalRequisition", "PurchaseReport"); }
+                            continue;
+                        case "PURCHASE_TMR":
+                            { Html.RenderAction("TotalManualRequisition", "PurchaseReport"); }
+                            continue;
+                        case "PURCHASE_TIBSS":
+                            { Html.RenderAction("TotalItemBelowSafetyStock", "PurchaseReport"); }
+                            continue;
+                        case "PURCHASE_TIBRP":
+                            { Html.RenderAction("TotalItemBelowReorderPoint", "PurchaseReport"); }
+                            continue;
+                        case "PURCHASE_TPPO":
+                            { Html.RenderAction("TotalPendingPurchaseOrder", "PurchaseReport"); }
+                            continue;
+                        case "INVENTORY_V2_TIC":
+                            { Html.RenderAction("TotalItemCount", "InventoryDashboardReport"); }
+                            continue;
+                        case "INVENTORY_V2_TIA":
+                            { Html.RenderAction("TotalInventoryAmount", "InventoryDashboardReport"); }
+                            continue;
+                        case "INVENTORY_V2_TRI":
+                            { Html.RenderAction("TotalRestaurantItems", "InventoryDashboardReport"); }
+                            continue;
+                        case "INVENTORY_V2_TRSI":
+                            { Html.RenderAction("TotalRetailSaleItems", "InventoryDashboardReport"); }
+                            continue;
+                        case "INVENTORY_V2_TRSA":
+                            { Html.RenderAction("TotalRetailStockAmount", "InventoryDashboardReport"); }
+                            continue;
+                        case "INVENTORY_V2_TCSA":
+                            { Html.RenderAction("TotalCafeStockAmount", "InventoryDashboardReport"); }
+                            continue;
+                    }
+                }
+            </div>
+        </div>
+        <div id="chartsDashboard" class="row">
+
+            @foreach (var item in Model.DashboardContentList)
+            {
+                switch (item.ContentCode)
+                {
+                    case "SCONTRACT_MWMPS":
+                        { Html.RenderAction("MonthWiseManPowerSale", "SaleContractDashboard"); }
+                        continue;
+                    case "INVENTORY_MSVSP":
+                        { Html.RenderAction("MonthlySaleReport", "InventoryDashboard"); }
+                        continue;
+                    case "CRM_CAVSP":
+                        { Html.RenderAction("CallAverageDetails", "CRMDashboard"); }
+                        continue;
+                    case "CRM_ACCC":
+                        { Html.RenderAction("ConvertedCallDetails", "CRMDashboard"); }
+                        continue;
+                    case "CRM_CCR":
+                        { Html.RenderAction("ConversionReport", "CRMDashboard"); }
+                        continue;
+                    case "CRM_NCCD":
+                        { Html.RenderAction("CallbackReport", "CRMDashboard"); }
+                        continue;
+                    case "PURCHASE_TFV":
+                        { Html.RenderAction("TopFiveVendorDetails", "PurchaseReport"); }
+                        continue;
+                    case "PURCHASE_MPD":
+                        { Html.RenderAction("MonthlyPurchaseDetails", "PurchaseReport"); }
+                        continue;
+                    case "PURCHASE_RCR":
+                        { Html.RenderAction("RequisitionConversionReport", "PurchaseReport"); }
+                        continue;
+                    case "PURCHASE_POCR":
+                        { Html.RenderAction("PurchaseOrderConversionReport", "PurchaseReport"); }
+                        continue;
+                    case "PURCHASE_MMD":
+                        { Html.RenderAction("MonthlyMarginDetails", "PurchaseReport"); }
+                        continue;
+                    case "PURCHASE_MPOD":
+                        { Html.RenderAction("MonthlyPurchaseOrderDetails", "PurchaseReport"); }
+                        continue;
+                    case "INVENTORY_V2_MSD":
+                        { Html.RenderAction("MonthlySalesDetails", "InventoryDashboardReport"); }
+                        continue;
+                    case "INVENTORY_V2_DSD":
+                        { Html.RenderAction("DailySalesDetails", "InventoryDashboardReport"); }
+                        continue;
+                    case "INVENTORY_V2_TFP":
+                        { Html.RenderAction("TopFivePromotion", "InventoryDashboardReport"); }
+                        continue;
+                    case "INVENTORY_V2_TSPPC":
+                        { Html.RenderAction("TotalSalePromotionPieChart", "InventoryDashboardReport"); }
+                        continue;
+                    case "INVENTORY_V2_TAFDPC":
+                        { Html.RenderAction("TakeAwayFineDinePieChart", "InventoryDashboardReport"); }
+                        continue;
+                }
+            }
+        </div>
+        <div class="row" id="callsReminder">
+            @foreach (var item in Model.DashboardContentList)
+            {
+                switch (item.ContentCode)
+                {
+                    case "CRMSales_R":
+                        { Html.RenderAction("RemindersList", "CRMSaleDashboard"); }
+                        continue;
+                    case "CRMSales_SC":
+                        { Html.RenderAction("SalesCallList", "CRMSaleDashboard"); }
+                        continue;
+                }
+
+            }
+        </div>
+        @foreach (var item in Model.DashboardContentList)
+        {
+            switch (item.ContentCode)
+            {
+                case "CRMSales_WP":
+                    { Html.RenderAction("WeeklyStatusView", "CRMSaleDashboard"); }
+                    continue;
+                case "CRMSales_MP":
+                    { Html.RenderAction("MonthyStatusView", "CRMSaleDashboard"); }
+                    continue;
+            }
+
+        }
+
+    </div>
+                }
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($("#ReturnUrl").length > 0) {
+            window.location.href = $("#ReturnUrl").val();
+        }
+
+        $(".dashboardReportSelect").click(function () {
+            loaddiv = $(this).attr("href");
+            $('html,body').animate({
+                scrollTop: $(loaddiv).offset().top - 75
+            }, 'slow');
+            return false;
+        });
+    });
+</script>

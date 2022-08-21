@@ -1,0 +1,54 @@
+﻿@model AERP.ViewModel.AccountCategoryMasterReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/AccountCategoryMasterReport.js")" type="text/javascript"></script>
+<div class="container" style="padding-bottom:10px;">
+    @using (Html.BeginForm("Index", "AccountCategoryMasterReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Account Category Report</h2>
+        </div>
+    <div class="card" style="margin-bottom: 0px;">
+        <div class="card-body card-padding" style="padding-bottom:10%;">
+            @Html.HiddenFor(m => m.AccBalsheetMstId)
+            @Html.HiddenFor(m => m.IsPosted)
+            @Html.HiddenFor(m => m.AccBalsheetName)
+            <div class="row col-sm-12">
+                <div class="col-sm-4">
+                    <div class="fg-line select form-group">
+                        @Html.DropDownListFor(m => m.SelectedHeadID, Model.AccountHeadMasterReportItems, "All", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Head name" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="fg-line select form-group">
+                        @Html.DropDownListFor(m => m.SelectedCategoryID, Model.AccountCategoryMasterReportItems, "All", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Category" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="fg-line">
+                        <button type="submit" name="submit" id="btnAccountCategoryMasterReportSubmit" class="btn-primary btn">Show</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    }
+</div>
+<div class="container" style="margin-top:-10px">
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.Partial("/Views/Accounts/Report/AccountCategoryMasterReport/AccountCategoryMasterReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountCategoryMasterReport.Initialize();
+    });
+</script>

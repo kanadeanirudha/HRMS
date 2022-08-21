@@ -1,0 +1,203 @@
+﻿@model AERP.ViewModel.VendorMasterViewModel
+<input type="hidden" id="TaskCode" value="FinanceData" />
+@Html.HiddenFor(model => model.TaskCode)
+@Html.HiddenFor(model => model.VendorID)
+@Html.HiddenFor(model => model.VendorNumber)
+@Html.HiddenFor(model => model.VendorFinanceDetailsID)
+<div id="custom-content">
+    @*<div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Movement Type</h2>
+        </div>*@
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateVendorMaster" role="form" class="row">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group  fg-line">
+                            
+                            @Html.LabelFor(model => model.CreditLimit, new { })
+                            @Html.TextBoxFor(model => model.CreditLimit, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CreditLimit)
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group  fg-line">
+
+                            @Html.LabelFor(model => model.Incoterms, new { })
+                            @Html.TextBoxFor(model => model.Incoterms, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Incoterms)
+                    </div>
+                </div><br />
+                <h4>Bank Details</h4><br /><br />
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group  fg-line">
+                          
+                            @Html.LabelFor(model => model.AccountNo, new { })
+                            @Html.TextBoxFor(model => model.AccountNo, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.AccountNo)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.BankName, new { })
+                            @Html.TextBoxFor(model => model.BankName, new {  @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.BankName)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.BranchName, new { })
+                            @Html.TextBoxFor(model => model.BranchName, new {  @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.BranchName)
+                    </div>
+                  
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group  fg-line">
+
+                            @Html.LabelFor(model => model.BankAddress, new { })
+                            @Html.TextBoxFor(model => model.BankAddress, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.BankAddress)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.IFSCCode, new { })
+                            @Html.TextBoxFor(model => model.IFSCCode, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.IFSCCode)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CashDiscount, new { })
+                            @Html.TextBoxFor(model => model.CashDiscount, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CashDiscount)
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Rebate, new { })
+                            @Html.TextBoxFor(model => model.Rebate, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Rebate)
+                    </div>
+                </div>
+                
+                <h4>Mode Of Payment</h4><br />
+                <div class="row">
+                    @*<div class="col-sm-3">
+                        <div class="checkbox m-b-15">
+                            <label>
+                                <input type="checkbox" value="" id="CashOnDelivery">
+                                <i class="input-helper"></i>
+                                Cash On Delivery
+                            </label>
+                        </div>
+                    </div>*@
+                    @*<div class="col-sm-3">
+                        <div class="checkbox m-b-15">
+                            <label>
+                                <input type="checkbox" value="" id="CurrentDatedCheque">
+                                <i class="input-helper"></i>
+                               Current Dated Cheque
+                            </label>
+                        </div>
+                    </div>*@
+                    @*<div class="col-sm-3">
+                        <div class="checkbox m-b-15">
+                            <label>
+                                <input type="checkbox" value="" id="Credit">
+                                <i class="input-helper"></i>
+                                Credit
+                            </label>
+                        </div>
+                    </div>*@
+                    <div class="checkbox col-sm-3" style="margin-top:2%;">
+
+                        <label style="margin-bottom: 3%;">
+                            @if (Model.CashOnDelivery == true)
+                                  {
+                                      <input type="checkbox" id="CashOnDelivery" name="CashOnDelivery" checked>
+                                   }
+                            else
+                            {
+                                <input type="checkbox" id="CashOnDelivery" name="CashOnDelivery">
+                            }
+                            <i class="input-helper"></i>
+
+                            @Html.LabelFor(model => model.CashOnDelivery, new { style = "padding-left: 0px; margin-top:2%;", Value = @Model.CashOnDelivery })
+                        </label>
+
+                    </div>
+
+                    <div class="checkbox col-sm-3" style="margin-top:2%;">
+
+                        <label style="margin-bottom: 3%;">
+                            @if (Model.CurrentDatedCheque == true)
+                            {
+                                <input type="checkbox" id="CurrentDatedCheque" name="CurrentDatedCheque" checked>
+                            }
+                           else
+                            {
+                                <input type="checkbox" id="CurrentDatedCheque" name="CurrentDatedCheque">
+                            }
+                            <i class="input-helper"></i>
+
+                            @Html.LabelFor(model => model.CurrentDatedCheque, new { style = "padding-left: 0px; margin-top:2%;", Value = @Model.CurrentDatedCheque })
+                        </label>
+
+                    </div>
+
+                    <div class="checkbox col-sm-3" style="margin-top:2%;">
+
+                        <label style="margin-bottom: 3%;">
+                            @if (Model.Credit == true)
+                             {
+                                 <input type="checkbox" id="Credit" name="Credit" checked>
+                             }
+                            else
+                            {
+                                <input type="checkbox" id="Credit" name="Credit">
+                            }
+                            <i class="input-helper"></i>
+
+                            @Html.LabelFor(model => model.Credit, new { style = "padding-left: 0px; margin-top:2%;", Value = @Model.Credit })
+                        </label>
+
+                    </div>
+
+                </div>
+            </form>
+            <br />
+            <br />
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        VendorMaster.Initialize();
+    });
+</script>
+

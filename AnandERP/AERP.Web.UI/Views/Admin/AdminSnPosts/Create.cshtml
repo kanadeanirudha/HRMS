@@ -1,0 +1,81 @@
+﻿@model AERP.ViewModel.AdminSnPostsViewModel
+<div id="custom-content">
+        <div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Posts</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="padding-bottom:0%;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormCreateAdminSnPosts" class="row" method="post">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.CentreCodeWithName)
+                    @Html.HiddenFor(model => model.DepartmentIdWithName)
+                    @Html.HiddenFor(model => model.CentreCode)
+                    @Html.HiddenFor(model => model.DepartmentID)
+                    @Html.HiddenFor(model => model.CentreCodewithDeptID)
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.DesignationID, new { style = "" })
+                                <div class="form-group  fg-line select">
+                                    @Html.DropDownListFor(model => model.DesignationIdWithName, (SelectList)ViewBag.EmpDesignationMaster, Resources.ddlHeaders_SelectDesignation, new { style = "", @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.DesignationIdWithName)
+                            </div>
+
+                            <div class="col-sm-6">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.PostType, new { style = "" })
+                                <div class="form-group  fg-line select">
+                                    @Html.DropDownList("Posttype", ViewData["PostType"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PostType)
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.DesignationType, new { style = "" })
+                                <div class="form-group  fg-line select">
+                                    @Html.DropDownList("Designationtype", ViewData["DesignationType"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.DesignationType)
+                            </div>
+
+                            <div class="col-sm-6" style="display:none">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                @Html.LabelFor(model => model.NoOfPosts, new { style = "" })
+                                <div class="form-group fg-line">
+                                    @Html.TextBoxFor(model => model.NoOfPosts, new { min = "1", maxLength = "3", @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.NoOfPosts)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <input id="CreateAdminSnPostsRecord" type="button" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+                            <input name="" id="reset" type="button" class="btn btn-secondary" value="@Resources.ButtonAction_Reset" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AdminSnPosts.Initialize();
+
+    });
+</script>

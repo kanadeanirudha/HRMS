@@ -1,0 +1,42 @@
+﻿@*@model IEnumerable<AMS.ViewModel.EmployeeOtherCollegeSpecialLectureDetailsViewModel>
+@{
+    ViewBag.Title = "EmployeeOtherCollegeSpecialLectureDetails";
+    Layout = "~/Views/Employee/EmployeeInformation/Profile.cshtml";
+}
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+@Styles.Render("~/Content/Vendors")
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeeOtherCollegeSpecialLectureDetails.js")" type="text/javascript"></script>
+
+<div id="ListViewModel"  >
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+       EmployeeOtherCollegeSpecialLectureDetails.LoadList();
+    });
+</script>*@
+
+@model IEnumerable<AMS.ViewModel.EmployeeOtherCollegeSpecialLectureDetailsViewModel>
+@{
+    ViewBag.Title = "EmployeeOtherCollegeSpecialLectureDetails";
+    Layout = "~/Views/Employee/EmployeeInformation/ProfileV2.cshtml";
+}
+
+@*<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+@Styles.Render("~/Content/Vendors")*@
+<style type="text/css">
+    .mfp-content {
+        width: 75%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeeOtherCollegeSpecialLectureDetails.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeOtherCollegeSpecialLectureDetails.LoadList();
+    });
+</script>

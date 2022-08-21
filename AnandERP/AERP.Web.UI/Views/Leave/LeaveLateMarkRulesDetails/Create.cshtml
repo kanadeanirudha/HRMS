@@ -1,0 +1,182 @@
+﻿@*
+    @model AMS.ViewModel.LeaveLateMarkRulesDetailsViewModel
+    <form id="FormCreateLeaveLateMarkRulesDetails" method="post">
+        <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div id="update-message" class="error invisible"></div>
+
+        <div class="widget-block" style="width: auto; height: auto;">
+            <div class="widget-head">
+                <h5>@Resources.FormCreate_LateMarkRule </h5>
+            </div>
+            <div class="widget-content">
+                <div class="widget-box" style="padding: 15px">
+
+                    <div class="control-group control-label">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.LateMarkRuleName, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.TextBoxFor(model => model.LateMarkRuleName, new { maxlength = "30", style = "font-Weight:Bold;" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.LateMarkRuleName)
+                        </div>
+                    </div>
+                    <div class="control-group control-label">
+                        @Html.LabelFor(model => model.LateMarkCount, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.DropDownList("LateMarkCount", ViewData["LateMarkCount"] as List<SelectListItem>, new { id = "LateMarkCount", style = "font-weight:bold;", @class = "" })
+                        </div>
+                    </div>
+                    <div class="control-group control-label">
+                        @Html.LabelFor(model => model.NumberLeaveDeducted, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.DropDownList("NumberLeaveDeducted", ViewData["NumberLeaveDeducted"] as List<SelectListItem>, new { id = "NumberLeaveDeducted", style = "font-weight:bold;", @class = "" })
+                        </div>
+                    </div>
+                    <div class="control-group control-label">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.LeaveID1, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.DropDownListFor(m => m.LeaveID1, (SelectList)ViewBag.LeaveMaster, new { style = "width:210px;font-Weight:Bold" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.LeaveID1)
+                            @Html.DropDownListFor(m => m.LeaveID2, (SelectList)ViewBag.LeaveMaster, new {disabled = "disabled", style = "width:210px;font-Weight:Bold" })
+                            @Html.DropDownListFor(m => m.LeaveID3, (SelectList)ViewBag.LeaveMaster, new {disabled = "disabled", style = "width:210px;font-Weight:Bold" })
+                            @Html.DropDownListFor(m => m.LeaveID4, (SelectList)ViewBag.LeaveMaster, new {disabled = "disabled", style = "width:210px;font-Weight:Bold" })
+                            @Html.DropDownListFor(m => m.LeaveID5, (SelectList)ViewBag.LeaveMaster, new {disabled = "disabled", style = "width:210px;font-Weight:Bold" })
+                        </div>
+                    </div>
+                      <div class="control-group control-label" style="margin-bottom: 0px; display:none">
+                        @Html.LabelFor(model => model.IsActive, new { style = "font-Weight:Bold;" })
+                        <div class="controls input-xlarge text-tip">
+                            @Html.EditorFor(model => model.IsActive)
+                        </div>
+                    </div>
+                    <div class="form-actions" style="border: 1px solid #e5e5e5; text-align: right">
+                        <input type="button"  id="CreateLeaveLateMarkRulesDetailsRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+                        <input name="" id="reset" type="submit" class="btn btn-secondary" value="@Resources.ButtonAction_Reset" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            LeaveLateMarkRulesDetails.Initialize();
+        });
+    </script>
+*@
+
+@model AERP.ViewModel.LeaveLateMarkRulesDetailsViewModel
+
+
+<link href="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormCreate_LateMarkRule</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:500px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+            <form id="FormCreateLeaveLateMarkRulesDetails" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+
+
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.LateMarkRuleName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.LateMarkRuleName, new { @class = "form-control", maxlength = "30", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.LateMarkRuleName)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.LateMarkCount, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("LateMarkCount", ViewData["LateMarkCount"] as List<SelectListItem>, new { id = "LateMarkCount", style = "", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.NumberLeaveDeducted, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("NumberLeaveDeducted", ViewData["NumberLeaveDeducted"] as List<SelectListItem>, new { id = "NumberLeaveDeducted", style = "", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.LeaveID1, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.LeaveID1, (SelectList)ViewBag.LeaveMaster, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.LeaveID1)
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.LeaveID2, (SelectList)ViewBag.LeaveMaster, new { disabled = "disabled", @class = "form-control", style = "" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.LeaveID3, (SelectList)ViewBag.LeaveMaster, new { disabled = "disabled", @class = "form-control", style = "" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.LeaveID4, (SelectList)ViewBag.LeaveMaster, new { disabled = "disabled", @class = "form-control", style = "" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.LeaveID5, (SelectList)ViewBag.LeaveMaster, new { disabled = "disabled", @class = "form-control", style = "" })
+                        </div>
+                    </div>
+
+                    <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%; display: none;">
+                        <label>
+                            <input type="checkbox" id="IsActive">
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsActive, new { style = "" })
+                        </label>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="CreateLeaveLateMarkRulesDetailsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                            <button type="submit" id="reset" class="btn btn-default">@Resources.ButtonAction_Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>*@
+
+@*<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveLateMarkRulesDetails.Initialize();
+    });
+</script>

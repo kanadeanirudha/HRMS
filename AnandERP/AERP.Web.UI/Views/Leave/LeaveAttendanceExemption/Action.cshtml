@@ -1,0 +1,220 @@
+﻿@*@model AMS.ViewModel.LeaveAttendanceExemptionViewModel
+           @{ Layout = null;}
+
+<link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+<style>
+    .ui-front {
+        /*z-index:10000;*/
+        z-index: 9999;
+    }
+
+    .ui-datepicker {
+        font-size: 9pt !important;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<div class="widget-block">
+    <div class="widget-head">
+        
+        @if (Model.ID > 0)
+        {
+            <h5 id="hFive">@Resources.FormUpdate_AttendenceExemption</h5>
+        }
+        else
+        {
+            <h5 id="hFive">@Resources.FormCreate_AttendenceExemption</h5>
+        }  
+        
+    </div>
+    <div class="widget-content">
+        <div id="localFormMessage" style="display:none;color:#000;" class="alert"></div>
+        <form id="FormCreateLeaveAttendanceExemption" method="post" class="form-horizontal well">
+          
+            @Html.HiddenFor(m => m.ID)
+            @Html.HiddenFor(m=>m.EmployeeId)
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+
+                        <div class="spanFullName span2" style="padding-left: 15px;">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">&nbsp;</span>
+                            @Html.LabelFor(model => model.CentreName, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3" id="centreDiv" style="font-Weight:Bold;">
+                            <b>@Html.DisplayFor(model => model.CentreName, new { @class = "txtbox", ID = "abc" })</b>
+                        </div>
+                        <div class="spanFullName span2">
+                            &nbsp;
+                          
+                        </div>
+                        <div class="span2">
+                          &nbsp;  
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+
+                        <div class="spanFullName span2" style="padding-left: 15px; ">
+                            <span style="color: red; float: left;  font-weight: bold">*</span>
+                            @Html.LabelFor(m => m.EmployeeName, new { style = "font-weight:bold;" })
+                        </div>
+                        <div class="span7">
+                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "txtbox", style = "width:104%;font-Weight:Bold;", maxlength = "50" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.EmployeeName)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+
+                        <div class="spanFullName span2" style="padding-left: 15px; ">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.ExemptionFromDate, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.ExemptionFromDate, new {  style = "font-Weight:Bold;", maxlength = "50",@readonly = "readonly" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.ExemptionFromDate)
+
+
+                        </div>
+                        <div class="spanFullName span2">
+                            @Html.LabelFor(model => model.ExemptionUpToDate, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.TextBoxFor(model => model.ExemptionUpToDate, new { style = "font-Weight:Bold;", maxlength = "10", @readonly = "readonly" })
+                            <br />
+                            @Html.ValidationMessageFor(m => m.ExemptionUpToDate)
+                        </div>
+                        <img id="ExemptionUpToDate_Clear" alt="Clear" style="width: 26px; height: 27px; margin-left: 50px" title="Clear" src="/Content/images/clean.png" />  
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+                <button type="button" id="CreateLeaveAttendanceExemptionRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                @if (Model.ID == 0)
+                {
+                    <input name="" id="reset" type="submit" class="btn btn-secondary" value="@Resources.ButtonAction_Reset" />
+                }
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+       
+        LeaveAttendanceExemption.Initialize();
+       
+    });
+</script>*@
+
+
+@model AERP.ViewModel.LeaveAttendanceExemptionViewModel
+@{
+    Layout = null;
+}
+
+
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>
+            &nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;
+            @if (Model.ID > 0)
+            {
+                @Resources.FormUpdate_AttendenceExemption
+            }
+            else
+            {
+                @Resources.FormCreate_AttendenceExemption
+            }
+        </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:230px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+            <form id="FormCreateLeaveAttendanceExemption" method="post">
+                @Html.HiddenFor(m => m.ID)
+                @Html.HiddenFor(m => m.EmployeeId)
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.CentreName, new { style = "" })
+                        <div class="form-group  fg-line" id="centreDiv">
+                            <b>@Html.DisplayFor(model => model.CentreName, new { @class = "form-control", ID = "abc" })</b>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(m => m.EmployeeName, new { style = "" })
+                        <div class="form-group  fg-line typeahead">
+                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", style = "", maxlength = "50" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.EmployeeName)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ExemptionFromDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ExemptionFromDate, new { @class = "form-control", style = "background-color:#fff;", maxlength = "50", @readonly = "readonly" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ExemptionFromDate)
+                    </div>
+
+                    <div class="col-sm-5">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ExemptionUpToDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ExemptionUpToDate, new { @class = "form-control", style = "background-color:#fff;", maxlength = "50", @readonly = "readonly" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ExemptionUpToDate)
+                    </div>
+
+                    <div class="col-sm-1">
+                        <div class="form-group fg-line">
+                            <span class="btn btn-xs bgm-cyan" style="height:30px; width:30px;" title="Reset" id="ExemptionUpToDate_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                        </div>    
+                    </div>
+                    
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="CreateLeaveAttendanceExemptionRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                            @if (Model.ID == 0)
+                            {
+                                <button type="submit" id="reset" class="btn btn-default">@Resources.ButtonAction_Reset</button>
+                                
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        LeaveAttendanceExemption.Initialize();
+
+    });
+</script>

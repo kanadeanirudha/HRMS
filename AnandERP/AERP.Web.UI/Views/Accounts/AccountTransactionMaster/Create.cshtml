@@ -1,0 +1,53 @@
+﻿@model AERP.ViewModel.AccountTransactionMasterViewModel
+
+@Html.HiddenFor(m => m.AccSessionID)
+<div class="card-body card-padding" id="DivPostVoucher">
+    <form id="FormCreateAccountTransactionMaster" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="table-responsive" id="DivAddRowTable" style="overflow:visible;">
+            <table id="example" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Account </th>
+                        <th>Narration</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Reference</th>
+                        <th>@Resources.DisplayName_Actions</th>
+                    </tr>
+                </thead>
+             <tbody></tbody>
+               <tfoot id="tableDebitCredit" style="display: none">
+                    <tr>
+                        <th>&nbsp;&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>
+                            <input type="text" id="debitBal" class="input-sm form-control" value="0" style="text-align: right; background-color:white;" disabled="disabled" />
+                        </th>
+                        <th>
+                            <input type="text" id="creditBal" class="input-sm form-control" disabled="disabled" style="text-align: right; background-color: white" value="0" />
+                        </th>
+                     </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="btn-demo pull-right">
+           <button type="button" id="ResetAccountTransactionMasterRecord" value="@Resources.ButtonAction_Reset" class="btn btn-secondary">@Resources.ButtonAction_Reset</button>&nbsp;&nbsp;
+           <button type="button" id="CreateAccountTransactionMasterRecord" disabled="disabled" value="Process Entry" class="btn btn-primary">Process Entry</button>
+        </div>
+
+    </form>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // AccountTransactionMaster.Initialize();
+        });
+
+    </script>

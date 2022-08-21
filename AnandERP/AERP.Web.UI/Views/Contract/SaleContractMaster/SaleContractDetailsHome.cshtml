@@ -1,0 +1,128 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Sale Contract Details</h2>
+</div>
+<div class="card">
+    <div class="card-body card-padding">
+        
+        <form id="FormCreateSaleContractMasterNew" role="form" class="row">
+            <div class="row col-sm-12">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(model => model.ID)
+                        @Html.LabelFor(model => model.ContractNumber, new { })
+                        @Html.TextBoxFor(model => model.ContractNumber, new { @class = "form-control input-sm", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ContractNumber)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        Search Other Contract
+                        <input type="text" class="form-control input-sm" id="SearchContract" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="card-body card-padding" style="margin-left:-10px;margin-top:-30px">
+            <ul class="tab-nav" id="TaskList">
+                <li class="active" id="GeneralContractDetails">
+                    <a id="r1" href="GeneralContractDetails" aria-controls="GeneralContractDetails" role="tab" data-toggle="tab">&nbsp;Contract Details</a>
+                </li>
+                <li class="" id="GeneralModifyContract">
+                    <a id="r4" href="GeneralModifyContract" aria-controls="GeneralModifyContract" role="tab" data-toggle="tab">&nbsp;Modify Contract</a>
+                </li>
+                <li class="" id="GeneralShiftEmployee">
+                    <a id="r6" href="GeneralShiftEmployee" aria-controls="GeneralShiftEmployee" role="tab" data-toggle="tab">&nbsp;Shift Employee</a>
+                </li>
+                <li class="" id="GeneralExtendContract">
+                    <a id="r5" href="GeneralExtendContract" aria-controls="GeneralExtendContract" role="tab" data-toggle="tab">&nbsp;Extend Contract</a>
+                </li>
+                <li class="" id="GeneralRenewContract">
+                    <a id="r8" href="GeneralRenewContract" aria-controls="GeneralRenewContract" role="tab" data-toggle="tab">&nbsp; Renew Contract</a>
+                </li>
+                <li class="" id="GeneralCancelContract">
+                    <a id="r2" href="GeneralCancelContract" aria-controls="GeneralCancelContract" role="tab" data-toggle="tab">&nbsp; Cancel Contract</a>
+                </li>
+                <li class="" id="GeneralUpdateAttendance" style="display:none;">
+                    <a id="r3" href="GeneralUpdateAttendance" aria-controls="GeneralUpdateAttendance" role="tab" data-toggle="tab">&nbsp; Update Attendance</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="GeneralContractDetails" class="tab-pane active">
+
+                    @{Html.RenderAction("CreateGeneralContractDetails", "SaleContractMaster"); }
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+
+        SaleContractMaster.CreateTab();
+        SaleContractMaster.Create();
+        SaleContractMaster.Save();
+
+        mapContractNumber = [];
+        var getDataContractNumber = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractMaster/GetContractNumberSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.ContractNumber)) {
+                                mapContractNumber[response.ContractNumber] = response;
+                                matches.push(response.ContractNumber);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SearchContract").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataContractNumber()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#ID").val(mapContractNumber[item].ID);
+            $("#ContractNumber").val(mapContractNumber[item].ContractNumber);
+            $('#SearchContract').typeahead('val', '');
+            $("#SearchContract").val("");
+            $("#GeneralContractDetails").click();
+        });
+    });
+</script>

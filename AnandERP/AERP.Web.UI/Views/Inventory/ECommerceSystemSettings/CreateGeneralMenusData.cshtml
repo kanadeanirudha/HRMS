@@ -1,0 +1,90 @@
+﻿@model AMS.ViewModel.ECommerceSystemSettingsViewModel
+<input type="hidden" id="TaskCode" value="GeneralMenusData" />
+@Html.HiddenFor(model => model.TaskCode)
+<div id="custom-content">
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateECommerceSystemSettings" role="form" class="row">
+              <div class="col-sm-12">
+                        <div class="col-sm-6" >
+                            @foreach (var item in ViewBag.EComSystemSettings_Menus)
+                            {
+                                var CheckedCheckBox = 0;
+                               foreach (var Sitem in ViewBag.EComSystemSettings_SavedMenus)
+                               {
+                                
+                                  if(Convert.ToInt32(item.Value)== Sitem.LevelNumber){
+                                     CheckedCheckBox = 1;
+                                }
+                              
+                               }
+                                if(CheckedCheckBox == 1){
+<div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="MerchandiseGroup" value="@item.Value" class="gruop" checked>
+                                    <i class="input-helper"></i>
+                                     <label>@item.Text</label>
+                                </label>
+                            </div>
+                                }
+                            else{
+                                <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="MerchandiseGroup" value="@item.Value" class="gruop">
+                                    <i class="input-helper"></i>
+                                     <label>@item.Text</label>
+                                </label>
+                            </div>
+                                }
+                            }
+                            @*<div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="Department" value="2" class="gruop">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.Department, new { style = "" })
+                                </label>
+                            </div>
+
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="Category" value="3" class="gruop">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.Category, new { style = "" })
+                                </label>
+                            </div>
+
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="SubCategory" value="4" class="gruop">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.SubCategory, new { style = "" })
+                                </label>
+                            </div>
+
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="BaseMerchandiseCategory" value="5" class="gruop">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.BaseMerchandiseCategory, new { style = "" })
+                                </label>
+                            </div>*@
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    ECommerceSystemSettings.Initialize();
+</script>
+
+

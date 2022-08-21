@@ -1,0 +1,56 @@
+﻿@model AERP.ViewModel.GeneralTemperatureMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        @*@Html.HiddenFor(model => model.IsDefaultCount)*@
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Temperature Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralTemperatureMaster" role="form" class="row">
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TemperatureType, new { })
+                        @Html.TextBoxFor(model => model.TemperatureType, new { maxlength = "20", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.TemperatureType)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TemperatureFrom, new { })
+                        @Html.TextBoxFor(model => model.TemperatureFrom, new { maxlength = "5", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.TemperatureFrom)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TemperatureUpto, new { })
+                        @Html.TextBoxFor(model => model.TemperatureUpto, new { maxlength = "5", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.TemperatureUpto)
+                </div>
+               
+               
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralTemperatureMasterRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralTemperatureMaster.Initialize();
+    });
+</script>
+

@@ -1,0 +1,561 @@
+﻿@model AERP.ViewModel.SalesQuotationMasterAndDetailsViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Sales/SalesQuotationMasterAndDetails.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Sales Quotation </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateSalesQuotationwithoutEnquiry" role="form">
+
+                <div class="row">
+                    <div class="form-group  ">
+                        <Label class="col-sm-2 control-label m-t-15">Units</Label>
+                        <div class="col-sm-5">
+                            <div class="fg-line">
+                                @Html.DropDownListFor(model => model.GeneralUnitsID, Model.ListGetGeneralUnitsItems, "------Select Unit-------", new { @class = "form-control input-sm AddGeneralUnitsID", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Units Type*" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.CustomerMasterID)
+                            @Html.HiddenFor(model => model.SalesEnquiryMasterID)
+                            @Html.HiddenFor(model => model.CustomerType)
+
+                            @Html.LabelFor(model => model.CustomerName, new { })
+                            @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.CustomerBranchMasterID)
+                            @Html.LabelFor(model => model.CustomerBranchMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerBranchMasterName, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ContactPersonID)
+                            @Html.LabelFor(model => model.ContactPersonName, new { })
+                            @Html.TextBoxFor(model => model.ContactPersonName, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CreditPeriod, new { })
+                            @Html.TextBoxFor(model => model.CreditPeriod, new { maxlength = "100", @class = "form-control input-sm " })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.UnitMasterId, new { })
+                            @Html.DropDownListFor(model => model.UnitMasterId, (SelectList)ViewBag.GeneralUnitMasterList, "---Select Unit ---", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.TitleTo, new { })
+                            @Html.TextBoxFor(model => model.TitleTo, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <br />
+                    </div>
+                </div>
+                <h4>List Of Items</h4>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ItemNumber)
+                            @Html.HiddenFor(model => model.GeneralTaxGroupMasterID)
+                            @Html.HiddenFor(model => model.TaxRate)
+                            @Html.LabelFor(model => model.ItemDescription, new { })
+                            @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @*@Html.LabelFor(model => model.AltQty, new { })*@
+                            @Html.LabelFor(model => model.Quantity, new { })
+                            @Html.TextBoxFor(model => model.Quantity, new { maxlength = "8", @class = "form-control input-sm typeahead" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-2" id="UnitsForQuotation">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.UOM, new { })
+                            @Html.DropDownListFor(model => model.UOM, Enumerable.Empty<SelectListItem>(), "---Select---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Rate, new { })
+                            @Html.TextBoxFor(model => model.Rate, new { maxlength = "8", @class = "form-control input-sm typeahead" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2" id="btnAdd1">
+                        <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                        <button type="button" title="Add row" class="btn bgm-green btn-float waves-effect waves-circle waves-float" id="btnAdd" style="margin-top:10px"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+
+                </div>
+                
+                <table id="tblData" class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Description</th>
+                            <th>Quantity</th>
+                            <th>UOM</th>
+                            <th>Rate</th>
+                            <th>Tax Amt</th>
+                            <th>TaxAble Amt</th>
+                            <th>Net Amt</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @*@foreach (var item in Model.QuotationDetailsByEnquiryMasterID)
+                        {
+                            <tr>
+                                <td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.ItemNumber"></td>
+                                <td style="vertical-align:middle;">@item.ItemDescription<input id="ItemDescription" style="display:none" type="text" value="@item.ItemDescription"></td>
+                                <td style="vertical-align:middle;"><input id="Quantity" type="text" class="form-control" value="@Math.Round(@item.Quantity,2)" style="width:60px"></td>
+                                <td style="vertical-align:middle;">@item.UOM<input id="UOM" type="text" style="display:none" value="@item.UOM"></td>
+                                <td style="vertical-align:middle;">@item.Rate<input id="Rate" type="text" style="display:none" value="@Math.Round(@item.Rate,2)"></td>
+                                <td style="vertical-align:middle;">@item.TaxAmount <input id="TaxAmount" type="text" style="display:none" value="@item.TaxAmount"></td>
+                                <td style="vertical-align:middle;">@item.TaxableAmount <input id="TaxAbleAmount" type="text" style="display:none" value="@item.TaxableAmount"></td>
+                                <td style="vertical-align:middle;">@Math.Round((@Math.Round(@item.TaxableAmount, 2) + @Math.Round(@item.TaxAmount, 2)), 2) <input id="NetAmount" type="text" style="display:none" value="@Math.Round((@Math.Round(@item.TaxableAmount,2)+@Math.Round(@item.TaxAmount,2)),2)"></td>
+                                <td style="display:none">@item.SalesQuotationDetailID<input type="hidden" style="display:none" value="@item.SalesQuotationDetailID"></td>
+                                <td style="display:none">@item.GeneralTaxGroupMasterID<input type="hidden" style="display:none" value="@item.GeneralTaxGroupMasterID"></td>
+                                <td><i class='zmdi zmdi-delete zmdi-hc-fw deleteEnq' style='cursor:pointer' title='Delete' /><input type='hidden' id='SaleEnquiryDetailsID' value="@item.SalesQuotationDetailID"></td>
+                            </tr>
+                        }*@
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Freight, new { })
+                            @Html.TextBoxFor(model => model.Freight, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ShippingHandling, new { })
+                            @Html.TextBoxFor(model => model.ShippingHandling, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Tradein, new { })
+                            @Html.TextBoxFor(model => model.Tradein, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Discount, new { })
+                            @Html.TextBoxFor(model => model.Discount, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TotalTaxAmount, new { })
+                        @Html.TextBoxFor(model => model.TotalTaxAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TotalAmount, new { })
+                        @Html.TextBoxFor(model => model.TotalAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TotalBillAmount, new { })
+                        @Html.TextBoxFor(model => model.TotalBillAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+
+                <div class="form-group pull-left" style="margin-left:-2%;">
+                    <input class="btn bgm-blue btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateQuotationWithoutEnquiry" type="button" />
+                    <input class="btn bgm-bluegray btn-sm m-t-10 waves-effect" value="Create SaleOrder" id="CreateSalesOrderWithoutQuotation" type="button"/>
+                </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      
+        SalesQuotationMasterAndDetails.Initialize();
+
+        map = [];
+        var getData = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                
+                $.ajax({
+                    url: "/SalesQuotationMasterAndDetails/GetItemNumberSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val(), CustomerBranchMasterID: $("#CustomerBranchMasterID").val(), GeneralUnitsID: $("#GeneralUnitsID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        //debugger;
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.ItemDescription)) {
+                                map[response.ItemDescription] = response;
+                                matches.push(response.ItemDescription);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#ItemDescription").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getData()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#ItemNumber").val(map[item].ItemNumber);
+            $("#ItemDescription").val(map[item].ItemDescription);
+            $("#GeneralTaxGroupMasterID").val(map[item].GeneralTaxGroupMasterID);
+            $("#TaxRate").val(map[item].TaxRate);
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": map[item].ItemNumber },
+                url: '/SalesEnquiryMasterAndDetails/GetUoMCodeByItemNumber',
+                success: function (data) {
+                    var $ddlExam = $("#UOM");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">------Select UoM Code-----</option>');
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                            $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+
+                        });
+                    }
+                    else {
+                        // $ddlExam.append('<option value="EA">EA</option>');
+                    }
+                }
+            });
+        });
+
+
+        //CustomerMaster serachlist
+        mapCustomerName = [];
+        var getDataCustomerName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/CustomerMaster/GetCustomerMasterSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.CustomerMasterName)) {
+                                mapCustomerName[response.CustomerMasterName] = response;
+                                matches.push(response.CustomerMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#CustomerName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataCustomerName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#CustomerMasterID").val(mapCustomerName[item].CustomerMasterID);
+            $("#CustomerName").val(mapCustomerName[item].CustomerMasterName);
+            $("#CustomerType").val(mapCustomerName[item].CustomerType);
+            if ($("#CustomerType").val() == 1) {
+                $('#CustomerBranchMasterName').prop('disabled', true);
+                $('#CustomerBranchMasterName').val("");
+                $('#CustomerContactPersonName').val("");
+            }
+            else {
+                $('#CustomerBranchMasterName').prop('disabled', false);
+                $('#CustomerBranchMasterName').val("");
+                $('#CustomerContactPersonName').val("");
+            }
+        });
+
+        //Branch master Name
+        mapCustomerBranchMasterName = [];
+        var getDataCustomerBranchMasterName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/CustomerMaster/GetCustomerBranchMasterSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.CustomerBranchMasterName)) {
+                                mapCustomerBranchMasterName[response.CustomerBranchMasterName] = response;
+                                matches.push(response.CustomerBranchMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#CustomerBranchMasterName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataCustomerBranchMasterName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#CustomerBranchMasterID").val(mapCustomerBranchMasterName[item].CustomerBranchMasterID);
+            $("#CustomerBranchMasterName").val(mapCustomerBranchMasterName[item].CustomerBranchMasterName);
+        });
+
+        //Contact detials Serachlist
+
+        mapCustomerContactDetailsName = [];
+        var getDataCustomerContactDetailsName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/CustomerMaster/GetCustomerContactDetailsSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val(), CustomerBranchMasterID: $("#CustomerBranchMasterID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.CustomerContactPersonName)) {
+                                mapCustomerContactDetailsName[response.CustomerContactPersonName] = response;
+                                matches.push(response.CustomerContactPersonName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#ContactPersonName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataCustomerContactDetailsName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#ContactPersonID").val(mapCustomerContactDetailsName[item].CustomerContactDetailsID);
+            $("#ContactPersonName").val(mapCustomerContactDetailsName[item].CustomerContactPersonName);
+        });
+        $('#CustomerName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#CustomerName').typeahead('val', '');
+                $('#CustomerName').val("");
+                $('#CustomerBranchMasterName').prop('disabled', false);
+                $('#CustomerBranchMasterName').val("");
+                $('#ContactPersonName').val("");
+                $("#CustomerMasterID").val("");
+                $('#CustomerBranchMasterID').val('0');
+                $('#CustomerMasterID').val('0');
+                $('#ContactPersonID').val('0');
+
+            }
+        });
+        $('#ItemDescription').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#ItemDescription').val("");
+                $('#ItemDescription').typeahead('val', '');
+                $("#ItemNumber").val(0);
+                $("#Quantity").val(0);
+                $("#UOM").val("");
+                $("#Rate").val(0);
+                $("#UOM").html("");
+
+            }
+
+            if ($("#GeneralUnitsID").val() == "" || $("#GeneralUnitsID").val() == 0) {
+                $("#displayErrorMessage").text("Please Select Store .").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                return false;
+            }
+            else if ($("#CustomerName").val() == "" && ($("#CustomerMasterID").val() == "" || $("#CustomerMasterID").val() == 0)) {
+                $("#displayErrorMessage").text("Please Select Customer.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                return false;
+            }
+            else if ($("#CustomerBranchMasterName").val() == "" && $("#CustomerType").val() == 2) {
+                $("#displayErrorMessage").text("Please Select Branch.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                return false;
+            }
+            //else if ($("#ContactPersonName").val() == "" && ($("#ContactPersonID").val() == "" || $("#ContactPersonID").val() == 0)) {
+            //    $("#displayErrorMessage").text("Please Select Contact Person.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+            //    $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+            //    return false;
+            //}
+        });
+        $("#CustomerBranchMasterName").on("keydown", function (e) {
+            if ($("#CustomerName").val() == "" && ($("#CustomerMasterID").val() == "" || $("#CustomerMasterID").val() == 0)) {
+                $("#displayErrorMessage").text("Please Select Customer.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                return false;
+            }
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#CustomerBranchMasterName').val("");
+                $('#CustomerBranchMasterName').typeahead('val', '');
+                $('#ContactPersonName').val("");
+                $('#CustomerBranchMasterID').val('0');
+                $('#ContactPersonID').val('0');
+            }
+        });
+        $('#ContactPersonName').on("keydown", function (e) {
+            if ($("#CustomerName").val() == "" && ($("#CustomerMasterID").val() == "" || $("#CustomerMasterID").val() == 0)) {
+                $("#displayErrorMessage").text("Please Select Customer.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                return false;
+            }
+            if ($("#CustomerBranchMasterName").val() == "" && $("#CustomerType").val() == 2) {
+                $("#displayErrorMessage").text("Please Select Branch.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                return false;
+            }
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#ContactPersonName').val("");
+                $('#ContactPersonName').typeahead('val', '');
+                $('#ContactPersonID').val('0');
+            }
+        });
+
+    });
+</script>
+

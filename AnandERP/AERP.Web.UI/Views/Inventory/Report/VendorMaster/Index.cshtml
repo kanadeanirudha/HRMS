@@ -1,0 +1,72 @@
+﻿@model AERP.ViewModel.VendorMasterReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ <script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/Reports/VendorMasterReport.js")" type="text/javascript"></script>
+
+<div class="container">
+    @using (Html.BeginForm("Index", "VendorMasterReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+     {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Inventory Vendor Report</h2>
+        </div>
+        <div class="card" style="margin-bottom: 0px;">
+        <div class="card-body card-padding" style="padding-bottom:5%;">
+            @Html.HiddenFor(m => m.IsPosted)
+          <div class="row col-sm-12">
+                <div class="col-sm-4">
+                    <div class="fg-line select form-group">
+                        @Html.DropDownList("VendorReportList",ViewData["VendorReportList"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Vendor Type*" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="fg-line">
+                        <button type="submit" name="submit" id="btnVendorMasterReportSubmit" class="btn-primary btn">Show</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+<div class="container">
+    
+    <div id="aaa">
+        <div class="card">
+            @*<div class="card-header"></div>*@
+            <div class="card-body card-padding">
+               @if (Model.ReportFor == "All")
+               {
+                   @Html.Partial("/Views/Inventory/Report/VendorMaster/VendorMasterReport.aspx");
+
+               }
+               else if (Model.ReportFor == "VendorRestriction")
+               {
+                   @Html.Partial("/Views/Inventory/Report/VendorMaster/VendorMasterReportForVendorRestriction.aspx");
+
+               }
+               else if (Model.ReportFor == "ReplenishmentCategory")
+               {
+                   @Html.Partial("/Views/Inventory/Report/VendorMaster/VendorMasterReportForReplenishmentCategory.aspx");
+               }
+               else if (Model.ReportFor == "ContactPerson")
+               {
+                   @Html.Partial("/Views/Inventory/Report/VendorMaster/VendorMasterReportForContactPerson.aspx");
+               } 
+                else
+               {
+                   @Html.Partial("/Views/Inventory/Report/VendorMaster/VendorMasterReport.aspx");
+               }
+             </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        VendorMasterReport.Initialize();
+    });
+</script>

@@ -1,0 +1,82 @@
+﻿@model AERP.ViewModel.SaleContractFixAttendanceViewModel
+
+
+<div class="col-sm-12">
+    @if (Model.SaleContractFixAttendanceList.Count > 0)
+    {
+        if (Model.SaleContractFixAttendanceList[0].IsIncludeAllPostingForShortExtraRate)
+        {
+            <div id="" role="alert" class="alert">
+                <p id="">Please add attendance for all Man Power Item.</p>
+            </div>
+        }
+    }
+    
+    <table id="tblFixItemData" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fix Item Name</th>
+                <th>Total Days</th>
+                <th>Total Off Days</th>
+                <th>Total Billing Days</th>
+                <th>Total Billing Off Days</th>
+                <th>Total Attendace</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SaleContractFixAttendanceList)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@item.ID">
+                        <input type="hidden" value="@item.SaleContractFixItemID">
+                        @item.SaleContractFixItemName
+                    </td>
+                    <td>
+                        <input type="text" class="form-control input-sm" value="@item.SaleContractFixItemQuantity" disabled>
+                    </td>
+                    <td>
+                        <input type="hidden" class="IsSalaryDaysOnWeeklyOff" value="@(item.IsSalaryDaysOnWeeklyOff == true ? '1' : '0')" />
+                        @if (item.IsSalaryDaysOnWeeklyOff == true)
+                        {
+                            <input type="text" class="form-control input-sm TotalWeeklyOffDays" value="@item.SaleContractFixWeeklyOffDays">
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control input-sm TotalWeeklyOffDays" value="@item.SaleContractFixWeeklyOffDays" disabled>
+                        }
+                    </td>
+                    <td>
+                        <input type="text" class="form-control input-sm SaleContractFixBillingDays" value="@item.SaleContractFixBillingDays" disabled />
+                    </td>
+                    <td>
+                        <input type="hidden" class="IsBillingDaysOnWeeklyOff" value="@(item.IsBillingDaysOnWeeklyOff == true ? '1' : '0')" />
+                        @if (item.IsBillingDaysOnWeeklyOff == true)
+                        {
+                            <input type="text" class="form-control input-sm TotalWeeklyOffDays" value="@item.SaleContractFixBillingWeeklyOffDays">
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control input-sm TotalWeeklyOffDays" value="@item.SaleContractFixBillingWeeklyOffDays" disabled>
+                        }
+                    </td>
+                    <td>
+                        <input type="text" class="form-control input-sm" value="@item.SaleContractFixItemAttendance">
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="col-sm-12">
+    <div class="form-group fg-line">
+        <button type="button" class="btn btn-primary m-t-20" id="SaveSaleContractFixAttendance">@Resources.ButtonAction_Save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractFixAttendance.Initialize();
+    });
+</script>

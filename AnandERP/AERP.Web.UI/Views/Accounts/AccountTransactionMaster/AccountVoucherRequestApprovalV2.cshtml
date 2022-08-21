@@ -1,0 +1,167 @@
+﻿@model AMS.ViewModel.AccountTransactionMasterViewModel
+@{
+    Layout = null;
+    decimal totalDebit = 0;
+    decimal totalCredit = 0;
+}
+<script src="~/Scripts/AMS_Scripts/Account/AccountTransactionMasterV2.js"></script>
+
+<style type="text/css">
+    .mfp-content {
+        width: 65%;
+    }
+    @@media (max-width:768px) {
+        .mfp-content {
+            width: 100% !important;
+        }
+    }
+</style>
+
+<div id="custom-content">
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i> Account Voucher Request Approval</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <form id="FormVoucherRequestApproval" method="post">
+                @Html.HiddenFor(m => m.TransactionMainID)
+                @Html.HiddenFor(m => m.AccBalsheetMstID)
+                @Html.HiddenFor(m => m.AccSessionID)
+                @Html.HiddenFor(m => m.TransactionType)
+                @Html.HiddenFor(m => m.NarrationDescription)
+                @Html.HiddenFor(m => m.TransactionDate)
+
+                @Html.HiddenFor(m => m.PersonID)
+                @Html.HiddenFor(m => m.StageSequenceNumber)
+                @Html.HiddenFor(m => m.TaskNotificationMasterID)
+                @Html.HiddenFor(m => m.TaskNotificationDetailsID)
+                @Html.HiddenFor(m => m.GeneralTaskReportingDetailsID)
+                @Html.HiddenFor(m => m.IsLastRecord)
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <tr>
+                                <td class="size" width="30%;"><b>Balancesheet </b></td>
+                                <td>
+                                    <b>@Html.DisplayFor(model => model.AccBalsheetName, new { style = "font-Weight:Bold;" })</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="size"><b>Voucher Date </b></td>
+                                <td>
+                                    <b>@Html.DisplayFor(model => model.TransactionDate, new { style = "font-Weight:Bold;" })</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="size"><b>Narration </b></td>
+                                <td>
+                                    <b>@Html.DisplayFor(model => model.NarrationDescription, new { style = "font-Weight:Bold;" })</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="size"><b>Voucher Number </b></td>
+                                <td>
+                                    <b>@Html.DisplayFor(model => model.TransactionType, new { style = "font-Weight:Bold;", @Value = Model.TransactionType + "-" + Model.VoucherNumber })</b>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row" id="tblFeeStructure" style="">
+                    <div class="card">
+                        <div class="card-header ch-alt">
+                            <h2>Voucher Details</h2>
+                        </div>
+
+                        <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                            <div class="table_content">
+                                <table id="tblVoucherDetails" class="table table-hover" style="">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: #fff; text-align: center; width: 40%" aria-controls="DataTables_Table_0" rowspan="2">Particulars </th>
+                                            <th style="background-color: #fff; text-align: center" aria-controls="DataTables_Table_0" colspan="2">Amount </th>
+                                        </tr>
+                                        <tr>
+                                            <th style="background-color: #fff; text-align: center" aria-controls="DataTables_Table_0">Debit </th>
+                                            <th style="background-color: #fff; text-align: center" aria-controls="DataTables_Table_0">Credit </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                        @if (Model.AccountVoucherDetailsList.Count > 0)
+                                        {
+                                            foreach (var item in Model.AccountVoucherDetailsList)
+                                            {
+                                                <tr class="odd">
+                                                    <td style="text-align: left">@item.BankName</td>
+                                                    @if (@item.DebitCreditFlag == "D")
+                                                    {
+                                                        <td style="text-align: center">@item.TransactionAmount.ToString("0.00") </td>
+                                                        Convert.ToInt32(totalDebit += @item.TransactionAmount);
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style=""></td>
+                                                    }
+                                                    @if (@item.DebitCreditFlag == "C")
+                                                    {
+                                                        <td style="text-align:center">@Convert.ToDecimal(item.TransactionAmount * (-1)).ToString("0.00")  </td>
+                                                        Convert.ToDecimal(totalCredit += item.TransactionAmount * (-1));
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style=""></td>
+                                                    }
+                                                    <td style="display: none">
+                                                        <input value="@item.AccTransDetailsID" id="accTransDetailsID" type="text" style="display:none" />
+                                                        <input value="@item.AccountID" id="accountID" type="text" style="display:none" />
+                                                        <input value="@item.DebitCreditFlag" id="crDrStatus" type="text" style="display:none" />
+                                                        @if (@item.DebitCreditFlag == "C")
+                                                        {
+                                                            <input value="@Convert.ToDecimal(item.TransactionAmount * (-1)).ToString("0.00")" id="transactionAmount" type="text" style="display:none" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input value="@item.TransactionAmount" id="transactionAmount" type="text" style="display:none" />
+                                                        }
+                                                        <input value="@item.ChequeNo" id="chequeNo" type="text" style="display:none" />
+                                                        <input value="@item.ChequeDatetime" id="chequeDatetime" type="text" style="display:none" />
+                                                        <input value="@item.AccountSpecificNarration" id="accountSpecificNarration" type="text" style="display:none" />
+                                                        <input value="@item.BankName" id="bankName" type="text" style="display:none" />
+                                                        <input value="@item.BranchName" id="branchName" type="text" style="display:none" />
+                                                        <input value="@item.PersonID" id="personID" type="text" style="display:none" />
+                                                        <input value="@item.PersonType" id="personType" type="text" style="display:none" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+                                        <tr>
+                                            <td class="size" style="text-align: left">Total :</td>
+                                            <td style="text-align: center"><b><span>@totalDebit.ToString("0.00")</span></b></td>
+                                            <td style="text-align: center"><b><span style="text-align: center">@totalCredit.ToString("0.00")</span></b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="text-align: right; padding-top: 15px;" class="col-sm-12">
+                                    <input id="ApproveAccountVoucher" type="button" value="Approve" class="btn btn-primary" style="" />
+                                    <input name="" id="RejectAccountVoucher" type="button" class="btn btn-secondary" style="" value="Reject" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountTransactionMaster.Initialize();
+
+    });
+</script>

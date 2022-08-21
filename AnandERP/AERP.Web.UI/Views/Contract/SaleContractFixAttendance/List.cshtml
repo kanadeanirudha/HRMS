@@ -1,0 +1,23 @@
+﻿@model AERP.ViewModel.SaleContractFixAttendanceViewModel
+
+<table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+    <thead>
+        <tr>
+            <th>Fix Item Name</th>
+            <th>Total Days</th>
+            <th>Total Billing Days</th>
+            <th>Total Attendance</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SaleContractFixAttendanceList)
+        {
+            <tr>
+                <td>@item.SaleContractFixItemName</td>
+                <td>@item.SaleContractFixItemQuantity</td>
+                <td>@item.SaleContractFixBillingDays</td>
+                <td>@item.SaleContractFixItemAttendance</td>
+            </tr>
+        }
+    </tbody>
+</table>

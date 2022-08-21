@@ -1,0 +1,91 @@
+﻿@model AERP.ViewModel.OrganisationCentrewiseDepartmentViewModel
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Centre Wise Department</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditOrganisationBranchDetails">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.DepartmentID)
+                @Html.HiddenFor(model => model.CentreCode)
+                @Html.HiddenFor(model => model.SelectedCentreName)
+
+
+
+                <div class="col-sm-6">
+                    <div id="checkboxlist" class="form-group">
+                        Select Domain
+                        <p id="e5_f">
+                            <select id="checkboxlist1" class="form-group selectpicker" multiple name="selectCent">
+                                @*data-live-search="true"*@
+                                @foreach (var item in Model.GetAdminRoleDomainList)
+                                {
+                                    if (@item.StatusFlag == true)
+                                    {
+                                        <option id="@item.AdminRoleDomainApplicableID" value="@item.AdminRoleDomainApplicableID~@item.AdminRoleDomainID" selected="selected">@item.AdminRoleDomainName</option>
+                                    }
+                                    else
+                                    {
+                                        <option id="@item.AdminRoleDomainApplicableID" value="@item.AdminRoleDomainApplicableID~@item.AdminRoleDomainID">@item.AdminRoleDomainName</option>
+                                    }
+                                }
+                            </select>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="checkbox m-b-15">
+                        <label>
+                            @if (Model.ActiveFlag == true)
+                            {
+                                <input type="checkbox" value="" id="ActiveFlag" checked>
+                            }
+                            else
+                            {
+                                <input type="checkbox" value="" id="ActiveFlag">
+                            }
+                            <i class="input-helper"></i>
+                            <b>@Resources.DisplayMessage_AreYouSureYouWanttoDeallocate <u>@Html.DisplayFor(model => model.DepartmentName)</u>  @Resources.DisplayMessage_to  <u>@Html.DisplayFor(model => model.SelectedCentreName)</u>  @Resources.Display_CentreQue</b>
+                        </label>
+                    </div>
+                    @*<div class="form-group  fg-line">
+
+                        </div>*@
+                </div>
+
+
+
+                <div class="form-group" style="margin-left: 2%; ">
+                    <input class="btn btn-primary btn-sm waves-effect" value="@Resources.ButtonAction_Submit" id="EditOrganisationCentrewiseDepartmentRecord" type="button" />
+                    <input name="" id="closeBtn" type="button" class="btn btn-default" value="No" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+        OrganisationCentrewiseDepartment.Initialize();
+    });
+</script>
+
+
+
+

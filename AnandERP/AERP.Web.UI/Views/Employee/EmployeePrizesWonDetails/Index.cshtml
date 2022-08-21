@@ -1,0 +1,44 @@
+﻿@*@model IEnumerable<AMS.ViewModel.EmployeePrizesWonDetailsViewModel>
+@{
+    ViewBag.Title = "EmployeePrizesWonDetails";
+    Layout = "~/Views/Employee/EmployeeInformation/Profile.cshtml";
+}
+
+@Styles.Render("~/Content/Vendors")
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeePrizesWonDetails.js")" type="text/javascript"></script>
+
+<div id="ListViewModel"  >
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+       EmployeePrizesWonDetails.LoadList();
+    });
+</script>*@
+
+@*--------------------new code-------------------------*@
+
+@model IEnumerable<AMS.ViewModel.EmployeePrizesWonDetailsViewModel>
+@{
+    ViewBag.Title = "EmployeePrizesWonDetails";
+    Layout = "~/Views/Employee/EmployeeInformation/ProfileV2.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 75%;
+    }
+</style>
+
+@*@Styles.Render("~/Content/Vendors")*@
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeePrizesWonDetails.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeePrizesWonDetails.LoadList();
+    });
+</script>

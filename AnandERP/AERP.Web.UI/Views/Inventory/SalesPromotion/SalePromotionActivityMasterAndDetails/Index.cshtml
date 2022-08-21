@@ -1,0 +1,29 @@
+﻿@model AMS.ViewModel.SalePromotionActivityMasterAndDetailsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/SalesPromotion/SalePromotionActivityMasterAndDetails.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+
+</div>
+<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //SalePromotionActivityMasterAndDetails.Initialize();
+        SalePromotionActivityMasterAndDetails.LoadList();
+
+    });
+</script>
+
+
+
+

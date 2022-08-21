@@ -1,0 +1,315 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+
+<div id="custom-content">
+    @Html.HiddenFor(model => model.GeneralItemMasterID)
+    @Html.HiddenFor(model => model.ItemNumber)
+    @Html.HiddenFor(model => model.GeneralItemSupliersDataID)
+    @Html.HiddenFor(model => model.ItemDescription)
+
+    @*@Html.HiddenFor(model => model.TaskCode)*@
+    <input type="hidden" id="TaskCode" value="GeneralItemSupliersData" />
+    @*<div class="block-header">
+
+        </div>*@
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateGeneralItemMaster" role="form" class="row">
+                <div class="row">
+                    <div class="col-sm-5" id="VendorID">
+                        <div class="col-sm-4 control-label">
+                            <div class="form-group fg-line" style="margin-top:5px !important">
+                                @Html.LabelFor(model => model.GeneralVendorID, new { })
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group select fg-line">
+                                @Html.DropDownListFor(model => model.GeneralVendorID, (SelectList)ViewBag.VendorNameList, "--Select Vendor--", new { @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                    </div>
+                   @if (Model.IsDefaultVendor==true)
+                   {
+                    <div class="col-sm-3 col-sm-offset-1">
+                        <label>
+                            <input type="checkbox" id="IsDefaultVendor" name="IsDefaultVendor" class="m-r-20" checked>
+                            <i class="input-helper"></i>
+                           Default Vendor
+                        </label>
+                    </div>
+                   }
+                   else
+                   {
+                    <div class="col-sm-3 col-sm-offset-1">
+                        <label>
+                            <input type="checkbox" id="IsDefaultVendor" name="IsDefaultVendor" class="m-r-20">
+                            <i class="input-helper"></i>
+                            Default Vendor
+                        </label>
+                    </div>
+
+                   }
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PurchaseOrganization, new { })
+                            @Html.TextBoxFor(model => model.PurchaseOrganization, new { maxlength = "50", @class = "form-control input-sm " })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PurchaseOrganization)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            <span style="color:red">*</span>
+                            @Html.HiddenFor(model => model.GeneralVendorID)
+                            @Html.LabelFor(model => model.VendorName, new { })
+                            @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control input-sm " })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.VendorName)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="col-sm-8 m-b-30">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.VendorNumber, new { })
+                                @Html.TextBoxFor(model => model.VendorNumber, new { @class = "form-control input-sm " })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.VendorNumber)
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="actions">
+                                <li>
+                                    <a title="Create Multiple Vendor" id="CreateMultipleVendor" href="@Url.Action("MultipleVendor", "GeneralItemMaster", new { GeneralItemMasterID = @Model.GeneralItemMasterID, ItemNumber = @Model.ItemNumber,ItemDescription=@Model.ItemDescription })" class="mfpAjaxModal">
+                                        <i class="zmdi zmdi-plus zmdi-hc-fw  btn bgm-green waves-effect" style="padding: 6px 30px 6px 19px"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group  select fg-line">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.PurchaseUoMCode, new { })
+                            @*@Html.TextBoxFor(model => model.PurchaseUoMCode, new { maxlength = "50", @class = "form-control input-sm " })*@
+                            @Html.DropDownListFor(model => model.PurchaseUoMCode, (SelectList)ViewBag.InventoryPurchaseUomCodeList, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PurchaseUoMCode)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ManufacturCatalogNumber, new { })
+                            @Html.TextBoxFor(model => model.ManufacturCatalogNumber, new { maxlength = "50", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ManufacturCatalogNumber)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group select fg-line">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.GeneralPurchaseGroupMasterID, new { })
+                            @Html.DropDownListFor(model => model.GeneralPurchaseGroupMasterID, (SelectList)ViewBag.GeneralPurchaseGroupMasterList, "--Select Purchase Group--", new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.GeneralPurchaseGroupMasterID)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.MinimumOrderquantity, new { })
+                            @Html.TextBoxFor(model => model.MinimumOrderquantity, new { maxlength = "8", @class = "form-control input-sm " })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.MinimumOrderquantity)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.LeadTime, new { })
+                            @Html.TextBoxFor(model => model.LeadTime, new { maxlength = "50", @class = "form-control input-sm ", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.LeadTime)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ManufacturerName, new { })
+                            @Html.TextBoxFor(model => model.ManufacturerName, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ManufacturerName)
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ShelfLife, new { })
+                            @Html.TextBoxFor(model => model.ShelfLife, new { maxlength = "50", @class = "form-control input-sm " })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ShelfLife)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.RemainingShelfLife, new { })
+                            @Html.TextBoxFor(model => model.RemainingShelfLife, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.RemainingShelfLife)
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CountryOfOrigin, new { })
+                            @Html.DropDownListFor(model => model.CountryOfOrigin, (SelectList)ViewBag.GeneralCountryMasterList, "---Select Country ---", new { @class = "form-control input-sm" })
+                            @*@Html.TextBoxFor(model => model.CountryOfOrigin, new { maxlength = "50", @class = "form-control input-sm typeahead" })*@
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CountryOfOrigin)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.HSCode, new { })
+                            @Html.TextBoxFor(model => model.HSCode, new { maxlength = "50", @class = "form-control input-sm" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.HSCode)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.LastPurchasePrice, new { })
+                            @Html.TextBoxFor(model => model.LastPurchasePrice, new { maxlength = "8", @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.LastPurchasePrice)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CurrencyCode, new { })
+                            @Html.TextBoxFor(model => model.CurrencyCode, new { maxlength = "50", @class = "form-control input-sm", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CurrencyCode)
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //$("#ShelfLife").datetimepicker({
+        //    format: 'DD MMM YYYY',
+        //    minDate: moment(),
+        //});
+
+        //$("#ShelfLife").on("keydown", function () {
+        //    var keycode = (e.keyCode ? e.keyCode : e.which);
+        //    if (keycode != 9) {
+        //        return false;
+        //    }
+        //});
+        GeneralItemMaster.Initialize();
+
+        //On multiple vendor change
+        $("#VendorID").children().children().children("#GeneralVendorID").change(function () {
+            var selectedItem = $(this).val();
+            var ItemNumber = $("#ItemNumber").val();
+            debugger;
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": ItemNumber, "GeneralVendorID": selectedItem },
+                url: '/GeneralItemMaster/GetGeneralItemSupliersDataByItemNumberandVendorID',
+                success: function (data) {
+                    $("#LastPurchasePrice").val(data[0].LastPurchasePrice);
+                    $("#GeneralItemSupliersDataID").val(data[0].GeneralItemSupliersDataID);
+                    $("#ManufacturCatalogNumber").val(data[0].ManufacturCatalogNumber);
+                    $("#GenTaxGroupMasterID").val(data[0].GenTaxGroupMasterID);
+                    $("#GeneralVendorID").val(data[0].GeneralVendorID);
+                    $("#VendorName").val(data[0].VendorName);
+                    $("#PurchaseUoMCode").val(data[0].PurchaseUoMCode);
+                    $("#GeneralPurchaseGroupMasterID").val(data[0].GeneralPurchaseGroupMasterID);
+                    $("#PurchaseOrganization").val(data[0].PurchaseOrganization);
+                    $("#MinimumOrderquantity").val(data[0].MinimumOrderquantity);
+                    $("#CountryOfOrigin").val(data[0].CountryOfOrigin);
+                    $("#LeadTime").val(data[0].LeadTime);
+                    $("#VendorNumber").val(data[0].VendorNumber);
+                    $("#CurrencyCode").val(data[0].CurrencyCode);
+                    $("#RemainingShelfLife").val(data[0].RemainingShelfLife);
+                    $("#ShelfLife").val(data[0].ShelfLife);
+                    $("#ManufacturerName").val(data[0].ManufacturerName);
+                    $("#HSCode").val(data[0].HSCode);
+                    $("#IsDefaultVendor").val(data[0].IsDefaultVendor);
+                    if ($('#IsDefaultVendor').val() == "true") {
+                        $('#IsDefaultVendor').prop('checked', true);
+                    }
+                    else {
+                        $('#IsDefaultVendor').prop('checked', false);
+                    }
+
+                }
+            });
+
+
+        });
+
+        //=======================Vendor Name=================================
+
+        
+        //$('.typeahead').typeahead({
+        //    hint: true,
+        //    highlight: true,
+        //    minLength: 1
+        //},
+        //{
+        //    source: getVendorData()
+        //}).on("typeahead:selected", function (obj, item) {
+
+        //    $("#CountryOfOrigin").val(map[item].countryId);
+        //    $("#CurrencyCode").val(map[item].currency);
+        //    $('#GeneralVendorID').val(map[item].id);
+        //    $('#VendorNumber').val(map[item].VendorNumber);
+        //    var ItemNumber = $("#ItemNumber").val();
+        //    $("#LeadTime").val('');
+        //    $.ajax({
+        //        cache: false,
+        //        type: "POST",
+        //        dataType: "json",
+        //        data: { "ItemNumber": ItemNumber, "GeneralVendorID": map[item].id },
+        //        url: '/GeneralItemMaster/GetLeadTimeByVendorID',
+        //        success: function (data) {
+
+        //            $("#LeadTime").val(data.replace(/"/g, ""));
+        //        }
+        //    });
+
+        //});
+
+
+
+
+
+    });
+</script>
+
+
+

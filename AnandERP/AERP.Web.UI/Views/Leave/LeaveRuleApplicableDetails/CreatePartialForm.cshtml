@@ -1,0 +1,222 @@
+﻿
+@*@model AMS.ViewModel.LeaveRuleApplicableDetailsViewModel
+@{
+    Layout = null;
+}
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.ID)
+@Html.HiddenFor(model => model.LeaveSessionID)
+<fieldset>
+    <legend>
+        <h4>@Resources.FormCreate_LeaveRuleMasterDetails</h4>
+    </legend>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.NumberOfLeaves, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.NumberOfLeaves, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                    <br />
+                    @Html.ValidationMessageFor(model => model.NumberOfLeaves)
+                </div>
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.MaxLeaveAtTime, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.MaxLeaveAtTime, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.MinLeavesAtTime, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.MinLeavesAtTime, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                </div>
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.MaxLeaveEncash, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.MaxLeaveEncash, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.MinimumLeaveEncash, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.MinimumLeaveEncash, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                </div>
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.MinServiceRequiredInMonth, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.MinServiceRequiredInMonth, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span10">
+            <div class="row control-group">
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.AttendDaysRequired, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.AttendDaysRequired, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                </div>
+                <div class="span2">
+
+                    @Html.LabelFor(model => model.MaxLeaveAccumulated, new { style = "font-Weight:Bold;" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.MaxLeaveAccumulated, new { style = "font-Weight:Bold;", maxlength = "3",disabled = "disabled"  })
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</fieldset>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveRuleApplicableDetails.Initialize();
+    });
+</script>
+<style>
+    .span {
+        width: 25px;
+        margin-top: 1%;
+        margin-left: 60px;
+    }
+
+    .span1 {
+        width: 100px;
+    }
+
+    .span2 {
+        width: 200px;
+    }
+</style>*@
+
+<!---new --->
+
+@model AERP.ViewModel.LeaveRuleApplicableDetailsViewModel
+@{
+    Layout = null;
+}
+
+
+<div id="custom-content">
+    <div class="block-header">
+        <h5>&nbsp;@Resources.FormCreate_LeaveRuleMasterDetails</h5>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:230px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            @*<form id="FormCreateGeneralLeaveDocument" method="post">*@
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.LeaveSessionID)
+
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.NumberOfLeaves, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.NumberOfLeaves, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+                @Html.ValidationMessageFor(model => model.NumberOfLeaves)
+            </div>
+
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.MaxLeaveAtTime, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.MaxLeaveAtTime, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+            </div>
+
+
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.MinLeavesAtTime, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.MinLeavesAtTime, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.MaxLeaveEncash, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.MaxLeaveEncash, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+            </div>
+
+                
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.MinimumLeaveEncash, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.MinimumLeaveEncash, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.MinServiceRequiredInMonth, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.MinServiceRequiredInMonth, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.AttendDaysRequired, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.AttendDaysRequired, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                @Html.LabelFor(model => model.MaxLeaveAccumulated, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.TextBoxFor(model => model.MaxLeaveAccumulated, new { @class = "form-control", style = "", maxlength = "3", disabled = "disabled" })
+                </div>
+            </div>
+
+                
+
+                
+            @*</form>*@
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveRuleApplicableDetails.Initialize();
+    });
+</script>

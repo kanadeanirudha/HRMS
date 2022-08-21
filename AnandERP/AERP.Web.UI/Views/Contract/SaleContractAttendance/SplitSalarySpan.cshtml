@@ -1,0 +1,55 @@
+﻿@model AERP.ViewModel.SaleContractAttendanceViewModel
+
+<div id="custom-content">
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="select form-group fg-line">
+                            @Html.LabelFor(model => model.SaleContractBillingSpanID, new { })
+                            @Html.DropDownListFor(model => model.SaleContractBillingSpanID, Model.ListGetContractSpans, "---Select---", new { @class = "form-control input-sm", id = "GetSaleContractBillingSpanID" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SaleContractBillingSpanID)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="select form-group fg-line">
+                            @Html.LabelFor(model => model.SplitFromDate, new { })
+                            @Html.TextBoxFor(model => model.SplitFromDate, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SplitFromDate)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            <button type="button" class="btn btn-primary m-t-20" id="btnCreateSalarySplitSpan">Create</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="AttendanceStatusForDay">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractAttendance.Initialize();
+
+        $('#SplitFromDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        })
+    });
+</script>

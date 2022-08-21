@@ -1,0 +1,94 @@
+﻿@model AERP.ViewModel.GeneralJobStatusViewModel
+@{
+    Layout = null;
+}
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Job Status</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:200px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+            <form id="FormEditGeneralJobStatus" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.JobStatusDescription, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.JobStatusDescription, new { @class = "form-control", maxlength = "50" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.JobStatusDescription)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.JobStatusCode, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.JobStatusCode, new { @class = "form-control", maxlength = "25" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.JobStatusCode)
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @if (@Model.GeneralJobStatusDTO.IsActive)
+                            {
+
+                                <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                    <label>
+                                        <input type="checkbox" id="IsActive" checked>
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.IsActive, new { style = "" })
+                                    </label>
+                                </div>
+
+                            }
+                            else
+                            {
+
+                                <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                    <label>
+                                        <input type="checkbox" id="IsActive">
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.IsActive, new { style = "" })
+                                    </label>
+                                </div>
+
+                            }
+                            </div>
+                        </div>
+
+                            @*<div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                        <label>
+                            <input type="checkbox" id="IsActive">
+                            <i class="input-helper"></i>
+                            @Html.LabelFor(model => model.IsActive, new { style = "" })
+                        </label>
+                    </div>*@
+
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <button type="button" id="EditGeneralJobStatusRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                                </div>
+                            </div>
+
+                        </div>
+</form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralJobStatus.Initialize();
+    });
+</script>

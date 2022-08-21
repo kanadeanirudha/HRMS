@@ -1,0 +1,204 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+<h4></h4>
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <div class="form-group fg-line">
+            @Html.HiddenFor(m => m.ItemNumber)
+            @Html.LabelFor(model => model.ItemDescription, new { })
+            @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.ItemDescription)
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.UOMCode, new { })
+            @Html.DropDownListFor(model => model.UOMCode, Enumerable.Empty<SelectListItem>(), "---Select---", new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.UOMCode)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.Quantity, new { })
+            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.Quantity)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.Rate, new { })
+            @Html.TextBoxFor(model => model.Rate, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.Rate)
+    </div>
+    <div class="col-sm-1">
+        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddContractMaterial"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblAddContractMaterial" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Item Description</th>
+                <th>UOM Code</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.SaleContractMasterListForContractMaterial)
+            {
+                <tr>
+                    <td>@item.ItemDescription</td>
+                    <td>@item.UOMCode</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Rate</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+        mapSaleContractMaterial = [];
+        var getDataSaleContractMaterial = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractMaster/GetSaleContractMaterialItemList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.ItemDescription)) {
+                                mapSaleContractMaterial[response.ItemDescription] = response;
+                                matches.push(response.ItemDescription);
+                            }
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#ItemDescription").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataSaleContractMaterial()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#ItemNumber").val(mapSaleContractMaterial[item].ItemNumber);
+            $("#ItemDescription").val(mapSaleContractMaterial[item].ItemDescription);
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": mapSaleContractMaterial[item].ItemNumber },
+                url: '/SalesEnquiryMasterAndDetails/GetUoMCodeByItemNumber',
+                success: function (data) {
+                    var $ddlExam = $("#UOMCode");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">------Select UoM Code-----</option>');
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                            $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+
+                        });
+                    }
+                    else {
+                        // $ddlExam.append('<option value="EA">EA</option>');
+                    }
+                }
+            });
+        });
+
+        $('#ItemDescription').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#ItemDescription').typeahead('val', '');
+                $("#ItemDescription").val("");
+                $("#ItemNumber").val("");
+            }
+        });
+
+        $('#btnAddContractMaterial').on("click", function () {
+            if ($('#ItemDescription').val() == "" && ($('#ItemNumber').val() == "0" || $('#ItemNumber').val() == "")) {
+                notify("Please Select Material Item.", "warning");
+                return false;
+            }
+            if ($('#UOMCode').val() == "" || $('#UOMCode').val() == 0) {
+                notify("Please Select UOM Code.", "warning");
+                return false;
+            }
+            if ($('#Quantity').val() == "" || $('#Quantity').val() == 0) {
+                notify("Please Enter Quantity.", "warning");
+                return false;
+            }
+            if ($('#Rate').val() == "" || $('#Rate').val() == 0) {
+                notify("Please Enter Rate.", "warning");
+                return false;
+            }
+            // alert($('#AttributeName :selected').val())
+
+            var DataArray = [];
+            var data = $('#tblAddContractMaterial tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 4) {
+                if ((DataArray[i] == $("#ItemNumber").val()) && (DataArray[i + 1] == $("#UOMCode").val())) {
+                    notify("You Cannot Enter the Same Item with Same UOM.", "warning");
+                    $("#ItemDescription").typeahead('val', '');
+                    $("#ItemDescription").val("");
+                    $("#UOMCode").val("");
+                    $('#ItemNumber').val('');
+                    return false;
+                }
+            }
+            $("#tblAddContractMaterial tbody").append(
+                                                   "<tr>" +
+                                                    "<td><input type='hidden' value='" + $("#ItemNumber").val() + "'  />" + $('#ItemDescription').val() + "</td>" +
+                                                    "<td><input type='hidden' value='" + $('#UOMCode').val() + "' />" + $('#UOMCode').val() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#Quantity').val() + "' />" + $('#Quantity').val() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#Rate').val() + "' />" + $('#Rate').val() + "</td>" +
+                                                   "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                                                   "</tr>"
+                                                  );
+
+
+            $("#tblAddContractMaterial tbody").unbind("click").on("click", "tr td i", function () {
+                $(this).closest('tr').remove();
+            });
+
+            $('#ItemDescription').typeahead('val', '');
+            $("#ItemDescription").val("");
+            $("#ItemNumber").val("");
+            $("#UOMCode").val("");
+            $('#Quantity').val("");
+            $('#Rate').val("");
+        });
+    })
+</script>

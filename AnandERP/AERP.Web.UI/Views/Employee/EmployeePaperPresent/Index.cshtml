@@ -1,0 +1,45 @@
+﻿@*@model IEnumerable<AMS.ViewModel.EmployeePaperPresentViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Employee/EmployeeInformation/Profile.cshtml";
+}
+<link href="~/Content/admin/jquery-ui-1.css" rel="stylesheet" />
+@Styles.Render("~/Content/Vendors")
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeePaperPresent.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+
+<div id="ListViewModel">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeePaperPresent.LoadList();
+    });
+</script>*@
+
+@*--------new code-------------*@
+
+@model IEnumerable<AMS.ViewModel.EmployeePaperPresentViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Employee/EmployeeInformation/ProfileV2.cshtml";
+}
+
+<style type="text/css">
+    .mfp-content {
+        width: 65%;
+    }
+</style>
+
+@*@Styles.Render("~/Content/Vendors")*@
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeePaperPresent.js")" type="text/javascript"></script>
+<div id="ListViewModel" class="container">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeePaperPresent.LoadList();
+    });
+</script>

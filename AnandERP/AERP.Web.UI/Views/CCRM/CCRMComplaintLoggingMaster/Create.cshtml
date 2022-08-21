@@ -1,0 +1,188 @@
+﻿@model AERP.ViewModel.CCRMComplaintLoggingMasterViewModel
+
+<div class="mfp-content" style="background :#bfc6ca;width: 1306px;margin: -10px 0px -10px -128px;">
+    <style>
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #f1dddd;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(even) {
+            background-color: #88e1814a;
+        }
+         .mfp-close-btn-in .mfp-close {
+        color: #eee;
+    }
+    </style>
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="background: #607d8b;margin-top: -10px;line-height: 2.5;color:  white;margin-left: -10px;width: 1306px;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Manage Complaint Logging Master</h2>
+        </div>
+
+        <div class="card" style="margin-top:-24px;width: 1306px;margin-left: -10px;">
+
+            <div class="bootgrid-header container-fluid" id="data-table-command-header">
+                <div class="row">
+                    <div class="col-sm-12 actionBar">
+                        <div class="search form-group">
+                            <div class="input-group">
+                                <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                                <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                            </div>
+                        </div>
+                        <div class="actions btn-group">
+                            <div class="dropdown btn-group">
+                                <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                                    <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                                </button>
+                                <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                                    <li class="active" aria-selected="true">
+                                        <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                                    </li>
+                                    <li aria-selected="false">
+                                        <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                                    </li>
+                                    <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown btn-group">
+                                <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                                    <span class="dropdown-text">
+                                        <span class="zmdi icon zmdi-view-module"></span>
+                                    </span><span class="caret"></span>
+                                </button>
+                                <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+
+
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label class="dropdown-item" aria-disabled="false">
+                                                <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="CallDate">
+                                                Call Date<i class="input-helper"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label class="dropdown-item" aria-disabled="false">
+                                                <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="CallType">
+                                                Call Type<i class="input-helper"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label class="dropdown-item" aria-disabled="false">
+                                                <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="MIFName">
+                                                MIF Name<i class="input-helper"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label class="dropdown-item" aria-disabled="false">
+                                                <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Actions">
+                                                @Resources.DisplayName_Actions<i class="input-helper"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+                <thead>
+                    <tr>
+
+                        <th>Call Date</th>
+                        <th> Call Type</th>
+                        <th>MIF Name</th>
+                        <th>@Resources.DisplayName_Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        </div>
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+            var oTable;
+            CCRMComplaintLoggingMaster.Initialize();
+            oTable = $('#myDataTable').DataTable({
+                "bServerSide": true,
+                "sAjaxSource": "CCRMComplaintLoggingMaster/AjaxHandler",
+                "bJQueryUI": true,
+                "sScrollY": false,
+                "bProcessing": true,
+                "sPaginationType": "full_numbers",
+                "oLanguage": {
+                    "sInfoEmpty": "No entries to show",
+                },
+                "columnDefs": [
+
+
+                                {
+                                    "targets": 0,
+                                    "bSearchable": true,
+                                    "data": null,
+                                    "render": function (data, type, full, meta) {
+                                        var result = "<p  style=' height:5px;'>" + data[0] + "</p>";
+                                        return result;
+                                    }
+
+                                },
+                                 {
+                                     "targets": 1,
+                                     "bSearchable": true,
+                                     "data": null,
+                                     "render": function (data, type, full, meta) {
+                                         var result = "<p  style=' height:5px;'>" + data[3] + "</p>";
+                                         return result;
+                                     }
+
+                                 },
+                                  {
+                                      "targets": 2,
+                                      "bSearchable": true,
+                                      "data": null,
+                                      "render": function (data, type, full, meta) {
+                                          var result = "<p  style=' height:5px;'>" + data[2] + "</p>";
+                                          return result;
+                                      }
+
+                                  },
+                                {
+                                    "targets": 3,
+                                    "bSortable": false,
+                                    "data": null,
+                                    "render": function (data, type, full, meta) {
+
+                                        var result1 = '@Html.ActionLink("Edit1", "Edit", new { ID = '1' }, new { @class = "mfpAjaxModal" })';
+                                        result1 = result1.replace('1', data[1]);
+                                        //result1 = result1.replace("Edit1", '<i class="icon-edit" title="@Resources.ToolTip_Edit"></i>');
+                                        result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_Edit" class="btn btn-default"><i class="zmdi zmdi-edit"></i></button>');
+
+                                        var result2 = '@Html.ActionLink("Delete1", "Delete", new { ID = '1' }, new { @class = "ajax  cboxElement" })';
+                                        result2 = result2.replace('1', data[2]);
+                                        //result2 = result2.replace("Delete1", '<i class="icon-trash" title="@Resources.ToolTip_Delete"></i>');
+                                        result2 = " <a href=\"javascript:void(0);\" data-toggle=\"tooltip\"class=\"btn btn-default waves-effect\" onclick=\"fancyBoxPopUpAjax('Delete Action Master','Do you want to delete Action Master?','error','btn-danger 2.','Yes!','/CCRMComplaintLoggingMaster/Delete?ID=" + data[1] + "','content','page-loader','CCRMComplaintLoggingMaster')\"><span class=\"zmdi zmdi-delete waves-effect\"></span></a>";
+
+                                        var result = "<p  style=''>" + result1 + " " + result2 + "</p>";
+
+                                        return result;
+                                    }
+                                }
+                ]
+            });
+
+            DataTableSettings(oTable, "myDataTable", "toggleTableColumn");
+        });
+        </script>
+</div>
+
+

@@ -1,0 +1,24 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/config/applicationhost.config
+/AnandERP/AERP.Business/bin
+/AnandERP/AERP.Business/obj
+/AnandERP/AERP.Common/bin
+/AnandERP/AERP.Common/obj
+/AnandERP/AERP.DataProvider/bin
+/AnandERP/AERP.DataProvider/obj
+/AnandERP/AERP.DTO/bin
+/AnandERP/AERP.DTO/obj
+/AnandERP/AERP.ViewModel/bin
+/AnandERP/AERP.ViewModel/obj
+/AnandERP/AERP.Web.UI/bin
+/AnandERP/AERP.Web.UI/obj
+/Infrastructure/AERP.Base.DTO/bin
+/Infrastructure/AERP.Base.DTO/obj
+/Infrastructure/AERP.ExceptionManager/bin
+/Infrastructure/AERP.ExceptionManager/obj
+/Infrastructure/AERP.Infrastructure/bin/Debug
+/Infrastructure/AERP.Infrastructure/obj
+/packages

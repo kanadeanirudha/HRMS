@@ -1,0 +1,64 @@
+﻿@model AMS.ViewModel.AccountVoucherSettingMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+      
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Account Voucher Setting Master</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateAccountVoucherSettingMaster" role="form">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.AccSessionID, new { })
+                            @*@Html.TextBoxFor(model => model.AccSessionID, new { @class = "form-control input-sm typeahead" })*@
+                            @Html.DropDownListFor(model => model.AccSessionID, (SelectList)ViewBag.AccountSessionList, "---Select Account Session ---", new { @class = "form-control input-sm",disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.AccSessionID)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.AccBalsheetMstName, new { })
+                            @Html.HiddenFor(model => model.AccBalsheetMstID)
+                            @Html.TextBoxFor(model => model.AccBalsheetMstName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.AccBalsheetMstName)
+                    </div>
+                </div>
+                   
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.TransactionType, new { })
+                                @Html.HiddenFor(model => model.AccSessionID)
+                                @Html.DropDownListFor(model => model.TransactionType, (SelectList)ViewBag.AccountTransactionTypeMasterList, "---Select Transaction Type ---", new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.TransactionType)
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.VoucherNumber, new { })
+                                @Html.TextBoxFor(model => model.VoucherNumber, new { @class = "form-control input-sm typeahead",maxlength = "10" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.VoucherNumber)
+                        </div>
+                  </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateAccountVoucherSettingMasterRecord" type="button" />
+                    </div>
+</form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountVoucherSettingMaster.Initialize();
+    });
+</script>

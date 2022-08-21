@@ -1,0 +1,347 @@
+﻿@model AERP.ViewModel.InventoryStockAdjustmentViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width:70%;
+    }
+</style>
+
+<div id="ListViewModel" class="container">
+    <div id="custom-content">
+        <div class="block-header">
+            @*@Html.HiddenFor(model => model.LowerUom)*@
+            @Html.HiddenFor(model => model.ConvFact)
+            @Html.HiddenFor(model => model.InventoryPhysicalStockAdjustmentMasterID)
+            @Html.HiddenFor(model => model.InventoryPhysicalStockAdjustmentID)
+            @Html.HiddenFor(model => model.IsCurrentStock)
+            @Html.HiddenFor(model => model.CurrentStockStatus)
+            @Html.HiddenFor(m => m.CreatedBy)
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Stock Adjustment</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-1">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.TransDate, new { })
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <div class="fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.TransDate, new { maxlength = "20", @class = "form-control input-sm ", style = "margin-top:0px" })
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-1" style="display:none;">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CentreCode, new { })
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <div class="form-group select fg-line"> @*Replace centre by Store and Store by Location*@
+                            @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "------Select Centre-------", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Centre *" })
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-1" style="display:none;">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.GeneralUnitsID, new { })
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <div class="form-group select fg-line">
+                            @Html.DropDownListFor(model => model.GeneralUnitsID, Model.ListGetGeneralUnitsItems, "------Select Unit-------", new { @class = "form-control input-sm AddGeneralUnitsID", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Units Type*" })
+                        </div>
+                    </div>
+                  
+                    <div class="form-group col-sm-1" style="margin-top:10px">
+                        <div class="checkbox m-b-15">
+                            <label>
+                                <input type="checkbox" value="" id="Ingredient" checked disabled="disabled">
+                                <i class="input-helper"></i>
+                                Ingredient
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-1">
+                        <div class="checkbox m-b-15" style="margin-left:25px">
+                            <label>
+                                <input type="checkbox" value="" id="Recipe">
+                                <i class="input-helper"></i>
+                                Recipe
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <form id="FormCreateInventoryStockAdjustment" role="form" class="row">
+                    <div class="row">
+                        <div class="form-group col-sm-2" style="display:none;">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.IssueFromLocationID, new { })
+                                @Html.DropDownListFor(model => model.IssueFromLocationID, (SelectList)ViewBag.GeneralLocationList, "Select location", new { @class = "form-control" })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.IssueFromLocationID)
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.ItemName, new { })
+                                @Html.HiddenFor(model => model.ItemNumber)
+                                @Html.HiddenFor(model => model.BarCode)
+                                @Html.HiddenFor(model => model.Rate)
+                                @Html.HiddenFor(model => model.UOM)
+                                @Html.HiddenFor(m => m.SerialAndBatchManagedBy)
+                                @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control input-sm ", disabled = "disabled" })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ItemName)
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.LowerUom, new { })
+                                @Html.TextBoxFor(model => model.LowerUom, new { maxlength = "20", @class = "form-control input-sm ", disabled = "disabled" })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.LowerUom)
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.Quantity, new { })
+                                @Html.HiddenFor(model => model.IssueFromLocationID)
+                                @Html.TextBoxFor(model => model.Quantity, new { maxlength = "5", @class = "form-control input-sm ", disabled = "disabled" })
+
+                            </div>
+                            @*@Html.ValidationMessageFor(model => model.Quantity)*@
+                        </div>
+                        <div class="form-group col-sm-2" style="display:none">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.Convertion, new { })
+                                @Html.TextBoxFor(model => model.Convertion, new { @class = "form-control input-sm ", disabled = "disabled" })
+
+                            </div>
+                            @*@Html.ValidationMessageFor(model => model.Quantity)*@
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div class="form-group fg-line">
+                                
+                                @Html.LabelFor(model => model.BatchNumber, new { })
+                                @*@Html.TextBoxFor(model => model.UoMCode, new { maxlength = "12", @class = "form-control input-sm typeahead" })*@
+                                @Html.DropDownListFor(model => model.BatchNumber, Enumerable.Empty<SelectListItem>(), "---Select Batch ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-2">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.Action, new { })
+                                @Html.DropDownList("Action", ViewData["Action"] as List<SelectListItem>, "--Select Action--",new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Action*", disabled = "disabled" })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Action)
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group fg-line">
+                                <label>
+                                    @Html.LabelFor(model => model.TotalStock)
+                                </label>
+
+                                @Html.TextBoxFor(model => model.TotalStock, new {  @class = "form-control input-sm typeahead", disabled = "disabled" })
+                            </div>
+                            @*@Html.ValidationMessageFor(model => model.CurrentQty)*@
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group fg-line">
+                                <label>
+                                    @Html.LabelFor(model => model.CorrectedStock)
+                                </label>
+
+                                @Html.TextBoxFor(model => model.CorrectedStock, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                            </div>
+                            @*@Html.ValidationMessageFor(model => model.PhysicalQty)*@
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group fg-line">
+                                <label>
+                                    @Html.LabelFor(model => model.UnrestrictedStock)
+                                </label>
+
+                                @Html.TextBoxFor(model => model.UnrestrictedStock, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                            </div>
+                            @*@Html.ValidationMessageFor(model => model.ShrinkQuantity)*@
+                        </div>
+
+                        <div class="col-sm-2" style="margin-top:10px">
+                            <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                            <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAdd"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div id="ListViewModel" class="">
+                            <div id="DivAddRowTable">
+                                <table id="tblData" class="table table-striped ">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Item Description</th>
+                                            <th>Quantity</th>
+                                            <th>Batch</th>
+                                            <th>Action</th>
+
+                                            <th>Total Stock</th>
+                                            <th>Corrected Stock</th>
+                                            <th>Unrestricted Stock</th>
+                                            @*<th>@Resources.DisplayName_Actions</th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table><br /><br /><br /><br />
+                            </div>
+                        </div>
+                    </div>
+                  
+                      <div class="col-sm-3 pull-left">
+                          <button type="button" id="CreateInventoryStockAdjustmentRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary">Submit</button>
+                          @*<button type="button" id="CreateInventoryStockAdjustmentClear" value="Clear" class="btn btn-primary">Cancel</button>*@
+                  </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/InventoryStockAdjustment.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#TransDate").datetimepicker({
+            format: 'DD MMM YYYY',
+            maxDate: moment()
+        });
+
+        InventoryStockAdjustment.Initialize();
+
+        function ListViewReload() {
+            var Table = $('#myDataTable').dataTable();
+            Table.fnReloadAjax('InventoryStockAdjustment/AjaxHandler');
+        };
+
+        //=============Search Item Description============================
+       
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/InventoryStockAdjustment/GetItemDescriptionDetails",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, GeneralUnitsID: $("#GeneralUnitsID").val(), CurrentStockStatus: InventoryStockAdjustment.CurrentStockStatus },
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.ItemDescription] = response1;
+                            matches.push(response1.ItemDescription);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+
+        $('#ItemName').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'states',
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            // $('#GeneralItemMasterID').val(map[item].id);
+            $('#ItemName').val(map[item].ItemDescription);
+            $('#UOM').val(map[item].UOM);
+            $('#Convertion').val(map[item].Convertion);
+            $('#BarCode').val(map[item].Barcode);
+            $('#Rate').val(map[item].Rate);
+            $('#ItemNumber').val(map[item].itemnumber);
+            $('#TotalStock').val(map[item].TotalStock);
+            $('#ConvFact').val(map[item].ConvFact);
+            $('#LowerUom').val(map[item].LowerUom);
+            $('#IssueFromLocationID').val(map[item].IssueFromLocationID);
+            $('#Quantity').val("");
+            $('#UnrestrictedStock').val(0);
+            $('#CorrectedStock').val(0);
+            $('#Action').val("");
+            $('#SerialAndBatchManagedBy').val(map[item].SerialAndBatchManagedBy);
+
+            var GeneralunitsID = $("#GeneralUnitsID").val();
+            debugger;
+           
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": map[item].itemnumber, "GeneralUnitsID": GeneralunitsID },
+                url: "/InventoryStockAdjustment/GetInventoryItemBatchMaster",
+                success: function (data) {
+                    var $ddlExam = $("#BatchNumber");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">------Select Batch-----</option>');
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                            $ddlExam.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                    }
+                    else {
+                        // $ddlExam.append('<option value="EA">EA</option>');
+                    }
+                }
+            });
+
+
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+

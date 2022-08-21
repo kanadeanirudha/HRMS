@@ -1,0 +1,56 @@
+﻿@*@model AMS.ViewModel.EmployeeEnterpriseReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/Vendors")
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeeEnterpriseReport.js")" type="text/javascript"></script>
+<script src="~/Scripts/scrolltop.js"></script>
+@Html.HiddenFor(model=>model.Level)
+@Html.HiddenFor(model=>model.CentreCode)
+@Html.HiddenFor(model=>model.DepartmentID)
+<div id="ListViewModel">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var Level = $('input[name=Level]').val();
+        var CentreCode = $('input[name=CentreCode]').val();
+        var DepartmentID = $('input[name=DepartmentID]').val();
+        //alert(Level, CentreCode, DepartmentID);
+        EmployeeEnterpriseReport.EmployeePerformanceMonitoringReport(Level, CentreCode, DepartmentID);
+    });
+</script>*@
+
+
+@*------new code----*@
+
+@model AMS.ViewModel.EmployeeEnterpriseReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeeEnterpriseReport.js")" type="text/javascript"></script>
+<script src="~/Scripts/scrolltop.js"></script>
+@Html.HiddenFor(model => model.Level)
+@Html.HiddenFor(model => model.CentreCode)
+@Html.HiddenFor(model => model.DepartmentID)
+<div id="ListViewModel" class="container">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var Level = $('input[name=Level]').val();
+        var CentreCode = $('input[name=CentreCode]').val();
+        var DepartmentID = $('input[name=DepartmentID]').val();
+        //alert(Level, CentreCode, DepartmentID);
+        EmployeeEnterpriseReport.EmployeePerformanceMonitoringReport(Level, CentreCode, DepartmentID);
+    });
+</script>

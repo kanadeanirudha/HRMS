@@ -1,0 +1,553 @@
+﻿@*@model AMS.ViewModel.EmployeeChildrenDetailsViewModel
+@{
+    Layout = null;
+}
+
+
+<div class="widget-block">
+    <div class="widget-head">
+        <h5 id="hFive">
+            <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+            <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.EmployeeID)
+
+
+            @Resources.Form_CreateEmployeeChildrenDetails
+
+            
+        </h5>
+
+    </div>
+
+    <div class="widget-content">
+        <form id="FormCreateEmployeeChildrenDetails" method="post" class="form-horizontal well">
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.NameTitle, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, "Select", new { style = "font-weight:bold;", @class = "span2" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.NameTitle)
+                        </div>
+
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.GenderCode, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                        @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Female" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.ChildName, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span4">
+                            @Html.TextBoxFor(model => model.ChildName, new { @class = "txtbox", style = "width:100%", maxlength = "50" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.ChildName)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.ChildrenRelation, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownList("ChildrenRelation", ViewData["ChildrenRelation"] as List<SelectListItem>, new { style = "width:210px; font-Weight:Bold;", @class = "dropdown1" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.ChildrenRelation)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.ChildQualification, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.ChildQualification, new { @class = "txtbox", maxlength = "100" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.ChildQualification)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.ChildDateOfBirth, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.ChildDateOfBirth, new { @class = "txtbox", @readonly = "readonly" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.ChildDateOfBirth)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Profession, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.Profession, new { @class = "txtbox", maxlength = "100" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.Profession)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.GotAnyMedal, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.CheckBoxFor(m => m.GotAnyMedal)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Medal" style="display: none" class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MedalDescription, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextAreaFor(model => model.MedalDescription, new { @class = "input-large", maxlength = "255" })
+                            
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MedalReceivedDate, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.MedalReceivedDate, new { @class = "txtbox", @readonly = "readonly" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.IsScholarshipReceived, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.CheckBoxFor(m => m.IsScholarshipReceived)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="Scholarship" style="display: none">
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipDescription, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.TextAreaFor(model => model.ScholarshipDescription, new { @class = "input-large", maxlength = "255" })
+                                
+                            </div>
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipAmount, new { style = "font-Weight:Bold;" })
+                            </div>
+
+                            <div class="span2">
+
+                                @Html.TextBoxFor(model => model.ScholarshipAmount, new { @class = "txtbox", style = "text-align:right" })
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipStartDate, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.ScholarshipStartDate, new { @class = "txtbox", @readonly = "readonly" })
+                                
+                            </div>
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipUptoDate, new { style = "font-Weight:Bold;" })
+                            </div>
+
+                            <div class="span2">
+
+                                @Html.TextBoxFor(model => model.ScholarshipUptoDate, new { @class = "txtbox", @readonly = "readonly" })
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Height, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.Height, new { @class = "txtbox", maxlength = "50" })
+                            
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Weight, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.Weight, new { @class = "txtbox", maxlength = "50" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.CurriculamActivity, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.CurriculamActivity, new { @class = "txtbox", maxlength = "255" })
+                            
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Hobby, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.Hobby, new { @class = "txtbox", maxlength = "100" })
+                            
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Sports, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.Sports, new { @class = "txtbox", maxlength = "100" })
+                            
+                        </div>
+
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.IdentityMarks, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.IdentityMarks, new { @class = "txtbox", maxlength = "100" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.IdentityMarks)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+                <button type="button" id="CreateEmployeeChildrenDetailsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                <button type="button" id="reset" class="btn btn-secondary">@Resources.ButtonAction_Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        EmployeeChildrenDetails.Initialize();
+    });
+</script>*@
+
+
+@*---------------------------new code---------------------*@
+
+@model AMS.ViewModel.EmployeeChildrenDetailsViewModel
+@{
+
+    Layout = null;
+}
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.Form_CreateEmployeeChildrenDetails</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:600px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+            <form id="FormCreateEmployeeChildrenDetails" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.EmployeeID)
+
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.NameTitle, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, "Select", new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.NameTitle)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.GenderCode, new { style = "" })
+                        <div class="form-group">
+                            <label class="radio radio-inline m-r-20">
+                                @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Male" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                <i class="input-helper"></i>
+                            </label>
+
+                            <label class="radio radio-inline m-r-20">
+                                @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Female" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Female
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ChildName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ChildName, new { @class = "form-control", style = "", maxlength = "50" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ChildName)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ChildrenRelation, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("ChildrenRelation", ViewData["ChildrenRelation"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ChildrenRelation)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ChildQualification, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ChildQualification, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ChildQualification)
+                    </div>
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ChildDateOfBirth, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ChildDateOfBirth, new { @class = "form-control", @readonly = "readonly",style="background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ChildDateOfBirth)
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12">
+                    
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.Profession, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.Profession, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Profession)
+                    </div>
+
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                            <label>
+                                <input type="checkbox" id="GotAnyMedal">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.GotAnyMedal)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" id="Medal" style="display:none">
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.MedalReceivedDate, new { style = "background-color:#fff;" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.MedalReceivedDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.MedalDescription, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextAreaFor(model => model.MedalDescription, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                            <label>
+                                <input type="checkbox" id="IsScholarshipReceived">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsScholarshipReceived)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" id="Scholarship" style="display:none">
+
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipAmount, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ScholarshipAmount, new { @class = "form-control", style = "text-align:right" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipStartDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ScholarshipStartDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipUptoDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ScholarshipUptoDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.ScholarshipDescription, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextAreaFor(model => model.ScholarshipDescription, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Height, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.Height, new { @class = "form-control", maxlength = "50" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Weight, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.Weight, new { @class = "form-control", maxlength = "50" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.CurriculamActivity, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.CurriculamActivity, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Hobby, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.Hobby, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Sports, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.Sports, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.IdentityMarks, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.IdentityMarks, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.IdentityMarks)
+                    </div>
+                </div>
+                
+                
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" id="CreateEmployeeChildrenDetailsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        <button type="button" id="reset" class="btn btn-default">@Resources.ButtonAction_Reset</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        EmployeeChildrenDetails.Initialize();
+    });
+</script>
+
+
+
+
+
+
+

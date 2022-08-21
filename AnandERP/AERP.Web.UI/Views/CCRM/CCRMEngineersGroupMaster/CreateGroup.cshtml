@@ -1,0 +1,47 @@
+﻿@model AERP.ViewModel.CCRMEngineersGroupMasterViewModel
+<style>
+    .mfp-close-btn-in .mfp-close {
+        color: #eee;
+    }
+</style>
+<div class="mfp-content" style="background :#bfc6ca;width: 897px;margin: -10px 0px -10px -7px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="background :#607d8b;color:white;margin-top: -10px;line-height: 2.5;width: 902px;margin-left: -13px;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Engineers Group Master </h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="background:white;margin-top:-25px;margin-left: -13px;width: 902px;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormCreateCCRMEngineersGroupMaster" role="form" class="row">
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.GroupName, new { })
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control input-sm " })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GroupName)
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <input class="btn btn-info" value="@Resources.ButtonAction_Submit" id="CreateCCRMEngineersGroupMasterRecord" type="button" style="margin-bottom:-65px;" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CCRMEngineersGroupMaster.Initialize();
+        });
+    </script>
+</div>
+

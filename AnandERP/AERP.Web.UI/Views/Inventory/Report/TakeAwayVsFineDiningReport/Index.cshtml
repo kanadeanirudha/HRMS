@@ -1,0 +1,119 @@
+﻿@model AMS.ViewModel.RetailReportsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/Reports/TakeAwayVsFineDiningReport.js")" type="text/javascript"></script>
+
+<div class="container" style="padding-bottom:10px;">
+    @using (Html.BeginForm("Index", "TakeAwayVsFineDiningReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Take Away Vs Fine Dine Report</h2>
+        </div>
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding" style="padding-bottom:10%;">
+                @Html.HiddenFor(m => m.CentreName)
+                @Html.HiddenFor(m => m.GranularityName)
+                @Html.HiddenFor(m => m.IsPosted)
+                <div class="row col-sm-12">
+
+                    <div class="col-sm-6">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownListFor(model => model.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Centre*" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                            <div class="fg-line select form-group">
+                                @Html.DropDownListFor(model => model.Granularity, (SelectList)ViewBag.GranularityList, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Granularity*" })
+                               
+                            </div>
+                    </div>
+                </div>
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="fg-line form-group">
+                            @Html.TextBoxFor(model => model.DateFrom, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="fg-line form-group">
+                            @Html.TextBoxFor(model => model.DateTo, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" id="btnTakeAwayVsFineDiningReportSubmit" class="btn-primary btn">Show</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="container" style="margin-top:-10px">
+
+    <div id="aaa">
+        <div class="card" style="overflow: auto;">
+            @*<div class="card-header"></div>*@
+            <div class="card-body card-padding">
+
+                @*@if (Model.Granularity == "1")
+                {
+                    @Html.Partial("/Views/Inventory_1/Report/TakeAwayVsFineDiningReport/TakeAwayVsFineDiningReportDaily.aspx");
+                }
+                else if (Model.Granularity == "2")
+                {
+                    @Html.Partial("/Views/Inventory_1/Report/TakeAwayVsFineDiningReport/TakeAwayVsFineDiningReportWeekly.aspx");
+                }
+                else if (Model.Granularity == "3")
+                {
+                    @Html.Partial("/Views/Inventory_1/Report/TakeAwayVsFineDiningReport/TakeAwayVsFineDiningReportMonthly.aspx");
+                }
+                else if (Model.Granularity == "4")
+                {
+                    @Html.Partial("/Views/Inventory_1/Report/TakeAwayVsFineDiningReport/TakeAwayVsFineDiningReportYearly.aspx");
+                }*@
+
+                @Html.Partial("/Views/Inventory_1/Report/TakeAwayVsFineDiningReport/TakeAwayVsFineDiningReportDaily.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#DateFrom").datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+        $("#DateTo").datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+
+        $("#DateFrom").on("dp.change", function (e) {
+            var minDate = new Date(e.date.valueOf());
+            minDate.setDate(minDate.getDate());
+            $('#DateTo').data("DateTimePicker").minDate(minDate);
+
+        });
+
+        $("#DateTo").on("dp.change", function (e) {
+            var minDate = new Date(e.date.valueOf());
+            minDate.setDate(minDate.getDate());
+            $('#DateFrom').data("DateTimePicker").maxDate(minDate);
+        });
+
+        TakeAwayVsFineDiningReport.Initialize();
+    });
+</script>
+
+

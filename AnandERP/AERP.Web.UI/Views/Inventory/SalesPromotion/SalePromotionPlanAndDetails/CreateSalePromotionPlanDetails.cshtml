@@ -1,0 +1,164 @@
+﻿@model AMS.ViewModel.SalePromotionPlanAndDetailsViewModel
+<div id="custom-content">
+    <div class="block-header">
+        @Html.HiddenFor(model => @Model.SalePromotionPlanID)
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Sale Promotion Plan Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage123" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateSalePromotionPlanAndDetails" role="form" class="row">
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PlanTypeCode, new { })
+                            @Html.TextBoxFor(model => model.PlanTypeCode, new { maxlength = "50", @class = "form-control input-sm typeahead", disabled = "disabled", Value = @Model.PlanTypeCode })
+                        </div>
+
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PlanTypeName, new { })
+                            @Html.TextBoxFor(model => model.PlanTypeName, new { maxlength = "50", @class = "form-control input-sm typeahead", disabled = "disabled", Value = @Model.PlanTypeName })
+                        </div>
+
+                    </div>
+                </div>
+                @if (@Model.PlanTypeCode == "ProductConcessionFree" || @Model.PlanTypeCode == "ProductConcessionSample")
+                {
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.HowManyQtyToBuy, new { })
+                                @Html.TextBoxFor(model => model.HowManyQtyToBuy, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.GiftItemQty, new { })
+                                @Html.TextBoxFor(model => model.GiftItemQty, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (@Model.PlanTypeCode == "ProductConcessionFree")
+                {
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.PlanDescription, new { })
+                                @Html.TextBoxFor(model => model.PlanDescription, new { @class = "form-control input-sm typeahead"})
+                            </div>
+                        </div>
+                       
+                    </div>
+                }
+                @if (@Model.PlanTypeCode == "ProductConcessionSample")
+                {
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.DiscountInPercent, new { })
+                                @Html.TextBoxFor(model => model.DiscountInPercent, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                <label>
+                                    @Html.LabelFor(model => model.IsSampling, new { style = "padding-left: 0px; margin-top:1%;" })
+
+                                </label>
+                            </div>
+                            <div class="checkbox col-sm-6">
+                                <input type="checkbox" value="" id="IsSampling" style="">
+                                <i class="input-helper"></i>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (@Model.PlanTypeCode == "PriceDiscountOnFixAmount")
+                {
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                <label style="margin-top: 1%; margin-bottom: 1%;">
+                                    @Html.LabelFor(model => model.IsPercentage, new { style = "padding-left: 0px; margin-top:1%;" })
+
+                                </label>
+                            </div>
+                            <div class="checkbox col-sm-6">
+                                <input type="checkbox" value="" id="IsPercentage" style="">
+                                <i class="input-helper"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                <label style="margin-top: 1%; margin-bottom: 1%;">
+                                    @Html.LabelFor(model => model.IsItemWiseDiscountExclude, new { style = "padding-left: 0px; margin-top:1%;" })
+
+                                </label>
+                            </div>
+                            <div class="checkbox col-sm-6">
+                                <input type="checkbox" value="" id="IsItemWiseDiscountExclude" style="">
+                                <i class="input-helper"></i>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                @if (@Model.PlanTypeCode == "PriceDiscountOnFixAmount" || @Model.PlanTypeCode == "FixedAmountOnGiftVoucher")
+                {
+                    <h5><b>Bill Amount Discount Range</b></h5>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+
+                            <div class="form-group fg-line">
+
+                                @Html.LabelFor(model => model.BillAmountRangeFrom, new { })
+                                @Html.TextBoxFor(model => model.BillAmountRangeFrom, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.BillAmountRangeUpto, new { })
+                                @Html.TextBoxFor(model => model.BillAmountRangeUpto, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                    </div>
+                }
+               
+                @if (@Model.PlanTypeCode == "PriceDiscountOnFixAmount")
+                {
+                    <h5><b>Discount Will be Calculated In </b></h5>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.BillDiscountAmount, new { })
+                                @Html.TextBoxFor(model => model.BillDiscountAmount, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateSalePromotionPlanAndDetailsRulesRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        SalePromotionPlanAndDetails.Initialize();
+    });
+</script>

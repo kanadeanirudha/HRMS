@@ -1,0 +1,315 @@
+﻿@*
+    @model AMS.ViewModel.EmployeeShiftApplicableMasterViewModel
+    @{
+
+        Layout = null;
+    }
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+
+    <div id="update-message" class="error invisible"></div>
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.CentreCode)
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.EmployeeID)
+    @Html.HiddenFor(m=>m.ShiftStartDate)
+    <div class="widget-block">
+        <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+
+        <div class="widget-head">
+            <h5 id="hFive"><i class="icon-th-list"></i>&nbsp;   @Resources.FormCreate_EmployeeShiftApplicableMaster</h5>
+        </div>
+        <div id="EmployeeShiftApplicableMasterBox" class="widget-box" style="height:560px">
+            <form id="FormEditEmployeeShiftApplicableMaster" method="post" class="form-horizontal well">
+                <div id="SuccessMessageShiftDetails" style="display: none; color: #000;" class="alert"></div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="span">&nbsp;</div>
+                            <div class="span1">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">&nbsp;</span>
+                                @Html.LabelFor(model => model.EmployeeName, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.EmployeeName, new { style = "font-Weight:Bold;", ReadOnly = "ReadOnly" })
+                            </div>
+                            <div class="span1">
+                                <span style="color: red; float: left; padding-left: 1px; font-weight: bold">&nbsp;</span>
+                                @Html.LabelFor(model => model.CentreName, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span2">
+                                @Html.TextBoxFor(model => model.CentreName, new { style = "font-Weight:Bold;", ReadOnly = "ReadOnly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="span">&nbsp;</div>
+                            <div class="span1">
+                                @Html.LabelFor(model => model.WeeklyOffConsideration, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.DropDownList("WeeklyOffConsideration", ViewBag.WeeklyOffConsideration as List<SelectListItem>, new { @class = "form-control chosen-select", style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span1">
+                                @Html.LabelFor(model => model.EmployeeShiftDescription, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.DropDownListFor(m => m.EmployeeShiftMasterID, (SelectList)ViewBag.employeeShiftMasterList, new { @class = "form-control chosen-select", style = "font-Weight:Bold;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="span">&nbsp;</div>
+                            <div id="weekDaysList">
+                                <div class="span1">
+                                    @Html.LabelFor(model => model.GeneralWeekDayID, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div class="span3">
+                                    <div id="checkboxlistGeneralWeekDays" class="controls input-xlarge text-tip" style="float: right;">
+                                        <p id="e5_f">
+                                            <select id="checkboxlist1" class="w500" multiple="multiple" style="width: 79%; float: right;">
+                                                @foreach (var item in Model.ListGeneralWeekDays)
+                                                {
+                                                    if (item.IsActive)
+                                                    {
+                                                        <option value="@item.ID" selected>@item.WeekDescription</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item.ID">@item.WeekDescription</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="span1">
+
+
+                            </div>
+                            <div class="span2">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ShiftDetailsDataTable" class="widget-content hide_column">
+                </div>
+                <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+                    <button type="button" id="EditEmployeeShiftApplicableMasterRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            EmployeeShiftApplicableMaster.Initialize();
+            $('#checkboxlist1').multipleSelect();
+        });
+    </script>
+
+    <style>
+        .span {
+            width: 25px;
+            margin-top: 1%;
+            margin-left: 60px;
+        }
+
+
+        .span1 {
+            width: 115px;
+        }
+
+        .span2 {
+            width: 200px;
+        }
+
+        .hide_column {
+            display: none;
+        }
+
+        .paging_full_numbers {
+            display: none;
+        }
+
+        div.dataTables_paginate {
+            display: none;
+        }
+
+        .dataTables_paginate {
+            display: none;
+        }
+
+        div.dataTables_info {
+            display: none;
+        }
+
+        .dataTables_info {
+            display: none;
+        }
+    </style>
+*@
+
+@model AERP.ViewModel.EmployeeShiftApplicableMasterViewModel
+@{
+
+    Layout = null;
+}
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormCreate_EmployeeShiftApplicableMaster</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:150px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="EmployeeShiftApplicableMasterBox">
+                <form id="FormEditEmployeeShiftApplicableMaster" method="post">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m => m.CentreCode)
+                    @Html.HiddenFor(m => m.ID)
+                    @Html.HiddenFor(m => m.EmployeeID)
+                    @Html.HiddenFor(m => m.ShiftStartDate)
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.EmployeeName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control input-sm", style = "background-color:#fff;", disabled="disabled"})
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.CentreName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.CentreName, new { @class = "form-control input-sm", style = "background-color:#fff;", disabled="disabled" })
+                        </div>
+                    </div>
+
+                    
+
+                   @* <div class="col-sm-6">
+                        @Html.LabelFor(model => model.ShiftStartDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ShiftStartDate, new { @class = "form-control", style = "background-color:#fff;", ReadOnly = "ReadOnly" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ShiftStartDate)
+                    </div>*@
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.WeeklyOffConsideration, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("WeeklyOffConsideration", ViewBag.WeeklyOffConsideration as List<SelectListItem>, new { @class = "form-control", style = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                         @Html.LabelFor(model => model.EmployeeShiftDescription, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.EmployeeShiftMasterID, (SelectList)ViewBag.employeeShiftMasterList,new { @class = "form-control", style = "" })
+                        </div>
+                    </div>
+
+                   
+                      <div class="col-sm-6" id="FromDate">
+                       @Html.LabelFor(model => model.EmployeeShistApplicableMasterFromDate, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.EmployeeShistApplicableMasterFromDate, new { style = "background-color:#fff;", @class = "form-control", ReadOnly = "ReadOnly",display="overflow"})
+                        </div>
+                        @Html.ValidationMessageFor(model => model.EmployeeShistApplicableMasterFromDate)
+                    </div>
+                        
+                 
+
+
+                    <div class="col-sm-6" id="weekDaysList">
+                        @Html.LabelFor(model => model.GeneralWeekDayID, new { style = "" })
+                        <div id="checkboxlistGeneralWeekDays" class="form-group">
+                            <p id="e5_f">
+                                <select id="checkboxlist1" class="form-group selectpicker" multiple name="genralWeekDay">
+                                    @foreach (var item in Model.ListGeneralWeekDays)
+                                    {
+                                        if (item.IsActive)
+                                                    {
+                                                        <option value="@item.ID" selected>@item.WeekDescription</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item.ID">@item.WeekDescription</option>
+                                                    }
+                                    }
+                                </select>
+                            </p>
+                        </div>
+                    </div> 
+
+
+                    <div id="ShiftDetailsDataTable" class="row"></div>
+                     @* <div class="col-sm-6">
+                        <div class="checkbox m-b-15" style="padding-top:10%;">
+                            <label>
+                                 @if(Model.IsActive==true)
+                                {
+                                <input type="checkbox" id="IsActive" checked />
+                                }
+                                else{
+                                <input type="checkbox" id="IsActive"  />
+                                }
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsActive)
+                            </label>
+                        </div>*@
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="EditEmployeeShiftApplicableMasterRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>*@
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        EmployeeShiftApplicableMaster.Initialize();
+        $('.selectpicker').selectpicker();
+
+    });
+</script>

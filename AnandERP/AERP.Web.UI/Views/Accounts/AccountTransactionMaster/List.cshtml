@@ -1,0 +1,213 @@
+﻿@model AERP.ViewModel.AccountTransactionMasterViewModel
+@{
+    Layout = null;
+}
+
+
+<div class="bootgrid-header container-fluid" id="data-table-command-header">
+    <div class="row">
+        <div class="col-sm-12 actionBar">
+            <div class="search form-group">
+                <div class="input-group">
+                    <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                    <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                </div>
+            </div>
+            <div class="actions btn-group">
+                <div class="dropdown btn-group">
+                    <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                        <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                    </button>
+                    <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                        <li class="active" aria-selected="true">
+                            <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                        </li>
+                        <li aria-selected="false">
+                            <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                        </li>
+                        <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown btn-group">
+                    <button data-toggle="dropdown" type="button" title="Screen Selection" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                        <span class="dropdown-text">
+                            <span class="zmdi icon zmdi-view-module"></span>
+                        </span><span class="caret"></span>
+                    </button>
+                    <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Account">
+                                    Date<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+
+
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="AccountCode">
+                                    Voucher Number<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="CentreAndBalanceSheet">
+                                    Amount<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="CentreAndBalanceSheet">
+                                    Narration<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="4" name="CentreAndBalanceSheet">
+                                    Status<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>                    
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table id="myDataTable" class="table table-vmiddle table-responsive ">
+    <thead>
+        <tr>
+            <th>Date </th>
+            <th>Voucher Number</th>
+            <th>Amount</th>
+            <th>Narration</th>
+            <th>Status</th>
+            <th>@Resources.TableHeaders_Action</th>
+        </tr>
+    </thead>
+</table>
+
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+        var oTable;
+        $(document).ready(function () {
+        var a = null;
+            oTable = $('#myDataTable').DataTable({
+                "bServerSide": true,
+                "sAjaxSource": "AccountTransactionMaster/AjaxHandler",
+                "bJQueryUI": true,
+                "sScrollY": false,
+                "bProcessing": true,
+                "sPaginationType": "full_numbers",
+                "oLanguage": {
+                    "sInfoEmpty": "No entries to show",
+                },
+                "fnServerParams": function (aoData) {
+                    aoData.push({ "name": "SelectedTransactionType", "value": $('#SelectedTransactionType').val() });
+                    aoData.push({ "name": "SelectedBalancesheetID", "value": $("#selectedBalsheetID").val() });
+                    aoData.push({ "name": "SelectedAccSessionID", "value": $("#AccSessionID").val() });
+                },
+                "columnDefs": [
+                    {
+                        "visible": true, "targets": 0,
+                        "data": null,
+                        "render": function (data, type, full, meta) {
+                            var result = "<p  style=' height:5px;'>" + data[2] + "</p>";
+                           
+                            return result;
+                        }
+                    },
+                    {
+                        "visible": true, "targets": 1,
+                        "data": null,
+                        "render": function (data, type, full, meta) {
+                            var result = "<p  style=' height:5px;'>" + data[1] + "</p>";
+
+                            return result;
+                        }
+                    },
+                     {
+                         "visible": true, "targets": 2,
+                         "data": null,
+                         "render": function (data, type, full, meta) {
+                             var result = "<p  style=' height:5px;'>" + data[5] + "</p>";
+                             return result;
+                         }
+                     },
+                     {
+                         "visible": true, "targets": 3,
+                         "data": null,
+                         "render": function (data, type, full, meta) {
+                             var result = "<p  style=' height:5px;'>" + data[0] + "</p>";
+                             return result;
+                         }
+                     },
+                    {
+                        "targets": 4,
+                        "bSortable": false,
+                        "data": null,
+                        "render": function (data, type, full, meta) {
+                            var result = '';
+                           
+                            if (data[3] == "0") {
+                                chkStatus = '@Resources.Displaychkstatus_Pending';
+                                result = "<button class='btn bgm-orange btn-xs'>" + chkStatus + "</button>";
+                            }
+                            else if (data[3] == "1") {
+                                chkStatus = 'Completed';
+                                result = "<button class='btn bgm-green btn-xs'>" + chkStatus + "</button>";
+                            }
+                            else if (data[3] == "2") {
+                                chkStatus = 'Rejected';
+                                result = "<button class='btn bgm-red btn-xs'>" + chkStatus + "</button>";
+                            }                            
+                            return result;
+                        }
+                    },
+                    {
+                        "targets": 5,
+                        "bSortable": false,
+                        "data": null,
+                        "render": function (data, type, full, meta) {
+                            if (data[3] != "True") {
+                                var result1 = '@Html.ActionLink("Edit1", "Index", new { TransactionID = "ID1", selectedTransactionCode = "ID2", selectedTransactionTypeText = "ID3" }, new { @class = "" })';
+                                result1 = result1.replace("ID1", data[4]);
+                                result1 = result1.replace("ID2", String($('#SelectedTransactionType :selected').val()).trim());
+                                result1 = result1.replace("ID3", $('#SelectedTransactionType :selected').text());
+                                //result1 = result1.replace("Edit1", '<i style="margin-left:20px;" class="icon-edit" title="@Resources.ToolTip_Edit"></i>');
+                                result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_Edit" class="btn btn-default"><i class="zmdi zmdi-edit"></i></button>');
+                                return result1
+                            }
+                            else {
+                                return null;
+                            }
+                        }
+                    }
+                ],
+
+            });
+
+            DataTableSettings(oTable, "myDataTable", "toggleTableColumn");
+
+        });
+
+</script>
+

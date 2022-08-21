@@ -1,0 +1,71 @@
+﻿<script src="@Url.Content("~/Scripts/AERP_Scripts/General_Script/_Header.js")" type="text/javascript"></script>
+
+@if (Html.ViewBag.BalanceSheetList != null)
+{
+    <input type="hidden" value="@Html.ViewBag.SelectedBalancesheetID" id="selectedBalsheetID" />
+    <a data-toggle="dropdown" href="#"><i class="zmdi zmdi-accounts-list zmdi-hc-fw tm-icon"></i></a>
+    <ul id="balsheetList" class="dropdown-menu dm-icon pull-right">
+        @foreach (var item in ViewBag.BalanceSheetList)
+        {
+            if (!string.IsNullOrEmpty(item.Text))
+            {
+                if (Html.ViewBag.SelectedBalancesheetName == item.Text)
+                {
+                    <li id="@item.Value" class="hidden-xs">
+                        <a href="#" data-action="fullscreen"><i class="zmdi zmdi-check-all"></i> @item.Text </a>
+                    </li>
+                }
+                else
+                {
+                    <li id="@item.Value" class="hidden-xs">
+                        <a href="#" data-action="fullscreen"><i class="zmdi zmdi-accounts-list zmdi-hc-fw tm-icon"></i> @item.Text </a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('ul#balsheetList li').click(function () {
+
+            var balsheetID = $(this).attr('id');
+            var balsheetName = $(this).text();
+
+            $("#selectedBalsheetID").val(balsheetID);
+
+            $('#BalanceSheetType').html('<i class="nav-icon list"></i>' + balsheetName);
+            $.ajax(
+                {
+                    cache: false,
+                    type: "POST",
+                    dataType: "html",
+                    data: { selectedBalsheetID: parseInt(balsheetID), selectedBalsheetName: balsheetName.trim() },
+                    url: '/Base/UpdateBalancesheetSession',
+                    success: function (result) {
+
+                    }
+                });
+            //$.post('/Home/AccountHome/', function (result) {
+
+            //    $(".container").empty().append(result);
+            //});
+
+            $("#ddlMfdsodule").removeClass("open");
+            $('ul#balsheetList li').each(function (i) {
+                $(this).closest("li").find("a i").removeClass()
+                $(this).closest("li").find("a i").addClass("zmdi zmdi-accounts-list zmdi-hc-fw tm-icon")
+            });
+            $(this).closest("li").find("a i").removeClass("zmdi zmdi-accounts-list zmdi-hc-fw tm-icon")
+            $(this).closest("li").find("a i").addClass("zmdi zmdi-check-all");
+
+        });
+
+    });
+</script>
+
+

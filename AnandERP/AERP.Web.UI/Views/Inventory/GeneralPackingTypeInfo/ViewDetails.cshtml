@@ -1,0 +1,60 @@
+﻿@model AMS.ViewModel.GeneralPackingTypeInfoViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;View Packing Type Information</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralPackingTypeInfo" role="form" class="row">
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ItemDescription, new { })
+                        @Html.TextBoxFor(model => model.ItemDescription, new { maxlength = "50", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.PackageType)*@
+                </div>
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.UomCode, new { })
+                        @Html.TextBoxFor(model => model.UomCode, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.UomCode)
+                </div>
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.PackageType, new { })
+                        @Html.TextBoxFor(model => model.PackageType, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PackageType)
+                </div>
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.QuantityPerPackage, new { })
+                        @Html.TextBoxFor(model => model.QuantityPerPackage, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.QuantityPerPackage)
+                </div>
+              
+
+               
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralPackingTypeInfo.Initialize();
+    });
+</script>
+

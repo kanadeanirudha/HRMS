@@ -1,0 +1,26 @@
+﻿@model AERP.ViewModel.GeneralItemMarchandiseGroupViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 50%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/GeneralItemMarchandiseGroup.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //GeneralItemMarchandiseGroup.Initialize();
+        GeneralItemMarchandiseGroup.LoadList();
+
+    });
+</script>
+
+
+
+

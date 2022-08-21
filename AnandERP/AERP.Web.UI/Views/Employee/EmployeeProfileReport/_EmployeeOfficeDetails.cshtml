@@ -1,0 +1,153 @@
+﻿@*@model AMS.ViewModel.EmpEmployeeMasterViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.ID)
+@if (ViewBag.Data == 1)
+{
+    <h3 class="my-caption">@Resources.FormName_OfficeDetails </h3>
+    
+    <div id="my-Subject" style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="nonboxy-widget">
+                    <div class="widget-head">
+                        <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.FormName_OfficeDetails</h5>
+
+                    </div>
+                    <div style="float: left; width: 100%;">
+
+
+                        <div style="width: 90%; float: left; padding-left: 25px;">
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.JobProfileID, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.JobProfileDescription
+                                </div>
+
+                            </div>
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.JobStatus, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.JobStatusDescription
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div style="width: 90%; float: left; padding-left: 25px;">
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.JoiningDate, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.JoiningDate
+                                </div>
+
+                            </div>
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.SSNNumber, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.SSNNumber
+                                </div>
+
+                            </div>
+                        </div>
+                        <div style="width: 90%; float: left; padding-left: 25px;">
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.ProvidentFundNumber, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.ProvidentFundNumber
+                                </div>
+
+                            </div>
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.AdharCardNumber, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.AdharCardNumber
+                                </div>
+
+                            </div>
+                        </div>
+                        <div style="width: 90%; float: left; padding-left: 25px;">
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.PanNumber, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.PanNumber
+                                </div>
+
+                            </div>
+                            <div style="width: 50%; float: left;">
+                                <div style="width: 40%; float: left; font-weight: bold;">
+                                    @Html.LabelFor(model => model.DrivingLicenceNumber, new { style = "font-Weight:Bold;" })
+                                </div>
+                                <div style="width: 60%; float: left;">
+                                    : @Model.DrivingLicenceNumber
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+@*--------------new code----------------*@
+
+@model AMS.ViewModel.EmpEmployeeMasterViewModel
+@{
+
+    Layout = null;
+}
+@Html.HiddenFor(model => model.ID)
+@if (ViewBag.Data == 1)
+{
+
+    <div class="pmo-block pmo-contact hidden-xs">
+        <h2><i class="zmdi zmdi-account-box-phone zmdi-hc-fw"></i>  @Resources.FormName_OfficeDetails</h2>
+
+        <ul>
+            <li>@Html.LabelFor(model => model.JobProfileID, new { style = "font-Weight:Bold;" }) : @Model.JobProfileDescription</li>
+        </ul>
+
+        <ul>
+            <li>@Html.LabelFor(model => model.JobStatus, new { style = "font-Weight:Bold;" }) : @Model.JobStatusDescription</li>
+        </ul>
+        <ul>
+            <li>@Html.LabelFor(model => model.JoiningDate, new { style = "font-Weight:Bold;" }) : @Model.JoiningDate </li>
+        </ul>
+        <ul>
+            <li>@Html.LabelFor(model => model.SSNNumber, new { style = "font-Weight:Bold;" }) : @Model.SSNNumber </li>
+        </ul>
+        <ul>
+            <li>@Html.LabelFor(model => model.ProvidentFundNumber, new { style = "font-Weight:Bold;" }) : @Model.ProvidentFundNumber </li>
+        </ul>
+        <ul>
+            <li>@Html.LabelFor(model => model.AdharCardNumber, new { style = "font-Weight:Bold;" }) : @Model.AdharCardNumber </li>
+        </ul>
+        <ul>
+            <li>@Html.LabelFor(model => model.PanNumber, new { style = "font-Weight:Bold;" }) : @Model.PanNumber</li>
+        </ul>
+        <ul>
+            <li>@Html.LabelFor(model => model.DrivingLicenceNumber, new { style = "font-Weight:Bold;" }) : @Model.DrivingLicenceNumber </li>
+        </ul>
+        
+    </div>
+}

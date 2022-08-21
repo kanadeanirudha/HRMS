@@ -1,0 +1,190 @@
+﻿
+    @model AERP.ViewModel.PurchaseRequirementMasterViewModel
+
+    <link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+
+    <style>
+        .ui-front {
+            z-index: 9999;
+        }
+
+        .ui-datepicker {
+            font-size: 9pt !important;
+        }
+    </style>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.CentreCode)
+    @Html.HiddenFor(m => m.DepartmentID)
+    @Html.HiddenFor(model => model.PolicyDefaultAnswer)
+    @Html.HiddenFor(model =>model.MinimumOrderquantity)
+
+
+    <div id="salesDiv" style="width:1100px">
+        <div class="widget-block">
+            <div class="widget-head">
+                <h5>  Create Purchase Requirement</h5>
+            </div>
+            <div id="msgDiv" style="display:none;color:#000;" class="alert"></div>
+            <div class="widget-content">
+                <div class="widget-box">
+                    <form class="form-horizontal well" id="FormCreatePurchaseRequirementMaster" style="">
+                        <div class="nonboxy-widget">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="span11">
+                                    </div>
+                                </div>
+                                <div class="row control-group">
+                                    <div class="span2">
+                                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                        @Html.LabelFor(model => model.PurchaseRequirementNumber, new { style = "font-Weight:Bold;" })
+                                    </div>
+                                    <div class="span2" style="line-height: 25px">
+                                        @Html.TextBoxFor(model => model.PurchaseRequirementNumber, new { @class = "txtbox", maxlength = "60", style = "font-Weight:Bold;" })
+                                        <br />
+                                        @Html.ValidationMessageFor(model => model.PurchaseRequirementNumber)
+
+                                    </div>
+                                    <div class="span2" style="margin-left: 10%">
+                                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                        @Html.LabelFor(model => model.TransDate, new { Style = "font-size: 100%;font-weight:bold;" })
+
+                                    </div>
+                                    <div class="span2" style="line-height: 25px">
+                                        @Html.TextBoxFor(model => model.TransDate, new { Value = "" + DateTime.Now.ToString("dd MMM yyyy") + "", Readonly = "True", style = "font-weight: bold" })
+                                        <br />
+                                        @Html.ValidationMessageFor(model => model.TransDate)
+
+                                    </div>
+                                </div>
+                                <hr />
+
+                                <div class="row">
+                                    <div class="span11">
+                                        <div class="row control-group">
+                                            @Html.HiddenFor(model => model.ItemID)
+                                           
+
+                                            <div class="span">
+                                                @Html.LabelFor(model => model.ItemName, new { Style = "font-size: 100%;font-weight:bold;" })
+                                                @Html.TextBoxFor(model => model.ItemName, new { @class = "txtbox", style = "font-weight:bold" })
+                                                
+                                            </div>
+                                            <div class="spanFullName">
+                                                @Html.LabelFor(model => model.Quantity, new { Style = "font-size: 100%;font-weight:bold;" })
+                                                @Html.TextBoxFor(model => model.Quantity, new { maxlength = "8", @class = "txtbox", Style = "width:70px;text-align:right;font-weight:bold;margin-left: -22px" })
+                                            </div>
+                                            <div class="spanFullName">
+                                                @Html.LabelFor(model => model.Rate, new { Style = "font-size: 100%;font-weight:bold;" })
+                                                @Html.TextBoxFor(model => model.Rate, new { maxlength = "8", @readonly = "readonly", @class = "txtbox", Style = "width:70px;text-align:right;font-weight:bold;margin-left: -17px" })
+                                            </div>
+                                            <div class="spanFullName">
+                                                @Html.LabelFor(model => model.ExpectedDate, new { Style = "font-size: 100%;font-weight:bold;margin-left: -10px" })
+                                                @Html.TextBoxFor(model => model.ExpectedDate, new { @class = "txtbox", @readonly = "readonly", style = "width:120px;text-align:left;font-weight:bold;margin-left: -22px" })
+
+
+                                            </div>
+                                            <div class="spanFullName">
+                                                @Html.LabelFor(model => model.PriorityFlag, new { Style = "font-size: 100%;font-weight:bold;margin-left: 6px" })
+                                                @Html.DropDownList("PriorityFlag", ViewData["PriorityFlag"] as List<SelectListItem>, new { style = "width:120px;font-Weight:Bold;margin-left: -22px", @class = "dropdown1" })
+                                            </div>
+                                            <div class="spanFullName">
+                                                @Html.LabelFor(model => model.StorageLocationID, new { Style = "font-size: 100%;font-weight:bold;margin-left: 6px" })
+                                               @Html.DropDownListFor(model => model.StorageLocationID, (SelectList)ViewBag.GeneralLocationList, "--Select location--", new { @class = "txtbox", style = "font-Weight:Bold;width:141px;margin-left: -22px" })
+                                            </div>
+                                            <div class="spanFullName">
+                                                @Html.LabelFor(model => model.Remark, new { Style = "font-size: 100%;font-weight:bold;margin-right: -10px" })
+                                                @Html.TextBoxFor(model => model.Remark, new { @class = "txtbox", style = "width:150px;text-align:left;font-weight:bold;margin-left: -22px" })
+
+
+                                            </div>
+                                            <div class="spanFullName">
+                                                <label for="input01">&nbsp;</label>
+                                                <input type="button" id="addItem" class="btn btn-primary" style="height: 28px; margin-left: -15px;" value="Add" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="span11">
+
+                                        <div id="DivAddRowTable" style="height: 200px; overflow: auto">
+                                            <table id="tblData" class="table user-tbl " style="  border: 1px solid #dddddd">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="text-align: left; width: 30%">item</th>
+                                                        <th style="text-align: left; width: 16%">Quantity</th>
+                                                        <th style="text-align: left; width: 13%">Rate</th>
+                                                        <th style="text-align: left; width: 16%">Expected Date</th>
+                                                        <th style="text-align: left; width: 13%">Priority</th>
+                                                        <th style="text-align: left; width: 15%">Location</th>
+                                                        <th style="text-align: left; width: 13%">Remark</th>
+                                                        <th style="text-align: center; width: 5px;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="span9">
+                                        <div class="form-actions " style="border: 1px solid #e5e5e5;text-align:right">
+                                            <span style="float: left; margin-left: -150px; font-weight: bold;">
+                                                Total Item
+                                                <input type="text" style="width: 50px; height: 16px; text-align: right; -webkit-text-fill-color: rgba(0, 0, 0, 0.6);" disabled id="TotalItem" />
+                                            </span>
+
+                                            <input type="button" id="CreatePurchaseRequirementMaster" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            PurchaseRequirementMaster.Initialize();
+        })
+
+    </script>
+
+    <style>
+        .hide_column {
+            display: none;
+        }
+
+        .paging_full_numbers {
+            display: none;
+        }
+
+        div.dataTables_paginate {
+            display: none;
+        }
+
+        .dataTables_paginate {
+            display: none;
+        }
+
+        div.dataTables_info {
+            display: none;
+        }
+
+        .dataTables_info {
+            display: none;
+        }
+    </style>
+
+
+    
+
+
+

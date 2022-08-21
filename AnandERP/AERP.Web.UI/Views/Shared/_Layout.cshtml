@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        @if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"]) != "")
+            {
+            @Resources.ResourceManager.GetString(string.Concat(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"])))
+        }
+        else
+        {
+            @Resources.ProjectEnvoirnment_AIS
+        }
+    </title>
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="..//Content/images/@Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectFaviconIcon"])">
+
+    <!-- Vendor CSS -->
+    <!-- fullcalendar -->
+    <!-- animate css -->
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/animate.css/animate.min.css")" rel="stylesheet" type="text/css" />
+
+    <!-- sweet alert css -->
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css")" rel="stylesheet" type="text/css" />
+
+    <!-- font material -->
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" />
+    <!-- animate.css -->
+
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css")" rel="stylesheet" type="text/css" />
+    <!-- CSS -->
+    <!-- CSS -->
+
+    <link href="@Url.Content("~/Content/Theme/css/app.min.1.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/Theme/css/app.min.2.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/Theme/dist/css/style.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/plugins/Magnific-Popup-master/dist/magnific-popup.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/plugins/data-tables-1.10.11/media/css/dataTables.bootstrap.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/jquery/dist/jquery.min.js")" type="text/javascript"></script>
+
+    <!-- custom -->
+    <script src="@Url.Content("~/Scripts/AERP_Scripts/Application/makeAjaxRequest.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/AERP_Scripts/Application/AERPValidation.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/css/custom.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/sweetalert/dist/sweetalert.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <!-- header -->
+    @Html.Partial("_Header")
+    <!-- header -->
+
+    <section id="main" data-layout="layout-1">
+
+        <!-- sidebar -->
+        <aside id="sidebar" class="sidebar c-overflow">
+            @if (HttpContext.Current.Session["UserType"] != null)
+            {
+                if (HttpContext.Current.Session["UserType"].ToString() == "E" || HttpContext.Current.Session["UserType"].ToString() == "A")
+                {
+                    if (HttpContext.Current.Session["ModuleCode"] != null)
+                    {
+                        { Html.RenderAction("_MenuList", "_Header", new { ModuleCode = @HttpContext.Current.Session["ModuleCode"], ModuleName = @HttpContext.Current.Session["ModuleName"] }); }
+                    }else if (HttpContext.Current.Session["DefaultModuleCode"] != null)
+                    {
+                        { Html.RenderAction("_MenuList", "_Header", new { ModuleCode = @HttpContext.Current.Session["DefaultModuleCode"], ModuleName = @HttpContext.Current.Session["ModuleName"] }); }
+                    }
+                }
+                else if (HttpContext.Current.Session["UserType"].ToString() == "S")
+                {
+                    { Html.RenderAction("_MenuList", "_Header", new { ModuleID = 5, ModuleName = "Student" }); }
+                }
+            }
+        </aside>
+        <!-- sidebar -->
+        <section id="content">
+
+            @RenderBody()
+
+        </section>
+    </section>
+
+    <!-- footer -->
+    @Html.Partial("_Footer")
+    <!-- footer -->
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <div class="preloader pls-blue">
+            <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20" />
+            </svg>
+
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <div class="page-loader2" style="display:none;">
+        <div class="preloader pls-blue">
+            <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20" />
+            </svg>
+            <p>Please wait...</p>
+        </div>
+    </div>
+
+
+    <!-- Older IE warning message -->
+    <!--[if lt IE 9]>
+        <div class="ie-warning">
+            <h1 class="c-white">Warning!!</h1>
+            <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+            <div class="iew-container">
+                <ul class="iew-download">
+                    <li>
+                        <a href="http://www.google.com/chrome/">
+                            <img src="img/browsers/chrome.png" alt="">
+                            <div>Chrome</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.mozilla.org/en-US/firefox/new/">
+                            <img src="img/browsers/firefox.png" alt="">
+                            <div>Firefox</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.opera.com">
+                            <img src="img/browsers/opera.png" alt="">
+                            <div>Opera</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.apple.com/safari/">
+                            <img src="img/browsers/safari.png" alt="">
+                            <div>Safari</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                            <img src="img/browsers/ie.png" alt="">
+                            <div>IE (New)</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <p>Sorry for the inconvenience!</p>
+        </div>
+    <![endif]-->
+    <!-- Javascript Libraries -->
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/Waves/dist/waves.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bootstrap-growl/bootstrap-growl.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/sweetalert/dist/sweetalert.min.js")" type="text/javascript"></script>
+    @*<script src="~/Content/Theme/vendors/bower_components/sweetalert/dist/sweetalert.min.js"></script>*@
+
+    <!-- Placeholder for IE9 -->
+    <!--[if IE  9 ]>
+        <script src="@Url.Content("~/Content/Theme/vendors/bower_components/jquery-placeholder/jquery.placeholder.min")" type="text/javascript"></script>
+    <![endif]-->
+
+    <script src="@Url.Content("~/Content/Theme/js/charts.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/js/functions.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/js/demo.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/data-tables-1.10.11/media/js/jquery.dataTables.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js")" type="text/javascript"></script>
+
+    <script src="~/Scripts/jquery.signalR-2.4.0.js"></script>
+    <!--Reference the autogenerated SignalR hub script. -->
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        $(function () {
+            // Declare a proxy to reference the hub.
+
+            var notifications = $.connection.notificationHub;
+
+            //debugger;
+            // Create a function that the hub can call to broadcast messages.
+            notifications.client.updateMessages = function () {
+                getNotificationCount('onChange');
+            };
+            // Start the connection.
+            $.connection.hub.start().done(function () {
+                getNotificationCount('onStart');
+            }).fail(function (e) {
+                alert(e);
+            });
+        });
+
+        function getNotificationCount(event) {
+            $('#NotiCountHeaderDiv').removeAttr('class');
+            $.ajax({
+                url: '/TaskNotification/GetNotificationCount',
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'JSON'
+            }).success(function (result) {
+                if (result[0] && result[0].NotificationCount != 0) {
+                    $('#NotiCount').html(result[0].NotificationCount);
+                    $('#NotiCountHeader').show();
+                    $('#NotiCountHeader').html(result[0].NotificationCount);
+                    $('#NotiCountHeaderDiv').addClass('animated tada');
+                    //if (event == 'onChange') {
+                    //    $.growl({
+                    //        icon: '',
+                    //        title: '',
+                    //        message: ' You have ' + result[0].NotificationCount + ' notifications.',
+                    //        url: ''
+                    //    }, {
+                    //        element: 'body',
+                    //        type: 'info',
+                    //        allow_dismiss: true,
+                    //        placement: {
+                    //            from: 'bottom',
+                    //            align: 'right'
+                    //        },
+                    //        offset: {
+                    //            x: 20,
+                    //            y: 85
+                    //        },
+                    //        spacing: 10,
+                    //        z_index: 1031,
+                    //        delay: 2500,
+                    //        timer: 1000,
+                    //        url_target: '_blank',
+                    //        mouse_over: false,
+                    //        animate: {
+                    //            enter: '',
+                    //            exit: ''
+                    //        },
+                    //        icon_type: 'class',
+                    //        template: '<div data-growl="container" class="alert" role="alert">' +
+                    //                        '<button type="button" class="close" data-growl="dismiss">' +
+                    //                            '<span aria-hidden="true">&times;</span>' +
+                    //                            '<span class="sr-only">Close</span>' +
+                    //                        '</button>' +
+                    //                        '<span data-growl="icon"></span>' +
+                    //                        '<p><b><span data-growl="title"></span></b></p>' +
+                    //                        '<p><span data-growl="message"></span></p>' +
+                    //                        '<a href="#" data-growl="url"></a>' +
+                    //                    '</div>'
+                    //    });
+                    //}
+                } else {
+                    $('#NotiCount').html(0);
+                    $('#NotiCountHeader').hide();
+                }
+            }).error(function () {
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            AERPValidation.Initialize();
+
+            $(function () {
+
+                setNavigation();
+            });
+
+            $(".main-menu li ul").hide();
+
+            function setNavigation() {
+
+                var href = '';
+                var path = window.location.pathname;
+
+                $(".main-menu li ul li a").each(function () {
+
+                    href = $(this).attr("href");
+                    if (path === href) {
+
+                        $(this).closest('li ul li a').addClass('active');
+
+                        $(this).closest("ul").css("display", "block");
+                        $(this).closest("ul li.sub-menu").addClass("toggled");
+                    }
+                });
+
+            }
+
+            $('#NotiCountHeaderDiv').click(function () {
+                $.ajax(
+               {
+                   cache: false,
+                   type: "POST",
+                   dataType: "html",
+                   url: '/TaskNotification/NotificationList',
+                   //  url: '/Home/Index',
+                   success: function (data) {
+                       //Rebind Grid Data
+                       $('#content').html(data);
+                   }
+               });
+            });
+
+        });
+    </script>
+
+
+
+</body>
+</html> 

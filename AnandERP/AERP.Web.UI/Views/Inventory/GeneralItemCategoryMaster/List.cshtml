@@ -1,0 +1,173 @@
+﻿@model AERP.ViewModel.GeneralItemCategoryMasterViewModel
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Manage Base Merchandise Category</h2>
+    <ul class="actions">
+        <li>
+            <a href="@Url.Action("Download", "GeneralItemCategoryMaster")" title="Download Excel">
+                <button style="margin-left:-24px;height:36px;" class="btn bgm-orange waves-effect" data-val="true" data-toggle="tooltip" data-placement="top" data-original-title="Download Data Sheet"><i class="zmdi zmdi-download zmdi-hc-fw"></i></button>
+            </a>
+        </li>
+
+        <li>
+            <a title="Upload Excel" href="@Url.Action("UploadExcel", "GeneralItemCategoryMaster", new { })" class="mfpAjaxModal">
+                <i class="zmdi zmdi-plus-square btn btn-default waves-effect" style="padding-bottom:3px;"></i>
+            </a>
+        </li>    
+    </ul>
+</div>
+<div class="card">
+    <div class="card-header">
+        <ul class="actions">
+            <li class="dropdown">
+                <a href="" data-toggle="dropdown">
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a class="mfpAjaxModal" title="Add New" href="@Url.Action("CreateBMC", "GeneralItemCategoryMaster")">
+                            <i class="zmdi zmdi-plus-square"></i>&nbsp;Add New
+                        </a>
+                    </li>
+                </ul>
+            </li>
+          
+        </ul>
+    </div>
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                    </div>
+                </div>
+                <div class="actions btn-group">
+                    @*   <button title="Refresh" type="button" class="btn btn-default">
+                            <span class="zmdi icon zmdi zmdi-refresh zmdi-hc-fw"></span>
+                        </button>*@
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                            @*<li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="-1">All</a></li>*@
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="ItemCategoryDescription">
+                                        Category Description<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="ItemCategoryCode">
+                                        Category Code<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Action">
+                                        @Resources.TableHeaders_Action<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>Base Merchandise Category Name</th>
+                <th>Base Merchandise Category Code</th>
+                <th style="text-align: center">@Resources.TableHeaders_Action</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var oTable;
+        GeneralItemCategoryMaster.Initialize();
+        oTable = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "GeneralItemCategoryMaster/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "columnDefs": [
+                              {
+                                  "targets": 0,
+
+                                  "data": null,
+                                  "render": function (data, type, full, meta) {
+                                      var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[0] + "</p>";
+                                      return result;
+                                  }
+                              },
+                              {
+                                  "targets": 1,
+
+                                  "data": null,
+                                  "render": function (data, type, full, meta) {
+                                      var result = "<p  style=' height:5px;'>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[1] + "</p>";
+                                      return result;
+                                  }
+                              },
+                               {
+                                   "targets": 2,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       var result = null,result1 = null,result2 = null;
+                                       
+                                       result1 = '@Html.ActionLink("Edit1", "EditBMC", new { ID = "ID1" }, new { @class = "mfpAjaxModal btn btn-default waves-effect" })';
+                                       result1 = result1.replace('ID1', data[2]);
+                                       result1 = result1.replace("Edit1", '<span class=\"zmdi zmdi-edit\" title =\"@Resources.ToolTip_Edit\"></span>');
+                                       result2 = " <a href=\"javascript:void(0);\" data-toggle=\"tooltip\" class=\"btn btn-default waves-effect\" onclick=\"fancyBoxPopUpAjax('Delete Item category','Are you sure? want to delete this " + data[0] + " category ?','error','btn-danger','Yes!','/GeneralItemCategoryMaster/Delete/" + data[2] + "','content','page-loader','GeneralItemCategoryMaster')\"><span class=\"zmdi zmdi-delete\"></span></a>";
+                                       
+                                       result = "<p align='center'>" + result1 + result2 + "</p>";
+                                       return result;
+                                       //result = "<p align='center'>" + " <a href=\"javascript:void(0);\" data-toggle=\"tooltip\" class=\"btn btn-default waves-effect\" onclick=\"fancyBoxPopUpAjax('Delete Item category','Are you sure? want to delete this " + data[0] + " category ?','error','btn-danger','Yes!','/GeneralItemCategoryMaster/Delete/" + data[2] + "','content','page-loader','GeneralItemCategoryMaster')\"><span class=\"zmdi zmdi-delete\"></span></a>" + "</p>";
+                                       //return result;
+                                   }
+                               }
+            ],
+        });
+        DataTableSettings(oTable, 'myDataTable', 'toggleTableColumn');
+    });
+
+
+</script>
+
+

@@ -1,0 +1,42 @@
+﻿<style>
+    .footerclass {
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    .footerName {
+        color: #a2a2a2;
+        font-size: 14PX;
+    }
+
+    #footer {
+        bottom: 0;
+        color: #a2a2a2;
+        height: 60px;
+        padding-bottom: 15px;
+        padding-top: 5px;
+        position: fixed;
+        text-align: center;
+        width: 100%;
+        background-color: #EDECEC;
+        border-top: 1px solid;
+        z-index: 8;
+    }
+</style>
+<footer id="footer" style="">
+    <div class="row col-lg-12">
+        <div class="col-lg-6 footerclass"><a target=" _blank" href="javascript:void()" class="footerName">@if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectFooter"]) != "")
+            {
+            @Resources.ResourceManager.GetString(string.Concat(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectFooter"])))
+        }
+        else
+        {
+            @Resources.ProjectFooter_Anand
+        }  </a></div>
+        @*<div class="col-lg-6 footerclass"><a target=" _blank" href="http://anandsolutions.co.in" class="footerName">© 2017 Anand Solutions </a></div>*@
+        @*<div class="pull-right"><a target="_blank" href="http://anandsolutions.co.in"><img style="height: 47px;" src="../Content/images/logo.png"></a></div>*@
+    </div>
+</footer>
+
+
+

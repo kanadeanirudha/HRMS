@@ -1,0 +1,23 @@
+﻿@model IEnumerable<AERP.ViewModel.CCRMAreaPatchMasterViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/CCRM/CCRMAreaPatchMaster.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+
+<div id="ListViewModel" class="container">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        CCRMAreaPatchMaster.LoadList();
+    });
+</script>
+

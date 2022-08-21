@@ -1,0 +1,58 @@
+﻿@model AMS.ViewModel.AdminRoleDetailsViewModel
+
+@using (Ajax.BeginForm("Edit", "AdminRoleDetails", null,
+        new AjaxOptions
+        {
+            UpdateTargetId = "update-message",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "editSuccess"
+        }, new
+        {
+            @id = "FormAdminRoleEdit"
+        }))
+{
+    @Html.AntiForgeryToken()
+    <div class="widget-block">
+		<div class="widget-head">
+			<h5> Edit Role Details </h5>
+		</div>
+		<div class="widget-content">
+			<div class="widget-box" style="padding:15px">
+				<form class="form-horizontal well white-box">
+					<fieldset>
+						<div class="control-group">
+							 @Html.LabelFor(model => model.AdminRoleCode, new { @class = "control-label" })
+                            <div class="controls">
+                                 @Html.EditorFor(model => model.AdminRoleCode,  new { @class = "input-xlarge text-tip" ,title="Admin Role Code" })
+                                 @Html.ValidationMessageFor(model => model.AdminRoleCode)
+							</div>
+						</div>
+						<div class="control-group">
+                           @Html.LabelFor(model => model.IsActive, new { @class = "control-label" })
+							<div class="controls">
+								 @Html.EditorFor(model => model.IsActive ,  new { @class = "input-xlarge text-tip" ,title="Active Status" })
+                             @Html.ValidationMessageFor(model => model.IsActive )
+							</div>
+						</div>
+
+						<div class="form-actions" style="border: 1px solid #e5e5e5;" >
+							<button type="submit" class="btn btn-primary">Save changes</button>
+                             @*   <button id="FormAdminRoleEdit" value="Submit" onclick="javascript:jQuery.fancybox.close();" class="btn btn-primary">Update</button>*@
+							<button class="btn">Cancel</button>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+<div id="update-message" class="error invisible"></div>
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.AdminRoleMasterID)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreatedDate)
+}
+
+
+

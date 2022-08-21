@@ -1,0 +1,106 @@
+﻿@model AERP.ViewModel.PurchaseRequisitionMasterViewModel
+
+<div class="container" id="salesDiv">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.DepartmentID)
+    @Html.HiddenFor(m => m.ID)
+
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;View Purchase Requisition</h2>
+    </div>
+
+    <div class="card">
+        <div class="" id="divContent">
+            <form id="FormViewPurchaseRequisitionMaster">
+                <div class="card-body card-padding">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                @Html.LabelFor(model => model.PurchaseRequisitionNumber, new { style = "" })
+                                <div class="form-group fg-line">
+                                    @Html.TextBoxFor(model => model.PurchaseRequisitionNumber, new { @class = "form-control", disabled = "disabled", @readonly = "readonly", maxlength = "60", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PurchaseRequisitionNumber)
+                            </div>
+                            <div class="col-sm-4">
+                                @Html.LabelFor(model => model.TransDate, new { Style = "" })
+                                <div class="form-group fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.TransDate, new { @class = "form-control", @readonly = "readonly", Style = "", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.TransDate)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <hr />
+                        <div id="DivAddRowTable">
+                            <div class="card-body table-responsive">
+                                <table id="tblData" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Uom</th>
+                                            <th>Quantity</th>
+                                            <th>Rate</th>
+                                            <th>Delivery Date</th>
+                                            <th>Location</th>
+                                            <th>Tax</th>
+                                            <th>Amount</th>
+                                            <th>Tax Amount</th>
+                                            <th style="display:none">Priority</th>
+                                            <th>Gross Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="">
+                                        @foreach (var item in Model.PurchaseRequisitionMasterList)
+                                        {
+                                            <tr>
+                                                <td>@item.ItemName<input type="text" style="display:none" value="@item.ItemID"></td>
+                                                <td>@item.BaseUOMCode</td>
+                                                <td>@Math.Round(item.Quantity,3)<input type="text" style="display:none" value="@item.Quantity"></td>
+                                                <td>@Math.Round(item.Rate,2)<input type="text" style="display:none" value="@item.Rate"></td>
+                                                <td>@item.ExpectedDeliveryDate<input type="text" style="display:none" value="@item.ExpectedDeliveryDate"></td>
+                                                <td><input type="text" style="display:none" value="@item.StorageLocationID">@item.LocationName</td>
+                                                <td>@item.TaxGroupName<input type="text" style="display:none" value="@item.TaxGroupName"></td>
+                                                <td>@Math.Round(item.Ammount, 2)<input type="text" style="display:none" value="@item.Ammount"></td>
+                                                <td>@Math.Round(item.ItemWiseTaxAmount, 2)<input type="text" style="display:none" value="@item.ItemWiseTaxAmount"></td>
+                                                
+
+                                                @if (item.PriorityFlag == 1)
+                                                    {
+                                                    <td style="display:none">High<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                    }
+                                                else if (item.PriorityFlag == 2)
+                                                {
+                                                    <td style="display:none">Medium<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="display:none">Low<input type="text" style="display:none" value="@item.PriorityFlag"></td>
+                                                }
+                                              
+                                                <td><input type="text" style="display:none" value="@item.AmmountIncludingTax">@item.AmmountIncludingTax</td>
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="7" style="font-size:14px;text-align:right"><b>Total :</b></td>
+                                            <td  style="font-size:14px"><b>@Model.Ammount</b></td>
+                                            <td  style="font-size:14px"><b>@Model.TaxAmount</b></td>
+                                            <td  style="font-size:14px"><b>@Model.GrossAmount</b></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

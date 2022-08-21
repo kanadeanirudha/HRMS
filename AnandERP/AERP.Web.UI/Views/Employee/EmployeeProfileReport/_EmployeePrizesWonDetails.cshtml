@@ -1,0 +1,156 @@
+﻿@*@model AMS.ViewModel.EmployeePrizesWonDetailsViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <h3 class="my-caption">@Resources.DisplayName_PrizesWonDetails  </h3>
+    
+    <div id="my-Subject" style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="nonboxy-widget">
+                    <div class="widget-head">
+                        <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.DisplayName_PrizesWonDetails</h5>
+
+                    </div>
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                        <table id="DataTables_Table_0" class="data-tbl-striped table table-striped table-bordered dataTable">
+                            <thead>
+                                <tr role="row">
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 45%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader" >@Resources.TableHeaders_PrizeName</th>
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 15%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_GeneralLevel</th>
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 15%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_PrizeGivenBy</th>
+                                   <th aria-label=" Task : activate to sort column ascending" style="width: 35%; background-color: #fff;font-Weight:Bold; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader"> @Resources.TableHeaders_PrizeIssuingAuthority</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in ViewBag.ListEmployeePrizesWonDetails)
+                            {
+                                <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                    <tr class="odd">
+                                        <td style="text-align: left" class="">@item.PrizeName</td>
+                                         @if (@item.GeneralLevelName == "International")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-success">@Resources.DisplayName_International</span></p>
+                                            </td>
+                                        }
+                                         else if (@item.GeneralLevelName == "National")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-warning">@Resources.DisplayName_National</span></p>
+                                            </td>
+                                        }
+                                         else if (@item.GeneralLevelName == "State")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-info">@Resources.DisplayName_State</span></p>
+                                            </td>
+                                        }
+                                        else if (@item.GeneralLevelName == "Inter-School")
+                                        { 
+                                         <td style="text-align: left">
+                                               <p style="text-align: center;"><span style="text-align: center;" class="label">@Resources.DisplayName_InterSchool</span></p>
+                                           </td>
+                                        }
+                                      
+                                        <td style="text-align: left" class="">@item.PrizeGivenBy</td>
+                                        <td style="text-align: left" class="">@item.PrizeIssuingAuthority</td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+
+@*----------------------------------------------new code-------------------------------------------------*@
+
+
+@model AMS.ViewModel.EmployeePrizesWonDetailsViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <div class="col-sm-12">
+        <div class="card rating-list">
+            <div class="listview">
+                <div class="lv-header">
+                    <div class="m-t-0">
+                        @Resources.DisplayName_PrizesWonDetails
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                @*<div class="lv-body">*@
+                <div class="table-responsive" id="DataTables_Table_0_wrapper">
+                    <table id="DataTables_Table_0" class="table">
+                        <thead>
+                            <tr class="warning c-white">
+                                <th>@Resources.TableHeaders_PrizeName</th>
+                                <th>@Resources.TableHeaders_GeneralLevel</th>
+                                <th>@Resources.TableHeaders_PrizeGivenBy</th>
+                                <th> @Resources.TableHeaders_PrizeIssuingAuthority</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in ViewBag.ListEmployeePrizesWonDetails)
+                        {
+                            <tbody>
+                                <tr class="active">
+                                    <td>@item.PrizeName</td>
+                                    @if (@item.GeneralLevelName == "International")
+                                    {
+                                        <td>
+                                            <p>
+                                                <button style="" class="btn btn-success btn-xs waves-effect">@Resources.DisplayName_International</button>
+                                            </p>
+                                        </td>
+                                    }
+                                    else if (@item.GeneralLevelName == "National")
+                                    {
+                                        <td>
+                                            <p>
+                                                <button style="" class="btn btn-warning btn-xs waves-effect">@Resources.DisplayName_National</button>
+                                            </p>
+                                        </td>
+                                    }
+                                    else if (@item.GeneralLevelName == "State")
+                                    {
+                                        <td>
+                                            <p>
+                                                <button style="" class="btn btn-primary btn-xs waves-effect">@Resources.DisplayName_State</button>
+                                            </p>
+                                        </td>
+                                    }
+                                    else if (@item.GeneralLevelName == "Inter-School")
+                                    {
+                                        <td>
+                                            <p>
+                                                <button style="" class="btn btn-info btn-xs waves-effect">@Resources.DisplayName_InterSchool</button>
+                                            </p>
+                                        </td>
+                                    }
+
+                                    <td>@item.PrizeGivenBy</td>
+                                    <td>@item.PrizeIssuingAuthority</td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+
+}

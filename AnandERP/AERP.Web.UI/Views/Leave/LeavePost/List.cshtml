@@ -1,0 +1,420 @@
+﻿@*
+    @model AMS.ViewModel.LeavePostViewModel
+    <script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+    <style type="text/css">
+        .ui-widget-header {
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+
+    <div class="container-fluid">
+        <form id="LeavePostAtOpening">
+        <ul class="breadcrumb">
+            <li><a href="#">@Resources.Mainheading_Leave</a><span class="divider">»</span></li>
+            <li class="active">@Resources.FormName_LeavePost</li>
+        </ul>
+        <ul class="breadcrumb" style="height: 30px;">
+            <li>&nbsp;&nbsp;&nbsp;
+             <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_CentreName &nbsp; &nbsp;&nbsp;</span>
+                @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "----Select Centre----", new { id = "CentreCode", @class = "form-control chosen-select", style = "font-weight:bold;" })
+                @Html.HiddenFor(m => m.CentreCode)
+                @Html.HiddenFor(m => m.CentreName)
+                @Html.HiddenFor(m => m.LeaveSessionID)
+            </li>
+            <li>&nbsp;&nbsp;
+                <button type="button" id="ShowList" class="btn btn-primary" style="margin-bottom: 10%;">@Resources.GlobalProperties_ShowList</button>
+            </li>
+        </ul>
+        <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-block">
+                    <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+
+                    <div class="widget-head">
+                        <h5 id="hFive"><i class="black-icons users"></i>&nbsp; @Resources.TableHeaders_ManageLeavePost</h5>
+
+                        <div class="pull-right" style="margin: -24px 60px 0px 10px;">
+                            <div class="input-append" id="" style="float: right;">
+                                <div style="display: none;">
+                                    <input type="hidden" name="_method" value="POST">
+                                </div>
+                                <div>
+                                    <select name="data[User][searchby]" class="" id="showrecord" tabindex="16" style="float: left;">
+                                        <option value="10">@Resources.GlobalProperties_ShowRecords</option>
+                                        <option value="10">10</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    &nbsp;&nbsp;
+                                    <input type="text" name="data[User][search]" class="search_query input-medium" placeholder="@Resources.GlobalProperties_Search..." size="16" autocomplete="off" id="UserSearch">
+                                    <button class="btn" type="button" id="searchBtn"><i class="icon-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="widget-box">
+                            <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                                <div class="table_content">
+                                    <table id="myDataTable" class="table user-tbl">
+                                        <thead id="myDataTable_thead">
+                                            <tr>
+
+                                                <th style="text-align: center; font-weight: bold; color: #000; line-height: 40px">@Resources.TableHeaders_EmployeeName</th>
+                                                @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                {
+                                                    for (int i = 0; i < Convert.ToInt32(ViewBag.numberOfcolumn); i++)
+                                                    {
+                                                    <th style="text-align: center; font-weight: bold; color: #000; line-height: 40px">@ViewBag.listLeaveType[i]</th>
+                                                    }
+                                                }
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                            {
+                                                for (int j = 0; j < Convert.ToInt32(ViewBag.TotalRecords); j++)
+                                                {
+                                                <tr>
+                                                    <td>@ViewBag.ListLeavePost[j].EmployeeFirstName &nbsp; @ViewBag.ListLeavePost[j].EmployeeLastName</td>
+
+                                                    @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                    {
+                                                        var splitedLeaveList = ViewBag.ListLeavePost[j].LeaveList.Split(',');
+                                                        for (int k = 0; k < Convert.ToInt32(splitedLeaveList.Length); k++)
+                                                        {
+                                                            var splitedLeaveAndNumber = splitedLeaveList[k].Split('#');
+                                                            if (splitedLeaveAndNumber[5] == "-1")
+                                                            {
+                                                                int aaa = Convert.ToInt32(@ViewBag.ListLeavePost[j].DOJAndCurrentSessionDifferenceInMonth);
+                                                                double bbb = Convert.ToDouble(splitedLeaveAndNumber[1]);
+                                                                double ccc = (bbb / 12) *aaa;
+
+                                                             <td style="text-align: center; font-weight: bold; color: #000;padding:3px 0px 0px 0px"><input type="text" class="NumberOnly" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@ccc~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]"  value = "@ccc"  style="width:15%;text-align:right;" maxlength="3"/></td>
+                                                            }
+
+                                                            else
+                                                            {
+                                                                <td style="text-align: center; font-weight: bold; color: #000;padding:3px 0px 0px 0px"><input type="text" disabled="disabled" class="NumberOnly" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@splitedLeaveAndNumber[1]~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@splitedLeaveAndNumber[1]" style="width:15%;text-align:right;" maxlength="3" /></td>
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                            <tr><td>No data available in table</td></tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="widget-bottom"  style="padding-top:1%;text-align:right;padding-right:10px;">
+                                   <button type="button" id="CreateLeavePostRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+            </div>
+        </div>
+            </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            LeavePost.Initialize();
+
+        });
+
+    </script>
+
+*@
+
+@model AERP.ViewModel.LeavePostViewModel
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+
+<style>
+    .card .card-header:not(.ch-alt) {
+        padding: 23px 25px 55px;
+    }
+
+</style>
+@*<div class="container">*@
+<div class="block-header">
+   
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Manage Leave Post Manually</h2>
+    @*<h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormName_CentreOpeningBalance</h2>*@
+</div>
+
+<div class="card">
+    <form id="LeavePostAtOpening">
+        @*<div class="card-header"></div>*@
+        <div class="card-body card-padding">
+            <div class="row">
+
+                <div id="displayErrorMessage" role="alert" hidden class="alert" style="width:50%; margin-left:auto; margin-right:auto;">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+
+
+                <div class="col-sm-4">
+                    @Resources.TableHeaders_CentreName
+                    <div class="form-group fg-line select">
+                        @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "----Select Centre----", new { id = "CentreCode", @class = "form-control", style = "" })
+                        @Html.HiddenFor(m => m.CentreCode)
+                        @Html.HiddenFor(m => m.CentreName)
+                        @Html.HiddenFor(m => m.LeaveSessionID)
+                    </div>
+                </div>
+
+                <div class="col-sm-3" style="margin-top:8px;">
+                    <button type="button" id="ShowList" class="btn btn-primary" style="margin-top: 10%;">@Resources.GlobalProperties_ShowList</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="bootgrid-header container-fluid" id="data-table-command-header">
+            <div class="row">
+                <div class="col-sm-12 actionBar" style="display:none;">
+                    <div class="search form-group">
+                        <div class="input-group">
+                            <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                            <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                        </div>
+                    </div>
+                    <div class="actions btn-group">
+                        <div class="dropdown btn-group">
+                            <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                                <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                            </button>
+                            <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                                <li class="active" aria-selected="true">
+                                    <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                                </li>
+                                <li aria-selected="false">
+                                    <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                                </li>
+                                <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown btn-group">
+                            <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                                <span class="dropdown-text">
+                                    <span class="zmdi icon zmdi-view-module"></span>
+                                </span><span class="caret"></span>
+                            </button>
+                            <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label class="dropdown-item" aria-disabled="false">
+                                            <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="EmployeeName">
+                                            @Resources.TableHeaders_EmployeeName<i class="input-helper"></i>
+                                        </label>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label class="dropdown-item" aria-disabled="false">
+                                            <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="CL">
+                                            CL<i class="input-helper"></i>
+                                        </label>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label class="dropdown-item" aria-disabled="false">
+                                            <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="LWP">
+                                            LWP<i class="input-helper"></i>
+                                        </label>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label class="dropdown-item" aria-disabled="false">
+                                            <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="ML">
+                                            SL<i class="input-helper"></i>
+                                        </label>
+                                    </div>
+                                </li>
+
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label class="dropdown-item" aria-disabled="false">
+                                            <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="4" name="SL">
+                                            SL<i class="input-helper"></i>
+                                        </label>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+            <thead>
+                <tr>
+                    <th>@Resources.TableHeaders_EmployeeName</th>
+                    @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                    {
+                        for (int i = 0; i < Convert.ToInt32(ViewBag.numberOfcolumn); i++)
+                        {
+                            <th>@ViewBag.listLeaveType[i]</th>
+                        }
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                {
+                    for (int j = 0; j < Convert.ToInt32(ViewBag.TotalRecords); j++)
+                    {
+                        <tr>
+                            <td>@ViewBag.ListLeavePost[j].EmployeeFirstName &nbsp; @ViewBag.ListLeavePost[j].EmployeeLastName</td>
+                            @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                            {
+                                var splitedLeaveList = ViewBag.ListLeavePost[j].LeaveList.Split(',');
+                                for (int k = 0; k < Convert.ToInt32(splitedLeaveList.Length); k++)
+                                {
+                                    var splitedLeaveAndNumber = splitedLeaveList[k].Split('#');
+                                    if (splitedLeaveAndNumber[5] == "-1")
+                                    {
+                                        int aaa = Convert.ToInt32(@ViewBag.ListLeavePost[j].DOJAndCurrentSessionDifferenceInMonth);
+                                        double bbb = Convert.ToDouble(splitedLeaveAndNumber[1]);
+                                        double ccc = (bbb / 12) * aaa;
+
+                                        <td style="">
+                                            <div class="form-group fg-line">
+                                                <input type="text" class="form-control" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@ccc~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@ccc" style="" maxlength="3" />
+                                            </div>
+                                        </td>
+                                    }
+
+                                    else
+                                    {
+                                        <td style="">
+                                            <div class="form-group fg-line">
+                                                <input type="text" disabled="disabled" class="form-control" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@splitedLeaveAndNumber[1]~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@splitedLeaveAndNumber[1]" style="" maxlength="3" />
+                                            </div>
+                                        </td>
+
+                                    }
+
+                                }
+                            }
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>No data available in table</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+        <div class="card-header">
+            <ul class="header-inner pull-left">
+                <li>
+                    <input type="button" id="CreateLeavePostRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" style="display:none"/>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+
+
+
+@*</div>*@
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeavePost.Initialize();
+        //var oTable;
+        //var a = null;
+        //oTable = $('#myDataTable').DataTable({
+        //    "bServerSide": true,
+        //    "sAjaxSource": "AccountCentreOpeningBalance/AjaxHandler",
+        //    "bJQueryUI": true,
+        //    "sScrollY": false,
+        //    "bProcessing": true,
+        //    "sPaginationType": "full_numbers",
+        //    "oLanguage": {
+        //        "sInfoEmpty": "No entries to show",
+        //    },
+        //    //"fnServerParams": function (aoData) {
+        //    //    //aoData.push({ "name": "SelectedBalanceSheet", "value": $("#selectedBalsheetID").val() }),
+        //    //    //aoData.push({ "name": "SelectedAccountType", "value": $('#SelectedAccountType :selected').val() });
+        //    //    //aoData.push({ "name": "SelectedSessionID", "value": $('#SessionID').val() });
+        //    //},
+        //    "columnDefs": [
+        //        {
+        //            "visible": true, "targets": 0,
+        //            "data": null,
+        //            "render": function (data, type, full, meta) {
+                        
+        //            }
+        //        },
+        //       // {
+        //       //     "visible": false, "targets": 1,
+        //       // },
+
+        //       //{
+        //       //    "visible": false, "targets": 2,
+        //       //},
+        //       // {
+        //       //     "targets": 3,
+        //       //     "visible": false,
+        //       //     "bSortable": false,
+        //       //     "data": null,
+        //       //     "render": function (data, type, full, meta) {
+        //       //         // This column shows the Opening Balance textbox.Its for input purpose
+        //       //     }
+        //       // },
+        //       // {
+        //       //     "targets": 4,
+        //       //     "visible": false,
+        //       //     "bSortable": false,
+        //       //     "data": null,
+        //       //     "render": function (data, type, full, meta) {
+        //       //     }
+        //       // },
+                 
+
+
+
+        //    ],
+        //    "order": [[0, 'asc']],
+            
+        //});
+
+        //DataTableSettings(oTable, "myDataTable", "toggleTableColumn");
+
+    });
+</script>

@@ -1,0 +1,146 @@
+﻿@model AERP.ViewModel.CCRMContractTypesMasterViewModel
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Contract Types Master </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateCCRMContractTypesMaster" role="form" class="row">
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ContractCode, new { })
+                            @Html.TextBoxFor(model => model.ContractCode, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContractCode)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ContractName, new { })
+                            @Html.TextBoxFor(model => model.ContractName, new { @class = "form-control input-sm " })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContractName)
+                    </div>
+                    <div class="col-sm-6">
+
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.ContractType, new { })
+                        <div class="form-group select fg-line">
+                          
+                            @Html.DropDownList("ContractType", ViewData["ContractType"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "ContractType*" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContractType)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                            <label>
+                                <input type="checkbox" id="IsSpares">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsSpares, new { style = "" })
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsSpares)
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                            <label>
+                                <input type="checkbox" id="IsConsumables">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsConsumables, new { style = "" })
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsConsumables)
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                            <label>
+                                <input type="checkbox" id="ISService">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.ISService, new { style = "" })
+                            </label>
+                            @Html.ValidationMessageFor(model => model.ISService)
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox col-sm-6" style="padding-top: 2%; padding-left: 2%;">
+                            <label>
+                                <input type="checkbox" id="IsRentMachine">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsRentMachine, new { style = "" })
+                            </label>
+                            @Html.ValidationMessageFor(model => model.IsRentMachine)
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="checkboxlist" class="form-group" style="display:none;">
+                            @Html.LabelFor(model => model.ItemCategoryCode, new { style = "" })
+                            <p id="e5_f">
+                                <select id="checkboxlist1" class="form-group selectpicker" multiple name="selectCent">
+                                    @*data-live-search="true"*@
+                                    @foreach (var item in Model.GetGeneralCategoryMasterList)
+                                    {
+                                        <option id="@item.ID" value="@item.ID~@item.CCRMContractTypeDetailsID"  @item.StatusFlag>@item.ItemCategoryCode</option>
+                                        
+                                            }
+</select>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                    <div class="form-group col-sm-6">
+                        <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateCCRMContractTypesMasterRecord" type="button" />
+                    </div>
+            
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+        CCRMContractTypesMaster.Initialize();
+
+       
+
+
+
+        $('#IsConsumables').change(function () {
+            debugger;
+            if ($('#IsConsumables').is(':checked')) {
+                  //  $('#IsConsumables').prop('checked', true);
+                    $("#checkboxlist").show();
+
+                }
+                else {
+                    //$('#IsConsumables').prop('checked', false);
+                    $("#checkboxlist").hide();
+                }
+            });
+    
+       
+      
+    });
+</script>
+
+
+

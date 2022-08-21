@@ -1,0 +1,75 @@
+﻿@model AERP.ViewModel.GeneralPackageTypeViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;General Package Type</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralPackageType" role="form" class="row">
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                         @Html.LabelFor(model => model.PackageType, new { })
+                        @Html.TextBoxFor(model => model.PackageType, new { maxlength = "50", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.PackageType)*@
+                </div>
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Height, new { })
+                        @Html.TextBoxFor(model => model.Height, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Height)
+                </div>
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                         @Html.LabelFor(model => model.Length, new { })
+                        @Html.TextBoxFor(model => model.Length, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Length)
+                </div>
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                         @Html.LabelFor(model => model.Width, new { })
+                        @Html.TextBoxFor(model => model.Width, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Width)
+                </div>
+                <div class=" col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Weight, new { })
+                        @Html.TextBoxFor(model => model.Weight, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Weight)
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                         @Html.LabelFor(model => model.Volume, new { })
+                        @Html.TextBoxFor(model => model.Volume, new { maxlength = "10", @class = "form-control input-sm ", disabled = "disabled" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Volume)
+                </div>
+               
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralPackageType.Initialize();
+    });
+</script>
+

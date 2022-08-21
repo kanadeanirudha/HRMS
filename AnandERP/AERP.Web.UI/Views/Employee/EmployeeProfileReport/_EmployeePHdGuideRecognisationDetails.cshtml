@@ -1,0 +1,208 @@
+﻿@*@model AMS.ViewModel.EmployeePHdGuideRecognisationDetailsViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <div class="row-fluid contact">
+        <h3 class="my-caption">@Resources.FormName_EmployeePHdGuideRecognisationDetails </h3>
+        <!--column 1 -->
+        <div style="float: left; width: 100%;">
+            <div style="width: 40%; float: left;">
+                <div style="line-height: 25px"><span style="font-weight:bold; ">@Resources.DisplayName_SubjectName </span><span style="font-weight:bold;margin-left:91px">:</span> @Model.ApprovalSubjectName </div>
+                <div style="line-height: 25px"><span style="font-weight:bold">@Resources.DisplayName_ApprovalFromDate  </span><span style="font-weight:bold;margin-left:52px;">:</span> @Model.ApprovalFromDate</div>
+                <div style="line-height: 25px"><span style="font-weight:bold">@Resources.DisplayName_ApprovalUptoDate </span><span style="font-weight:bold; margin-left:55px">:</span> @Model.ApprovalUptoDate </div>
+                <div style="line-height: 25px"><span style="font-weight:bold">@Resources.DisplayName_UniversityApprovalNumber </span><span style="font-weight:bold">:</span> @Model.UniversityApprovalNumber</div>
+            </div>
+
+            <!--column 2 -->
+            <div style="width: 40%; float: right;">
+                <div style="line-height: 25px"><span style="font-weight:bold; ">@Resources.DisplayName_UniversityApprovalDate </span><span style="font-weight:bold;margin-left:93px">:</span> @Model.UniversityApprovalDate </div>
+                <div style="line-height: 25px"><span style="font-weight:bold">@Resources.DisplayName_NumberOfCandidateRegistered</span><span style="font-weight:bold;margin-left:42px;">:</span> @Model.NumberOfCandidateRegistered</div>
+                <div style="line-height: 25px"><span style="font-weight:bold">@Resources.DisplayName_NumberOfCandidateCompletedPHD </span><span style="font-weight:bold; ">:</span> @Model.NoOfCandidateCompletedPHd </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.DataOfStudent == 1)
+{
+    <h3 class="my-caption">@Resources.DisplayName_PhDThesisGuidence </h3>
+    
+    <div id="my-PH.D." style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="nonboxy-widget">
+                    <div class="widget-head">
+                        <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.DisplayName_PhDThesisGuidence</h5>
+
+                    </div>
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                        <table id="DataTables_Table_0" class="data-tbl-striped table table-striped table-bordered dataTable">
+                            <thead>
+                                <tr role="row">
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 25%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_ScholarName </th>
+                                     <th aria-label=" Task : activate to sort column ascending" style="width: 60%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_Synopsis </th>                                    
+                                    <th aria-label=" Dead Line : activate to sort column ascending" style="width: 15%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_Status</th>
+
+                                </tr>
+                            </thead>
+                            @foreach (var item in ViewBag.ListEmployeePHdGuideRecognisationDetails)
+                            {
+                                <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                    <tr class="odd">
+                                        <td style="text-align: left">@item.StudentName</td>
+                                        <td style="text-align: left">@item.Synopsis</td>
+                                        @if (@item.ApprovalStatus == "Inprocess")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-warning">In-Process</span></p>
+                                            </td>
+                                        }
+                                        else if (@item.ApprovalStatus == "Approved")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-success">Approved</span></p>
+                                            </td>
+                                        }
+                                        else if (@item.ApprovalStatus == "Rejected")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-important">Rejected</span></p>
+                                            </td>
+                                        }
+                                        else if (@item.ApprovalStatus == "Awarded")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-info">Awarded</span></p>
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+
+@*----------------------------------------------new code-------------------------------------------------*@
+
+
+@model AMS.ViewModel.EmployeePHdGuideRecognisationDetailsViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <div class="col-sm-12">
+        <div class="card rating-list">
+            <div class="listview">
+                <div class="lv-header">
+                    <div class="m-t-0">
+                        @Resources.DisplayName_PhDThesisGuidence
+                    </div>
+                    <div class="clearfix">
+                        <div class="pmo-block pmo-contact hidden-xs">
+                            
+                            <h2>@Resources.FormName_EmployeePHdGuideRecognisationDetails</h2>
+                            <hr>
+                            <div class="col-sm-6">
+                                <ul>
+                                    <li>@Resources.DisplayName_SubjectName : @Model.ApprovalSubjectName</li>
+                                </ul>
+
+                                <ul>
+                                    <li>@Resources.DisplayName_ApprovalFromDate : @Model.ApprovalFromDate</li>
+                                </ul>
+
+                                <ul>
+                                    <li>@Resources.DisplayName_ApprovalUptoDate : @Model.ApprovalUptoDate</li>
+                                </ul>
+                                <ul>
+                                    <li>@Resources.DisplayName_UniversityApprovalNumber : @Model.UniversityApprovalNumber</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul>
+                                    <li>@Resources.DisplayName_UniversityApprovalDate : @Model.UniversityApprovalDate</li>
+                                </ul>
+                                <ul>
+                                    <li>@Resources.DisplayName_NumberOfCandidateRegistered : @Model.NumberOfCandidateRegistered</li>
+                                </ul>
+                                <ul>
+                                    <li>@Resources.DisplayName_NumberOfCandidateCompletedPHD : @Model.NoOfCandidateCompletedPHd  </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                @*<div class="lv-body">*@
+                <div class="table-responsive" id="DataTables_Table_0_wrapper">
+                    <table id="DataTables_Table_0" class="table">
+                        <thead>
+                            <tr class="warning c-white">
+                                <th>@Resources.TableHeaders_ScholarName </th>
+                                <th>@Resources.TableHeaders_Synopsis </th>
+                                <th>@Resources.TableHeaders_Status</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in ViewBag.ListEmployeePHdGuideRecognisationDetails)
+                        {
+                            <tbody>
+                                <tr class="active">
+                                        <td>@item.StudentName</td>
+                                        <td>@item.Synopsis</td>
+                                        @if (@item.ApprovalStatus == "Inprocess")
+                                        {
+                                            <td>
+                                                <p>
+                                                    <button style="" class="btn btn-warning btn-xs waves-effect">In-Process</button>
+                                                </p>
+                                            </td>
+                                        }
+                                        else if (@item.ApprovalStatus == "Approved")
+                                        {
+                                            <td>
+                                                <p>
+                                                    <button style="" class="btn btn-success btn-xs waves-effect">Approved</button>
+                                                </p>
+                                            </td>
+                                        }
+                                        else if (@item.ApprovalStatus == "Rejected")
+                                        {
+                                            <td>
+                                                <p>
+                                                    <button style="" class="btn btn-danger btn-xs waves-effect">Rejected</button>
+                                                </p>
+                                            </td>
+                                        }
+                                        else if (@item.ApprovalStatus == "Awarded")
+                                        {
+                                            <td>
+                                                <p>
+                                                    <button style="" class="btn btn-info btn-xs waves-effect">Awarded</button>
+                                                </p>
+                                            </td>
+                                        }
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+
+}

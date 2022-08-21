@@ -1,0 +1,186 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <div class="form-group fg-line">
+            @Html.HiddenFor(m => m.SaleContractFixItemID)
+            @Html.LabelFor(model => model.SaleContractFixItemName, new { })
+            @Html.TextBoxFor(model => model.SaleContractFixItemName, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractFixItemName)
+    </div>
+    @*<div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractFixItemQuantity, new { })
+            @Html.TextBoxFor(model => model.SaleContractFixItemQuantity, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractFixItemQuantity)
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractFixItemRate, new { })
+            @Html.TextBoxFor(model => model.SaleContractFixItemRate, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractFixItemRate)
+    </div>*@
+    <div class="col-sm-2">
+        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddFixItem"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblModifyFixItem" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fix Item Name</th>
+                @*<th>Fix Item Quantity</th>
+                <th>Fix Item Rate</th>*@
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SaleContractMasterListForFixItem)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@item.SaleContractRequirementDetailsID" />
+                        <input type="hidden" value="@item.SaleContractFixItemID" />@item.SaleContractFixItemName
+                    </td>
+                    @*<td><input type="hidden" value="@item.SaleContractFixItemQuantity" />@Math.Round(item.SaleContractFixItemQuantity,2)</td>
+                    <td><input type="hidden" value="@item.SaleContractFixItemRate" />@Math.Round(item.SaleContractFixItemRate,2)</td>*@
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title='Delete'></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+        mapFixItemName = [];
+        var getDataFixItemName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractFixItem/GetFixItemSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val(), CustomerBranchMasterID: $("#CustomerBranchMasterID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.FixItemName)) {
+                                mapFixItemName[response.FixItemName] = response;
+                                matches.push(response.FixItemName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SaleContractFixItemName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataFixItemName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SaleContractFixItemID").val(mapFixItemName[item].FixItemID);
+            $("#SaleContractFixItemName").val(mapFixItemName[item].FixItemName);
+        });
+
+        $('#SaleContractFixItemName').on("keydown", function (e) {
+            if ($("#CustomerMasterID").val() == "0" || $("#CustomerMasterID").val() == "") {
+                notify("Please select Customer.", "warning");
+                return false;
+            }
+            if ($("#CustomerType").val() == "2" && ($("#CustomerBranchMasterID").val() == "" || $("#CustomerBranchMasterID").val() == "0")) {
+                notify("Please select Branch.", "warning");
+                return false;
+            }
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SaleContractFixItemName').typeahead('val', '');
+                $("#SaleContractFixItemName").val("");
+                $("#SaleContractFixItemID").val("");
+            }
+        });
+
+        $("#tblModifyFixItem tbody").on("click", "tr td i", function () {
+            $(this).closest('tr').remove();
+        });
+
+        $('#btnAddFixItem').on("click", function () {
+            if ($('#SaleContractFixItemName').val() == "" && ($('#SaleContractFixItemID').val() == "0" || $('#SaleContractFixItemID').val() == "")) {
+                notify("Please Select Fix Item.", "warning");
+                return false;
+            }
+            //if ($('#SaleContractFixItemRate').val() == "" || $('#SaleContractFixItemRate').val() == 0) {
+            //    notify("Please Enter Fix Item Rate.", "warning");
+            //    return false;
+            //}
+            //if ($('#SaleContractFixItemQuantity').val() == "" || $('#SaleContractFixItemQuantity').val() == 0) {
+            //    notify("Please Enter Fix Item Quantity.", "warning");
+            //    return false;
+            //}
+            // alert($('#AttributeName :selected').val())
+
+            var DataArray = [];
+            var data = $('#tblModifyFixItem tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 2) {
+                if (DataArray[i+1] == $('#SaleContractFixItemID').val()) {
+                    notify("You Cannot Enter the Same Job Work Item.", "warning");
+                    $("#SaleContractFixItemName").typeahead('val', '');
+                    $("#SaleContractFixItemName").val("");
+                    $("#SaleContractFixItemID").val("");
+                    //$('#SaleContractFixItemRate').val('');
+                    //$('#SaleContractFixItemQuantity').val('');
+                    return false;
+                }
+            }
+            $("#tblModifyFixItem tbody").append(
+                                                   "<tr>" +
+                                                    "<td><input type='hidden' value='0' /><input type='hidden' value='" + $("#SaleContractFixItemID").val() + "'  />" + $('#SaleContractFixItemName').val() + "</td>" +
+                                                   // "<td><input type='hidden' value='" + $('#SaleContractFixItemQuantity').val() + "' />" + $('#SaleContractFixItemQuantity').val() + "</td>" +
+                                                   //"<td><input type='hidden' value='" + $('#SaleContractFixItemRate').val() + "' />" + $('#SaleContractFixItemRate').val() + "</td>" +
+                                                   "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                                                   "</tr>"
+                                                  );
+            $("#tblModifyFixItem tbody").on("click", "tr td i", function () {
+                $(this).closest('tr').remove();
+            });
+
+            $("#SaleContractFixItemName").typeahead('val', '');
+            $("#SaleContractFixItemName").val("");
+            $("#SaleContractFixItemID").val("");
+        });
+    })
+</script>

@@ -1,0 +1,193 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div id="custom-content">
+
+    <input type="hidden" id="TaskCode" value="GeneralShiftEmployee" />
+    @if (Model.SaleContractMasterListForAssignedEmployee.Count > 0)
+    {
+        <input type="hidden" id="CentreCode" value="@Model.SaleContractMasterListForAssignedEmployee[0].CentreCode" />
+    }
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                <div class="col-sm-12">
+
+                    <table id="tblReplaceContractEmployee" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Contract Employee</th>
+                                <th>Post Name</th>
+                                <th>Replace</th>
+                                <th>Contract Employee</th>
+                                <th>From Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SaleContractMasterListForAssignedEmployee)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type='hidden' class="SaleContractRequirementDetailsID" value='@item.SaleContractRequirementDetailsID' />
+                                        <input type='hidden' class="SaleContractManPowerAssignID" value='@item.SaleContractManPowerAssignID' />
+                                        <input type='hidden' class="SaleContractEmployeeMasterID" value='@item.SaleContractEmployeeMasterID' />@item.SaleContractEmployeeMasterName
+                                    </td>
+                                    <td>
+                                        <input type='hidden' value='@item.SaleContractManPowerItemID' />@item.SaleContractManPowerItemName 
+                                    </td>
+                                    <td>
+                                        <input type='checkbox' value='' class="IsReplaceEmployee" @(item.IsActive == true ? "" : "disabled") />
+                                    </td>
+                                    <td>
+                                        <input type="hidden" class="ReplaceContractEmployeeID" />
+                                        <input type="text" class="ReplaceContractEmployeeName form-control input-sm" tag="@(item.Gender == 1 ? "M" : "F")" disabled />
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.ManPowerAssignFromDate, new { @class = "form-control input-sm ManPowerAssignFromDate", disabled= "disabled" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12">
+    <button class="btn btn-primary" style="margin-left:1%" id="ShiftSaleContractMasterEmployee" type="button">@Resources.ButtonAction_Submit</button>
+    @*<button class="btn bgm-bluegray" style="margin-left:1%" id="LoadSaleContractMasterRecord" type="button">Back</button>*@
+</div>
+<script>
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+
+        $('.ManPowerAssignFromDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        }).on('dp.show', function () {
+            var datepicker = $('body').find('.bootstrap-datetimepicker-widget:last');
+            if (datepicker.hasClass('bottom')) {
+                var top = $(this).offset().top - (datepicker.outerHeight() / 4) + 30;
+                var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 12));
+                datepicker.css({
+                    'top': top + 'px',
+                    'bottom': 'auto',
+                    'left': left + 'px'
+                });
+            } else if (datepicker.hasClass('top')) {
+                var top = $(this).offset().top - (datepicker.outerHeight() )  + 30;
+                var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+                // var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+                datepicker.css({
+                    'top': top + 'px',
+                    'bottom': 'auto',
+                    'left': left + 'px'
+                });
+            }
+        });
+
+        $(".IsReplaceEmployee").click(function () {
+            if ($(this).is(":checked")) {
+                $(this).parent().next().children().children(".ReplaceContractEmployeeName").prop("disabled", false);
+                $(this).parent().next().next().children(".ManPowerAssignFromDate").prop("disabled", false);
+            } else {
+                $(this).parent().next().children(".ReplaceContractEmployeeID").val("0");
+                $(this).parent().next().children().children(".ReplaceContractEmployeeName").val("");
+                $(this).parent().next().next().children(".ManPowerAssignFromDate").val("");
+                $(this).parent().next().children().children(".ReplaceContractEmployeeName").prop("disabled", true);
+                $(this).parent().next().next().children(".ManPowerAssignFromDate").prop("disabled", true);
+            }
+        });
+
+        mapSaleContractEmployee = [];
+        var getDataSaleContractEmployee = function (ReplaceEmp) {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                var GenderCode = document.activeElement.getAttribute("tag");
+
+                $.ajax({
+                    url: "/SaleContractEmployeeMaster/GetSaleContractEmployeeSearchList",
+                    type: "POST",
+                    data: { term: q, GenderCode: GenderCode, CentreCode: $("#CentreCode").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.SaleContractEmployeeMasterName)) {
+                                mapSaleContractEmployee[response.SaleContractEmployeeMasterName] = response;
+                                matches.push(response.SaleContractEmployeeMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $(".ReplaceContractEmployeeName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataSaleContractEmployee()
+        }).on("typeahead:selected", function (obj, item) {
+
+            var IsAssignedEmployee = false;
+            var currentManPowerItemID = $(this).parent().parent().prev().prev().children().val();
+            $(".ReplaceContractEmployeeID").each(function () {
+                var assignedManPowerItemID = $(this).parent().prev().prev().children().val();
+                if ($(this).val() == mapSaleContractEmployee[item].SaleContractEmployeeMasterID && currentManPowerItemID == assignedManPowerItemID) {
+                    IsAssignedEmployee = true;
+                }
+            })
+            $(".SaleContractEmployeeMasterID").each(function () {
+                var assignedManPowerItemID = $(this).parent().next().children().val();
+                if ($(this).val() == mapSaleContractEmployee[item].SaleContractEmployeeMasterID && currentManPowerItemID == assignedManPowerItemID) {
+                    IsAssignedEmployee = true;
+                }
+            })
+            if (IsAssignedEmployee == true) {
+                notify("This Employee Is Already Assigned", "warning");
+                $(this).typeahead('val', '');
+                $(this).val("");
+                $(this).parent().prev().val("0");
+                return false;
+            }
+            $(this).parent().prev().val(mapSaleContractEmployee[item].SaleContractEmployeeMasterID);
+            $(this).val(mapSaleContractEmployee[item].SaleContractEmployeeMasterName);
+        });
+
+        $('.ReplaceContractEmployeeName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $(this).typeahead('val', '');
+                $(this).val("");
+                $(this).parent().prev().val("0");
+            }
+        });
+
+    })
+</script>

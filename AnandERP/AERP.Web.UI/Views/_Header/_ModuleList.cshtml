@@ -1,0 +1,111 @@
+﻿<script src="@Url.Content("~/Scripts/AERP_Scripts/General_Script/_Header.js")" type="text/javascript"></script>
+@if (ViewBag.ModuleCountFlag == "1")
+{
+    <input type="hidden" value="1" id="ModuleCountFlag" />
+    if (ViewBag.UserType == "E" || ViewBag.UserType == "A")
+    {
+        <input type="hidden" value="@Html.ViewBag.ModuleList[1].Value" id="DefaultModuleID" />
+        <a data-toggle="dropdown" href="#"><i class="zmdi tm-icon zmdi-view-module zmdi-hc-fw"></i></a>
+
+        <ul id="ModuleList" class="dropdown-menu dm-icon pull-right">
+            @foreach (var item in ViewBag.ModuleList)
+            {
+                if (!string.IsNullOrEmpty(@item.Value))
+                {
+                    if (Html.ViewBag.ModuleName == item.Text)
+                    {
+                        <li id="@item.Value" class="">
+                            <a href="#" data-action="fullscreen"><i class="zmdi zmdi-check-all"></i>@item.Text </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li id="@item.Value" class="">
+                            <a href="#" data-action="fullscreen"><i class="zmdi tm-icon zmdi-view-module zmdi-hc-fw"></i>@item.Text </a>
+                        </li>
+                    }
+
+                }
+            }
+        </ul>
+
+    }
+}
+else
+{
+    <input type="hidden" value="0" id="ModuleCountFlag" />
+    <a href="javascript:document.getElementById('logoutForm').submit()" id="logoutFormAClick" style="display:none;"><i class="zmdi zmdi-time-restore"></i><strong>@Resources.DisplayName_Logout</strong></a>
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "margin: 0px;background-color:#808080; color:#fff;" }))
+                {
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="latitude" value="" />
+        <input type="hidden" id="longitude" value="" />
+    }
+}
+
+<script>
+
+    $(document).ready(function () {
+        var sessionStatus = "";
+        if ($('#ModuleCountFlag').val() == '0') {
+            //$.ajax(
+            //   {
+            //       cache: false,
+            //       type: "GET",
+            //       dataType: "html",
+            //       data: { "LogoutType": 'Successfully', "Command": '' },
+            //       url: 'Account/LogOff',
+            //       success: function (result) {
+            //         //  debugger;
+            //           // Menus are not assigned to role,please contact administrator
+            setTimeout(function () {
+                $("#logoutForm").submit();
+            }, 500);
+            
+            //    }
+            //});
+        }
+
+        $('ul#ModuleList li').click(function () {
+            //  debugger;
+            //var ModuleID = $(this).attr('id');
+            var ModuleCode = $(this).attr('id');
+            var ModuleName = $(this).text();
+            //alert(ModuleCode +"---"+ ModuleName)
+            //$('.c-overflow').mCustomScrollbar("destroy");
+            $.ajax(
+                {
+                    cache: false,
+                    type: "GET",
+                    dataType: "html",
+                    url: 'Base/CheckSessionStatus',
+                    success: function (result) {
+                        sessionStatus = result;
+                        if (sessionStatus == "1") {
+                            // _Header.LoadMenuListByModuleID(ModuleID, ModuleName);
+                            _Header.LoadMenuListByModuleCode(ModuleCode, ModuleName);
+
+                        }
+                        else if (sessionStatus != "1") {
+                            location.reload();
+                        }
+                        $("#ddlModule").removeClass("open");
+
+                    }
+                });
+            $("#ddlModule").removeClass("open");
+            $('ul#ModuleList li').each(function (i) {
+                $(this).closest("li").find("a i").removeClass();
+                $(this).closest("li").find("a i").addClass("zmdi tm-icon zmdi-view-module zmdi-hc-fw")
+            });
+
+            $(this).closest("li").find("a i").removeClass("zmdi tm-icon zmdi-view-module zmdi-hc-fw")
+            $(this).closest("li").find("a i").addClass("zmdi zmdi-check-all");
+
+        });
+
+    });
+</script>
+
+
+

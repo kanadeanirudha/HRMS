@@ -1,0 +1,125 @@
+﻿<!-- left, vertical navbar -->
+<script src="@Url.Content("~/Scripts/AERP_Scripts/General_Script/_Header.js")" type="text/javascript"></script>
+
+@{
+    List<AERP.ViewModel.UserMainMenuMasterViewModel> menuList;
+    menuList = new List<AERP.ViewModel.UserMainMenuMasterViewModel>();
+    menuList.Clear();
+    menuList = ViewBag.MenuList;
+    var pathName = ViewBag.path;
+}
+
+@Html.Partial("_LoginPartial")
+
+@if (ViewBag.MenuList != null || ViewBag.path != null)
+{
+    <ul class="main-menu">
+        <li><a href="@Url.Action("Index", "Home")"><i class="zmdi zmdi-home"></i>&nbsp;@Resources.MainMenu_Home</a></li>
+        @foreach (var mp in menuList.Where(p => p.ParentMenuID == 0))
+        {
+
+            <li class="sub-menu">
+                @if (mp.MenuLink == null)
+                    {
+                    <a href="#"><i class="zmdi zmdi-view-compact"></i> @Resources.ResourceManager.GetString(string.Concat("ParentMenu_", @mp.MenuCode.Trim().Replace(" ", string.Empty)))</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Index", mp.MenuLink)"><i class="zmdi zmdi-view-compact"></i> @Resources.ResourceManager.GetString(string.Concat("ParentMenu_", @mp.MenuCode.Trim().Replace(" ", string.Empty)))</a>
+                }
+
+                @RenderMenuItem(menuList, mp)
+
+
+            </li>
+        }
+    </ul>
+        @helper RenderMenuItem(List<AERP.ViewModel.UserMainMenuMasterViewModel> menuList, AERP.ViewModel.UserMainMenuMasterViewModel mi)
+        {
+            <ul>
+                @foreach (var cp in menuList.Where(p => p.ParentMenuID == mi.ID))
+                {
+                    <li>
+                        <a id="@cp.ModuleCode" class="@cp.ModuleID" href="@Url.Action("Index", @cp.MenuLink)"><span class="@cp.MenuIconName"><span class="sidenav-link-color"></span></span>@Resources.ResourceManager.GetString(string.Concat("SubMenu_", @cp.MenuCode.Trim().Replace(" ", string.Empty)))</a>
+                    </li>
+
+                }
+            </ul>
+}
+
+        <input type="hidden" id="personId" value=" @HttpContext.Current.Session["PersonId"] " />
+
+
+}
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $(".main-menu li ul li a").click(function () {
+                //debugger;
+                var roleName = "";
+                var moduleName = "";
+                var balsheetName = "";
+                $('ul#ddlRoles li').each(function (i) {
+                    var cls = $(this).closest("li").find("a i").attr("class");
+
+                    if (cls.split(' ')[1] == "zmdi-check-all") {
+                         roleName = $(this).closest("li").find("a").text().trim();
+                    }
+                });
+
+                $('ul#ModuleList li').each(function (i) {
+                    var cls = $(this).closest("li").find("a i").attr("class");
+                    if (cls.split(' ')[1] == "zmdi-check-all") {
+                        moduleName = $(this).closest("li").find("a").text().trim();
+                    }
+                });
+
+                $('ul#balsheetList li').each(function (i) {
+                    var cls = $(this).closest("li").find("a i").attr("class");
+                    if (cls.split(' ')[1] == "zmdi-check-all") {
+                         balsheetName = $(this).closest("li").find("a").text().trim();
+                    }
+                });
+
+
+                //var roleName = $('#roleName').text();
+                //$('#roleName').html(roleName);
+
+                //var moduleName = $('#moduleName').text();
+                //$('#moduleName').html('<i class="nav-icon list"></i>' + moduleName);
+
+                var moduleCode = $(this).attr('id');
+
+                var moduleID = $(this).attr('class').split(' ')[0];
+                var personID = $("#personId").val();
+
+
+                var balsheetID = $("#selectedBalsheetID").val();
+                //debugger;
+                //alert(moduleCode + "---" + roleName + "---" + moduleName)
+                $.post('/_Header/_RoleList',
+                  { PersonID: personID, ModuleID: moduleID, ModuleCode: moduleCode, RoleCode: roleName, ModuleName: moduleName, BalancesheetName: balsheetName, BalancesheetID: balsheetID }, function (data) {
+                      // alert("Success " + data.success);
+                  });
+
+                // _Header.LoadMenuListByModuleID(moduleID, moduleName);
+            });
+        });
+        $('#NotificationsID').click(function () {
+            $.ajax(
+           {
+               cache: false,
+               type: "POST",
+               dataType: "html",
+               url: '/Home/NotificationList',
+               success: function (data) {
+                   //Rebind Grid Data
+                   $('.container').html(data);
+               }
+           });
+        });
+    
+</script>
+

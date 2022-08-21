@@ -1,0 +1,391 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<input type="hidden" id="TaskCode" value="GeneralItemstoreData" />
+@Html.HiddenFor(model => model.GeneralItemMasterID)
+@Html.HiddenFor(model => model.TaskCode)
+@Html.HiddenFor(model => model.ItemNumber)
+@Html.HiddenFor(model => model.GeneralUnitsID)
+@Html.HiddenFor(model => model.InventoryItemStoreSpecificInfoID)
+@Html.HiddenFor(model => model.InventoryItemCodeCentreLevelSpecificInfoID)
+@Html.HiddenFor(model => model.GeneralVendorID)
+@*@Html.HiddenFor(model => model.ItemCategoryCode_Param)*@
+
+
+<style>
+
+
+</style>
+<div id="custom-content">
+    <div class="card">
+        <div class="card-body card-padding">
+            <form id="FormCreateInventoryUoMGroupAndDetail" role="form" class="row">
+                <div id="ShowStore" style="display:none">
+                    <div class="col-sm-5">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CentreCode, new { })
+                            @Html.DropDownListFor(m => m.SelectedCentreCode, Model.ListGetAdminRoleApplicableCentreItems, "--------Select Centre-------", new { id = "SelectedCentreCode", @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = " Centre Name" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <input type="button" value="@Resources.GlobalProperties_ShowList" class="btn btn-primary btn-sm m-t-5" id="btnShowListForStoreData" />
+                    </div>
+                </div>
+                <div class="row col-sm-12" id="SaleUomTab" >
+                    <div class="col-sm-12 row">
+                        <div id="ListViewModel1" class="table-responsive">
+                            <div id="DivAddRowTable">
+                                <table id="StoreDatatblData" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="display: none"></th>
+                                            <th class="center">
+                                                @*<input type="checkbox" id="Check" class="checkall-user" name="checkbox12" disabled="disabled">*@
+                                                <div class="checkbox m-b-15" style="">
+                                                    <label style="">
+                                                        <input type="checkbox" id="Check" class="checkall-user" name="checkbox12" disabled="disabled">
+                                                        <i class="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            
+                                            <th>Store</th>
+                                            <th>Location</th>
+                                            <th>Listing Date</th>
+                                            <th>Delisting Date</th>
+                                            <th>@Resources.TableHeaders_Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @if (Model.GeneralItemMasterListForStoreData.Count > 0)
+                                        {
+
+                                            foreach (var item in Model.GeneralItemMasterListForStoreData)
+                                            {
+                                                <tr>
+                                                    @if (item.StatusFlag == true)
+                                                    {
+                                                        <td style="vertical-align:middle;">
+                                                            <input id="check_1" type=checkbox class=check-user name=checkbox12 onclick="CheckedSingle()" checked>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style="vertical-align:middle;">
+                                                            <input id="check_1" type=checkbox class=check-user name=checkbox12 onclick="CheckedSingle()">
+                                                        </td>
+                                                    }
+
+                                                    <td style="display:none"><input type="text" style="display:none" value="@item.InventoryItemStoreSpecificInfoID"></td>
+                                                    <td style="display:none"><input type="text" style="display:none" value="@Model.ItemNumber"></td>
+                                                    <td>@item.CentreName</td>
+                                                     <td>@item.UnitName<input type="text" style="display:none" value="@item.UnitName"></td>
+                                                    <td style="display:none"><input type="hidden" value="@item.GeneralUnitsID"></td>
+                                                    <td style="display:none"><input type="hidden" value="@Model.GeneralItemMasterID"></td>
+                                                    @*<td style="display:none"><input type="hidden" value="@item.ListingDate" id="ListingDate1"></td>*@
+                                                    @if (@item.ListingDate == "" || @item.ListingDate == null)
+                                                    {
+                                                        <td><input type="text" id="ListingDate" name="ListingDate" value="@DateTime.UtcNow.ToString("dd MMM yyyy")" class="ListingDate abc form-control"></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><input type="text" id="ListingDate" name="ListingDate" value="@item.ListingDate" class="ListingDate abc form-control"></td>
+                                                    }
+                                                    @if (@item.ListingDate == "" || @item.ListingDate == null)
+                                                    {
+                                                        <td><input type="text" id="DeListingDate" name="DeListingDate" value="31 Dec 9999" class="abc DeListingDate form-control"></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><input type="text" id="DeListingDate" name="DeListingDate" value="@item.DeListingDate" class="abc DeListingDate form-control"></td>
+                                                    }
+
+                                                    @if (@Model.GeneralItemMasterID > 0)
+                                                    {
+
+                                                        <td>
+                                                            <a title="Add Store Information" href="@Url.Action("CreateStoreSpecificInformation", "GeneralItemMaster", new { ItemNumber = @Model.ItemNumber, UnitName = @item.UnitName, GeneralItemMasterID = @Model.GeneralItemMasterID, GeneralUnitsID = @item.GeneralUnitsID, GeneralVendorID = @Model.GeneralVendorID, ItemCategoryCode_Param = @Model.ItemCategoryCode_Param })" class="mfpAjaxModal">
+                                                                <i class="zmdi zmdi-plus-square btn btn-default waves-effect"></i>
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in Model.GeneralItemMasterListForGeneralUnits)
+                                            {
+                                                <tr>
+                                                    <td style="vertical-align:middle;">
+                                                        <input id="check_1" type=checkbox class=check-user name=checkbox12 onclick="CheckedSingle()" checked>
+                                                    </td>
+                                                    <td style="display:none"><input type="text" style="display:none" value="@Model.InventoryItemStoreSpecificInfoID"></td>
+                                                    <td style="display:none"><input type="text" style="display:none" value="@Model.ItemNumber"></td>
+                                                    <td>@item.UnitName<input type="text" style="display:none" value="@item.UnitName"></td>
+                                                    <td style="display:none"><input type="hidden" value="@item.ID"></td>
+                                                    <td style="display:none"><input type="hidden" value="@Model.GeneralItemMasterID"></td>
+                                                    <td>@item.ListingDate<input type="text" id="ListingDate" name="ListingDate" class="abc ListingDate form-control" value="@DateTime.UtcNow.ToString("dd MMM yyyy")">
+                                                    <td>@item.DeListingDate<input type="text" id="DeListingDate" name="DeListingDate" class="abc DeListingDate form-control" value="31 Dec 9999"></td>
+                                                    @if (@Model.GeneralItemMasterID > 0)
+                                                    {
+
+                                                        <td>
+                                                            <a title="Add Store Information" href="@Url.Action("CreateStoreSpecificInformation", "GeneralItemMaster", new { ItemNumber = @Model.ItemNumber, UnitName = @item.UnitName, GeneralItemMasterID = @Model.GeneralItemMasterID, GeneralUnitsID = @item.ID, GeneralVendorID = @Model.GeneralVendorID, ItemCategoryCode_Param = @Model.ItemCategoryCode_Param })" class="mfpAjaxModal">
+                                                                <i class="zmdi zmdi-plus-square btn btn-default waves-effect"></i>
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @*<hr />
+                            <h4>Store Specific Information</h4>
+                            <hr />*@
+                        <div class="row" style="display:none">
+                            <div class="form-group col-sm-4">
+                                <div class="form-group select fg-line">
+                                    @Html.LabelFor(model => model.RPType, new { })
+                                    @Html.DropDownList("RPType", ViewData["RPType"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "RP Type*" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.RPType)
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <div class="form-group fg-line">
+                                    @Html.LabelFor(model => model.MaxStock, new { })
+                                    @Html.TextBoxFor(model => model.MaxStock, new { maxlength = "50", @class = "form-control input-sm " })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.MaxStock)
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <div class="form-group fg-line">
+                                    @Html.LabelFor(model => model.RoundingProfile, new { })
+                                    @Html.TextBoxFor(model => model.RoundingProfile, new { maxlength = "50", @class = "form-control input-sm " })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.RoundingProfile)
+                            </div>
+                        </div>
+                        <div class="row" style="display:none">
+                            <div class="form-group col-sm-4">
+                                <div class="form-group fg-line">
+                                    @Html.LabelFor(model => model.PlannerCode, new { })
+                                    @Html.TextBoxFor(model => model.PlannerCode, new { maxlength = "3", @class = "form-control input-sm " })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PlannerCode)
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <div class="form-group fg-line">
+                                    @Html.LabelFor(model => model.OrderingDay, new { })
+                                    @Html.TextBoxFor(model => model.OrderingDay, new { maxlength = "30", @class = "form-control input-sm " })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.OrderingDay)
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <div class="form-group fg-line">
+                                    @Html.LabelFor(model => model.DeliveryDay, new { })
+                                    @Html.TextBoxFor(model => model.DeliveryDay, new { maxlength = "50", @class = "form-control input-sm " })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.DeliveryDay)
+                            </div>
+                        </div>
+                        <div class="row" style="display:none">
+                            <div class="form-group col-sm-4">
+                                <div class="form-group fg-line">
+                                    @Html.LabelFor(model => model.LeadTime, new { })
+                                    @Html.TextBoxFor(model => model.LeadTime, new { maxlength = "50", @class = "form-control input-sm " })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LeadTime)
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <div class="form-group fg-line">
+                                    @Html.LabelFor(model => model.GRProccessingTime, new { })
+                                    @Html.TextBoxFor(model => model.GRProccessingTime, new { maxlength = "50", @class = "form-control input-sm " })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.GRProccessingTime)
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <div class="form-group select fg-line">
+                                    @Html.LabelFor(model => model.SupplySource, new { })
+                                    @Html.DropDownList("SupplySourceCode", ViewData["SupplySourceCode"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "SupplySourceCode *" })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.SupplySource)
+                            </div>
+                        </div>
+                        <div class="checkbox col-sm-6" style="margin-top:2%;display:none">
+                            <label style="margin-top: 2%; margin-bottom: 3%;">
+                                <input type="checkbox" value="" id="BlockforProcurutment">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.BlockforProcurutment, new { style = "padding-left: 0px; margin-top:2%;" })
+                            </label>
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>*@
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+    debugger
+    GeneralItemMaster.Initialize();
+    var a = (parseInt($(".check-user").length));
+    var b = parseInt($(".check-user:checked").length);
+    if (a != b) {
+        $("input[class=checkall-user]").attr("checked", false);
+    }
+    else {
+        $("input[class=checkall-user]").prop("checked", true);
+    }
+    GeneralItemMaster.CheckedAll();
+    $(".ListingDate").each(function () {
+        var selectedListingDate = $(this).val();
+        var selectedListingDateInDateFormat = new Date(selectedListingDate);
+        var minDate = selectedListingDateInDateFormat;
+        if (selectedListingDate == "" || selectedListingDateInDateFormat > moment()) {
+            minDate = moment();
+        }
+
+        $(this).datetimepicker({
+            format: 'DD MMM YYYY',
+            minDate: minDate,
+            useCurrent: false,
+            ignoreReadonly: true
+        }).on('dp.show', function () {
+
+            var datepicker = $('body').find('.bootstrap-datetimepicker-widget:last');
+            if (datepicker.hasClass('bottom')) {
+                var top = $(this).offset().top + $(this).outerHeight();
+                var left = $(this).offset().left;
+
+                datepicker.css({
+                    'top': top + 'px',
+                    'bottom': 'auto',
+                    'left': left + 'px'
+                });
+            } else if (datepicker.hasClass('top')) {
+                var top = $(this).offset().top - datepicker.outerHeight();
+                var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+
+                datepicker.css({
+                    'top': top + 'px',
+                    'bottom': 'auto',
+                    'left': left + 'px'
+                });
+            }
+        }).on("dp.change", function (e) {
+            var selectedNewListingDate = $(this).val();
+            var selectedNewListingDateInDateFormat = new Date(selectedNewListingDate);
+            $(this).parent().next().children().data("DateTimePicker").minDate(selectedNewListingDateInDateFormat);
+        });
+    });
+
+    $(".DeListingDate").each(function () {
+
+        var selectedListingDate = $(this).parent().prev().children().val();
+        var selectedListingDateInDateFormat = new Date(selectedListingDate);
+        var minDate = selectedListingDateInDateFormat;
+        if (selectedListingDate == "" || selectedListingDateInDateFormat < moment()) {
+            minDate = moment();
+        }
+        $(this).datetimepicker({
+            format: 'DD MMM YYYY',
+            minDate: minDate,
+            useCurrent: false,
+            ignoreReadonly: true
+        }).on('dp.show', function () {
+            var datepicker = $('body').find('.bootstrap-datetimepicker-widget:last');
+            if (datepicker.hasClass('bottom')) {
+                var top = $(this).offset().top + $(this).outerHeight();
+                var left = $(this).offset().left;
+                datepicker.css({
+                    'top': top + 'px',
+                    'bottom': 'auto',
+                    'left': left + 'px'
+                });
+            } else if (datepicker.hasClass('top')) {
+                var top = $(this).offset().top - datepicker.outerHeight();
+                var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+                datepicker.css({
+                    'top': top + 'px',
+                    'bottom': 'auto',
+                    'left': left + 'px'
+                });
+            }
+        });
+    });
+
+    //$(".ListingDate").on("dp.change", function (e) {
+    //    $('#DeListingDate').data("DateTimePicker").minDate(e.date);
+    //});
+    //$(".DeListingDate").on("dp.change", function (e) {
+    //    $('#ListingDate').data("DateTimePicker").maxDate(e.date);
+    //});
+    //function ListViewReload() {
+    //    var Table = $('#myDataTable').dataTable();
+    //    Table.fnReloadAjax('InventoryUoMGroupAndDetails/AjaxHandler');
+    //};
+
+    function CheckedSingle() {
+
+        $("#StoreDatatblData tbody tr td  input[class='check-user']").on('click', function () {
+
+            var CheckedArray = [];
+            debugger
+            var table = $('#StoreDatatblData').DataTable();
+            var data = table.$("input[class='check-user']").each(function () {
+                CheckedArray.push($(this).val());
+                var $this = $(this);
+                if ($this.is(":checked")) {
+                    CheckedArray.push($(this).val());
+
+                }
+
+
+            });
+        });
+    }
+
+    $(".checkall-user").prop("disabled", false);
+    $("#StoreDatatblData").on("click", "tbody tr td .check-user", function () {
+        var a = (parseInt($(".check-user").length));
+        var b = parseInt($(".check-user:checked").length);
+        if (a != b) {
+            $("input[class=checkall-user]").attr("checked", false);
+        }
+        else {
+            $("input[class=checkall-user]").prop("checked", true);
+        }
+    });
+
+</script>

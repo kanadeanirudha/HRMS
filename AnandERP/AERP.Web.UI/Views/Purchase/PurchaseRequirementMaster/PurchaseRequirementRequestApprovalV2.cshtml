@@ -1,0 +1,115 @@
+﻿@model AERP.ViewModel.PurchaseRequirementMasterViewModel
+@{
+
+    Layout = null;
+}
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Purchase/PurchaseRequirementMasterV2.js")" type="text/javascript"></script>
+
+<style type="text/css">
+    .mfp-content {
+        width: 75%;
+    }
+
+    @@media (max-width:768px) {
+        .mfp-content {
+            width: 100% !important;
+        }
+    }
+
+    .sweet-overlay {
+        z-index: 1043 !important;
+    }
+</style>
+
+<div id="custom-content">
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i> Approve Purchase Requirement </h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormApprovePurchaseRequirementMaster" method="post">
+                @Html.HiddenFor(m => m.TaskCode)
+                @Html.HiddenFor(m => m.TaskNotificationDetailsID)
+                @Html.HiddenFor(m => m.TaskNotificationMasterID)
+                @Html.HiddenFor(m => m.GeneralTaskReportingDetailsID)
+                @Html.HiddenFor(m => m.PersonID)
+                @Html.HiddenFor(m => m.StageSequenceNumber)
+                @Html.HiddenFor(m => m.IsLastRecord)
+                @Html.HiddenFor(m => m.ID)
+                <div id="DivAddRowTable1" class="row">
+                    <table id="tblData" class="table user-tbl " style="  border: 1px solid #dddddd">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; width: 30%">Item</th>
+                                <th style="text-align: left; width: 11%">Quantity</th>
+                                <th style="text-align: left; width: 10%">Rate</th>
+                                <th style="text-align: left; width: 15%">Expected Date</th>
+                                <th style="text-align: left; width: 11%">Priority</th>
+                                <th style="text-align: left; width: 14%">Location</th>
+                                <th style="text-align: left; width: 16%">Remark</th>
+                                <th class="center" style="text-align: left;">@Resources.TableHeaders_Action</th>
+                            </tr>
+                        </thead>
+                        <tbody style="overflow: auto">
+
+                            @foreach (var item in Model.InventoryPurchaseRequirementList)
+                            {
+                                <tr>
+                                    <td>@item.ItemName<input type="text" style="display:none" value="@item.ItemNumber"></td>
+                                    <td><input type="text" id="Quantity" maxlength="11" class="form-control input-sm" value="@Math.Round(item.Quantity,3)" style="" /></td>
+                                    <td>@Math.Round(@item.Rate, 2)<input type="text" style="display:none" value="@item.Rate"></td>
+                                    <td>@item.ExpectedDate<input type="text" style="display:none" value="@item.ExpectedDate"></td>
+                                    @if (item.PriorityFlag == 1)
+                                    {
+                                        <td style="text-align:center"><span class="btn btn-xs btn-danger">High</span> </td>
+                                    }
+                                    else if (item.PriorityFlag == 2)
+                                    {
+                                        <td style="text-align:center"><span class="btn btn-xs btn-primary">Medium</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align:center"><span class="btn btn-xs btn-success">Low</span></td>
+                                    }
+                                    <td><input type="text" style="display:none" value="@item.StorageLocationID">@item.LocationName</td>
+                                    <td>@item.Remark<input type="text" style="display:none" value="@item.Remark"></td>
+                                    <td style="display:none">@item.PurchaseRequirementDetailsID<input type="text" style="display:none" value="@item.PurchaseRequirementDetailsID"></td>
+                                    <td class="selectAction" id="selectmultiple">
+                                        <select id="SelectedStatus" class="form-control input-sm" style="width:120px">
+                                            <option value="1">Approved</option>
+                                            <option value="3">Reject</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                    <div class="widget-bottom">
+                        <div style="text-align: right; padding-top: 15px;" class="col-sm-12">
+                            <button type="button" id="CreateApprovePurchaseRequirementMaster" class="btn btn-primary">@Resources.ButtonAction_Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        PurchaseRequirementMaster.Initialize();
+    })
+
+    $('input[id^=Quantity]').on("keydown", function (e) {
+        AERPValidation.AllowNumbersWithDecimalOnly(e);
+        AERPValidation.NotAllowSpaces(e);
+    });
+</script>

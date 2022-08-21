@@ -1,0 +1,242 @@
+﻿@model AMS.ViewModel.EmpEmployeeMasterViewModel
+@{
+    Layout = null;
+}
+
+<div class="widget-block">
+    @* <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>*@
+
+    <div class="widget-head">
+        <h5 id="hFive">@Resources.DisplayName_PersonalInformation</h5>
+    </div>
+    <div class="widget-box" >
+        <form id="PersonalInformationHome" method="post" class="form-horizontal well">
+            <div class="nonboxy-widget">
+                <div class="row">
+                    <div class="span12">
+                        <div class="row control-group">
+                            <div class="spanlabel">
+                                <label for="input01">&nbsp;</label>
+                                <label for="input01">@Resources.DisplayName_FullName</label>
+                            </div>
+                            <div class="span">
+                                <label for="input01">*@Resources.DisplayName_Title</label>
+                                @Html.TextBoxFor(model => model.NameTitle, new { style = "width:30px;font-weight:bold;" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_FirstName</label>
+                                @Html.TextBoxFor(model => model.EmployeeFirstName, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_MiddleName</label>
+                                @Html.TextBoxFor(model => model.EmployeeMiddleName, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_LastName</label>
+                                @Html.TextBoxFor(model => model.EmployeeLastName, new { @class = "txtbox" })
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="spanlabel">
+                                <label for="input01">&nbsp;</label>
+                                <label for="input01">@Resources.DisplayName_MaidenName</label>
+                            </div>
+                            <div class="span">
+                                <label for="input01">*Title</label>
+                                @Html.TextBoxFor(model => model.NameTitle, new { style = "width:30px;font-weight:bold;" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_FirstName</label>
+                                @Html.TextBoxFor(model => model.MaidenFirstName, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_MiddleName</label>
+                                @Html.TextBoxFor(model => model.MaidenMiddleName, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_LastName</label>
+                                @Html.TextBoxFor(model => model.MaidenLastName, new { @class = "txtbox" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="hrStyle" />
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_EmployeeCode</label>
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_EmployeeID</label>
+                            </div>
+                            <div class="span2">
+                                <input type="text" id="input02" placeholder="@Html.DisplayFor(model => model.ID, new { @class = "txtbox" })" disabled="disabled" class="input-xlarge disabled">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_EmailId</label>
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.EmailID, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">Other Email ID</label>
+                            </div>
+                            <div class="span2">
+                                @Html.TextBoxFor(model => model.OtherEmailID, new { @class = "txtbox" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_DateofBirth</label>
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.Birthdate, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_GenderCode</label>
+                            </div>
+                            <div class="span2">
+                                @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                              @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Female" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Female
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_NickName</label>
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_MarritalStaus</label>
+                            </div>
+                            <div class="span2">
+                                @Html.DropDownList("MarritalStaus", ViewData["EmployeeMaritalStatus"] as List<SelectListItem>, new { style = "width:220px", @class = "dropdown1" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="hrStyle" />
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_IsNameChangedBefore?</label>
+                            </div>
+                            <div class="span3">
+                                @Html.RadioButtonFor(model => model.IsNameChangedBefore, true, new { @checked = true, id = "IsNameChangedBefore_No" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_No &nbsp;&nbsp;&nbsp;
+                              @Html.RadioButtonFor(model => model.IsNameChangedBefore, false, new { id = "IsNameChangedBefore_Yes" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Yes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span12">
+                        <div class="row control-group">
+                            <div class="spanlabel">
+                                <label for="input01">&nbsp;</label>
+                                <label for="input01">@Resources.DisplayName_FullName</label>
+                            </div>
+                            <div class="span">
+                                <label for="input01">*@Resources.DisplayName_Title</label>
+                                @Html.TextBoxFor(model => model.NameTitle, new { style = "width:30px;font-weight:bold;" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_FirstName</label>
+                                @Html.TextBoxFor(model => model.PriorFirstName, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_MiddleName</label>
+                                @Html.TextBoxFor(model => model.PriorMiddleName, new { @class = "txtbox" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">*@Resources.DisplayName_LastName</label>
+                                @Html.TextBoxFor(model => model.PriorLastName, new { @class = "txtbox" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span12">
+                        <div class="row control-group">
+                            <div class="spanlabel">
+
+                                <label for="input01">@Resources.DisplayName_EmployeeNameAsPerTC</label>
+                            </div>
+                            <div class="span4">
+
+                                @Html.TextBoxFor(model => model.EmployeeNameAsPerTC, new { style = "width:140%;font-weight:bold;" })
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <hr class="hrStyle" />
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_NationalityID</label>
+                            </div>
+                            <div class="span3">
+                                @Html.DropDownList("MarritalStaus", ViewData["EmployeeMaritalStatus"] as List<SelectListItem>, new { style = "width:220px", @class = "dropdown1" })
+                            </div>
+                            <div class="spanFullName">
+                                <label for="input01">Ethanic Race Code</label>
+                            </div>
+                            <div class="span2">
+                                @Html.DropDownList("MarritalStaus", ViewData["EmployeeMaritalStatus"] as List<SelectListItem>, new { style = "width:220px", @class = "dropdown1" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                <label for="input01">@Resources.DisplayName_IsEmployeeSmoker?</label>
+                            </div>
+                            <div class="span3">
+                                @Html.RadioButtonFor(model => model.IsEmployeeSmoker, true, new { @checked = true, id = "IsEmployeeSmoker_No" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_No &nbsp;&nbsp;&nbsp;
+                              @Html.RadioButtonFor(model => model.IsEmployeeSmoker, false, new { id = "IsEmployeeSmoker_Yes" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Yes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        * @Resources.DisplayName_Requiredfield   
+                      
+                    </div>
+                </div>
+                <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px;">
+                    <button type="submit" class="btn btn-primary">@Resources.ButtonAction_SaveChanges</button>
+                     <input type="button" class="btn" value="Cancel"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+

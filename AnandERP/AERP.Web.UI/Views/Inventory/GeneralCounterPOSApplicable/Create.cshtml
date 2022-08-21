@@ -1,0 +1,77 @@
+﻿@model AMS.ViewModel.GeneralCounterPOSAndPosOperatorViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Counter POS Applicable</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralCounterPOSApplicable" role="form" class="row">
+                <div class="form-group col-sm-6">
+                    <div class="form-group select fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.CentreCode, new { })
+                        @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "--------Select Centre-------", new { id = "CentreCode", @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = " Centre Name" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GeneralUnitsID)
+                </div>
+                 <div class="form-group col-sm-6">
+                    <div class="form-group select fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.GeneralUnitsID, new { })
+                        @*@Html.TextBoxFor(model => model.UoMGroupCode, new { maxlength = "10", @class = "form-control input-sm " })*@
+                        @Html.DropDownListFor(model => model.GeneralUnitsID, Model.ListGetGeneralUnitsItems, "---Select UomCode ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GeneralUnitsID)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group select fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.GeneralCounterMasterId, new { })
+                        @*@Html.TextBoxFor(model => model.UomCode, new { maxlength = "20", @class = "form-control input-sm " })*@
+                        @Html.DropDownListFor(model => model.GeneralCounterMasterId, (SelectList)ViewBag.CounterMasterList, "-- Select Counter --", new { @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GeneralCounterMasterId)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group select fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.GeneralPOSMasterId, new { })
+                        @*@Html.TextBoxFor(model => model.UomCode, new { maxlength = "20", @class = "form-control input-sm " })*@
+                        @Html.DropDownListFor(model => model.GeneralPOSMasterId, (SelectList)ViewBag.POSMasterList, "-- Select POS --", new { @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GeneralPOSMasterId)
+                </div>
+                <div class="form-group col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.DateFrom, new { })
+                        @Html.TextBoxFor(model => model.DateFrom, new { @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.DateFrom)
+                </div>
+                <div class="col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.DateUpto, new { })
+                        @Html.TextBoxFor(model => model.DateUpto, new { @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.DateUpto)
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralCounterPOSApplicableRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralCounterPOSApplicable.Initialize();
+    });
+</script>
+

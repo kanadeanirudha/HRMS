@@ -1,0 +1,184 @@
+﻿@model AERP.ViewModel.GeneralCountryMasterViewModel
+
+<div id="custom-content">
+@if (Model.IsUserDefined == true) { 
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Contract Posts</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditGeneralCountryMaster">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.CountryName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control", maxlength = "60", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CountryName)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.ContryCode, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ContryCode, new { @class = "form-control", maxlength = "5", style = " text-transform:uppercase" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContryCode)
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+
+                    @if (Model.GeneralCountryMasterDTO.DefaultFlag==true)
+                    {
+                        <div class="col-sm-6">
+                            <div class="checkbox m-b-15" style="padding-top:8%;">
+                                <label>
+                                    <input type="checkbox" id="DefaultFlag" checked>
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.DefaultFlag)
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DefaultFlag)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-6">
+                            <div class="checkbox m-b-15" style="padding-top:8%;">
+                                <label>
+                                    <input type="checkbox" id="DefaultFlag">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.DefaultFlag)
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DefaultFlag)
+                        </div>
+
+                    }
+
+                </div>
+                <div class="form-group" style="margin-left: 2%; ">
+                    <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditGeneralCountryMasterRecord" type="button" />
+                </div>
+            </form>
+
+
+
+        </div>
+    </div>
+}
+else { 
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Contract Posts</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.CountryName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control", maxlength = "60", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CountryName)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.ContryCode, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ContryCode, new { @class = "form-control", maxlength = "5", style = " text-transform:uppercase" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContryCode)
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+
+                    @if (Model.GeneralCountryMasterDTO.DefaultFlag)
+                    {
+                        <div class="col-sm-6">
+                            <div class="checkbox m-b-15" style="padding-top:8%;">
+                                <label>
+                                    <input type="checkbox" id="DefaultFlag" checked>
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.DefaultFlag)
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DefaultFlag)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-6">
+                            <div class="checkbox m-b-15" style="padding-top:8%;">
+                                <label>
+                                    <input type="checkbox" id="DefaultFlag">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.DefaultFlag)
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DefaultFlag)
+                        </div>
+
+                    }
+
+                </div>
+                
+            </form>
+
+
+
+        </div>
+    </div>
+
+}
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    var ischecked;
+    $(document).ready(function () {
+        
+        $("#DefaultFlag").on("click", function () {
+            ischecked = $(this).is(':checked')
+            if (!ischecked)
+            {
+                
+            }
+            else {
+                
+            }
+            
+        });
+
+        GeneralCountryMaster.Initialize();
+
+    });
+</script>
+
+
+
+

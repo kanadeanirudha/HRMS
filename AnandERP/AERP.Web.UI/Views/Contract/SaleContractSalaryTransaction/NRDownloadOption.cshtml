@@ -1,0 +1,50 @@
+﻿@model AERP.ViewModel.SaleContractSalaryTransactionViewModel
+<style>
+    .mfp-content {
+        width: 50% !important;
+    }
+</style>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Download NR Salary Summary</h2>
+    </div>
+
+    <div class="card">
+        @using (Html.BeginForm("DownloadNRSheet", "SaleContractSalaryTransaction", FormMethod.Post, new { }))
+        {
+            <form id="FormCreateSaleContractRecieptMaster" method="post">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="SectionErrorMessage"></p>
+                </div>
+                <div class="card-body card-padding">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group" style="padding-top: 1%;">
+                                @Html.HiddenFor(model => model.SaleContractBillingSpanID)
+                                @Html.HiddenFor(model => model.SaleContractMasterID)
+                                <label>Summary Format</label>
+
+                                <label class="radio radio-inline m-r-10">
+                                    @Html.RadioButtonFor(model => model.SummaryFormat, 1, new { value = "1" })&nbsp;Salary Summary For Save
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-10">
+                                    @Html.RadioButtonFor(model => model.SummaryFormat, 2, new { value = "2", @checked= "checked" })&nbsp;Salary Summary For Submit
+                                    <i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-right:800px;">
+                        <button class="btn bgm-bluegray btn-sm m-t-10 waves-effect" style="margin-left:3%;" id="CreateDownloadDM" type="button" onclick="this.form.submit(); $.magnificPopup.close();">@Resources.ButtonAction_Submit</button>
+                    </div>
+                </div>
+                <hr />
+            </form>
+        }
+    </div>
+</div>

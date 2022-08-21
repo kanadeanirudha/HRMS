@@ -1,0 +1,247 @@
+﻿    @model AERP.ViewModel.PurchaseRequirementMasterViewModel
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <script src="@Url.Content("~/Scripts/AERP_Scripts/Purchase/PurchaseRequirementMaster.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+ 
+    <style>
+        .dropdown-menu {
+            margin: 2px 0 0;
+            min-width: 250px;
+            padding: 5px 10px;
+        }
+        .mfp-content {
+            width: 90%;
+        }
+    </style>
+    <div class="container">
+        @Html.HiddenFor(m => m.errorMessage, new { id = "ErrorMsg" })
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Create Purchase Requirement</h2>
+            <ul class="actions">
+                <li>
+                    <a href="@Url.Action("Download", "PurchaseRequirementMaster")" title="Download Excel">
+                        <button style="margin-left:-24px;height:36px;" class="btn bgm-orange waves-effect" data-val="true" data-toggle="tooltip" data-placement="top" data-original-title="Download Data Sheet"><i class="zmdi zmdi-download zmdi-hc-fw"></i></button>
+                    </a>
+                </li>
+                <li>
+                    <a title="Upload Excel" href="@Url.Action("CreateExcel", "PurchaseRequirementMaster", new { })" class="mfpAjaxModal">
+                        <i class="zmdi zmdi-plus-square btn btn-default waves-effect" style="padding-bottom:3px;"></i>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="card">
+
+            <div class="lv-header-alt clearfix">
+                <ul class="lv-actions actions">
+                    <li>
+                        <button id="IconShowList" class="btn bgm-lightblue waves-effect" title="Purchase Requirement List"><i class="zmdi zmdi-view-headline zmdi-hc-fw"></i></button>
+                        
+                            @*<button id="IconShowPurchaseRequirement"  style="display: none" class="btn bgm-lightblue waves-effect" title="Create Purchase Requirement">
+                                <i class="zmdi zmdi-plus zmdi-hc-fw"></i>
+
+                            </button>*@
+                            <a href="~/PurchaseRequirementMaster" id="IconShowPurchaseRequirement" style="display: none" class="btn bgm-lightblue" title="Create Purchase Requirement"><i class="zmdi zmdi-plus"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="divContent">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormCreatePurchaseRequirementMaster">
+                    @Html.HiddenFor(model => model.PolicyDefaultAnswer)
+                    @Html.HiddenFor(model => model.SelectedDepartmentIDs)
+                   
+                    <div class="card-body card-padding">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line dtp-container">
+                                        @Html.TextBoxFor(model => model.TransDate, new { Value = "" + DateTime.UtcNow.ToString("dd MMM yyyy") + "", Readonly = "True", @class = "form-control", style = "background-color:#fff", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Date" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line select">
+                                        @Html.DropDownListFor(m => m.SelectedCentreCode, Model.ListGetAdminRoleApplicableCentreItems, Resources.ddlHeaders_CentreName, new { @class = "form-control", style = "", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Center Name" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line select">
+                                        @Html.DropDownListFor(m => m.SelectedDepartmentID, Model.ListGetOrganisationDepartmentCentreAndRoleWiseItems, "--Select Department--", new { @class = "form-control", style = "", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Department" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr /> <br />
+                        <div class="row">
+                            @Html.HiddenFor(model => model.ItemNumber)
+                            @Html.HiddenFor(model => model.BarCode)
+                            @Html.HiddenFor(model => model.GeneralItemCodeID)
+                            @Html.HiddenFor(model => model.PurchaseGroupCode)
+                            @Html.HiddenFor(model => model.MinimumOrderquantity)
+                            <div class="col-sm-12">
+
+
+                                <div class="col-sm-2">
+                                    @Html.LabelFor(model => model.ItemName, new { Style = "" })
+                                    <div class="form-group fg-line typeahead">
+                                        @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control", style = "", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Item name" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1" style="width:8%;">
+                                    @Html.LabelFor(model => model.Quantity, new { Style = "" })
+                                    <div class="form-group fg-line">
+                                        @Html.TextBoxFor(model => model.Quantity, new { maxlength = "8", @class = "form-control", Style = "" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    @Html.LabelFor(model => model.UnitCode, new { Style = "" })
+                                    <div class="form-group fg-line">
+                                        @Html.TextBoxFor(model => model.UnitCode, new { @class = "form-control", style = "background-color:#fff", disabled = "disabled" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    @Html.LabelFor(model => model.Rate, new { Style = "" })
+                                    <div class="form-group fg-line">
+                                        @Html.TextBoxFor(model => model.Rate, new { maxlength = "8", @readonly = "readonly", @class = "form-control", Style = "background-color:#fff" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2" style="width:13%;">
+                                    @Html.LabelFor(model => model.ExpectedDate, new { Style = "" })
+                                    <div class="form-group fg-line dtp-container">
+                                        @Html.TextBoxFor(model => model.ExpectedDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1" style="width:13%;">
+                                    @Html.LabelFor(model => model.PriorityFlag, new { Style = "" })
+                                    <div class="form-group fg-line select">
+                                        @Html.DropDownList("PriorityFlag", ViewData["PriorityFlag"] as List<SelectListItem>, new { @class = "form-control", style = "background-color:#fff" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2" style="width:15%;">
+                                    @Html.LabelFor(model => model.StorageLocationID, new { Style = "" })
+                                    <div class="form-group fg-line select">
+                                        @Html.DropDownListFor(model => model.StorageLocationID, (SelectList)ViewBag.GeneralLocationList, "--Select location--", new { @class = "form-control", style = "" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2" style="width:12%;">
+                                    @Html.LabelFor(model => model.Remark, new { Style = "" })
+                                    <div class="form-group fg-line">
+                                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control", style = "" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1 pull-left" style="width:5%;">
+                                    <button type="button" class="btn btn-login btn-success btn-float waves-effect waves-circle waves-float" id="addItem" style="height: 40px; width: 40px; line-height: 35px !important;" value="@Resources.ButtonAction_AddRow" title="@Resources.ButtonAction_AddRow"><i class="zmdi zmdi-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div id="DivAddRowTable">
+                                <div class="card-body table-responsive">
+                                    <table id="tblData" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Quantity</th>
+                                                <th>Unit</th>
+                                                <th>Rate</th>
+                                                <th>Delivery Date</th>
+                                                <th>Priority</th>
+                                                <th>Location</th>
+                                                <th>Remark</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <hr /><br />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-3 pull-left">
+                                    <div class="form-group fg-line">
+                                        Total Item
+                                        <input type="text" style="" disabled id="TotalItem" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 pull-right">
+                                    @*<input type="button" id="CreatePurchaseRequirementMaster" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />*@
+                                    <button type="button" id="CreatePurchaseRequirementMaster" value="@Resources.ButtonAction_Submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </form>
+            </div>
+
+    </div>
+
+    </div>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+    <script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            PurchaseRequirementMaster.Initialize();
+           
+            //$('#TransactionDate').attr("readonly", true);
+
+            //$('#TransactionDate').datetimepicker({
+            //    format: 'DD MMMM YYYY',
+            //    maxDate: moment(),
+            //    ignoreReadonly: true,
+            //})
+
+            //$('#ExpectedDate').datetimepicker({
+            //    format: 'DD MMMM YYYY',
+            //    maxDate: moment(),
+            //    ignoreReadonly: true,
+            //})
+            if ($('#ErrorMsg').val() != "NoMessage") {
+                var splitedMsg = ($('#ErrorMsg').val()).split(',');
+                alert(splitedMsg)
+                //$('#SuccessMessage').html(splitedMsg[0]);
+                //$('#SuccessMessage').delay(400).slideDown(400).delay(2000).slideUp(400).css('background-color', splitedMsg[1]);
+                //notify(splitedMsg[0],"danger");
+                notify(splitedMsg[0], splitedMsg[1]);
+
+            }
+
+            
+        });
+    </script>
+

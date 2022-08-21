@@ -1,0 +1,61 @@
+﻿@model AERP.ViewModel.SalesInvoiceMasterAndDetailsViewModel
+<style>
+    .mfp-content {
+        width: 60% !important;
+    }
+</style>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Download Sales Invoice</h2>
+    </div>
+
+    <div class="card">
+        @using (Html.BeginForm("Download", "SalesInvoiceMasterAndDetails", FormMethod.Post, new { }))
+        {
+            <form id="FormCreateSaleContractRecieptMaster" method="post">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="SectionErrorMessage"></p>
+                </div>
+                <div class="card-body card-padding">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group" style="padding-top: 1%;">
+                                @Html.HiddenFor(model => model.ID)
+                                @Html.HiddenFor(model => model.SalesOrderMasterID)
+                                @Html.HiddenFor(model => model.InvoiceType)
+                                @Html.LabelFor(model => model.NoOfCopies, new { style = "" }) &nbsp;
+
+                                <label class="radio radio-inline m-r-10">
+                                    @Html.RadioButtonFor(model => model.NoOfCopies, "Original", new { @checked = true, value = "Original" })&nbsp;Original &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-10">
+                                    @Html.RadioButtonFor(model => model.NoOfCopies, "Duplicate", new { value = "Duplicate" })&nbsp;Duplicate 
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-10">
+                                    @Html.RadioButtonFor(model => model.NoOfCopies, "Triplicate", new { value = "Triplicate" })&nbsp;Triplicate &nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-10">
+                                    @Html.RadioButtonFor(model => model.NoOfCopies, "Core-Duplicate", new { value = "Core -Duplicate" })&nbsp;Core-Duplicate&nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-right:800px;">
+                        <button class="btn btn-primary btn-sm m-t-10 waves-effect" style="margin-left:3%;" id="CreateDownloadInvoice" type="button" onclick="this.form.submit(); $.magnificPopup.close();">@Resources.ButtonAction_Submit</button>
+                    </div>
+                </div>
+                <hr />
+            </form>
+        }
+    </div>
+</div>

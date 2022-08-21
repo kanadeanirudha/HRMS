@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "ProfileReport";
+    Layout = null;
+}
+
+
+<link href="~/Content/Derek/derek.css" rel="stylesheet" />
+
+<div class="container-fluid wrapper">
+
+
+    <div class="row-fluid">
+        <div class="span12">
+
+
+            <!-- Resume 
+            ================================================== -->
+            <div class="row-fluid resume">
+
+                @{ Html.RenderAction("PersonalInformation", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }
+
+                <!-- column 3 -->
+
+
+            </div>
+            <!-- end of resume -->
+
+            <!-- Qualification Details -->
+
+            @*@{ Html.RenderAction("_EmployeeQualificationDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- Qualification Details container -->
+
+              <!-- Specialization Details -->
+
+            @*@{ Html.RenderAction("_EmployeeSpecializationResearchAreaDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- Specialization Details container -->
+
+            <!-- Experience Details -->
+
+            @*@{ Html.RenderAction("_EmployeeExperienceDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- Experience Details container -->
+
+            <!-- Course/ Subject Taught Details -->
+
+            @*@{ Html.RenderAction("_CourseSubjectTaughtDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- Course/ Subject Taught Details container -->
+
+
+            <!-- For Membership of Learned Society  -->
+
+            @*@{ Html.RenderAction("_EmployeeElectionNomineeBodyDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Membership of Learned Society -->
+
+
+            <!-- For Membership of Learned Society  -->
+
+            @*@{ Html.RenderAction("_EmployeePaperPresentDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Membership of Learned Society -->
+
+
+            <!-- For Ph. D. Thesis Guidence  -->
+
+            @*@{ Html.RenderAction("_EmployeePHdGuideRecognisationDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- ForPh. D. Thesis Guidence -->
+
+            <!-- For Invited Lectures/Other College Special Lecture Details   -->
+
+            @*@{ Html.RenderAction("_EmployeeOtherCollegeSpecialLectureDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Invited Lectures/Other College Special Lecture Details -->
+
+            <!-- For Project Work Details -->
+
+            @*@{ Html.RenderAction("_EmployeeProjectWorkDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Project Work Details -->
+
+
+            <!-- For Associates Professional Bodies Details -->
+
+            @*@{ Html.RenderAction("_EmployeeAssociatesProfessionalBodiesDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Associates Professional Bodies Details -->
+
+
+
+            <!-- For Patent Received Details -->
+
+            @*@{ Html.RenderAction("_EmployeePatentReceivedDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Patent Received Details -->
+
+            <!-- For Prizes Won Details -->
+
+            @*@{ Html.RenderAction("_EmployeePrizesWonDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Prizes Won Details -->
+
+
+            <!-- For Consultancy Details -->
+
+            @*@{ Html.RenderAction("_EmployeeConsultancyMasterDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Consultancy Details -->
+
+            <!-- For Office Details  -->
+
+            @*@{ Html.RenderAction("_EmployeeOfficeDetails", "EmployeeProfileReport", new { EmployeeID = ViewBag.EmpID }); }*@
+
+            <!-- For Office Details  -->
+
+
+
+        </div>
+    </div>
+
+
+</div>
+@*<a style="margin-left:90%" href="@Url.Action("ProfileReport", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() })"><span>Go to Top</span></a>*@
+  
+<script src="~/Scripts/scrolltop.js"></script>
+

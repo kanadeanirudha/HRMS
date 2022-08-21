@@ -1,0 +1,93 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<div id="custom-content">
+    @Html.HiddenFor(model => model.GeneralItemMasterID)
+    @Html.HiddenFor(model => model.GeneralItemGeneralDataID)
+
+    <input type="hidden" id="TaskCode" value="GeneralItemEcommerceData" />
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralItemMaster" role="form" class="row">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.DisplayName, new { })
+                        @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control input-sm typeahead", })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.DisplayName)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ItemCategoryCode_Param, new { })
+                        <ul class="clist clist-angle">
+                            <li>Group:          @Model.GroupDescription</li>
+                            <li>Department:     @Model.MerchantiseDepartmentName</li>
+                            <li>Category:       @Model.MerchantiseCategoryName</li>
+                            <li>Sub-category:   @Model.MerchantiseSubCategoryName</li>
+                            <li>Base category:  @Model.MarchandiseBaseCatgoryName</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-sm-5" style="padding: 14px 16px; width: 35%;" for="inputEmail3">Upload menu Image</label>
+                        @Html.HiddenFor(model => model.EComCroppedImagePath)
+                        
+                        <a class="mfpAjaxModal" title="Upload Image" id="ArticleImageUpload" href="/GeneralItemMaster/MultipleArticleImageUpload">
+                            @*Upload Image*@
+
+                            @if (Model.EComCroppedImagePath == null || Model.EComCroppedImagePath == "")
+                            {
+                                <img src="~/Content/images/recipe-default.png" width="100" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/UploadedFiles/ArticleImage/@Model.EComCroppedImagePath" width="100" />
+
+                            }
+                        </a>
+                        <div id="imageuploadDiv">
+                         @if (Model.ImageNameString != null && Model.ImageNameString != "")
+                                 {
+                                      String[] ImageNameArray = Model.ImageNameString.Split(new char[] { ',' });
+                                       foreach (var ImageName in ImageNameArray)
+                                    {
+                                         String[] ImageNameSingle = ImageName.Split(new char[] { '~' });
+                                            <div class="col-sm-3 imgdiv">
+                                            <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                                            <input type="hidden" value="@ImageNameSingle[0]" class="ImageNameSaved"/>
+                                            <input type="hidden" value="@ImageNameSingle[1]" class="ImageIDSaved"/>
+                                            <img src="/Content/UploadedFiles/ArticleImage/@ImageNameSingle[0]" width="100%" />
+                                             </div>
+                                      }
+                                  }
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".close").on("click", function () {
+            var ImageName = $(this).next().val();
+            var ID = $(this).next().next().val();
+            $.ajax({
+                url: "/GeneralItemMaster/DeleteEComImage",
+                type: "POST",
+                data: { "ID": ID, "ImageName": ImageName },
+                dataType: 'json',
+                success: function (data) {
+                    $(this).parent(".imgdiv").remove();
+                },
+            });
+            $(this).parent(".imgdiv").remove();
+        });
+    });
+</script>

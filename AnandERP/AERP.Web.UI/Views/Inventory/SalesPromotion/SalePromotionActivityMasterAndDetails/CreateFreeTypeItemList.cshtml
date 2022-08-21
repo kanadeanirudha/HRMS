@@ -1,0 +1,149 @@
+﻿@model AMS.ViewModel.SalePromotionActivityMasterAndDetailsViewModel
+<input type="hidden" id="TaskCode" value="GeneralItemSalesData" />
+@Html.HiddenFor(model => model.SalePromotionActivityDetailsID)
+@Html.HiddenFor(model => model.PlanTypeCode)
+@Html.HiddenFor(model => model.ProductConcessionFreeType)
+<div id="custom-content">
+    <div class="block-header">
+        @*@Html.HiddenFor(model => model.IsDefaultCount)*@
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Concession Free Item List</h2>
+    </div>
+    <div class="card" style="overflow: auto;height:500px" >
+
+        <div class="card-body card-padding" style="padding:1px 26px">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateFreeTypeItemList" role="form" class="row">
+                <div class="col-sm-12 row">
+                    <div id="ListViewModel1" class="table-responsive">
+                        <div id="DivAddRowTable">
+                            <table id="tblDataFreeTypeItemList" class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="display: none"></th>
+                                        <th class="center">
+                                            @*<input type="checkbox" id="Check" class="checkall-user" name="checkbox12" disabled="disabled">*@
+                                            <div class="checkbox m-b-15" style="">
+                                                <label style="">
+                                                    <input type="checkbox" id="Check" class="checkall-user" name="checkbox12">
+                                                    <i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th style="font-size:small;">Item Description</th>
+                                        <th style="font-size:small;">Sale Uom Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.GetConsessionItemList)
+                                    {
+
+                                        <tr>
+                                            @if (@item.IsActive == true)
+                                            {
+                                                <td style="vertical-align:top;">
+                                                    <div class="checkbox col-sm-6">
+                                                        <input id="check_1" type=checkbox class=check-user name=checkbox12 onclick="CheckedSingle()" checked>
+                                                        <i class="input-helper"></i>
+                                                    </div>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td style="vertical-align:top;">
+                                                    <div class="checkbox col-sm-6">
+                                                        <input id="check_1" type=checkbox class=check-user name=checkbox12 onclick="CheckedSingle()">
+                                                        <i class="input-helper"></i>
+                                                    </div>
+                                                </td>
+                                            }
+                                            <td style="display:none;"><input type="text" id="ItemNumber" class="form-control" value="@item.ItemNumber"></td>
+                                            <td style="display:none;"><input type="text" id="SalePromotionActivityDetailsID" class="form-control" value="@item.SalePromotionActivityDetailsID"></td>
+                                            <td style="display:none;"><input type="text" id="PromotionActivityDiscounteItemListID" class="form-control" value="@item.PromotionActivityDiscounteItemListID"></td>
+                                            @if (@item.IsActive == true)
+                                            {
+                                                <td style="display:none;"><input type="text" id="IsActive" class="form-control" value="1"></td>
+                                            }
+                                            else
+                                            {
+                                                <td style="display:none;"><input type="text" id="IsActive" class="form-control" value="0"></td>
+                                            }
+                                            @if (@Model.PlanTypeCode == "ProductConcessionFree")
+                                            {
+                                                <td style="display:none;"><input type="text" id="DiscountInPercentage" class="form-control" value="@item.DiscountInPercentage"></td>
+                                            }
+                                            else
+                                            {
+                                                <td style="display:none;"><input type="text" id="DiscountInPercentage" class="form-control" value="@item.DiscountInPercentage"></td>
+                                            }
+                                            <td style="display:none;"><input type="text" id="InventoryVariationMasterID" class="form-control" value="@item.InventoryVariationMasterID"></td>
+                                            <td>@item.MenuDescription<input type="text" id="ItemDescription" style="display:none" value="@item.MenuDescription"></td>
+                                            <td>@item.SaleUOMCode<input type="text" id="UOMCode" style="display:none" value="@item.SaleUOMCode"></td>
+                                            @if (@Model.PlanTypeCode == "ProductConcessionFree")
+                                            {
+                                                <td style="display:none;"><input type="text" id="DiscountInPercentage1" class="form-control" value="@item.DiscountInPercentageForItemdetails" style="display:none;"></td>
+                                            }
+                                            else
+                                            {
+                                                <td style="display:none;"><input type="text" id="DiscountInPercentage1" class="form-control" value="@item.DiscountInPercentageForItemdetails"></td>
+                                            }
+
+                                            <td style="display:none;"><input type="text" id="PromotionActivityDiscounteItemListID" class="form-control" value="@item.PromotionActivityDiscounteItemListID"></td>
+                                            <td style="display:none;"><input type="text" id="ItemNumberVariationID" class="form-control" value="@item.ItemNumber~@item.InventoryVariationMasterID"></td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                            <div class="form-group col-sm-12">
+                                <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateFreeTypeItemListRecord" type="button" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SalePromotionActivityMasterAndDetails.Initialize();
+        SalePromotionActivityMasterAndDetails.CheckedAllForFreeTypeListItem();
+
+        $(".checkall-user").prop("disabled", false);
+        $("#tblDataFreeTypeItemList").on("click", "tbody tr td .check-user", function () {
+            var a = (parseInt($(".check-user").length));
+            var b = parseInt($(".check-user:checked").length);
+            if (a != b) {
+                $("input[class=checkall-user]").attr("checked", false);
+            }
+            else {
+                $("input[class=checkall-user]").prop("checked", true);
+            }
+        });
+    });
+    function CheckedSingle() {
+
+        $("#tblDataFreeTypeItemList tbody tr td  input[class='check-user']").on('click', function () {
+
+            var CheckedArray = [];
+            debugger
+            var table = $('#tblData').DataTable();
+            var data = table.$("input[class='check-user']").each(function () {
+                CheckedArray.push($(this).val());
+                var $this = $(this);
+                if ($this.is(":checked")) {
+                    CheckedArray.push($(this).val());
+                }
+
+            });
+        });
+    }
+</script>

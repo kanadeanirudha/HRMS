@@ -1,0 +1,450 @@
+﻿@*
+    @model AMS.ViewModel.EmployeeShiftMasterViewModel
+    @{
+
+        Layout = null;
+    }
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+     <script src="@Url.Content("~/Scripts/plugin/TimePicker/timepicki.js")" type="text/javascript"></script>
+        <link href="@Url.Content("~/Content/TimePicker/timepicki.css")" rel="stylesheet"type="text/css" />
+    <div id="update-message" class="error invisible"></div>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(m => m.GeneralWeekDaysID)
+        @Html.HiddenFor(m => m.EmployeeShiftMasterID)
+        @Html.HiddenFor(model => model.CentreCode)
+        @Html.HiddenFor(m => m.EmployeeShiftMasterDetailsID)
+
+
+
+                <div class="widget-block">
+                    <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+
+                    <div class="widget-head">
+                        <h5 id="hFive"><i class="icon-th-list"></i>&nbsp;   @Resources.FormEdit_ShiftMasterDetails (@Html.DisplayFor(m => m.EmployeeShiftDescription))</h5>
+                        <div class="pull-right" style="margin: -24px 60px 0px 10px;">
+                            <div class="input-append" id="" style="float: right;">
+                                <div style="display: none;">
+                                    <input type="hidden" name="_method" value="POST">
+                                </div>
+
+                                <div class="widget-control pull-right">
+                                    <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="black-icons cog_3"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li id="BackShiftMasterDetails">
+                                            <a class="ajax cboxElement" href="@Url.Action("GetShiftMasterDetails", "EmployeeShiftMaster", new { EmployeeShiftMasterID = Model.EmployeeShiftMasterID })">
+                                                <h6 style="color: #000;"><i class="black-icons bended_arrow_left" style="padding-left: 7px;"></i>Back</h6>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-box">
+                        <form id="FormCreateEmployeeShiftMasterDetails" method="post" class="form-horizontal well">
+                             <div id="SuccessMessageShiftDetails" style="display: none; color: #000;" class="alert"></div>
+                            <div class="row">
+                                <div class="span8">
+                                    <div class="row control-group">
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.WeekDay, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            <b>@Html.DisplayFor(model => model.WeekDay, new { style = "font-Weight:Bold;", ReadOnly = "ReadOnly" })</b>
+                                        </div>
+                                        <div class="span2">
+
+                                        </div>
+                                        <div class="span">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="span8">
+                                    <div class="row control-group">
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.WeeklyOffStatus, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                             @Html.DropDownList("WeeklyOffStatus", ViewData["WeeklyOffStatus"] as List<SelectListItem>, new { style = "width:210px;font-Weight:Bold;", @class = "dropdown1" })
+                                        </div>
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.WeeklyOffType, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                             @Html.DropDownList("EmployeeServiceDetails_WeeklyOffType", ViewData["EmployeeServiceDetails_WeeklyOffType"] as List<SelectListItem>, new { style = "width:210px;font-Weight:Bold;", @class = "dropdown1" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="span8">
+                                    <div class="row control-group">
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.ShiftTimeFrom, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.ShiftTimeFrom, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.ShiftTimeUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.ShiftTimeUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="span8">
+                                    <div class="row control-group">
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.ShiftTimeMargin, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.ShiftTimeMargin, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.ShiftEndBuffer, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.ShiftEndBuffer, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="span8">
+                                    <div class="row control-group">
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.LunchTimeFrom, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.LunchTimeFrom, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.LunchTimeUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.LunchTimeUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="span8">
+                                    <div class="row control-group">
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.FirstHalfUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.FirstHalfUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.SecondHalfFrom, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.SecondHalfFrom, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="span8">
+                                    <div class="row control-group">
+                                        <div class="span2">
+                                            @Html.LabelFor(model => model.ConsiderLateMarkUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            @Html.TextBoxFor(model => model.ConsiderLateMarkUpto, new { style = "font-Weight:Bold;" })
+                                        </div>
+                                        <div class="span">
+                                            &nbsp;
+                                        </div>
+                                        <div class="span">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+                                <button type="button" id="EditEmployeeShiftMasterDetailsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            EmployeeShiftMaster.Initialize();
+        });
+
+    </script>
+
+    <style>
+        .span1 {
+            width: 115px;
+        }
+
+        .span2 {
+            width: 115px;
+        }
+
+        .hide_column {
+            display: none;
+        }
+
+        .paging_full_numbers {
+            display: none;
+        }
+
+        div.dataTables_paginate {
+            display: none;
+        }
+
+        .dataTables_paginate {
+            display: none;
+        }
+
+        div.dataTables_info {
+            display: none;
+        }
+
+        .dataTables_info {
+            display: none;
+        }
+    </style>
+*@
+
+@model AERP.ViewModel.EmployeeShiftMasterViewModel
+@{
+
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>*@
+
+<link href="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormEdit_ShiftMasterDetails (@Html.DisplayFor(m => m.EmployeeShiftDescription))</h2>
+    </div>
+    <div class="card">
+
+        <div class="card-header">
+            @*<h2>@Resources.TableHeaders_ManualAttendance</h2>*@
+            <ul class="actions">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown" title="Add New">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li id="BackShiftMasterDetails">
+                            <a class="mfpAjaxModal" href="@Url.Action("GetShiftMasterDetails", "EmployeeShiftMaster", new { EmployeeShiftMasterID = Model.EmployeeShiftMasterID })">
+                                <i class="zmdi zmdi-undo"></i> &nbsp; Back
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body card-padding" style="padding-bottom:80px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+            <form id="FormCreateEmployeeShiftMasterDetails" method="post">
+                <div id="SuccessMessageShiftDetails" style="display: none; color: #000;" class="alert"></div>
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.GeneralWeekDaysID)
+                @Html.HiddenFor(m => m.EmployeeShiftMasterID)
+                @Html.HiddenFor(model => model.CentreCode)
+                @Html.HiddenFor(m => m.EmployeeShiftMasterDetailsID)
+
+                <div class="row" style="padding-bottom:5%;">
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.WeekDay, new { style = "" })  @Html.DisplayFor(model => model.WeekDay, new { @class = "form-control", style = "", ReadOnly = "ReadOnly" })
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.WeeklyOffStatus, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("WeeklyOffStatus", ViewData["WeeklyOffStatus"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                         @Html.LabelFor(model => model.WeeklyOffType, new { style = "" })
+                        @if (Model.WeeklyOffStatus == "N") {
+                           
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("EmployeeServiceDetails_WeeklyOffType", ViewData["EmployeeServiceDetails_WeeklyOffType"] as List<SelectListItem>, new { style = "", @class = "form-control",disabled="disabled"})
+                        </div>
+                        }
+                        else {
+                           
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("EmployeeServiceDetails_WeeklyOffType", ViewData["EmployeeServiceDetails_WeeklyOffType"] as List<SelectListItem>, new { style = "", @class = "form-control",@value="ALL"})
+                        </div>
+                        }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.ShiftTimeFrom, new { style = "" })
+                         @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ShiftTimeFrom, new { @class = "form-control", style = "" })
+                        </div>
+                         }
+                         else {
+                             <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ShiftTimeFrom, new { @class = "form-control", style = ""  ,disabled="disabled" })
+                        </div>
+                         }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.ShiftTimeUpto, new { style = "" })
+                          @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ShiftTimeUpto, new { @class = "form-control", style = "" })
+                        </div>
+                               }
+                         else {
+                              <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ShiftTimeUpto, new { @class = "form-control", style = "",disabled="disabled"})
+                        </div>
+                          }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.ShiftTimeMargin, new { style = "" })
+                          @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ShiftTimeMargin, new { @class = "form-control", style = ""  })
+                        </div>
+                                  }
+                         else {
+                              <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ShiftTimeMargin, new { @class = "form-control", style = "" ,disabled="disabled" })
+                        </div>
+                          }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.ShiftEndBuffer, new { style = "" })
+                        @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ShiftEndBuffer, new { @class = "form-control", style = "" })
+                        </div>
+                          }
+                         else {
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ShiftEndBuffer, new { @class = "form-control", style = "" ,disabled="disabled"  })
+                        </div>
+                        }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.LunchTimeFrom, new { style = "" })
+                        @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.LunchTimeFrom, new { @class = "form-control", style = ""})
+                        </div>
+                             }
+                         else {
+                            <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.LunchTimeFrom, new { @class = "form-control", style = "" ,disabled="disabled" })
+                        </div>
+                        }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.LunchTimeUpto, new { style = "" })
+                         @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.LunchTimeUpto, new { @class = "form-control", style = "" })
+                        </div>
+                          }
+                         else {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.LunchTimeUpto, new { @class = "form-control", style = "",disabled="disabled" })
+                        </div>
+                        }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.FirstHalfUpto, new { style = "" })
+                         @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.FirstHalfUpto, new { @class = "form-control", style = ""  })
+                        </div>
+                              }
+                         else {
+                             <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.FirstHalfUpto, new { @class = "form-control", style = "" ,disabled="disabled" })
+                        </div>
+                         }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.SecondHalfFrom, new { style = "" })
+                          @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.SecondHalfFrom, new { @class = "form-control", style = ""  })
+                        </div>
+                                 }
+                         else {
+                              <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.SecondHalfFrom, new { @class = "form-control", style = "" ,disabled="disabled" })
+                        </div>
+                          }
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.ConsiderLateMarkUpto, new { style = "" })
+                         @if (Model.WeeklyOffStatus == "N") {
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ConsiderLateMarkUpto, new { @class = "form-control", style = ""  })
+                        </div>
+                         }
+                         else {
+                         <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ConsiderLateMarkUpto, new { @class = "form-control", style = "" ,disabled="disabled" })
+                        </div>
+                        }
+                    </div>
+                    
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="EditEmployeeShiftMasterDetailsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                             
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeShiftMaster.Initialize();
+    });
+</script>

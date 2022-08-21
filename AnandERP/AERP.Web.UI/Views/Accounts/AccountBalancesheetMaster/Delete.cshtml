@@ -1,0 +1,28 @@
+﻿@model AERP.ViewModel.AccountBalancesheetMasterViewModel
+
+<form id="FormDeleteAccountBalanceSheetMaster" method="post">
+    @Html.HiddenFor(model => model.ID)
+    <div class="widget-block" style="width:230px;">
+        <div class="widget-head">
+            <h5>Delete Religion </h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+                <div class="control-group" style="padding: 10px;">
+                    &nbsp;&nbsp;<img src="~/Content/images/warning.png" />&nbsp;&nbsp;@Resources.DisplayName_DeleteMessage
+                        <div class="controls">
+                        </div>
+                </div>
+                <div class="control-group" style="padding:10px;text-align:right;margin-bottom:0px;border: 1px solid #e5e5e5;">
+                    <input type="button" id="DeleteAccountBalanceSheetRecord" value="Delete" class="btn btn-primary" />
+                    <input type="button" id="closeBtn" class="btn" value="Cancel" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountBalanceSheet.Initialize();
+    });
+</script>

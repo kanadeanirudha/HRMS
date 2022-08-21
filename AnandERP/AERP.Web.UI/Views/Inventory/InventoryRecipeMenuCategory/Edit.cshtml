@@ -1,0 +1,84 @@
+﻿@model AMS.ViewModel.InventoryRecipeMenuCategoryViewModel
+<div id="custom-content">
+    <div class="block-header">
+        @Html.HiddenFor(model => model.ID)
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Recipe Menu Category</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditInventoryRecipeMenuCategory" role="form" class="row">
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.MenuCategory, new { })
+                        @Html.TextBoxFor(model => model.MenuCategory, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MenuCategory)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.MenuCategoryCode, new { })
+                        @Html.TextBoxFor(model => model.MenuCategoryCode, new { maxlength = "20", @class = "form-control input-sm ", disabled = "disabled"})
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MenuCategoryCode)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group select fg-line">
+                       
+                        @Html.LabelFor(model => model.CategoryType, new { })
+                        @Html.DropDownList("CategoryType", ViewData["CategoryType"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", disabled="disabled", data_toggle = "tooltip", data_placement = "top", data_original_title = "CategoryType*" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CategoryType)
+                </div>
+               <div class="form-group col-sm-6">
+                    <div class="form-group select fg-line">
+                       
+                        @Html.LabelFor(model => model.ItemCategoryCode, new { })
+                        @Html.DropDownListFor(model => model.ItemCategoryCode, (SelectList)ViewBag.GeneralItemCategoryMasterList, "--Select Item Category--", new { @class = "form-control input-sm",data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Item Category Code*"  })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemCategoryCode)
+                </div>
+                <div class="col-sm-6" style="margin-top:-6px;">
+                  @*<div class="form-group fg-line">
+                        <label style="margin-top: 2%; margin-bottom: 3%;">
+                            @Html.LabelFor(model => model.IsActive, new { style = "padding-left: 0px; margin-top:2%;" })
+
+                        </label>
+                    </div>*@
+                    <div class="checkbox col-sm-6">
+                        @if (Model.IsActive == true)
+                         {
+                          <input type="checkbox"  id="IsActive" checked>
+                        }
+                        else
+                        { 
+                          <input type="checkbox"  id="IsActive">
+                        }
+                        <i class="input-helper"></i>
+                        @Html.LabelFor(model => model.IsActive, new { })
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="EditInventoryRecipeMenuCategoryRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        InventoryRecipeMenuCategory.Initialize();
+    });
+</script>
+

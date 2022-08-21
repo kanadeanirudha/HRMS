@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CC100E82-704A-4E52-BA07-13EF33A23FDC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AERP.DataProvider</RootNamespace>
+    <AssemblyName>AERP.DataProvider</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConnectionProvider.cs" />
+    <Compile Include="DBInteractionBase.cs" />
+    <Compile Include="Implementation\Account\AccountBalancesheetMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountBalancesheetTypeMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountCategoryMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountCentreOpeningBalanceDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountChequeBookDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountChequeBookMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountGroupMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountHeadMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountSessionMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountTransactionMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\AccountTransactionTypeMasterDataProvider.cs" />
+    <Compile Include="Implementation\Account\GeneralMapTypeOfAccountDataProvider.cs" />
+    <Compile Include="Implementation\Account\GeneralTypeOfAccountDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountBalancesheetReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountBalancesheetTypeReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountCategoryMasterReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountCentreWiseBalanceSheetReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountDayBookReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountExclusiveToCentreReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountGeneralLedgerReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountGroupMasterReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountHeadMasterReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountMasterReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountProfitAndLossReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountSessionMasterReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountTradingReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountTrialBalanceReportDataProvider.cs" />
+    <Compile Include="Implementation\Account\Report\AccountVoucherSettingMasterReportDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminMenuApplicableDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleApplicableDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleCentreRightsDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleMasterDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleMenuDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleModuleAccessDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminSnPostsDataProvider.cs" />
+    <Compile Include="Implementation\Admin\AdminSnPostsTransactionDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMActionMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMAreaPatchMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMBankMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMBillTypeMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMBrokenCallReasonMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMCauseMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMComplaintLoggingMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMContractTypesMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMCustomerSegementDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMEngineersGroupMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMFeedbackMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMLocationTypeMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMMachineFamilyMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMMachineMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMMIFMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMServiceCallTypesDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMServiceMasterDataProvider.cs" />
+    <Compile Include="Implementation\CCRM\CCRMSymptomMasterDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\ATTRITIONReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\ContractEmployeeReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\ContractPaymentPendingReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeESICReportForm7DataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeFormIIWagesSheetReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeFormXDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFReportForm10DataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFReportForm12ADataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFReportFORM6ADataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFReportForm9DataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFSummeryDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeReportForm5MonthlyDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\ESICMonthlyUploadingFileDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\GSTReportsDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\MISReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\PaymentOfBonusDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\PFChallanRemittanceDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofAdavancesDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofDeductionsforDamageorLossDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofFinesDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofOvertimeDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofWorkmenEmployedbyContractorDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\SaleContractEmployeePFReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\SaleContractLifeSpanReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\Report\SaleContractWisePNLReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractArrearsCalculationDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractAttendanceDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractBillingTransactionDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractDashboardReportDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractEmployeeAdvancesDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractEmployeeMasterDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractFixAttendanceDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractFixItemDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractJobWorkDataDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractJobWorkItemDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractMachineMasterDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractMachineTransactionDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractManPowerItemDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractMasterDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractPayementDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractRecieptDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractSalaryTransactionDataProvider.cs" />
+    <Compile Include="Implementation\Contract\SaleContractServiceItemAttendanceDataProvider.cs" />
+    <Compile Include="Implementation\Dashboard\DashboardDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmpDesignationMasterDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmpEmployeeMasterDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeeContactDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeeDependentsDataProvider .cs" />
+    <Compile Include="Implementation\Employee\EmployeeDocumentRequiredDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeeExperienceDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeePersonalDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeePictureDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeeQualificationDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeeServiceDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeeShiftApplicableMasterDataProvider.cs" />
+    <Compile Include="Implementation\Employee\EmployeeShiftMasterDataProvider.cs" />
+    <Compile Include="Implementation\Employee\GeneralExperienceTypeMasterDataProvider.cs" />
+    <Compile Include="Implementation\Employee\GeneralJobProfileDataProvider.cs" />
+    <Compile Include="Implementation\Employee\GeneralJobStatusDataProvider.cs" />
+    <Compile Include="Implementation\Employee\GeneralLevelMasterDataProvider.cs" />
+    <Compile Include="Implementation\Employee\GeneralRelationshipTypeMasterDataProvider.cs" />
+    <Compile Include="Implementation\ExcelUpload\InventoryExcelUploadDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\BankMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralCityMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralCountryMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralCurrencyMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralEducationMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralEducationTypeMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralGroupMasterDataProvider .cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralHolidaysDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralLocationMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralNationalityMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralPolicyRulesDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralRegionMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralRunningNumbersForAccountDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralSupplierMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralTaxGroupMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralTaxMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralTitleMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralUnitMasterDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralUnitTypeDataProvider.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralWeekDaysDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\AddCentreOpeningBalanceForInventoryDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralAllocateSaleProcessUnitDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemCategoryMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMarchandiseBaseCategoryDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMarchandiseGroupDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMarchandiseSubCategoryDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMerchantiseCategoryDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMerchantiseDepartmentDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralMovementTypeDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralOperatorRelatedRoleDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPackageTypeDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPriceGroupDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPriceListAndListLineDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPurchaseGroupMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralTemperatureMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralTransactionMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralUnitsDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\GeneralUnitsStorageLocationDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\InventoryAttributeMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\InventoryBrandMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\InventoryLablePrintingFormatDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\InventoryLocationMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\InventoryStockAdjustmentDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\InventoryUoMGroupAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\InventoryUoMMasterDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\OrderingAndDeliveryDayDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\Report\InventoryReportDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\Report\VendorMasterReportDataProvider.cs" />
+    <Compile Include="Implementation\Inventory\VendorMasterDataProvider.cs" />
+    <Compile Include="Implementation\Leave\GeneralLeaveDocumentDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveApplicationDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveAttendanceExemptionDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveAttendanceSpanLockDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveAttendanceSpecialRequestDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveAvailedDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveCompensatoryWorkDayDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveDeductRuleExceptionForCentreDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveEmployeeApplicationStatusReportDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveLateMarkRulesDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveManualAttendanceDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveMasterDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeavePostDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveRuleApplicableDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveRuleExemptedEmployeeDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveRuleMasterDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveSessionDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveShiftAllocateToCentreDataProvider.cs" />
+    <Compile Include="Implementation\Leave\LeaveSummaryDataProvider.cs" />
+    <Compile Include="Implementation\Leave\ManualAttendanceStatusReportDataProvider.cs" />
+    <Compile Include="Implementation\MonitoringSystem\AttendenceMonitoringSystemDataProvider.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationCentrewiseDepartmentDataProvider.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationDepartmentMasterDataProvider.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationMasterDataProvider.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationStudyCentreMasterDataProvider.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationStudyCentrePrintingFormatDataProvider .cs" />
+    <Compile Include="Implementation\Payroll\EmployeeSalaryRulesDataProvider.cs" />
+    <Compile Include="Implementation\Payroll\EmployeeSalarySpanDataProvider.cs" />
+    <Compile Include="Implementation\Payroll\EmployeeBulkAttendenceDataProvider.cs" />
+    <Compile Include="Implementation\Payroll\EmployeeSalaryTransactionDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseGRNMasterDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseInvoiceDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseOrderMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseReplenishmentDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseRequirementMasterDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseRequisitionMasterDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseReturnDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\Report\PurchaseReportMasterDataProvider.cs" />
+    <Compile Include="Implementation\Purchase\SupplierPayementMasterDataProvider.cs" />
+    <Compile Include="Implementation\Salary\ESICZoneMasterDataProvider.cs" />
+    <Compile Include="Implementation\Salary\SalaryAllowanceMasterDataProvider.cs" />
+    <Compile Include="Implementation\Salary\SalaryDeductionMasterDataProvider.cs" />
+    <Compile Include="Implementation\Sales\CustomerMasterDataProvider.cs" />
+    <Compile Include="Implementation\Sales\GeneralShipperMasterDataProvider.cs" />
+    <Compile Include="Implementation\Sales\SalesCustomerRecieptDataProvider.cs" />
+    <Compile Include="Implementation\Sales\SalesEnquiryMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Sales\SalesInvoiceMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Sales\SalesOrderDeliveryMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Sales\SalesOrderMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Sales\SalesQuotationMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\Sales\SalesReturnMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Implementation\TaskModel\GeneralRequestMasterDataProvider.cs" />
+    <Compile Include="Implementation\TaskModel\GeneralTaskModelDataProvider.cs" />
+    <Compile Include="Implementation\TaskModel\GeneralTaskReportingDetailsDataProvider.cs" />
+    <Compile Include="Implementation\TaskModel\RequestApprovalFormFieldNameMasterDataProvider.cs" />
+    <Compile Include="Implementation\TaskModel\TaskApprovalFormFieldNameMasterDataProvider.cs" />
+    <Compile Include="Implementation\TaskNotification\TaskNotificationDataProvider.cs" />
+    <Compile Include="Implementation\UserMaster\UserDetailDataProvider.cs" />
+    <Compile Include="Implementation\UserMaster\UserMainMenuMasterDataProvider.cs" />
+    <Compile Include="Implementation\UserMaster\UserMasterDataProvider.cs" />
+    <Compile Include="Implementation\UserMaster\UserModuleMasterDataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\ADMIN\Admin_DataProvider_Web_API.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMActionMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMBrokenCallReasonMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMCallAllotment_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMCallClosure_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMCallTrack_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMCauseMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMComplaintLoggingMaster_WebAPI_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMItemMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMMIFMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\LoginDataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMSymptomMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\ServiceCallTypeMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\Leave\LeaveMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\Leave\SelfLeaveApplicationDataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\LocationTracking\LocationTrackingDataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\Telematics\Telematics_WEB_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\TD_ActivityMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\TD_ActivityRule_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\TD_ConsumerMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\TD_DailyActivityReport_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\TD_ItemMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\TD_StatusMaster_Web_API_DatatProvider.cs" />
+    <Compile Include="Interface\Account\IAccountBalancesheetMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountBalancesheetTypeMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountCategoryMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountCentreOpeningBalanceDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountChequeBookDetailsDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountChequeBookMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountGroupMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountHeadMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountSessionMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountTransactionMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IAccountTransactionTypeMasterDataProvider.cs" />
+    <Compile Include="Interface\Account\IGeneralMapTypeOfAccountDataProvider.cs" />
+    <Compile Include="Interface\Account\IGeneralTypeOfAccountDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountBalancesheetReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountBalancesheetTypeReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountCategoryMasterReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountCentreWiseBalanceSheetReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountDayBookReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountExclusiveToCentreReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountGeneralLedgerReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountGroupMasterReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountHeadMasterReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountMasterReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountProfitAndLossReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountSessionMasterReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountTradingReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountTrialBalanceReportDataProvider.cs" />
+    <Compile Include="Interface\Account\Report\IAccountVoucherSettingMasterReportDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminMenuApplicableDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleApplicableDetailsDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleCentreRightsDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleDetailsDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleMasterDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleMenuDetailsDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleModuleAccessDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminSnPostsDataProvider.cs" />
+    <Compile Include="Interface\Admin\IAdminSnPostsTransactionDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMActionMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMAreaPatchMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMBankMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMBillTypeMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMBrokenCallReasonMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMCauseMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMComplaintLoggingMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMContractTypesMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMCustomerSegementDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMEngineersGroupMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMFeedbackMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMLocationTypeMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMMachineFamilyMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMMachineMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMMIFMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMServiceCallTypesDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMServiceMasterDataProvider.cs" />
+    <Compile Include="Interface\CCRM\ICCRMSymptomMasterDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractArrearsCalculationDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractAttendanceDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractBillingTransactionDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractDashboardReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractEmployeeAdvancesDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractEmployeeMasterDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractFixAttendanceDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractFixItemDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractJobWorkDataDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractJobWorkItemDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractMachineMasterDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractMachineTransactionDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractManPowerItemDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractMasterDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractPayementDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractRecieptDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractSalaryTransactionDataProvider.cs" />
+    <Compile Include="Interface\Contract\ISaleContractServiceItemAttendanceDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IATTRITIONReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IContractEmployeeReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IContractPaymentPendingReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeeESICReportForm7DataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeeFormIIWagesSheetReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeeFormXDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeePFReportForm10DataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeePFReportForm12ADataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeePFReportFORM6ADataProvidercs.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeePFReportForm9DataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeePFSummeryDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IEmployeeReportForm5MonthlyDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IESICMonthlyUploadingFileDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IGSTReportsDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IMISReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IPaymentOfBonusDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IPFChallanRemittanceDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IRegisterofAdavancesDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IRegisterofDeductionsforDamageorLossDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IRegisterofFinesDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IRegisterofOvertimeDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\ISaleContractEmployeePFReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\ISaleContractLifeSpanReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\ISaleContractWisePNLReportDataProvider.cs" />
+    <Compile Include="Interface\Contract\Report\IRegisterofWorkmenEmployedbyContractorDataProvider.cs" />
+    <Compile Include="Interface\Dashboard\IDashboardDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmpDesignationMasterDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmpEmployeeMasterDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeContactDetailsDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeDependentsDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeDocumentRequiredDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeExperienceDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeePersonalDetailsDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeePictureDetailsDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeQualificationDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeServiceDetailsDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeShiftApplicableMasterDataProvider.cs" />
+    <Compile Include="Interface\Employee\IEmployeeShiftMasterDataProvider.cs" />
+    <Compile Include="Interface\Employee\IGeneralExperienceTypeMasterDataProvider.cs" />
+    <Compile Include="Interface\Employee\IGeneralJobProfileDataProvider.cs" />
+    <Compile Include="Interface\Employee\IGeneralJobStatusDataProvider.cs" />
+    <Compile Include="Interface\Employee\IGeneralLevelMasterDataProvider.cs" />
+    <Compile Include="Interface\Employee\IGeneralRelationshipTypeMasterDataProvider.cs" />
+    <Compile Include="Interface\ExcelUpload\IInventoryExcelUploadDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IBankMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralCityMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralCountryMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralCurrencyMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralEducationMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralEducationTypeMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralGroupMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralHolidaysDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralLocationMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralNationalityMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralPolicyRulesDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralRegionMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralRunningNumbersForAccountDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralSupplierMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralTaxGroupMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralTaxMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralTitleMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralUnitMasterDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralUnitTypeDataProvider.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralWeekDaysDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IAddCentreOpeningBalanceForInventoryDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralAllocateSaleProcessUnitDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemCategoryMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMarchandiseBaseCategoryDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMarchandiseGroupDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMarchandiseSubCategoryDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMerchantiseCategoryDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMerchantiseDepartmentDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralMovementTypeDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralOperatorRelatedRoleDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPackageTypeDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPriceGroupDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPriceListAndListLineDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPurchaseGroupMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralTemperatureMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralTransactionMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralUnitsDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IGeneralUnitsStorageLocationDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IInventoryAttributeMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IInventoryBrandMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IInventoryLablePrintingFormatDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IInventoryLocationMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IInventoryStockAdjustmentDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IInventoryUoMGroupAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IInventoryUoMMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IOrderingAndDeliveryDayDataProvider.cs" />
+    <Compile Include="Interface\Inventory\IVendorMasterDataProvider.cs" />
+    <Compile Include="Interface\Inventory\Report\IInventoryReportDataProvider.cs" />
+    <Compile Include="Interface\Inventory\Report\IVendorMasterReportDataProvider.cs" />
+    <Compile Include="Interface\Leave\IGeneralLeaveDocumentDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveApplicationDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveAttendanceExemptionDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveAttendanceSpanLockDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveAttendanceSpecialRequestDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveAvailedDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveCompensatoryWorkDayDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveDeductRuleExceptionForCentreDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveEmployeeApplicationStatusReportDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveLateMarkRulesDetailsDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveManualAttendanceDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveMasterDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeavePostDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveRuleApplicableDetailsDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveRuleExemptedEmployeeDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveRuleMasterDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveSessionDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveShiftAllocateToCentreDataProvider.cs" />
+    <Compile Include="Interface\Leave\ILeaveSummaryDataProvider.cs" />
+    <Compile Include="Interface\Leave\IManualAttendanceStatusReportDataProvider.cs" />
+    <Compile Include="Interface\MonitoringSystem\IAttendenceMonitoringSystemDataProvider.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeSalaryRulesDataProvider.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeSalarySpanDataProvider.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeBulkAttendenceDataProvider.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeSalaryTransactionDataProvider.cs" />
+    <Compile Include="Interface\TaskNotification\ITaskNotificationDataProvider.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationCentrewiseDepartmentDataProvider.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationDepartmentMasterDataProvider.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationMasterDataProvider.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationStudyCentreMasterDataProvider.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationStudyCentrePrintingFormatDataProvider.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseGRNMasterDataProvider.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseInvoiceDataProvider.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseOrderMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseReplenishmentDataProvider.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseRequirementMasterDataProvider.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseRequisitionMasterDataProvider.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseReturnDataProvider.cs" />
+    <Compile Include="Interface\Purchase\ISupplierPayementMasterDataProvider.cs" />
+    <Compile Include="Interface\Purchase\Report\IPurchaseReportMasterDataProvider.cs" />
+    <Compile Include="Interface\Salary\IESICZoneMasterDataProvider.cs" />
+    <Compile Include="Interface\Salary\ISalaryAllowanceMasterDataProvider.cs" />
+    <Compile Include="Interface\Salary\ISalaryDeductionMasterDataProvider.cs" />
+    <Compile Include="Interface\Sales\ICustomerMasterDataProvider.cs" />
+    <Compile Include="Interface\Sales\IGeneralShipperMasterDataProvider.cs" />
+    <Compile Include="Interface\Sales\ISalesCustomerRecieptDataProvider.cs" />
+    <Compile Include="Interface\Sales\ISalesEnquiryMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\Sales\ISalesInvoiceMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\Sales\ISalesOrderDeliveryMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\Sales\ISalesOrderMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\Sales\ISalesQuotationMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\Sales\ISalesReturnMasterAndDetailsDataProvider.cs" />
+    <Compile Include="Interface\TaskModel\IGeneralRequestMasterDataProvider.cs" />
+    <Compile Include="Interface\TaskModel\IGeneralTaskModelDataProvider.cs" />
+    <Compile Include="Interface\TaskModel\IGeneralTaskReportingDetailsDataProvider.cs" />
+    <Compile Include="Interface\TaskModel\IRequestApprovalFormFieldNameMasterDataProvider.cs" />
+    <Compile Include="Interface\TaskModel\ITaskApprovalFormFieldNameMasterDataProvider.cs" />
+    <Compile Include="Interface\UserMaster\IUserDetailDataProvider.cs" />
+    <Compile Include="Interface\UserMaster\IUserMainMenuMasterDataProvider.cs" />
+    <Compile Include="Interface\UserMaster\IUserMasterDataProvider.cs" />
+    <Compile Include="Interface\UserMaster\IUserModuleMasterDataProvider.cs" />
+    <Compile Include="Interface\WebAPI\ADMIN\IAdmin_DataProvider_Web_API.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMActionMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMBrokenCallReasonMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMCallAllotment_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMCallClosure_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMCallTrack_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMCauseMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMComplaintLoggingMaster_WebAPI_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMItemMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMMIFMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ILoginDataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\ICCRMSymptomMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\CCRM\IServiceCallTypeMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\Leave\ILeaveMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\Leave\ISelfLeaveApplicationDataProvider.cs" />
+    <Compile Include="Interface\WebAPI\LocationTracking\ILocationTrackingDataProvider.cs" />
+    <Compile Include="Interface\WebAPI\Telematics\ITelematics_WEB_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\TransmissionNDistribution\ITD_ActivityMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\TransmissionNDistribution\ITD_ActivityRule_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\TransmissionNDistribution\ITD_ConsumerMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\TransmissionNDistribution\ITD_DailyActivityReport_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\TransmissionNDistribution\ITD_ItemMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Interface\WebAPI\TransmissionNDistribution\ITD_StatusMaster_Web_API_DataProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\AERP.Base.DTO\AERP.Base.DTO.csproj">
+      <Project>{cfcf47cc-de41-4f48-805c-9420b3716d1e}</Project>
+      <Name>AERP.Base.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\AERP.ExceptionManager\AERP.ExceptionManager.csproj">
+      <Project>{c93d4857-bbbc-4839-adc3-57212444ebae}</Project>
+      <Name>AERP.ExceptionManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.Common\AERP.Common.csproj">
+      <Project>{c585a626-f8f4-4ba4-9b4c-497c52bb4e79}</Project>
+      <Name>AERP.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.DTO\AERP.DTO.csproj">
+      <Project>{3b3c07e6-93af-48d2-8922-ab1969ee052a}</Project>
+      <Name>AERP.DTO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Implementation\ExcelUpload\vssver.scc" />
+    <None Include="Implementation\Purchase\Report\vssver.scc" />
+    <None Include="Implementation\TaskModel\vssver.scc" />
+    <None Include="Interface\Dashboard\vssver.scc" />
+    <None Include="Interface\ExcelUpload\vssver.scc" />
+    <None Include="Interface\Purchase\Report\vssver.scc" />
+    <None Include="Interface\TaskModel\vssver.scc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

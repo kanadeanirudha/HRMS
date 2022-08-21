@@ -1,0 +1,1004 @@
+﻿@*@model AMS.ViewModel.EmployeeDependentsViewModel
+@{
+    Layout = null;
+}
+
+
+<div class="widget-block">
+    <div class="widget-head">
+        <h5 id="hFive">
+            <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+            <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.EmployeeID)
+            @Html.HiddenFor(m => m.ID)
+
+          @Resources.FormUpdate_EmployeeDependent
+
+            
+        </h5>
+
+    </div>
+
+    <div class="widget-content">
+        <form id="FormEditEmployeeDependents" method="post" class="form-horizontal well">
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.NameTitle, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, "Select", new { style = "font-weight:bold;", @class = "span1" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.NameTitle)
+                        </div>
+
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.GenderCode, new { style = "font-Weight:Bold;" })
+                        </div>
+                       
+                        
+                        @if (Model.NameTitle == "Mr")
+                        {
+                            <div class="span2" style="font-weight:bold;">
+                                @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Female" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Female
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="span2" style="font-weight:bold;">
+                                @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Female" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Female
+                            </div>
+                        }
+                       
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.DependentName, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.DependentName, new { @class = "txtbox", style = "width:200%", maxlength = "200" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.DependentName)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.CountryID, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.CountryID, (SelectList)ViewBag.GeneralCountryList, Resources.ddlHeaders_CountryName, new { @class = "", style = "font-weight:bold" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.CountryID)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.RegionID, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.DropDownListFor(m => m.RegionID, (SelectList)ViewBag.GeneralRegionMaster, Resources.ddlHeaders_RegionName, new { @class = "", style = "font-weight:bold" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.RegionID)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.CityID, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.CityID, (SelectList)ViewBag.GeneralCityMaster, Resources.ddlHeaders_CityName, new { @class = "", style = "font-weight:bold" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.CityID)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.LanguageKnown, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.LanguageKnown, new { @class = "txtbox", maxlength = "255" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.LanguageKnown)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.GeneralRelationshipTypeMasterID, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.GeneralRelationshipTypeMasterID, (SelectList)ViewBag.GeneralRelationshipTypeMaster,  Resources.ddlHeaders_SelectRelation, new { @class = "", style = "font-weight:bold" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.GeneralRelationshipTypeMasterID)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MotherTongueID, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.DropDownListFor(m => m.MotherTongueID, (SelectList)ViewBag.GeneralLanguageMaster,Resources.ddlHeaders_Language, new { @class = "", style = "font-weight:bold" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.MotherTongueID)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.DateOfBirth, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "txtbox", @readonly = "readonly" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.DateOfBirth)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.PlaceOfBirth, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.PlaceOfBirth, new { @class = "txtbox", maxlength = "50" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.PlaceOfBirth)
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.EmployeeDependentQualification, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.EmployeeDependentQualification, new { @class = "txtbox", maxlength = "100" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.EmployeeDependentQualification)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.EmployeeDependentDesignation, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.EmployeeDependentDesignation, new { @class = "txtbox", maxlength = "100" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.EmployeeDependentDesignation)
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.GotAnyMedal, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.CheckBoxFor(m => m.GotAnyMedal)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+           @if(Model.GotAnyMedal==true)
+           { 
+            <div id="Medal" class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MedalDescription, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextAreaFor(model => model.MedalDescription, new { @class = "input-large", maxlength = "255" })
+                            
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MedalReceivedDate, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.MedalReceivedDate, new { @class = "txtbox", @readonly = "readonly" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+           }
+           else
+           { 
+            <div id="Medal" style="display:none" class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MedalDescription, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextAreaFor(model => model.MedalDescription, new { @class = "input-large", maxlength = "255" })
+                            
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MedalReceivedDate, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.MedalReceivedDate, new { @class = "txtbox", @readonly = "readonly" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+           }
+                
+              
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.IsScholarshipReceived, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.CheckBoxFor(m => m.IsScholarshipReceived)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+@if(Model.IsScholarshipReceived==true)
+           {
+            <div id="Scholarship">
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipDescription, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.TextAreaFor(model => model.ScholarshipDescription, new { @class = "input-large" })
+                                
+                            </div>
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipAmount, new { style = "font-Weight:Bold;" })
+                            </div>
+
+                            <div class="span2">
+
+                                @Html.TextBoxFor(model => model.ScholarshipAmount, new { @class = "txtbox" })
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipStartDate, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.ScholarshipStartDate, new { @class = "txtbox", @readonly = "readonly" })
+                                
+                            </div>
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipUptoDate, new { style = "font-Weight:Bold;" })
+                            </div>
+
+                            <div class="span2">
+
+                                @Html.TextBoxFor(model => model.ScholarshipUptoDate, new { @class = "txtbox", @readonly = "readonly" })
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+}
+else
+{ 
+     <div id="Scholarship" style="display:none">
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipDescription, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.TextAreaFor(model => model.ScholarshipDescription, new { @class = "input-large" })
+                                
+                            </div>
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipAmount, new { style = "font-Weight:Bold;" })
+                            </div>
+
+                            <div class="span2">
+
+                                @Html.TextBoxFor(model => model.ScholarshipAmount, new { @class = "txtbox",style = "text-align:right" })
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span10">
+                        <div class="row control-group">
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipStartDate, new { style = "font-Weight:Bold;" })
+                            </div>
+                            <div class="span3">
+                                @Html.TextBoxFor(model => model.ScholarshipStartDate, new { @class = "txtbox", @readonly = "readonly" })
+                                
+                            </div>
+                            <div class="spanFullName">
+                                @Html.LabelFor(model => model.ScholarshipUptoDate, new { style = "font-Weight:Bold;" })
+                            </div>
+
+                            <div class="span2">
+
+                                @Html.TextBoxFor(model => model.ScholarshipUptoDate, new { @class = "txtbox", @readonly = "readonly" })
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+}
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.NationalityID, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.NationalityID, (SelectList)ViewBag.GeneralNationalityMaster,  Resources.ddlHeaders_SelectNationality, new { style = "font-weight:bold;", @class = "dropdown1" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.NationalityID)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.CurriculumActivity, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.CurriculumActivity, new { @class = "txtbox", maxlength = "255" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.ReligionID, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.ReligionID, (SelectList)ViewBag.GeneralReligionMaster,Resources.ddlHeaders_SelectReligion, new { style = "font-weight:bold;", @class = "dropdown1" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.ReligionID)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.CategoryID, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.DropDownListFor(m => m.CategoryID, (SelectList)ViewBag.GeneralCategoryMaster, Resources.ddlHeaders_SelectCategory, new { style = "font-weight:bold;", @class = "dropdown1" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.CategoryID)
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.CasteID, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.DropDownListFor(m => m.CasteID, (SelectList)ViewBag.GeneralCasteMaster, Resources.ddlHeaders_SelectCaste, new { style = "font-weight:bold;", @class = "dropdown1" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.CasteID)
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.WeddingAnniversaryDate, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.TextBoxFor(model => model.WeddingAnniversaryDate, new { @class = "text", @readonly = "readonly" })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <b> ADDRESS</b>
+
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Address1, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextAreaFor(model => model.Address1, new { @class = "input-large", maxlength = "255" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.Address1)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Address2, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextAreaFor(model => model.Address2, new { @class = "input-large", maxlength = "255" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.PhoneNumber, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "txtbox", style = "text-align:right", maxlength = "10" })
+                            
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.MobileNumber, new { style = "font-Weight:Bold;" })
+                        </div>
+
+                        <div class="span2">
+
+                            @Html.TextBoxFor(model => model.MobileNumber, new { @class = "txtbox", style = "text-align:right", maxlength = "10" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.MobileNumber)
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.Hobbies, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.TextBoxFor(model => model.Hobbies, new { @class = "txtbox" })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+                <input type="button" id="EditEmployeeDependentsRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        EmployeeDependents.Initialize();
+    });
+</script>*@
+
+@*-----------------------new code--------------------------------*@
+
+@model AMS.ViewModel.EmployeeDependentsViewModel
+@{
+
+    Layout = null;
+}
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormUpdate_EmployeeDependent</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:250px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+            <form id="FormEditEmployeeDependents" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.EmployeeID)
+                @Html.HiddenFor(m => m.ID)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.NameTitle, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, "Select", new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.NameTitle)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.GenderCode, new { style = "" })
+                        <div class="form-group">
+                            @if (Model.NameTitle == "Mr")
+                            {
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Female" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Female
+                                    <i class="input-helper"></i>
+                                </label>
+                            }
+                            else
+                            {
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Female" })&nbsp;&nbsp;&nbsp;@Resources.DisplayName_Female
+                                    <i class="input-helper"></i>
+                                </label>
+
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.DependentName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.DependentName, new { @class = "form-control", style = "", maxlength = "200" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DependentName)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.CountryID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.CountryID, (SelectList)ViewBag.GeneralCountryList, Resources.ddlHeaders_CountryName, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CountryID)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.RegionID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.RegionID, (SelectList)ViewBag.GeneralRegionMaster, Resources.ddlHeaders_RegionName, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.RegionID)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.CityID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.CityID, (SelectList)ViewBag.GeneralCityMaster, Resources.ddlHeaders_CityName, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CityID)
+                    </div>
+
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.LanguageKnown, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.LanguageKnown, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.LanguageKnown)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.GeneralRelationshipTypeMasterID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.GeneralRelationshipTypeMasterID, (SelectList)ViewBag.GeneralRelationshipTypeMaster, Resources.ddlHeaders_SelectRelation, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.GeneralRelationshipTypeMasterID)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.MotherTongueID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.MotherTongueID, (SelectList)ViewBag.GeneralLanguageMaster, Resources.ddlHeaders_Language, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.MotherTongueID)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.DateOfBirth, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DateOfBirth)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.PlaceOfBirth, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.PlaceOfBirth, new { @class = "form-control", maxlength = "50", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PlaceOfBirth)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.EmployeeDependentQualification, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.EmployeeDependentQualification, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.EmployeeDependentQualification)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.EmployeeDependentDesignation, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.EmployeeDependentDesignation, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.EmployeeDependentDesignation)
+                    </div>
+                </div>
+                
+                
+                @if (Model.GotAnyMedal == true)
+                {
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                                            <label>
+                                                <input type="checkbox" id="GotAnyMedal" checked>
+                                                <i class="input-helper"></i>
+                                                @Html.LabelFor(model => model.GotAnyMedal)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-sm-12" id="Medal">
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(model => model.MedalReceivedDate, new { style = "background-color:#fff;" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.MedalReceivedDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(model => model.MedalDescription, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextAreaFor(model => model.MedalDescription, new { @class = "form-control", maxlength = "255" })
+                                        </div>
+                                    </div>
+                                </div>
+                }
+                else { 
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                                            <label>
+                                                <input type="checkbox" id="GotAnyMedal">
+                                                <i class="input-helper"></i>
+                                                @Html.LabelFor(model => model.GotAnyMedal)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" id="Medal" style="display:none">
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(model => model.MedalReceivedDate, new { style = "background-color:#fff;" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.MedalReceivedDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(model => model.MedalDescription, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextAreaFor(model => model.MedalDescription, new { @class = "form-control", maxlength = "255" })
+                                        </div>
+                                    </div>
+                                </div>
+                }
+                
+                
+
+                @if (Model.IsScholarshipReceived == true)
+                {
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                                <label>
+                                    <input type="checkbox" id="IsScholarshipReceived" checked>
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.IsScholarshipReceived)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" id="Scholarship">
+
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipAmount, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ScholarshipAmount, new { @class = "form-control", style = "text-align:right" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipStartDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ScholarshipStartDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipUptoDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ScholarshipUptoDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.ScholarshipDescription, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextAreaFor(model => model.ScholarshipDescription, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                    </div>
+                </div>
+                }
+                else { 
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="checkbox m-b-15" style="padding-top: 6%; padding-left: 18px;">
+                                <label>
+                                    <input type="checkbox" id="IsScholarshipReceived">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.IsScholarshipReceived)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" id="Scholarship" style="display:none">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipAmount, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ScholarshipAmount, new { @class = "form-control", style = "text-align:right" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipStartDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ScholarshipStartDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ScholarshipUptoDate, new { style = "" })
+                        <div class="form-group  fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ScholarshipUptoDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        @Html.LabelFor(model => model.ScholarshipDescription, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextAreaFor(model => model.ScholarshipDescription, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                    </div>
+                </div>
+                }
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.NationalityID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.NationalityID, (SelectList)ViewBag.GeneralNationalityMaster, Resources.ddlHeaders_SelectNationality, new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.NationalityID)
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.CurriculumActivity, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.CurriculumActivity, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ReligionID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.ReligionID, (SelectList)ViewBag.GeneralReligionMaster, Resources.ddlHeaders_SelectReligion, new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ReligionID)
+                    </div>
+                </div>
+
+                <div class="col-sm-12" style="padding-bottom:20px;">
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>
+                        @Html.LabelFor(model => model.CategoryID, new { style = "" })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(m => m.CategoryID, (SelectList)ViewBag.GeneralCategoryMaster, Resources.ddlHeaders_SelectCategory, new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CategoryID)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>
+                        @Html.LabelFor(model => model.CasteID, new { style = "" })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(m => m.CasteID, (SelectList)ViewBag.GeneralCasteMaster, Resources.ddlHeaders_SelectCaste, new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CasteID)
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.WeddingAnniversaryDate, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.WeddingAnniversaryDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+                </div>
+                <p> ADDRESS</p><hr>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>
+                        @Html.LabelFor(model => model.Address1, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextAreaFor(model => model.Address1, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Address1)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>
+                        @Html.LabelFor(model => model.Address2, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextAreaFor(model => model.Address2, new { @class = "form-control", maxlength = "255" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Address2)
+                    </div>
+
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.PhoneNumber, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", maxlength = "10", style = "text-align:right" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <span style="color:red">*</span>
+                        @Html.LabelFor(model => model.MobileNumber, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control", maxlength = "10", style = "text-align:right" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.MobileNumber)
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Hobbies, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.Hobbies, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" id="EditEmployeeDependentsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        EmployeeDependents.Initialize();
+    });
+</script>
+
+
+
+
+
+
+
+
+

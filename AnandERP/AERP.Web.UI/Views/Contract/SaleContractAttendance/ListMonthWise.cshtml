@@ -1,0 +1,59 @@
+﻿@model AERP.ViewModel.SaleContractAttendanceViewModel
+
+<table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+    <thead>
+        <tr>
+            <th>Sr. No.</th>
+            <th>Employee Name</th>
+            <th>Total Days</th>
+            <th>Total Attendance</th>
+            <th>Over Time In Hours</th>
+            <th>Salary Post</th>
+            <th></th>
+        </tr>
+    </thead>
+    @if (Model.SaleContractAttendanceList.Count > 0)
+    {
+        decimal TotalDaysSum = 0; decimal TotalAttendanceSum = 0; decimal OvertimeHoursSum = 0;int Count = 1;
+        <tbody>
+
+
+            @foreach (var item in Model.SaleContractAttendanceList)
+            {
+                TotalDaysSum = TotalDaysSum + item.TotalDays;
+                TotalAttendanceSum = TotalAttendanceSum + item.TotalAttendance;
+                OvertimeHoursSum = OvertimeHoursSum + item.OvertimeHours;
+                <tr>
+                    <td>@Count</td>
+                    <td>@item.SaleContractEmployeeMasterName</td>
+                    <td>@item.TotalDays</td>
+                    <td>@item.TotalAttendance</td>
+                    <td>@item.OvertimeHours</td>
+                    <td>@item.SalaryForManPowerItemName</td>
+                    @if (item.ID > 0)
+                    {
+                        <td><a href="SaleContractAttendance/AddSalaryForManPowerItem?ID=@item.ID" class="mfpAjaxModal btn btn-default waves-effect"><span class="zmdi zmdi-zoom-in" title="Salary For Man Power"></span></a></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+                Count++;
+            }
+
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th>Total</th>
+                <th>@TotalDaysSum</th>
+                <th>@TotalAttendanceSum</th>
+                <th>@OvertimeHoursSum</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
+    }
+</table>

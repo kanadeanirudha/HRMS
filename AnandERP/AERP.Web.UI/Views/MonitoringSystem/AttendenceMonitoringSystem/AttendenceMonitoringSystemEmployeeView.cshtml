@@ -1,0 +1,262 @@
+﻿@*@model AMS.ViewModel.AttendenceMonitoringSystemViewModel
+@{ 
+    var group1 = string.Empty;
+    var group2 = string.Empty;
+ }
+<style type="text/css">
+    .ui-widget-header {
+        color: #333;
+        font-weight: bold;
+    }
+</style>
+<div class="container-fluid">
+    <ul class="breadcrumb">
+        <li><a href="#">@Resources.MainMenu_MonitoringSystem</a><span class="divider">»</span></li>
+        <li>@Html.ActionLink(@Resources.FormName_AttendanceMonitoringReport, "Index")<span class="divider">»</span></li>
+        <li class="active">@Resources.FormName_CentreDepartmentFaculty</li>
+    </ul>
+    <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-block">
+                <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+
+                <div class="widget-head">
+                    <h5 id="hFive"><i class="black-icons users"></i>&nbsp; @Resources.FormName_CentreDepartmentFaculty</h5>
+
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box">
+                        <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                            <div class="table_content">
+                                <table id="myDataTable2" class="table user-tbl">
+                                    <thead>
+                                        <tr>
+                                            <th class="center" style="font-weight:bold;color:#000;width:40%" rowspan="2">@Resources.TableHeaders_Employee</th>
+                                            <th class="center" style="font-weight:bold;color:#000" rowspan="2">@Resources.TableHeaders_TotalDays </th>
+                                            <th class="center" style="font-weight:bold;color:#000" colspan="2">@Resources.TableHeaders_PresentDays </th>
+                                            <th class="center" style="font-weight:bold;color:#000" colspan="2">@Resources.TableHeaders_AbsentDays </th>
+                                            <th class="center" style="font-weight:bold;color:#000" rowspan="2">@Resources.TableHeaders_Attendance</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_AttendedDays</th>
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_Informed</th>
+                                             <th class="center" style="font-weight:bold;color:#000">@Resources.TableHeaders_LWP</th>
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_Uninformed</th>
+                                        </tr>
+                                    </thead>
+                                    @if (ViewBag.Data == 1)
+                                    {
+                                        foreach (var item in Model.DataCollection)
+                                        {
+
+                                            <tbody id="Level0" style="overflow: scroll;">
+
+                                                @if (group1 != item.CentreCode   ||  group2 != item.DepartmentName)
+                                                {
+                                                    <tr>
+                                                        <td style="text-align: left; font-weight: bold">
+                                                            @item.CentreName  [@item.DepartmentName]
+                                                        </td>
+                                                    </tr>
+                                                    group1 = item.CentreCode;
+                                                    group2 = item.DepartmentName;
+                                                }
+                                                <tr>
+                                                    <td id="Faculty" style="text-align: left;width:20%">
+                                                        <a href="#" class="@item.EmployeeID~@item.EmployeeFullName">@item.EmployeeFullName</a>
+                                                    </td>
+                                                    
+                                                    <td style="text-align: center; font-weight: bold">
+                                                        @item.TotalDaysCount
+                                                    </td>
+                                                     <td style="text-align: center; font-weight: bold">
+                                                        @item.PresentDaysCount
+                                                    </td>
+                                                    <td style="text-align: center; font-weight: bold">
+                                                        @item.InformedLeavesCount
+                                                    </td>
+                                                    <td style="text-align: center; font-weight: bold">
+                                                        @item.LWPCount
+                                                    </td>
+                                                     <td style="text-align: center; font-weight: bold">
+                                                        @item.UnInformedDaysCount
+                                                    </td>
+                                                   
+                                                    <td class="center">
+                                                        <span>
+                                                            <h4 style="color:#2f6d91">
+                                                                @string.Format("{0:F2}", item.AverageRanking) %
+                                                            </h4>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tbody style="overflow: scroll;">
+                                            <tr>
+                                                <td colspan="16">
+                                                    No data available
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    }
+                                </table>
+                            </div>
+                            <div class="widget-bottom">
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AttendenceMonitoringSystem.Initialize();
+    });
+
+
+</script>*@
+
+@*------------new code--------*@
+
+
+
+
+@model AERP.ViewModel.AttendenceMonitoringSystemViewModel
+@{
+    var group1 = string.Empty;
+    var group2 = string.Empty;
+}
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+
+@*<div class="container">*@
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormName_CentreDepartmentFaculty</h2>
+</div>
+
+<div class="card">
+
+
+
+    <div class="card-header">
+
+        <ol class="breadcrumb" style="padding-left: 0%; padding-right: 10%;">
+            <li><a href="#">@Resources.MainMenu_MonitoringSystem</a></li>
+            <li>@Html.ActionLink(@Resources.FormName_AttendanceMonitoringReport, "Index")</li>
+            <li class="active">@Resources.FormName_CentreDepartmentFaculty</li>
+        </ol>
+    </div>
+
+
+
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive" id="DataTables_Table_1_wrapper" role="grid">
+        <table id="myDataTable2" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="warning c-white" style="" rowspan="2">@Resources.TableHeaders_Employee</th>
+                    <th class="warning c-white" style="" rowspan="2">@Resources.TableHeaders_TotalDays </th>
+                    <th class="warning c-white" style="" colspan="2">@Resources.TableHeaders_PresentDays </th>
+                    <th class="warning c-white" style="" colspan="2">@Resources.TableHeaders_AbsentDays </th>
+                    <th class="warning c-white" style="" rowspan="2">@Resources.TableHeaders_Attendance</th>
+                </tr>
+                <tr>
+                    <th class="success c-white" style="">@Resources.TableHeaders_AttendedDays</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_Informed</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_LWP</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_Uninformed</th>
+                </tr>
+            </thead>
+
+            @if (ViewBag.Data == 1)
+            {
+                foreach (var item in Model.DataCollection)
+                {
+
+                    <tbody id="Level0" style="">
+
+                        @if (group1 != item.CentreCode || group2 != item.DepartmentName)
+                        {
+                            <tr>
+                                <td style="">
+                                    @item.CentreName  [@item.DepartmentName]
+                                </td>
+                            </tr>
+                            group1 = item.CentreCode;
+                            group2 = item.DepartmentName;
+                        }
+                        <tr>
+                            <td id="Faculty" style="">
+                                <a href="#" class="@item.EmployeeID~@item.EmployeeFullName">@item.EmployeeFullName</a>
+                            </td>
+
+                            <td style="">
+                                @item.TotalDaysCount
+                            </td>
+                            <td style="">
+                                @item.PresentDaysCount
+                            </td>
+                            <td style="">
+                                @item.InformedLeavesCount
+                            </td>
+                            <td style="">
+                                @item.LWPCount
+                            </td>
+                            <td style="">
+                                @item.UnInformedDaysCount
+                            </td>
+
+                            <td class="">
+                                <span>
+                                    <h4 style="color:#2f6d91">
+                                        @string.Format("{0:F2}", item.AverageRanking) %
+                                    </h4>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            }
+            else
+            {
+                <tbody style="">
+                    <tr>
+                        <td colspan="16">
+                            No data available
+                        </td>
+                    </tr>
+                </tbody>
+            }
+
+
+        </table>
+
+    </div>
+</div>
+@*</div>*@
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AttendenceMonitoringSystem.Initialize();
+    });
+
+
+</script>

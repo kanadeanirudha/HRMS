@@ -1,0 +1,250 @@
+﻿@model AMS.ViewModel.EmployeeAttendanceReportViewModel
+
+@{
+    var group1 = string.Empty;
+    var group2 = string.Empty;
+    int date = 0;
+}
+
+<style type="text/css">
+    hr {
+        display: block;
+        height: 1px;
+        background: transparent;
+        width: 100%;
+        border: none;
+        border-top: solid 2px #aaaaaa;
+    }
+</style>
+
+
+<div class="widget-content">
+    <div class="widget-box">
+        <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+            <div class="table_content">
+                <div id="printablediv">
+                    <div style="border: 2px solid #aaaaaa;">
+
+                        <table id="myDataTable" class="table user-tbl">
+                            <thead>
+                                <tr>
+                                    <th class="center" style="font-weight:bold;color:#000; text-transform:none;" rowspan="2">Employee</th>
+                                    <th class="center" style="font-weight: bold; color: #000; text-transform: none;" rowspan="2">InTime</th>
+                                    <th class="center" style="font-weight: bold; color: #000; text-transform: none;" rowspan="2">OutTime</th>
+                                    <th class="center" style="font-weight: bold; color: #000; text-transform: none;" rowspan="2">Working Houre</th>
+                                    <th class="center" style="font-weight: bold; color: #000; text-transform: none;" rowspan="2">IsLate</th>
+                                </tr>
+                            </thead>
+                            @if (Model.ListEmployeeAttendanceReportData.Count > 0)
+                            {
+                                foreach (var item in Model.ListEmployeeAttendanceReportData)
+                                {
+                                    <tbody id="Level0" style="overflow: scroll;">
+                                       
+                                        @if (group1 != item.DepatmentName)
+                                        {
+                                            <tr>
+                                                <td style="text-align: left; font-weight: bold; color: brown;">
+                                                    @item.DepatmentName
+                                                </td>
+                                                <td style="text-align: left; font-weight: bold;"></td>
+                                                <td style="text-align: left; font-weight: bold;"></td>
+                                                <td style="text-align: left; font-weight: bold;"></td>
+                                                <td style="text-align: left; font-weight: bold;"></td>
+                                            </tr>
+                                            group1 = item.DepatmentName;
+                                        }
+
+                                        @if (group2 != item.EmployeeName)
+                                        {
+                                            <tr>
+                                                <td style=" padding-left: 38px; font-weight: bold; color: steelblue;">
+                                                    @item.EmployeeName
+                                                </td>
+                                                <td style=" padding-left: 38px; font-weight: bold"></td>
+                                                <td style=" padding-left: 38px; font-weight: bold"></td>
+                                                <td style=" padding-left: 38px; font-weight: bold"></td>
+                                                <td style=" padding-left: 38px; font-weight: bold"></td>
+                                            </tr>
+                                            group2 = item.EmployeeName;
+                                        }
+                                        @{
+                                    date = Convert.ToString(@item.WorkingHour) != "0" ? (Convert.ToDateTime(@item.WorkingHour)).Hour : 0;
+                                        }
+                                        @if (item.IsConsiderForLateMark == true && date >= 9)
+                                        {
+                                            <tr style="background-color: #f89406">
+                                                <td style="padding-left: 70px; font-weight: lighter">
+                                                    @item.AttendanceDate
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckInTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckOutTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.WorkingHour
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+
+                                                    @if (@item.IsConsiderForLateMark == true)
+                                                    {
+                                                    <span>Yes</span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span>No</span>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        }
+                                        else if (@item.IsConsiderForLateMark == true && date < 9)
+                                        {
+                                            <tr style="background-color: #b94a48;">
+                                                <td style="padding-left: 70px; font-weight: lighter">
+                                                    @item.AttendanceDate
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckInTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckOutTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.WorkingHour
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+
+                                                    @if (@item.IsConsiderForLateMark == true)
+                                                    {
+                                                    <span>Yes</span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span>No</span>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        }
+                                        else if (@item.IsConsiderForLateMark == false && date < 9)
+                                        {
+                                            <tr style="background-color: #4bb1cf;">
+                                                <td style="padding-left: 70px; font-weight: lighter">
+                                                    @item.AttendanceDate
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckInTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckOutTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.WorkingHour
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+
+                                                    @if (@item.IsConsiderForLateMark == true)
+                                                    {
+                                                    <span>Yes</span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span>No</span>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                        <tr>
+                                                <td style="padding-left: 70px; font-weight: lighter">
+                                                    @item.AttendanceDate
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckInTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.CheckOutTime
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+                                                    @item.WorkingHour
+                                                </td>
+                                                <td style="text-align: center; font-weight: lighter">
+
+                                                    @if (@item.IsConsiderForLateMark == true)
+                                                    {
+                                                    <span>Yes</span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span>No</span>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                }
+                            }
+                            else
+                            {
+                                <tbody style="overflow: scroll;">
+                                    <tr>
+                                        <td class="center" style="font-weight:bold;color:#000" colspan="5">
+                                            @if (Model.ListEmployeeAttendanceReportData.Count == 0)
+                                            {
+                                                <span> No data available</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+                @if (Model.ListEmployeeAttendanceReportData.Count > 0)
+                {
+                    <hr />
+                    <center>
+                        <input type="button" style="width:10%;" id="Print" value="Print" onclick="javascript: printDiv('printablediv')" class="btn btn-primary" />
+                    </center>
+                    <br />
+
+                }
+            </div>
+            <div class="widget-bottom">
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <br>
+    <br>
+</div>
+
+<script language="javascript" type="text/javascript">
+    function printDiv(divID) {
+        //Get the HTML of div
+        var divElements = document.getElementById(divID).innerHTML;
+        //Get the HTML of whole page
+        var oldPage = document.body.innerHTML;
+
+        //Reset the page's HTML with div's HTML only
+        document.body.innerHTML =
+          "<html><head><title></title></head><body>" +
+          divElements + "</body>";
+
+        //Print Page
+        window.print();
+
+        //Restore orignal HTML
+        document.body.innerHTML = oldPage;
+
+    }
+</script>

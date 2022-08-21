@@ -1,0 +1,225 @@
+﻿@model AERP.ViewModel.EmployeeSalaryRulesViewModel
+
+@*<div class="card">*@
+<div class="bootgrid-header container-fluid" id="data-table-command-header">
+    <div class="row">
+        <div class="col-sm-12 actionBar">
+            <div class="search form-group">
+                <div class="input-group">
+                    <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                    <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control" style="z-index:1;">
+                </div>
+            </div>
+            <div class="actions btn-group">
+                <div class="dropdown btn-group">
+                    <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                        <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                    </button>
+                    <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                        <li class="active" aria-selected="true">
+                            <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                        </li>
+                        <li aria-selected="false">
+                            <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                        </li>
+                        <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown btn-group" style="display:none;">
+                    <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                        <span class="dropdown-text">
+                            <span class="zmdi icon zmdi-view-module"></span>
+                        </span><span class="caret"></span>
+                    </button>
+                    <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="Item Description">
+                                    Item Description<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Designation">
+                                    Designation<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="Basic Salary Amount">
+                                    Basic Salary Amount<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="4" name="Total Amount">
+                                    Total Amount<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox">
+                                <label class="dropdown-item" aria-disabled="false">
+                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="5" name="Actions">
+                                    @Resources.DisplayName_Actions<i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+    <thead>
+        <tr>
+            <th>Employee Name</th>
+            <th>Employee Code</th>
+            <th>Basic Salary</th>
+            <th>Net Salary</th>
+            <th>Total Salary</th>
+            <th>@Resources.DisplayName_Actions</th>
+        </tr>
+    </thead>
+</table>
+@*</div>*@
+@*</div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var oTable;
+        EmployeeSalaryRules.Initialize();
+        var isReloadedFromCookies;
+        oTable = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "EmployeeSalaryRules/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "SelectedCentreCode", "value": $("#SelectedCentreCode").val() });
+                aoData.push({ "name": "SelectedDepartmentID", "value": $("#SelectedDepartmentID").val() });
+            },
+            "columnDefs": [
+
+                             {
+                                 "targets": 0,
+                                 "visible": true,
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     if (data[2] != "") {
+                                         var result = "<p  style=' height:5px;'>" + data[2] + "</p>";
+                                         return result;
+                                     }
+                                     else {
+                                         return null;
+                                     }
+                                 }
+                             },
+                              {
+                                  "targets": 1,
+                                  "visible": true,
+                                  "data": null,
+                                  "render": function (data, type, full, meta) {
+                                      if (data[3] != "") {
+                                          var result = "<p  style=' height:5px;'>" + data[3] + "</p>";
+                                          return result;
+                                      }
+                                      else {
+                                          return null;
+                                      }
+                                  }
+                              },
+                            {
+                                "targets": 2,
+                                "visible": true,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    if (data[4] != "") {
+                                        var result = "<p  style=' height:5px;'>" + data[4] + "</p>";
+                                        return result;
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                }
+                            },
+                            {
+                                "targets": 3,
+                                "visible": true,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    if (data[5] != "") {
+                                        var result = "<p  style=' height:5px;'>" + data[5] + "</p>";
+                                        return result;
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                }
+                            },
+                            {
+                                "targets": 4,
+                                "visible": true,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    if (data[6] != "") {
+                                        var result = "<p  style=' height:5px;'>" + data[6] + "</p>";
+                                        return result;
+                                    }
+                                    else {
+                                        return null;
+                                    }
+                                }
+                            },
+                            {
+                                "targets": 5,
+                                "bSortable": false,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+
+                                    if (data[0] != 0) {
+                                        var result1 = '@Html.ActionLink("Edit1", "Edit", "EmployeeSalaryRules", new { ID="ID1", EmployeeMasterID = "EmployeeMasterID1", EmployeeName = "EmployeeName1" }, new { @class = "mfpAjaxModal" })';
+                                        result1 = result1.replace('EmployeeMasterID1', data[1]);
+                                        result1 = result1.replace('EmployeeName1', data[2]);
+                                        result1 = result1.replace('ID1', data[0]);
+                                        result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_View" class="btn btn-default"><i class="zmdi zmdi-zoom-in"></i></button>');
+
+                                        var result = "<p  style=''>" + result1 + "</p>";
+                                        return result;
+                                    } else {
+                                        var result1 = '@Html.ActionLink("Edit1", "Create", "EmployeeSalaryRules", new { EmployeeMasterID = "EmployeeMasterID1", EmployeeName= "EmployeeName1" }, new { @class = "mfpAjaxModal" })';
+                                        result1 = result1.replace('EmployeeMasterID1', data[1]);
+                                        result1 = result1.replace('EmployeeName1', data[2]);
+                                        result1 = result1.replace("Edit1", '<button title="@Resources.ToolTip_View" class="btn btn-default"><i class="zmdi zmdi-plus"></i></button>');
+
+                                        var result = "<p  style=''>" + result1 + "</p>";
+                                        return result;
+                                    }
+
+                                }
+                            }
+            ],
+
+        });
+        DataTableSettings(oTable, "myDataTable", "toggleTableColumn");
+
+    });
+
+
+</script>

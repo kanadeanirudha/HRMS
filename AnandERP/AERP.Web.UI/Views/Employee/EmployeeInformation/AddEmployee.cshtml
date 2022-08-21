@@ -1,0 +1,170 @@
+﻿@model AERP.ViewModel.EmpEmployeeMasterViewModel
+@{
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Scripts/plugin/TimePicker/timepicki.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/TimePicker/timepicki.css")" rel="stylesheet" type="text/css" />*@
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+@*   <script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>*@
+
+
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Add Employee</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:500px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="AddEmployee">
+                <form id="FormAddEmployee" method="post">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.CentreCode)
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <span style="color:red;float:left;">*</span>
+                            @Html.LabelFor(model => model.NameTitle, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, Resources.ddlHeaders_Select, new { id = "EmployeeNameTitle", style = "", @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.NameTitle)
+                        </div>
+
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.GenderCode, new { style = "" })
+                            <div class="form-group">
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Female" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Female
+                                    <i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.EmployeeFirstName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EmployeeFirstName, new { id = "AddEmp_EmployeeFirstName", @class = "form-control", maxlength = "30" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmployeeFirstName)
+                        </div>
+
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.EmployeeMiddleName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EmployeeMiddleName, new { @class = "form-control", maxlength = "30" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.EmployeeLastName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EmployeeLastName, new { @class = "form-control", maxlength = "30" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmployeeLastName)
+                        </div>
+
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.EmployeeCode, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "form-control", maxlength = "100" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmployeeCode)
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.EmailID, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", maxlength = "100" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmailID)
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.CentreCode, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CentreName, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.DepartmentName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.DepartmentName, new { @class = "form-control", disabled = "disabled" })
+                                @Html.HiddenFor(model => model.CentrewiseDeptID)
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CentrewiseDeptID)
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.EmployeeDesignationMasterID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.EmployeeDesignationMasterID, (SelectList)ViewBag.EmpDesignationMasterList, "--Select Designation--", new { @class = "form-control", style = "" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmployeeDesignationMasterID)
+                        </div>
+
+                     
+                    </div>
+                    <div class="col-sm-12">
+                       
+
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.Birthdate, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.Birthdate, new { @class = "form-control", Value = "", @style = "background-color:#fff;", ReadOnly = "True" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Birthdate)
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="input01" style="color:red;font-style:italic">* @Resources.DisplayName_Requiredfield </label>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="AddEmployeeRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeInformation.Initialize();
+
+    });
+</script>

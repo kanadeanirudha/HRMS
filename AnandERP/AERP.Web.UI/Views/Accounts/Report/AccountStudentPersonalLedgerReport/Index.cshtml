@@ -1,0 +1,109 @@
+﻿@model AMS.ViewModel.AccountGeneralLedgerReportViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Account/AccountIndividualBalanceReport.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+<div class="container">
+    @using (Html.BeginForm("Index", "AccountIndividualBalanceReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Category Report</h2>
+        </div>
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding" style="padding-bottom:10%;">
+
+                <div class="row col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="fg-line select form-group">
+
+                            @Html.DropDownListFor(m => m.PersonID, Model.IndividualAccountNameReportItems, "------Select Student Name-------", new { @class = "form-control", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Student name*"})
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PersonID)
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" value="Submit" class="btn btn-primary">Show</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @*<div class="container-fluid">
+                <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+                <div class="">
+                    <div class="">
+                        <div class="widget-block" style="background: #fff none repeat scroll 0 0;">
+                            <div class="widget-head">
+                                <h5>Parameter of Student Personal Ledger</h5>
+                            </div>
+                            <div class="widget-content">
+                                <div class="widget-box">
+
+                                    <ul class="breadcrumb" style="background: #fff none repeat scroll 0 0; border: 0px solid #c2c2c2; margin-top: 15px;">
+
+                                        <li>
+                                            <div class="control-group" style="margin-bottom: 5px;">
+
+                                                <div class="span2">
+                                                    @Html.LabelFor(m => m.StudentName, new { @class = "control-label", style = "font-weight:bold" })
+                                                </div>
+                                                <div class="span3" style="line-height: 25px">
+                                                    @Html.DropDownListFor(m => m.PersonID, Model.IndividualAccountNameReportItems, "------Select Student Name-------", new { @class = "", style = "font-weight:bold" })
+                                                    <br />
+                                                    @Html.ValidationMessageFor(model => model.PersonID)
+                                                </div>
+                                                <div class="span2">
+                                                    <input type="submit" name="submit" value="Submit" class="btn btn-primary" />
+                                                </div>
+                                                <div class="span3" style="line-height: 25px">
+                                                </div>
+                                            </div>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="row-fluid">
+                    <div id="aaa">
+                        <div class="span12" style="float: left">
+                            <div class="widget-block">
+                                <div class="widget-head">
+                                    <h5>Student Personal Ledger Report</h5>
+                                </div>
+                                <div class="widget-content">
+
+                                    <div class="widget-box" style="padding: 15px">
+                                        @*  @Html.Partial("/Views/Accounts/AccountDayBookReport/AccountDayBookReport.aspx")
+                                    </div>
+                                    @*<input type="button" value="Print" id="printDiv">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountIndividualBalanceReport.Initialize();
+    });
+
+</script>
+
+
+

@@ -1,0 +1,159 @@
+﻿@*
+    @{
+        ViewBag.Title = "ProfileReportOtherHeader";
+        Layout = "~/Views/Employee/EmployeeInformation/Profile.cshtml";
+    }
+
+    <link href="~/Content/Derek/derek.css" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/ProfileReportOther.js")" type="text/javascript"></script>
+
+        <div id="rpt">
+            <ul class="breadcrumb" style="height: 30px;">
+                <li style="font-size: 12px;"> @Resources.DisplayName_CentreName<span class="divider">»</span></li>
+                &nbsp;&nbsp;&nbsp;
+
+               @Html.DropDownList("CentreCodeList", ViewData["CentreCodeList"] as List<SelectListItem>, Resources.ddlHeaders_CentreName, new { style = "", @class = "input-large" })
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            <li style="font-size: 12px;">@Resources.DisplayName_DepartmentName<span class="divider">»</span></li>
+               &nbsp;&nbsp;&nbsp;
+                 @Html.DropDownList("DepartmentList", ViewData["DepartmentList"] as List<SelectListItem>, Resources.ddlHeaders_Department, new { style = "", @class = "input-large" })
+
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            <li style="font-size: 12px;">@Resources.DisplayName_Employee<span class="divider">»</span></li>
+               &nbsp;&nbsp;&nbsp;
+                 @Html.DropDownList("EmployeeList", ViewData["EmployeeList"] as List<SelectListItem>,Resources.ddlHeaders_SelectEmployee, new { style = "", @class = "input-large" })
+
+
+            </ul>
+        </div>
+       <div id="ProfileReptOther" class="container-fluid wrapper"></div>
+
+
+
+    <script src="~/Scripts/scrolltop.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ProfileReportOther.Initialize();
+        });
+    </script>
+*@
+
+@{
+    ViewBag.Title = "ProfileReportOtherHeader";
+    Layout = "~/Views/Employee/EmployeeInformation/ProfileV2.cshtml";
+}
+<style>
+    #main {
+        padding-bottom: 0;
+        padding-top: 60px;
+        position: relative;
+    }
+
+    /*to hide box shadow*/
+    .card {
+        background: #fff none repeat scroll 0 0;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.15);
+        margin-bottom: 30px;
+        position: relative;
+    }
+</style>
+
+
+
+<link href="~/Content/Derek/derek.css" rel="stylesheet" />
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/ProfileReportOther.js")" type="text/javascript"></script>
+
+@*<div class="container">*@
+
+<div id="ListViewModel" class="container" style="padding-top: 0px;">
+    <div id="custom-content">
+
+        <div class="card bs-item z-depth-3" id="rpt">
+            <div class="card-body card-padding">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label> @Resources.DisplayName_CentreName </label>
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("CentreCodeList", ViewData["CentreCodeList"] as List<SelectListItem>, Resources.ddlHeaders_CentreName, new { style = "", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label> @Resources.DisplayName_DepartmentName </label>
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("DepartmentList", ViewData["DepartmentList"] as List<SelectListItem>, Resources.ddlHeaders_Department, new { style = "", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label> @Resources.DisplayName_Employee </label>
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("EmployeeList", ViewData["EmployeeList"] as List<SelectListItem>, Resources.ddlHeaders_SelectEmployee, new { style = "", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="bootgrid-header container-fluid" id="ProfileReptOther">
+
+            </div>*@
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="padding-top: 0px;">
+
+    <div class="card"> @* bs-item z-depth-3*@
+        <div class="card-body card-padding" id="ProfileReptOther" style="background-color:#E5E5E5;">
+
+        </div>
+    </div>
+
+</div>
+
+                @*</div>*@
+
+                <script src="~/Scripts/scrolltop.js"></script>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        ProfileReportOther.Initialize();
+
+                        $(function () {
+
+                            setNavigation();
+                        });
+
+                        //$(".main-menu li ul").hide();
+
+                        function setNavigation() {
+
+                            var href = '';
+                            var path = window.location.pathname;
+                            //alert(path);
+                            $(".main-menu li ul li a").each(function () {
+
+                                href = $(this).attr("href");
+                                if (path === href) {
+
+                                    $(this).closest('li ul li a').addClass('active');
+
+                                    $(this).closest("ul").css("display", "block");
+                                } else {
+                                    //$(this).closest("ul").css("display", "block");
+
+                                    //$(this).closest('.main-menu li').removeClass('toggled');
+                                    $(".main-menu li").removeClass("toggled");
+                                    $(this).closest("ul").css("display", "none");
+                                    //alert();
+                                }
+                            });
+
+                        }
+
+
+                    });
+                </script>

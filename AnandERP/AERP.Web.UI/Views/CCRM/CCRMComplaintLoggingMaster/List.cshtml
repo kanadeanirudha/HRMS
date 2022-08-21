@@ -1,0 +1,782 @@
+﻿@model AERP.ViewModel.CCRMComplaintLoggingMasterViewModel
+
+<section id="main" data-layout="layout-1" style="background:#bfc6ca;height:1290px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="text-transform: none;background: #607d8b;margin-top: -100px;line-height: 2.5;color: white;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Complaint Logging Master </h2>
+        </div>
+        <div class="card">
+            <div class="card-header" style="background:#bfc6ca;margin-top:-24px;">
+                <ul class="actions">
+
+                    <li>
+                        <a class="mfpAjaxModal" href="@Url.Action("Create", "CCRMComplaintLoggingMaster", new { })">
+                            <i class="btn btn-info " style="margin-left: -110px;color: white;font-size: initial;margin-top:-109px;background-color:#b80c0c">Search</i>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="card-body card-padding" style="background:#bfc6ca;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormCreateCCRMComplaintLoggingMaster">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+
+                    <div class="col-sm-6" style="border:solid 2px black;height:710px;background: white;margin-left: -9px;">
+                     
+                       
+                        <div class="col-sm-12">
+                           
+                            <div class="col-sm-6">
+                <span style="color:red">*</span> @Html.LabelFor(model => model.CallDate, new { style = "" })
+                <div class="form-group fg-line ">
+                    @Html.TextBoxFor(model => model.CallDate, new { @class = "form-control input-sm typeahead" })
+                </div>
+            </div>
+
+                        </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CallTktNo, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.CallTktNo, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.CallTktNo)
+                                    </div>
+                                    <div class="col-sm-4">
+
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CallType, new { })
+                                        <div class="form-group fg-line">
+                                            @Html.DropDownListFor(model => model.CallTypeID, (SelectList)ViewBag.CCRMServiceCallTypesList, "-----Select  CallType-----", new { @class = "form-control input-sm" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>
+
+                                        @Html.HiddenFor(model => model.ID)
+                                        @Html.LabelFor(model => model.SerialNo, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.SerialNo, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.SerialNo)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(model => model.MIFID)
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.MIFName, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.MIFName, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.MIFName)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span> @Html.LabelFor(model => model.CompanyCallDate, new { style = "" })
+                                        <div class="form-group fg-line dtp-container">
+                                            @Html.TextBoxFor(model => model.CompanyCallDate, new { @class = "form-control input-sm typeahead" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CompanyCallNo, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.CompanyCallNo, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.CompanyCallNo)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>
+
+                                        @Html.HiddenFor(model => model.ID)
+                                        @Html.LabelFor(model => model.CallerName, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.CallerName, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.CallerName)
+                                    </div>
+                                    @*<div class="col-sm-4">
+
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CallerName, new { })
+                                        <div class="form-group fg-line ">
+                                            @Html.DropDownListFor(model => model.CallerName, (SelectList)ViewBag.CCRMMIFMasterAndDetailsList, "-----Select  CallerName-----", new { @class = "form-control input-sm" })
+                                        </div>
+                                    </div>*@
+                                    @*<div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CallerName, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.CallerName, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.CallerName)
+                                    </div>*@
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CallerPh, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.CallerPh, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.CallerPh)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.EmailID, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.EmailID)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(model => model.SymptomID)
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.SymptomTitle, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.SymptomTitle, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.SymptomTitle)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.SymptomCode, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.SymptomCode, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.SymptomCode)
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.ComPlaint, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.ComPlaint, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.ComPlaint)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.MachineStatus, new { style = "" })
+                                        <div class="form-group  fg-line select">
+                                            @Html.DropDownList("MachineStatus", ViewData["MachineStatus"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.MachineStatus)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.Priority, new { style = "" })
+                                        <div class="form-group  fg-line select">
+                                            @Html.DropDownList("Priority", ViewData["Priority"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Priority)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.A4Mono, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.A4Mono, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.A4Mono)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.A4Col, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.A4Col, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.A4Col)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.A3Mono, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.A3Mono, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.A3Mono)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.A3Col, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.A3Col, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.A3Col)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CallCharges, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.CallCharges, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.CallCharges)
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.SplRemarks, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.SplRemarks, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.SplRemarks)
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.SplInstructions, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.SplInstructions, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.SplInstructions)
+                                    </div>
+                                    <div class="col-sm-4">
+
+                                        <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                            <label>
+                                                <input type="checkbox" id="CustApproval">
+                                                <i class="input-helper"></i>
+                                                @Html.LabelFor(model => model.CustApproval, new { style = "" })
+                                            </label>
+                                            @Html.ValidationMessageFor(model => model.CustApproval)
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+
+                                        <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                            <label>
+                                                <input type="checkbox" id="TeleSolution">
+                                                <i class="input-helper"></i>
+                                                @Html.LabelFor(model => model.TeleSolution, new { style = "" })
+                                            </label>
+                                            @Html.ValidationMessageFor(model => model.TeleSolution)
+                                        </div>
+                                    </div>
+                                    <div id="dvSloution" class="col-sm-4" style="display: none">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.Solution, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.Solution, new { @class = "form-control", maxlength = "100", style = "" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Solution)
+                                    </div>
+                                    <div class="col-sm-4">
+
+                                        <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                            <label>
+                                                <input type="checkbox" id="SSSApproval">
+                                                <i class="input-helper"></i>
+                                                @Html.LabelFor(model => model.SSSApproval, new { style = "" })
+                                            </label>
+                                            @Html.ValidationMessageFor(model => model.SSSApproval)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="border:solid 2px black;height:469px;background: white;margin-left: 8px;">
+                                <div class="col-sm-4">
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.MCAddress, new { style = "" })
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(model => model.MCAddress, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MCAddress)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.HiddenFor(model => model.CustomertID)
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.CustomerName, new { style = "" })
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.CustomerName)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.HiddenFor(model => model.KeyOperatorID)
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.KeyOperator, new { style = "" })
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(model => model.KeyOperator, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.KeyOperator)
+                                </div>
+                                <div class="col-sm-4">
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.Phoneno, new { style = "" })
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(model => model.Phoneno, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Phoneno)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.HiddenFor(model => model.ModelNo)
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.ModelNo, new { style = "" })
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ItemDescription)
+                                </div>
+                                <div class="col-sm-4">
+                                    @Html.HiddenFor(model => model.ContractTypeId)
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.ContractType, new { style = "" })
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(model => model.ContractType, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ContractType)
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.ContractNo, new { style = "" })
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(model => model.ContractNo, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ContractNo)
+                                </div>
+                                <div class="col-sm-4">
+                                    <span style="color:red">*</span>@Html.LabelFor(model => model.ContOpDate, new { style = "" })
+                                    <div class="form-group fg-line dtp-container">
+                                        @Html.TextBoxFor(model => model.ContOpDate, new { @class = "form-control", maxlength = "200", style = "", disabled = "disabled" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ContOpDate)
+                                </div>
+                                @*</div>*@
+                                @*<div class="col-sm-12">*@
+                                <div class="col-sm-4">
+                                    <span style="color:red">*</span> @Html.LabelFor(model => model.ContClDate, new { style = "" })
+                                    <div class="form-group fg-line dtp-container">
+                                        @Html.TextBoxFor(model => model.ContClDate, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6">
+
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.SerEnggName, new { })
+                                        <div class="form-group fg-line select">
+                                            @Html.DropDownListFor(model => model.EngineerID, (SelectList)ViewBag.EmpEmployeeMasterList, "-----Select  Patch-----", new { @class = "form-control input-sm" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.EnggMobNo, new { style = "" })
+                                        <div class="form-group  fg-line">
+                                            @Html.TextBoxFor(model => model.EnggMobNo, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.EnggMobNo)
+                                    </div>
+                                    <div class="col-sm-6" >
+
+                                        <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                            <label>
+                                                <input type="checkbox" id="Allotment">
+                                                <i class="input-helper"></i>
+                                                @Html.LabelFor(model => model.Allotment, new { style = "" })
+                                            </label>
+                                            @Html.ValidationMessageFor(model => model.Allotment)
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span style="color:red">*</span>@Html.LabelFor(model => model.CallStatus, new { style = "" })
+                                        <div class="form-group  fg-line ">
+                                            @Html.DropDownList("CallStatus", ViewData["CallStatus"] as List<SelectListItem>, new { style = "", @class = "form-control", disabled = "disabled" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.CallStatus)
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                    <div class="col-sm-6" style="border:solid 2px black;height:233px;background: white;margin-left: 8px;margin-top:6px;">
+                        <div class="form-group" style="margin-left: 2%; ">
+                            <input class="btn btn-info" value="@Resources.ButtonAction_Submit" id="CreateCCRMComplaintLoggingMasterRecord" type="button" />
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="border:solid 2px black;height:450px;background: white;margin-left: -8px;margin-top:6px;">
+                        <div class="col-sm-12">
+                            @*<div id="ListViewModel" class="">*@
+                            <div id="DivAddRowTable">
+                                <table id="tblData" class="table table-striped ">
+                                    <thead>
+                                        <tr>
+
+                                            <th> Call No</th>
+                                            <th>CallDate</th>
+                                            <th>CompanyCallDate</th>
+                                            <th>Engg Name</th>
+                                            @*<th>A4 Mono</th>
+                                            <th>A4Col</th>*@
+                                            <th>ComPlaint</th>
+                                            <th>SymptomTitle</th>
+                                          
+                                        </tr>
+                                    </thead>
+                                
+                                    <tbody>
+                                        @foreach (var item in Model.PriviousCallByCCRMComplaintLoggingMasterID)
+                                        {
+                                            <tr>
+                                                @*<td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.ItemNumber"></td>*@
+                                                <td style="vertical-align:middle;">@item.CallTktNo<input id="CallTktNo" style="display:none" type="text" value="@item.CallTktNo"></td>
+                                                <td style="vertical-align:middle;">@item.CallDate<input id="CallDate"  type="text"  value="@item.CallDate" style="display:none"></td>
+                                                <td style="vertical-align:middle;">@item.CompanyCallDate<input id="CompanyCallDate" type="text" style="display:none" value="@item.CompanyCallDate"></td>
+                                                <td style="vertical-align:middle;">@item.EmployeeName<input id="EmployeeName" type="text" style="display:none" value="@item.EmployeeName"></td>
+                                                <td style="vertical-align:middle;">@item.ComPlaint<input id="ComPlaint" type="text" style="display:none" value="@item.ComPlaint"></td>
+                                                <td style="vertical-align:middle;">@item.SymptomTitle<input id="SymptomTitle" type="text" style="display:none" value="@item.SymptomTitle"></td>
+                                                <td style="display:none">@item.ID<input type="hidden" style="display:none" value="@item.ID"></td>
+                                               
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table><br /><br /><br /><br />
+                            </div>
+                            @*</div>*@
+                        </div>
+                        
+                    </div>
+</form>
+
+            </div>
+        </div>
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CCRMComplaintLoggingMaster.Initialize();
+            $("#TeleSol").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#dvSloution").show();
+                } else {
+                    $("#dvSloution").hide();
+                }
+            });
+            //SerialNo serachlist
+            mapSerialNo = [];
+            var getDataSerialNo = function () {
+
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+
+                    $.ajax({
+                        url: "/CCRMMIFMasterAndDetails/GetCCRMMIFSerialNoSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.SerialNo)) {
+                                    mapSerialNo[response.SerialNo] = response;
+                                    matches.push(response.SerialNo);
+
+                                }
+
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#SerialNo").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataSerialNo()
+            }).on("typeahead:selected", function (obj, item) {
+                debugger;
+
+                $("#SerialNo").val(mapSerialNo[item].SerialNo);
+
+                $("#MIFName").val(mapSerialNo[item].MIFTitle);
+                $("#MCAddress").val(mapSerialNo[item].MIFAddress);
+                $("#ModelNo").val(mapSerialNo[item].ModelNo);
+                $("#CustomerName").val(mapSerialNo[item].CustomerMasterName);
+                $("#CustomertID").val(mapSerialNo[item].CustomerMasterID);
+                // $("#CustomerAddress").val(mapSerialNo[item].CustomerAddress);
+                $("#ItemDescription").val(mapSerialNo[item].ItemDescription);
+                $("#ID").val(mapSerialNo[item].ID);
+                $("#KeyOperator").val(mapSerialNo[item].KeyOperatorName);
+                $("#Phoneno").val(mapSerialNo[item].PhoneNo);
+                $("#KeyOperatorID").val(mapSerialNo[item].MifcallID);
+                $("#ContractTypeId").val(mapSerialNo[item].ContractTypeId);
+                $("#ContractNo").val(mapSerialNo[item].ContractNo);
+                $("#ContractType").val(mapSerialNo[item].ContractName);
+                $("#ContOpDate").val(mapSerialNo[item].ContractOpDate);
+                $("#ContClDate").val(mapSerialNo[item].ContractClosingDate);
+               // $("#CallerPh").val(mapSerialNo[item].MobileNo);
+                //$("#eMail").val(mapSerialNo[item].EmailServices);
+                $("#MIFID").val(mapSerialNo[item].ID);
+                $("#EnggMobNo").val(mapSerialNo[item].MobileNo);
+                $("#CallCharges").val(mapSerialNo[item].CallCharges);
+
+            });
+            $('#SerialNo').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#SerialNo').typeahead('val', '');
+                    $('#SerialNo').val("");
+
+                    // $('#CustomerAddress').val("");
+                    $("#MIFName").val("");
+                    $("#MCAddress").val("");
+                    $("#ModelNo").val("");
+                    $("#CustomerName").val("");
+                    $('#CustomertID').val('0');
+                    //$("#CustomerAddress").val("");
+                    $("#ItemDescription").val("");
+                    $("#KeyOperator").val("");
+                    $("#Phoneno").val("");
+                    $('#KeyOperatorID').val('0');
+                    $('#ContractTypeId').val('0');
+                    $("#ContractNo").val("");
+                    $("#ContractType").val("");
+                    $("#ContOpDate").val("");
+                    $("#ContClDate").val("");
+                    $("#EnggMobNo").val("");
+                    $("#CallCharges").val("");
+                }
+            });
+            //SerialNo serachlist by mif name
+            mapMIFTitle = [];
+            var getDataMIFTitle = function () {
+
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+
+                    $.ajax({
+                        url: "/CCRMMIFMasterAndDetails/GetCCRMMIFSerialNoSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.MIFTitle)) {
+                                    mapMIFTitle[response.MIFTitle] = response;
+                                    matches.push(response.MIFTitle);
+
+                                }
+
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#MIFName").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataMIFTitle()
+            }).on("typeahead:selected", function (obj, item) {
+                debugger;
+
+                $("#SerialNo").val(mapMIFTitle[item].SerialNo);
+
+                $("#MIFName").val(mapMIFTitle[item].MIFTitle);
+                $("#MCAddress").val(mapMIFTitle[item].MIFAddress);
+                $("#ModelNo").val(mapMIFTitle[item].ModelNo);
+                $("#CustomerName").val(mapMIFTitle[item].CustomerMasterName);
+                $("#CustomertID").val(mapMIFTitle[item].CustomerMasterID);
+                // $("#CustomerAddress").val(mapSerialNo[item].CustomerAddress);
+                $("#ItemDescription").val(mapMIFTitle[item].ItemDescription);
+                $("#ID").val(mapMIFTitle[item].ID);
+                $("#KeyOperator").val(mapMIFTitle[item].KeyOperatorName);
+                $("#Phoneno").val(mapMIFTitle[item].PhoneNo);
+                $("#KeyOperatorID").val(mapMIFTitle[item].MifcallID);
+                $("#ContractTypeId").val(mapMIFTitle[item].ContractTypeId);
+                $("#ContractNo").val(mapMIFTitle[item].ContractNo);
+                $("#ContractType").val(mapMIFTitle[item].ContractName);
+                $("#ContOpDate").val(mapMIFTitle[item].ContractOpDate);
+                $("#ContClDate").val(mapMIFTitle[item].ContractClosingDate);
+                // $("#CallerPh").val(mapSerialNo[item].MobileNo);
+                //$("#eMail").val(mapSerialNo[item].EmailServices);
+                $("#MIFID").val(mapMIFTitle[item].ID);
+                $("#EnggMobNo").val(mapMIFTitle[item].MobileNo);
+                $("#CallCharges").val(mapMIFTitle[item].CallCharges);
+
+            });
+            $('#MIFName').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#MIFName').typeahead('val', '');
+                    $('#MIFName').val("");
+
+                    // $('#CustomerAddress').val("");
+                    $('#SerialNo').val("");
+                    //$("#MIFName").val("");
+                    $("#MCAddress").val("");
+                    $("#ModelNo").val("");
+                    $("#CustomerName").val("");
+                    $('#CustomertID').val('0');
+                    //$("#CustomerAddress").val("");
+                    $("#ItemDescription").val("");
+                    $("#KeyOperator").val("");
+                    $("#Phoneno").val("");
+                    $('#KeyOperatorID').val('0');
+                    $('#ContractTypeId').val('0');
+                    $("#ContractNo").val("");
+                    $("#ContractType").val("");
+                    $("#ContOpDate").val("");
+                    $("#ContClDate").val("");
+                    $("#EnggMobNo").val("");
+                    $("#CallCharges").val("");
+                }
+            });
+
+            // CCRMSymptomMaster serachlist
+            mapSymptomTitle = [];
+            var getDataSymptomTitle = function () {
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+                    $.ajax({
+                        url: "/CCRMSymptomMaster/GetCCRMSymptomMasterSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.SymptomTitle)) {
+                                    mapSymptomTitle[response.SymptomTitle] = response;
+                                    matches.push(response.SymptomTitle);
+
+                                }
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#SymptomTitle").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataSymptomTitle()
+            }).on("typeahead:selected", function (obj, item) {
+                $("#SymptomTitle").val(mapSymptomTitle[item].SymptomTitle);
+                $("#SymptomCode").val(mapSymptomTitle[item].SymptomCode);
+                $("#SymptomID").val(mapSymptomTitle[item].ID);
+
+
+            });
+            $('#SymptomTitle').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#SymptomTitle').typeahead('val', '');
+                    $('#SymptomTitle').val("");
+
+                    $("#SymptomCode").val("");
+                    $('#SymptomID').val('0');
+
+                }
+            });
+
+            //CallerName serachlist
+            mapCallerName = [];
+            var getDataCallerName = function () {
+
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+
+                    $.ajax({
+                        url: "/CCRMComplaintLoggingMaster/GetCCRMCallerSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.CallerName)) {
+                                    mapCallerName[response.CallerName] = response;
+                                    matches.push(response.CallerName);
+
+                                }
+
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#CallerName").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataCallerName()
+            }).on("typeahead:selected", function (obj, item) {
+                debugger;
+
+                $("#CallerName").val(mapCallerName[item].CallerName);
+                $("#CallerPh").val(mapCallerName[item].CallerPh);
+                $("#EmailID").val(mapCallerName[item].EmailID);
+                $("#ID").val(mapCallerName[item].ID);
+              
+            });
+            $('#CallerName').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#CallerName').typeahead('val', '');
+                    $('#CallerName').val("");
+                    $('#CallerPh').val("");
+                    $('#EmailID').val("");
+                   
+                  
+                }
+            });
+
+        });
+
+    </script>
+</section>
+
+
+
+
+
+
+

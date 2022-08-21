@@ -1,0 +1,467 @@
+﻿@model AERP.ViewModel.PurchaseGRNMasterViewModel
+@Html.HiddenFor(m => m.PurchaseOrderMasterID)
+@Html.HiddenFor(m => m.PurchaseOrderType)
+
+@*<style>
+        /*.bootstrap-datetimepicker-widget {
+            margin-left: 80% !important;
+        }*/
+        .mfp-content {
+            vertical-align: top;
+            margin-top: 50px;
+        }
+    </style>*@
+
+<div class="card" style="padding-top:15px;padding-right:15px;padding-left:15px;padding-bottom:5px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create GRN</h2>
+        </div>
+    </div>
+    <div id="displayErrorMessage" role="alert" hidden class="alert">
+        <button class="close" type="button"><span aria-hidden="true">×</span></button>
+        <p id="messageContent"></p>
+    </div>
+    <div id="DivAddRowTable">
+        <form id="FormCreatePurchaseGRNMaster">
+            <table class="table table-responsive " id="myDataTable">
+                <thead>
+                    <tr>
+                        <th class="center">
+                            @*<input type="checkbox" id="Check" class="checkall-user" name="checkbox12" disabled="disabled">*@
+                            <div class="checkbox m-b-15" style="">
+                                <label style="">
+                                    <input type="checkbox" id="Check" class="checkall-user" name="checkbox12">
+                                    <i class="input-helper"></i>
+                                </label>
+                            </div>
+                        </th>
+                        <th style="width: 15%">Item Name</th>
+                        <th style="width: 8%">UOM</th>
+                        <th style="width: 10%">Quantity</th>
+                        <th style="width: 15%">Received Qty</th>
+                        <th style="width: 15%">FOC Qty</th>
+                        <th style="width: 20%">Remaining Qty</th>
+                        <th style="width: 15%;">Storage Location</th>
+                        <th style="width: 15%"> Receive Location</th>
+                        <th style="width: 10%">Remark</th>
+                        <th style="width: 10%">Batch</th>
+                        <th style="width: 20%">Expiry Date</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyID">
+
+                    @for (int i = 0; i < Model.PurchaseGRNMasterListFromPO.Count; i++)
+                    {
+
+                        <tr id="@Convert.ToInt32(i)" style="overflow:visible;">
+                            <td style="display:none">@Convert.ToInt32(i + 1)</td>
+                            @if (@Model.PurchaseGRNMasterListFromPO[i].FOC == false)
+                              {
+                                  <td style="vertical-align:middle;">
+                                      <input id="check_1" type=checkbox class=check-user name=checkbox12 onclick="CheckedSingle()" value="0">
+                                  </td>
+                              }
+                            else
+                            {
+                              <td style="vertical-align:middle;">
+                                  <input id="check_1" type=checkbox class=check-user name=checkbox12 onclick="CheckedSingle()" checked disabled="disabled" value="1">
+                            </td>
+                            }
+                                
+                            <td style="vertical-align:middle;">@Model.PurchaseGRNMasterListFromPO[i].ItemName<input type="text" name="ItemName" style="display:none;" value="@Model.PurchaseGRNMasterListFromPO[i].ItemName" /></td>
+                            <td style="display: none;"><input type="text" name="ItemNumber" style="display:none" value="@Model.PurchaseGRNMasterListFromPO[i].ItemNumber" /></td>
+                            <td style="vertical-align:middle;">@Model.PurchaseGRNMasterListFromPO[i].OrderUomCode</td>
+                            <td><input type="text" disabled="disabled" class="form-control" id="Quantity" value=@Math.Round((@Model.PurchaseGRNMasterListFromPO[i].Quantity),3) style="width:60px;height:30px;" /></td>
+
+                            @*@if (@Model.PurchaseGRNMasterListFromPO[i].Quantity == @Model.PurchaseGRNMasterListFromPO[i].ReceivedQuantity)
+                            {
+                                <td><div class="fg-line"><input type="text" disabled="disabled" id="ReceivedQuantity" value=@Math.Round((@Model.PurchaseGRNMasterListFromPO[i].Quantity),3) style="text-align: right; width: 60px; height: 25px;" /></div></td>
+                            }
+                            else
+                            {*@
+                                @*<td><div class="fg-line"><input type="text" id="ReceivedQuantity" value="" style="text-align:right; width: 60px; height: 25px;" /></div></td>*@
+                                <td style="font-weight: bold;"><div class="fg-line"><input type="text" id="ReceivedQuantity" value=@Math.Round((Model.PurchaseGRNMasterListFromPO[i].Quantity),3) class="form-control input-sm"></div></td>
+                            @*}*@
+                            
+                            <td><input type="tel" id="FOCReceivedQty" class="form-control" value=@Math.Round((@Model.PurchaseGRNMasterListFromPO[i].FOCReceivedQuantity),3) style="width: 60px; height: 30px;" disabled="disabled"/></td>
+                            <td><input type="tel" disabled="disabled" id="RemainingQty" class="form-control" value=@Math.Round((@Model.PurchaseGRNMasterListFromPO[i].RemainingQuantity),3) style="width: 60px; height: 30px;" /></td>
+                            <td style="vertical-align:middle;">@Model.PurchaseGRNMasterListFromPO[i].StorageLocationName</td>
+
+
+                            <td style="vertical-align:middle;">@Model.PurchaseGRNMasterListFromPO[i].ReceivingLocationName</td>
+                            <td style="vertical-align:middle;"><div class="fg-line"><input type="text" id="Remark" name="Remark" class="form-control input-sm"></div></td>
+                            <td style="display:none"><input type="hidden" name="IsLocked" value="@Model.PurchaseGRNMasterListFromPO[i].IsLocked" /></td>
+                            <td style="display:none"><input type="text" disabled="disabled" id="RemainingQty1" value=@Model.PurchaseGRNMasterListFromPO[i].RemainingQuantity style="text-align: right; width: 60px; height: 25px; border: 0px; background-color: white;" /></td>
+                            @if ((@Model.PurchaseGRNMasterListFromPO[i].SerialAndBatchManagedBy == 2) &&( @Model.PurchaseGRNMasterListFromPO[i].PurchaseOrderType != 3))
+                            {
+                                <td class="" style="vertical-align:middle;">
+                                    <div class="fg-line">
+
+                                        <input id='BatchNumber' type="text" name="BatchNumber"  title="@Model.PurchaseGRNMasterListFromPO[i].BatchNumber"   tag="@Model.PurchaseGRNMasterListFromPO[i].ItemNumber" value="@Model.PurchaseGRNMasterListFromPO[i].BatchNumber" style="width: 120px; height: 30px;border-color:saddlebrown;" class=" input-sm form-control typeahead typeahead1">
+                                    </div>
+                                    <input type="hidden" id="BatchID" value="" />
+                                    <input id="SerialAndBatchManagedBy" value="1" type="hidden" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="" style="vertical-align:middle;">
+                                    <div class="fg-line">
+                                        <input id='BatchNumber' type="text" name="BatchNumber" tag="@Model.PurchaseGRNMasterListFromPO[i].ItemNumber" value="" style="width: 120px; height: 30px;" class="input-sm form-control typeahead typeahead1" disabled="disabled">
+                                    </div>
+                                    <input type="hidden" id="BatchID" value="" />
+                                    <input id="SerialAndBatchManagedBy" value="0" type="hidden" />
+                                </td>
+                            }
+                            @if ((@Model.PurchaseGRNMasterListFromPO[i].SerialAndBatchManagedBy == 2) && (@Model.PurchaseGRNMasterListFromPO[i].PurchaseOrderType != 3))
+                            {
+                                <td style="vertical-align:middle;">
+                                    @*<input type="text" id="input1" value="abc" class="form-control " style=" width:120px" />*@
+                                    <input type="text" name="ExpiryDate" id="ExpiryDate" class="abc form-control" style=" width: 120px; height: 30px;border-color:saddlebrown" />
+
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="vertical-align:middle;">
+                                    @*<input type="text" id="input1" value="abc" class="form-control " style=" width:120px" />*@
+                                    <input type="text" name="ExpiryDate" id="ExpiryDate" class="abc form-control" style=" width: 120px; padding-top: 2px; height: 30px;" disabled="disabled" />
+
+                                </td>
+                            }
+                            <td style="display: none;"><input type="hidden" name="BarCode" value="@Model.PurchaseGRNMasterListFromPO[i].BarCode " /></td>
+                            <td style="display: none;"><input type="hidden" name="BaseUOMCode" value="@Model.PurchaseGRNMasterListFromPO[i].BaseUOMCode" /></td>
+                            <td style="display: none;"><input type="hidden" name="OrderUomCode" value="@Model.PurchaseGRNMasterListFromPO[i].OrderUomCode" /></td>
+                            <td style="display: none;"><input type="hidden" name="BaseUOMQuantity" value="@Model.PurchaseGRNMasterListFromPO[i].BaseUOMQuantity" /></td>
+                            <td style="display: none;"><input type="hidden" name="GeneralItemCodeID" value="@Model.PurchaseGRNMasterListFromPO[i].GeneralItemCodeID " /></td>
+                            <td style="display: none;"><input type="hidden" name="StorageLocationID" value="@Model.PurchaseGRNMasterListFromPO[i].StorageLocationID " /></td>
+                            <td style="display: none;"><input type="hidden" name="ReceivingLocationID" value="@Model.PurchaseGRNMasterListFromPO[i].ReceivingLocationID " /></td>
+                            <td style="display: none;"><input type="hidden" name="SerialAndBatchManagedBy" value="@Model.PurchaseGRNMasterListFromPO[i].SerialAndBatchManagedBy " /></td>
+                            @*<td style="display: none;"><input type="hidden" name="Rate" id="Rate" value="@Model.PurchaseGRNMasterListFromPO[i].Rate" /></td>
+                                <td style="display: none;"><input type="hidden" name="Total" id="Total" value="@Model.GrossAmount" /></td>
+                                @Html.HiddenFor(m => m.Freight)
+                                @Html.HiddenFor(m => m.PurchaseOrderNumber)*@
+                            <td style="display:none"><input type="hidden" name="ShelfLife" value="@Model.PurchaseGRNMasterListFromPO[i].ShelfLife" /></td>
+                            <td style="display:none"><input type="hidden" name="RemainingShelfLife" value="@Model.PurchaseGRNMasterListFromPO[i].RemainingShelfLife" /></td>
+                            <td style="display:none"><input type="hidden" name="VendorID" value="@Model.PurchaseGRNMasterListFromPO[i].VendorID" /></td>
+                            @if (@Model.PurchaseGRNMasterListFromPO[i].ReturnGoods == true)
+                            {
+                                <td style="display:none"><input type="hidden" name="ReturnGoodsPolicy" value=1 /></td>
+                            }
+                            else
+                            {
+                                <td style="display:none"><input type="hidden" name="ReturnGoodsPolicy" value=0 /></td>
+                            }
+                            <td style="display:none"><input type="hidden" name="AutoBatchNumber" value="@Model.PurchaseGRNMasterListFromPO[i].BatchNumber" /></td>
+
+                        </tr>
+
+
+                    }
+
+
+
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+    <div id="DivAddRowTable1">
+        <form id="FormCreatePurchaseGRNMaster">
+            <table class="table table-responsive " id="myDataTable1">
+                <thead>
+                    <tr></tr>
+                </thead>
+                <tbody id="tbodyID">
+
+                    @*@for (int i = 0; i < Model.PurchaseGRNMasterListFromPO.Count; i++)
+                        {*@
+                    <tr>
+                        <td style="display: none;"><input type="hidden" name="Rate" id="Rate" value="@Model.Rate" /></td>
+                        <td style="display: none;"><input type="hidden" name="Total" id="Total" value="@Model.GrossAmount" /></td>
+                        @Html.HiddenFor(m => m.Freight)
+                        @Html.HiddenFor(m => m.PurchaseOrderNumber)
+                        @*<td style="display:none"><input type="hidden" name="IsLocked" value="@Model.PurchaseGRNMasterListFromPO[i].IsLocked" /></td>*@
+                        @Html.HiddenFor(m => m.CreatedBy)
+                    </tr>
+
+                    @*}*@
+
+
+
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+    <div class="form-group" style="margin-left:1%;margin-bottom:1%;padding-bottom:1%;">
+        <input class=" btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreatePurchaseGRNMasterRecord" type="button" />
+
+        @*<label style="margin-left: 5%; margin-bottom: 1%;margin-bottom:1%;float:right;">
+                @if (Model.IsCompletePO == true)
+                {
+                    <input type="checkbox" id="IsCompletePO" name="IsCompletePO" checked>
+                }
+                else
+                {
+                    <input type="checkbox" id="IsCompletePO" name="IsCompletePO">
+                }
+                <i class="input-helper"></i>
+
+                @Html.LabelFor(model => model.IsCompletePO, new {  Value = @Model.IsCompletePO })
+            </label>*@
+        <div class="checkbox m-b-15" style="float:right;">
+            <label style="padding-left:20%;margin-top:5%;">
+
+                <input type="checkbox" id="IsCompletePO">
+                <i class="input-helper"></i>
+                @Html.LabelFor(model => model.IsCompletePO)
+            </label>
+        </div>
+    </div>
+
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ExpiryDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            minDate: moment(),
+        });
+        PurchaseGRNMaster.Initialize();
+        PurchaseGRNMaster.CheckedAll();
+
+        function CheckedSingle() {
+
+            $("#myDataTable tbody tr td  input[class='check-user']").on('click', function () {
+
+                var CheckedArray = [];
+                debugger
+                var table = $('#myDataTable').DataTable();
+                var data = table.$("input[class='check-user']").each(function () {
+                    CheckedArray.push($(this).val());
+                    var $this = $(this);
+                    if ($this.is(":checked")) {
+                        CheckedArray.push($(this).val());
+
+                    }
+
+                });
+
+            });
+        }
+
+        $("#myDataTable").on("click", "tbody tr td .check-user", function () {
+            var a = (parseInt($(".check-user").length));
+            var b = parseInt($(".check-user:checked").length);
+            
+            if (a != b) {
+                $("input[class=checkall-user]").attr("checked", false);
+            }
+            else {
+                $("input[class=checkall-user]").prop("checked", true);
+            }
+        });
+
+      
+
+        $(".abc").each(function () {
+            $(this).datetimepicker({
+                format: 'DD MMMM YYYY',
+                minDate: moment(),
+            }).on('dp.show', function () {
+                var datepicker = $('body').find('.bootstrap-datetimepicker-widget:last');
+                if (datepicker.hasClass('bottom')) {
+                    var top = $(this).offset().top - (datepicker.outerHeight() / 2) + 30;
+                    var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+                    datepicker.css({
+                        'top': top + 'px',
+                        'bottom': 'auto',
+                        'left': left + 'px'
+                    });
+                } else if (datepicker.hasClass('top')) {
+                    var top = $(this).offset().top - datepicker.outerHeight();
+                    var left = $(this).offset().left - datepicker.outerWidth();
+                    // var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+                    datepicker.css({
+                        'top': top + 'px',
+                        'bottom': 'auto',
+                        'left': left + 'px'
+                    });
+                }
+            });
+        })
+
+
+        $(".abc").on("keydown", function (e) {
+
+            var keycode = (e.keyCode ? e.keyCode : e.which);
+            if (keycode != 9) {
+                return false;
+            }
+        })
+
+       
+
+        var map = {};
+        var getData = function () {
+            return function findMatches(q, cb) {
+                debugger;
+                debugger;
+                var matches, substringRegex;
+                var ItemNumber = document.activeElement.getAttribute("tag");
+                // an array that will be populated with substring matches
+                matches = [];
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                $.ajax({
+                    url: "/PurchaseGRNMaster/GetBatchNumberOfItem",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, ItemNumber: ItemNumber },
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response) {
+                            if (substrRegex.test(response.name)) {
+                                map[response.name] = response;
+                                matches.push(response.name);
+                            }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+        $('.typeahead1').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+
+        },
+        {
+            source: getData(),
+            replace: function () {
+
+                var val = $(this).val();
+
+            }
+        }).on("typeahead:selected", function (obj, item) {
+            $(this).closest('tbody tr').find('td input[id=ExpiryDate]').val(map[item].expiryDate);
+            $(this).closest('tbody tr').find('td input[id=BatchID]').val(map[item].id);
+            $(this).closest('tbody tr').find('td input[id=ExpiryDate]').prop("disabled", true)
+
+        });
+
+    })
+    $('input[id^=ReceivedQuantity]').on("keydown", function (e) {
+        AERPValidation.AllowNumbersWithDecimalOnly(e);
+        AERPValidation.NotAllowSpaces(e);
+    });
+
+
+    $("#myDataTable tbody").on("keyup", "tr td input[id^=ReceivedQuantity]", function () {
+        debugger;
+        debugger;
+        var Quantity = parseFloat($(this).closest('tr').find('td input[id=Quantity]').val()).toFixed(2);
+        var RecivedQuantity = parseFloat($(this).closest('tr').find('td input[id=ReceivedQuantity]').val()).toFixed(2);
+        var RemainingQuantity = parseFloat($(this).closest('tr').find('td input[id=RemainingQty]').val()).toFixed(2);
+        var RemainingQuantity1 = parseFloat($(this).closest('tr').find('td input[id=RemainingQty1]').val()).toFixed(2);
+        var SerialAndBatchManagedBy = $(this).closest('tr').find('td input[name=SerialAndBatchManagedBy]').val();
+
+
+        if (SerialAndBatchManagedBy == 2)
+            {
+
+        if (parseFloat(RecivedQuantity) == 0) {
+            $(this).closest('tr').find('td input[id=BatchNumber]').val('');
+            $(this).closest('tr').find('td input[id=BatchID]').val('');
+            $(this).closest('tr').find('td input[id=ExpiryDate]').val('');
+        }
+        else {
+            var Autobatch = $(this).closest('tr').find('td input[name=AutoBatchNumber]').val();
+            $(this).closest('tr').find('td input[id=BatchNumber]').val(Autobatch);
+        }
+        }
+
+
+        var Rate = $("#myDataTable1 tbody tr td  input[id=Rate]").val();
+
+        if (parseFloat(Quantity) == parseFloat(RecivedQuantity)) {
+            var Islocked = true;
+            $(this).closest('tr').find('td input[name=IsLocked]').val(true);
+            var abc = parseFloat(Quantity - RecivedQuantity).toFixed(3);
+            $(this).closest('tr').find('td input[id=RemainingQty]').val(abc);
+            var total = RecivedQuantity * Rate
+            $("#myDataTable1 tbody tr td  input[id=Total]").val(total);
+            $("#myDataTable1 tbody tr td  input[name=IsLocked]").val(true);
+        }
+
+
+            //else if (parseFloat(Quantity) > parseFloat(RemainingQuantity)) {
+
+            //    var Islocked = false;
+            //    $(this).closest('tr').find('td input[name=IsLocked]').val(false);
+            //    var abc = parseFloat(Quantity - RecivedQuantity).toFixed()
+            //    $(this).closest('tr').find('td input[id=RemainingQty]').val(abc);
+            //}
+
+        else if (parseFloat(Quantity) > parseFloat(RecivedQuantity)) {
+
+            var Islocked = false;
+            $(this).closest('tr').find('td input[name=IsLocked]').val(false);
+            var abc = parseFloat(Quantity - RecivedQuantity).toFixed(3)
+            $(this).closest('tr').find('td input[id=RemainingQty]').val(abc);
+            var total = RecivedQuantity * Rate
+            $("#myDataTable1 tbody tr td  input[id=Total]").val(total);
+            $("#myDataTable1 tbody tr td  input[name=IsLocked]").val(false);
+        }
+
+        else if (parseFloat(Quantity) < parseFloat(RecivedQuantity)) {
+
+            var Islocked = false;
+            $(this).closest('tr').find('td input[name=IsLocked]').val(false);
+            var abc = parseFloat(Quantity - RecivedQuantity).toFixed(3)
+            $(this).closest('tr').find('td input[id=RemainingQty]').val(abc);
+            var total = RecivedQuantity * Rate
+            $("#myDataTable1 tbody tr td  input[id=Total]").val(total);
+            $("#myDataTable1 tbody tr td  input[name=IsLocked]").val(false);
+
+            //$("#displayErrorMessage").text("Received Qty should not be greater then Actual Qty.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+            //$("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+
+            //$(this).closest('tr').find('td input[id=ReceivedQuantity]').val(0);
+            //var total = RecivedQuantity * Rate
+            //$("#myDataTable1 tbody tr td  input[id=Total]").val(total);
+            //$(this).closest('tr').find('td input[id=RemainingQty]').val(RemainingQuantity1);
+            //return false;
+        }
+
+
+    });
+
+    //enable ROC rec quantity field on check box check
+    $("#myDataTable tbody").on("click", "tr td input[id^=check_1]", function () {
+        var $this = $(this);
+        if ($this.is(":checked"))
+        {
+        $(this).closest('tr').find('td input[id=FOCReceivedQty]').attr("disabled", false);
+    }
+    else
+    {
+       $(this).closest('tr').find('td input[id=FOCReceivedQty]').attr("disabled", true);
+    }
+    });
+   
+</script>

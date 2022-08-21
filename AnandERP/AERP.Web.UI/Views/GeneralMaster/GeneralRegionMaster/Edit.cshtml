@@ -1,0 +1,193 @@
+﻿@model AERP.ViewModel.GeneralRegionMasterViewModel
+
+<div id="custom-content">
+    @if (Model.IsUserDefined == true)
+    {
+        <div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update State</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormEditGeneralRegionMaster">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.ID)
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.SelectedCountryID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.SelectedCountryID, (SelectList)ViewBag.GeneralCountryMaster, new { @class = "form-control", style = "" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SelectedCountryID)
+                        </div>
+
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.RegionName, new { style = "" })
+                            <div class="form-group fg-line">
+                                @Html.TextBoxFor(model => model.RegionName, new { @class = "form-control", maxlength = "50", style = "" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.RegionName)
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.ShortName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ShortName, new { @class = "form-control", maxlength = "50", style = "" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ShortName)
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.TinNumber, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.TinNumber, new { @class = "form-control", maxlength = "5", style = "" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.TinNumber)
+                        </div>
+
+                        <div class="col-sm-4">
+                            @if (Model.GeneralRegionMasterDTO.DefaultFlag == true)
+                            {
+                                <div class="checkbox m-b-15" style="padding-top:8%;">
+                                    <label>
+                                        <input type="checkbox" id="DefaultFlag" checked>
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.DefaultFlag)
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.DefaultFlag)
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="checkbox m-b-15" style="padding-top:8%;">
+                                    <label>
+                                        <input type="checkbox" id="DefaultFlag">
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.DefaultFlag)
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.DefaultFlag)
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-left: 2%; ">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditGeneralRegionMasterRecord" type="button" />
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    }
+    else
+    {
+
+        <div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;View Region  </h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.ID)
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.SelectedCountryID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.SelectedCountryID, (SelectList)ViewBag.GeneralCountryMaster, new { @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SelectedCountryID)
+                        </div>
+
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.RegionName, new { style = "" })
+                            <div class="form-group fg-line">
+                                @Html.TextBoxFor(model => model.RegionName, new { @class = "form-control", maxlength = "50", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.RegionName)
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            @Html.LabelFor(model => model.ShortName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ShortName, new { @class = "form-control", maxlength = "50", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ShortName)
+                        </div>
+
+                        <div class="col-sm-6">
+                            @if (Model.GeneralRegionMasterDTO.DefaultFlag == true)
+                            {
+                                <div class="checkbox m-b-15" style="padding-top:8%;">
+                                    <label>
+                                        <input type="checkbox" id="DefaultFlag" checked>
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.DefaultFlag)
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.DefaultFlag)
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="checkbox m-b-15" style="padding-top:8%;">
+                                    <label>
+                                        <input type="checkbox" id="DefaultFlag">
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.DefaultFlag)
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.DefaultFlag)
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+
+    }
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralRegionMaster.Initialize();
+    });
+
+</script>
+
+
+
+
+
+
+
+

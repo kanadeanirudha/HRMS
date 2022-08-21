@@ -1,0 +1,286 @@
+﻿
+@model AERP.ViewModel.CCRMCallAllotmentMasterViewModel
+
+<style>
+    .mfp-close-btn-in .mfp-close {
+        color: #eee;
+    }
+</style>
+<div class="mfp-content" style="background :#bfc6ca;width: 902px;margin: -10px 0px -10px -10px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="background :#607d8b;color:white;margin-top: -10px;line-height: 2.5;width: 902px;margin-left: -10px;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Call Allotment Master</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="background:white;margin-top:-25px;margin-left: -10px;width: 902px;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormEditCCRMCallAllotmentMaster">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.ID)
+
+
+
+
+                   
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.AllotDate, new { style = "" })
+                            <div class="form-group fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.AllotDate, new { Value = "" + DateTime.UtcNow.ToString("dd MMM yyyy hh:mm") + "", Readonly = "True", @class = "form-control", style = "background-color:#fff", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Date" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span> @Html.LabelFor(model => model.AllotPeriod, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.AllotPeriod, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.AllotPeriod)
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span> @Html.LabelFor(model => model.CallTktNo, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallTktNo, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallTktNo)
+                        </div>
+
+                       
+                       
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span> @Html.LabelFor(model => model.CallDate, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallDate, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallDate)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.SerialNo, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.SerialNo, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SerialNo)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.ModelNo, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ItemDescription, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ItemDescription)
+                        </div>
+                        
+                       
+                    </div>
+                    
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.MIFName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.MIFName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.MIFName)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.EmailID, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EmailID, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmailID)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.CallerName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallerName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallerName)
+                        </div>
+                       
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.CallerPh, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallerPh, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallerPh)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.CallTypeName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallTypeName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallTypeName)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.CallStatus, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CallStatus, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CallStatus)
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.ComPlaint, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ComPlaint, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ComPlaint)
+                        </div>
+                  
+                        <div class="col-sm-4">
+                            @Html.HiddenFor(model => model.EngineerID)
+                            @Html.LabelFor(model => model.SerEnggName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EmployeeName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EmployeeName)
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.EnggMobNo, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.EnggMobNo, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.EnggMobNo)
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        @if (@Model.CCRMCallAllotmentMasterDTO.Cancel)
+                        {
+
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="Cancel" checked>
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.Cancel, new { style = "" })
+                                </label>
+                                @Html.ValidationMessageFor(model => model.Cancel)
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="Cancel">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.Cancel, new { style = "" })
+                                </label>
+                                @Html.ValidationMessageFor(model => model.Cancel)
+                            </div>
+                        }
+                        <div class="col-sm-4">
+                          
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CancelReason, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CancelReason)
+                        </div>
+                        @if (@Model.CCRMCallAllotmentMasterDTO.Allotment)
+                        {
+
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="Allotment" checked>
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.Allotment, new { style = "" })
+                                </label>
+                                @Html.ValidationMessageFor(model => model.Allotment)
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                <label>
+                                    <input type="checkbox" id="Allotment">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.Allotment, new { style = "" })
+                                </label>
+                                @Html.ValidationMessageFor(model => model.Allotment)
+                            </div>
+                        }
+                    </div>
+                        <div class="col-sm-12">
+                            @*<div id="ListViewModel" class="">*@
+                            <div id="DivAddRowTable">
+                                <table id="tblData" class="table table-striped ">
+                                    <thead>
+                                        <tr>
+
+                                            <th> Call No</th>
+                                            <th>Call Date</th>
+                                            <th>MIF Name</th>
+
+
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in Model.PendingCallByCCRMCallAllotmentMasterID)
+                                        {
+                                            <tr>
+                                                @*<td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.ItemNumber"></td>*@
+                                                <td style="vertical-align:middle;">@item.CallTktNo<input id="CallTktNo" style="display:none" type="text" value="@item.CallTktNo"></td>
+                                                <td style="vertical-align:middle;">@item.CallDate<input id="CallDate" type="text" value="@item.CallDate" style="display:none"></td>
+                                                <td style="vertical-align:middle;">@item.MIFName<input id="MIFName" type="text" style="display:none" value="@item.MIFName"></td>
+
+                                                <td style="display:none">@item.ID<input type="hidden" style="display:none" value="@item.ID"></td>
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table><br /><br /><br /><br />
+                            </div>
+                            @*</div>*@
+                        </div>
+
+
+                        <div class="form-group" style="margin-left: 2%; ">
+                            <input class="btn btn-info btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditCCRMCallAllotmentMasterRecord" type="button" style="margin-left:15px;" />
+                        </div>
+
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            CCRMCallAllotmentMaster.Initialize();
+            if ($("#CallStatus").val() == "2") {
+                $("#CallStatus").val('Complete');
+            }
+            else if ($("#CallStatus").val() == "3") {
+                $("#CallStatus").val('BreakDown');
+            }
+            else {
+                $("#CallStatus").val('Open');
+
+            }
+        });
+</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

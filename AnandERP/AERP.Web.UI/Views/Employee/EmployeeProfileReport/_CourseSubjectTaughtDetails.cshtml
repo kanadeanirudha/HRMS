@@ -1,0 +1,92 @@
+﻿@*@model AMS.ViewModel.EmployeeCourseSubjectTaughtViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <h3 class="my-caption">@Resources.DisplayName_CourseSubjectTaught  </h3>
+    
+    <div id="my-Subject" style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="nonboxy-widget">
+                    <div class="widget-head">
+                        <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.DisplayName_CourseSubjectTaught</h5>
+
+                    </div>
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                        <table id="DataTables_Table_0" class="data-tbl-striped table table-striped table-bordered dataTable">
+                            <thead>
+                                <tr role="row">
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 100%; background-color: #fff; text-align: left" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_SubjectName</th>
+
+                                </tr>
+                            </thead>
+                            @foreach (var item in ViewBag.ListEmployeeCourseSubjectTaughtDetails)
+                            {
+                                <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                    <tr class="odd">
+                                        <td style="text-align: left" class="">@item.SubjectName</td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+
+@*-------------new code-------------*@
+
+@model AMS.ViewModel.EmployeeCourseSubjectTaughtViewModel
+@{
+
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+
+@if (ViewBag.Data == 1)
+{ 
+    
+    <div class="col-sm-12">
+            <div class="card rating-list">
+                <div class="listview">
+                    <div class="lv-header">
+                        <div class="m-t-0">
+                            @Resources.DisplayName_CourseSubjectTaught
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    @*<div class="lv-body">*@
+                        <div class="table-responsive" id="DataTables_Table_0_wrapper">
+                            <table id="DataTables_Table_0" class="table">
+                                <thead>
+                                    <tr class="info">
+                                        <th>@Resources.TableHeaders_SubjectName</th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in ViewBag.ListEmployeeCourseSubjectTaughtDetails)
+                                {
+                                    <tbody>
+                                        <tr class="active">
+                                            <td>@item.SubjectName</td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+
+    
+}
+

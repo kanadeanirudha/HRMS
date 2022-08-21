@@ -1,0 +1,16 @@
+﻿@model AERP.ViewModel.UserMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/General_Script/EmployeeDashboard.js")" type="text/javascript"></script>
+<!-- content -->
+<input type="hidden" id="ReturnUrl" value="@ViewBag.ReturnUrl" />
+<div id="ListViewModel" class="container">
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeDashboard.Initialize();
+        EmployeeDashboard.LoadList();
+    });
+</script>

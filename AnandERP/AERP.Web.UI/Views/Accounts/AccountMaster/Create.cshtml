@@ -1,0 +1,338 @@
+﻿@model AERP.ViewModel.AccountMasterViewModel
+
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<style>
+    .bootstrap-select {
+        width: 98% !important;
+    }
+
+    .checkbox label {
+        padding-left: 15px;
+        position: relative;
+    }
+</style>
+
+
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Account Master (@Html.DisplayFor(model => model.GroupDescription))</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:0%;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateAccountMaster" class="row" method="post">
+                <p class="m-b-25 m-t-25 c-black f-500" style="border-bottom: 1px solid; font-size: 16px; border-bottom-color: black">Account Details</p>
+
+                @Html.HiddenFor(model => model.AccBalsheetMstID)
+                @Html.HiddenFor(model => model.GroupID)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            <div class="form-group  fg-line">
+                                @Html.LabelFor(m => m.AccountName, new { })
+                                @Html.TextBoxFor(model => model.AccountName, new { @class = "form-control input-sm", maxlength = "60" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.AccountName)
+                        </div>
+
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            <div class="form-group  fg-line">
+                                @Html.LabelFor(m => m.AccountCode, new { })
+                                @Html.TextBoxFor(model => model.AccountCode, new { @class = "form-control input-sm", maxlength = "30" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.AccountCode)
+                        </div>
+                        </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            <div class="form-group  fg-line select">
+                                @Html.LabelFor(model => model.AccountType, new { })
+                                @Html.DropDownList("AccountType", ViewData["AccountType"] as List<SelectListItem>, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CashBankFlag)
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group  fg-line select">
+                                @Html.LabelFor(model => model.ControlHead, new { })
+                                @Html.DropDownListFor(m => m.ControlHead, ViewData["ControlHeadlist"] as List<SelectListItem>, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PersonType)
+                        </div>
+                        </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.DebitCreditFlag, new { }) <br>
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.DebitCreditFlag, "D", new { @checked = true,id = "DebitCreditFlag_Debit" }) @Resources.RadioButton_Debit
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.DebitCreditFlag, "C", new { id = "DebitCreditFlag_Credit" }) @Resources.RadioButton_Credit
+                                    <i class="input-helper"></i>
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group  fg-line select">
+                                @Html.LabelFor(model => model.SurpDifiFlag, new { })
+                                @Html.DropDownList("SurpDefFlagList", (SelectList)ViewBag.SurplusDeficitList, Resources.ddlHeaders_Select, new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SurpDifiFlag)
+                        </div>
+                        </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6" style="padding-top:1%;">
+                            <div class="form-group  fg-line select">
+                                @Html.LabelFor(m => m.AltGroupID, new { @class = "" })
+                                @Html.DropDownList("AlternateGroupList", ViewData["AlternateGroupList"] as List<SelectListItem>,"---Select Group---", new { @class = "form-control input-sm" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            
+                            <div id="checkboxlist" class="form-group">
+                                @Html.LabelFor(model => model.ExclusivelyForCentre, new { @class = "" })
+                                <p id="e5_f">
+                                    <select id="checkboxlist1" class="form-group selectpicker" multiple name="selectDisplayFormat">
+                                        @foreach (var item in Model.ListAccountBalancesheetMaster)
+                                        {
+                                            if (@item.StatusFlag == true)
+                                            {
+                                                <option id="@item.ID" value="@item.AccountID~@item.ID" selected="selected">@item.AccBalsheetHeadDesc</option>
+
+                                            }
+
+                                            else
+                                            {
+                                                <option id="@item.ID" value="@item.AccountID~@item.ID"> @item.AccBalsheetHeadDesc </option>
+                                            }
+
+                                        }
+                                    </select>
+                                </p>
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+
+                    <div class="col-sm-12">
+                        @if (@Model.AccountMasterDTO.BackDatetimedEntries == true)
+                        {
+                            <div class="col-sm-6">
+                                <div class="checkbox m-b-15" style="padding-top:8%;">
+                                    <label>
+                                        <input type="checkbox" id="BackDatetimedEntries" checked>
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.BackDatetimedEntries)
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-sm-6">
+                                <div class="checkbox m-b-15" style="padding-top:0%;">
+                                    <label>
+                                        <input type="checkbox" id="BackDatetimedEntries">
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.BackDatetimedEntries)
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        </div>
+
+                    </div>
+
+
+                    <div class="" id="BankAccDiv">
+                        <p class="m-b-25 m-t-25 c-black f-500" style="border-bottom: 1px solid; font-size: 16px; border-bottom-color: black">Bank Details</p>
+
+
+                        <div class="col-sm-12">
+                                <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    <div class="form-group  fg-line">
+                                        @Html.LabelFor(model => model.AccountInNameOf, new { @class = "" })
+                                        @Html.TextBoxFor(model => model.AccountInNameOf, new { @class = "form-control input-sm", maxlength = "60" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.AccountInNameOf)
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    <div class="form-group  fg-line">
+                                        @Html.LabelFor(model => model.BankBranchName, new { @class = "" })
+                                        @Html.TextBoxFor(model => model.BankBranchName, new { @class = "form-control input-sm", maxlength = "60" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.BankBranchName)
+                                </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    <div class="form-group  fg-line">
+                                        @Html.LabelFor(model => model.BankAccountNumber, new { @class = "" })
+                                        @Html.TextBoxFor(model => model.BankAccountNumber, new { @class = "form-control input-sm", maxlength = "30" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.BankAccountNumber)
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    <div class="form-group  fg-line">
+                                        @Html.LabelFor(model => model.BankLimitAmount, new { @class = "" })
+                                        @Html.TextBoxFor(model => model.BankLimitAmount, new { @class = "form-control input-sm", min = "0", maxlength = "10" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.BankLimitAmount)
+                                </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="col-sm-6">
+                                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                        <div class="form-group  fg-line ">
+                                            @Html.LabelFor(model => model.OpenDatetime, new { @class = "" })
+                                            @Html.TextBoxFor(model => model.OpenDatetime, new { @class = "form-control input-sm" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.OpenDatetime)
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-10">
+                                            <div class="form-group  fg-line dtp-container">
+                                                @Html.LabelFor(model => model.DueDatetime, new { @class = "" })
+                                                @Html.TextBoxFor(model => model.DueDatetime, new { @class = "form-control input-sm", @style = "background-color: #ffffff;", })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.DueDatetime)
+                                        </div>
+                                        <div class="col-sm-2" style="padding-top:6%">
+                                            <div class="form-group fg-line">
+
+                                                <span class="btn btn-xs btn-success" style="height:30px; width:30px;" title="Clear" id="DueDatetime_Clear"><i class="zmdi zmdi-watch zmdi-hc-fw" style="padding-top:8px;"></i></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    <div class="form-group  fg-line select">
+                                        @Html.LabelFor(model => model.InterestMode, new { @class = "" })
+                                        @Html.DropDownList("InterestModeList", ViewData["InterestModeList"] as List<SelectListItem>, new { @class = "form-control input-sm" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.InterestMode)
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    <div class="form-group  fg-line select">
+                                        @Html.LabelFor(model => model.InterestType, new { @class = "" })
+                                        @Html.DropDownList("InterestTypeList", ViewData["InterestTypeList"] as List<SelectListItem>, new { @class = "form-control input-sm" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.InterestType)
+                                </div>
+                                </div>
+                                <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                                    <div class="form-group  fg-line">
+                                        @Html.LabelFor(model => model.RateOfInterest, new { @class = "" })
+                                        @Html.TextBoxFor(model => model.RateOfInterest, new { @class = "form-control input-sm", maxlength = "10", min = "0" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.RateOfInterest)
+                                </div>
+                                </div>
+                            </div>
+
+
+                    </div>
+
+
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateAccountMasterRecord" type="button" />
+                            <input name="reset" id="reset" type="button" class="btn btn-default btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Reset" />
+                        </div>
+                    </div>
+
+
+</form>
+
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+        AccountMaster.Initialize();
+        //$('#checkboxlist1').multipleSelect();
+
+
+        //$('#OpenDatetime').attr("readonly", true);
+
+        $('#OpenDatetime').datetimepicker({
+            format: 'DD MMMM YYYY',
+            maxDate: moment(),
+        })
+
+        $('#DueDatetime').attr("readonly", true);
+
+        $('#DueDatetime').datetimepicker({
+            format: 'DD MMMM YYYY',
+            minDate: moment(),
+            ignoreReadonly: true,
+        })
+
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

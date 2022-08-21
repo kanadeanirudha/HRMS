@@ -1,0 +1,514 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FD66C34D-15F1-4B1E-B387-9DC58774E7ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AERP.ViewModel</RootNamespace>
+    <AssemblyName>AERP.ViewModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Implementation\Account\AccountBalancesheetMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountBalancesheetTypeMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountCategoryMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountCentreOpeningBalanceViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountChequeBookDetailsViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountChequeBookMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountGroupMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountHeadMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountSessionMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountTransactionMasterViewModel.cs" />
+    <Compile Include="Implementation\Account\AccountTransactionTypeMasterViewModel .cs" />
+    <Compile Include="Implementation\Account\GeneralMapTypeOfAccountViewModel.cs" />
+    <Compile Include="Implementation\Account\GeneralTypeOfAccountViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountBalancesheetReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountBalancesheetTypeReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountCategoryMasterReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountCentreWiseBalanceSheetReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountDayBookReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountExclusiveToCentreReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountGeneralLedgerReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountGroupMasterReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountHeadMasterReportVIewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountMasterReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountProfitAndLossViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountSessionMasterReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountTradingReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountTrialBalanceReportViewModel.cs" />
+    <Compile Include="Implementation\Account\Report\AccountVoucherSettingMasterReportViewModel.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleApplicableDetailsViewModel.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleDetailsViewModel.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleMasterViewModel.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleMenuDetailsViewModel.cs" />
+    <Compile Include="Implementation\Admin\AdminRoleModuleAccessViewModel.cs" />
+    <Compile Include="Implementation\Admin\AdminSnPostsViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMActionMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMAreaPatchMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMBankMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMBillTypeMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMBrokenCallReasonMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMCauseMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMComplaintLoggingMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMContractTypesMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMCustomerSegementViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMEngineersGroupMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMFeedbackMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMLocationTypeMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMMachineFamilyMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMMachineMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMMIFMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMServiceCallTypesViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMServiceMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMServiceReportMasterViewModel.cs" />
+    <Compile Include="Implementation\CCRM\CCRMSymptomMasterViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\ATTRITIONReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\ContractEmployeeReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\ContractPaymentPendingReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeESICReportForm7ViewModelcs.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeFormIIWagesSheetReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeFormXViewModelcs.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFReportForm10ViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFReportFORM6AViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeePFReportForm9ViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\EmployeeReportForm5MonthlyViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\ESICMonthlyUploadingFileViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\GSTReportsViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\PaymentOfBonusViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\PFChallanRemittanceViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofAdavancesViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofDeductionsforDamageorLossViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofFinesViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofOvertimeViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\RegisterofWorkmenEmployedbyContractorViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\SaleContractEmployeePFReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\SaleContractLifeSpanReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\Report\SaleContractWisePNLReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractArrearsCalculationViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractAttendanceViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractBillingTransactionViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractDashboardReportViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractEmployeeAdvancesViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractEmployeeMasterViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractFixAttendanceViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractFixItemViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractJobWorkDataViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractJobWorkItemViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractMachineMasterViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractMachineTransactionViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractManPowerItemViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractMasterViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractPayementViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractRecieptViewModelcs.cs" />
+    <Compile Include="Implementation\Contract\SaleContractSalaryTransactionViewModel.cs" />
+    <Compile Include="Implementation\Contract\SaleContractServiceItemAttendanceViewModel.cs" />
+    <Compile Include="Implementation\Dashboard\DashboardViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmpDesignationMasterViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmpEmployeeMasterViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeContactDetailsViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeDependentsViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeDocumentRequiredViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeExperienceViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeePersonalDetailsViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeePictureDetailsViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeQualificationViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeServiceDetailsViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeShiftApplicableMasterViewModel.cs" />
+    <Compile Include="Implementation\Employee\EmployeeShiftMasterViewModel.cs" />
+    <Compile Include="Implementation\Employee\GeneralExperienceTypeMasterViewModel.cs" />
+    <Compile Include="Implementation\Employee\GeneralJobProfileViewModel.cs" />
+    <Compile Include="Implementation\Employee\GeneralJobStatusViewModel.cs" />
+    <Compile Include="Implementation\Employee\GeneralLevelMasterViewModel.cs" />
+    <Compile Include="Implementation\Employee\GeneralRelationshipTypeMasterViewModel.cs" />
+    <Compile Include="Implementation\ExcelUpload\InventoryExcelUploadViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\BankMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralCityMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralCountryMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralEducationMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralEducationTypeMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralGroupMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralLocationMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralNationalityMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralPolicyRulesViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralRegionMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralRunningNumbersForAccountViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralSupplierMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralTaxGroupMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralTaxMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralTitleMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralUnitMasterViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralUnitTypeViewModel.cs" />
+    <Compile Include="Implementation\GeneralMaster\GeneralWeekDaysViewModel.cs" />
+    <Compile Include="Implementation\Inventory\AddCentreOpeningBalanceForInventoryViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralAllocateSaleProcessUnitViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemCategoryMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMarchandiseBaseCategoryViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMarchandiseGroupViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMarchandiseSubCategoryViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMerchantiseCategoryViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralItemMerchantiseDepartmentViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralMovementTypeViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralOperatorRelatedRoleViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPackageTypeViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPriceGroupViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPriceListAndListLineViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralPurchaseGroupMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralTemperatureMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralTransactionMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralUnitsStorageLocationViewModel.cs" />
+    <Compile Include="Implementation\Inventory\GeneralUnitsViewModel.cs" />
+    <Compile Include="Implementation\Inventory\InventoryAttributeMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\InventoryBrandMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\InventoryLablePrintingFormatViewModel.cs" />
+    <Compile Include="Implementation\Inventory\InventoryLocationMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\InventoryStockAdjustmentViewModel.cs" />
+    <Compile Include="Implementation\Inventory\InventoryUoMGroupAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\Inventory\InventoryUoMMasterViewModel.cs" />
+    <Compile Include="Implementation\Inventory\OrderingAndDeliveryDayViewModel.cs" />
+    <Compile Include="Implementation\Inventory\Report\InventoryReportViewModel.cs" />
+    <Compile Include="Implementation\Inventory\Report\RetailReportsViewModel.cs" />
+    <Compile Include="Implementation\Inventory\Report\VendorMasterReportViewModel.cs" />
+    <Compile Include="Implementation\Inventory\VendorMasterViewModel.cs" />
+    <Compile Include="Implementation\Leave\GeneralLeaveDocumentViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveApplicationViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveAttendanceExemptionViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveAttendanceSpanLockViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveAttendanceSpecialRequestViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveAvailedViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveCompensatoryWorkDayViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveDeductRuleExceptionForCentreViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveEmployeeApplicationStatusReportViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveLateMarkRulesDetailsViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveManualAttendanceViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveMasterViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeavePostViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveRuleApplicableDetailsViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveRuleExemptedEmployeeViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveRuleMasterViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveSessionViewModel.cs" />
+    <Compile Include="Implementation\Leave\LeaveShiftAllocateToCentreViewModel.cs" />
+    <Compile Include="Implementation\Leave\ManualAttendanceStatusReportViewModel.cs" />
+    <Compile Include="Implementation\MonitoringSystem\AttendenceMonitoringSystemViewModel.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationCentrewiseDepartmentViewModel.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationDepartmentMasterViewModel.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationMasterViewModel.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationStudyCentreMasterViewModel.cs" />
+    <Compile Include="Implementation\Organisation\OrganisationStudyCentrePrintingFormatViewModelViewModel.cs" />
+    <Compile Include="Implementation\Payroll\EmployeeSalaryRulesViewModel.cs" />
+    <Compile Include="Implementation\Payroll\EmployeeSalarySpanViewModel.cs" />
+    <Compile Include="Implementation\Payroll\EmployeeBulkAttendenceViewModel.cs" />
+    <Compile Include="Implementation\Payroll\EmployeeSalaryTransactionViewModel.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseGRNMasterViewModel.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseInvoiceViewModel.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseOrderMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseReplenishmentViewModel.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseRequirementMasterViewModel.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseRequisitionMasterViewModel.cs" />
+    <Compile Include="Implementation\Purchase\PurchaseReturnViewModel.cs" />
+    <Compile Include="Implementation\Purchase\Report\PurchaseReportMasterViewModel.cs" />
+    <Compile Include="Implementation\Purchase\SupplierPayementMasterViewModel.cs" />
+    <Compile Include="Implementation\Salary\ESICZoneMasterViewModel.cs" />
+    <Compile Include="Implementation\Salary\SalaryAllowanceMasterViewModel.cs" />
+    <Compile Include="Implementation\Salary\SalaryDeductionMasterViewModel.cs" />
+    <Compile Include="Implementation\Sales\CustomerMasterViewModel.cs" />
+    <Compile Include="Implementation\Sales\GeneralShipperMasterViewModel.cs" />
+    <Compile Include="Implementation\Sales\SalesCustomerRecieptViewModel.cs" />
+    <Compile Include="Implementation\Sales\SalesEnquiryMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\Sales\SalesInvoiceMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\Sales\SalesOrderDeliveryMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\Sales\SalesOrderMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\Sales\SalesQuotationMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\Sales\SalesReturnMasterAndDetailsViewModel.cs" />
+    <Compile Include="Implementation\TaskModel\GeneralRequestMasterViewModel.cs" />
+    <Compile Include="Implementation\TaskModel\GeneralTaskModelViewModel.cs" />
+    <Compile Include="Implementation\TaskModel\GeneralTaskReportingDetailsViewModel.cs" />
+    <Compile Include="Implementation\TaskModel\RequestApprovalFormFieldNameMasterViewModel.cs" />
+    <Compile Include="Implementation\TaskModel\TaskApprovalFormFieldNameMasterViewModel.cs" />
+    <Compile Include="Implementation\TaskNotification\TaskNotificationViewModel.cs" />
+    <Compile Include="Implementation\UserMaster\UserMainMenuMasterViewModel.cs" />
+    <Compile Include="Implementation\UserMaster\UserModuleMasterViewModel.cs" />
+    <Compile Include="Implementation\UserMaster\UsersDetailViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\Admin\AdminMenuViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMCallTrackViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\CCRMServiceReportMaster_WebAPIViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\CCRM\MIFMasterViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\Leave\AddAttendanceViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\Leave\LeaveMasterViewModelWebAPI.cs" />
+    <Compile Include="Implementation\WebAPI\Leave\SelfLeaveApplicationViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\LocationTracking\LocationTrackingViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\Telematics\SensorDataViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\ActivityMasterViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\ActivityRuleViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\ConsumerMasterViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\DailyActivityReportViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\ItemCategoryMasterViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\ItemMasterViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\SectionMasterViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\StatusMasterViewModel.cs" />
+    <Compile Include="Implementation\WebAPI\TransmissionNDistribution\SubActivityMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountBalancesheetMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountBalancesheetTypeMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountCategoryMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountCentreOpeningBalanceViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountChequeBookDetailsViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountChequeBookMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountGroupMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountHeadMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountSessionMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountTransactionMasterViewModel.cs" />
+    <Compile Include="Interface\Account\IAccountTransactionTypeMasterViewModel .cs" />
+    <Compile Include="Interface\Account\IGeneralMapTypeOfAccountViewModel.cs" />
+    <Compile Include="Interface\Account\IGeneralTypeOfAccountViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountBalancesheetReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountBalancesheetTypeReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountCategoryMasterReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountCentreWiseBalanceSheetReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountDayBookReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountExclusiveToCentreReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountGeneralLedgerReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountGroupMasterReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountHeadMasterReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountMasterReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountSessionMasterReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountTradingReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountTrialBalanceReportViewModel.cs" />
+    <Compile Include="Interface\Account\Report\IAccountVoucherSettingMasterReportViewModel.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleApplicableDetailsViewModel.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleDetailsViewModel.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleMasterViewModel.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleMenuDetailsViewModel.cs" />
+    <Compile Include="Interface\Admin\IAdminRoleModuleAccessViewModel.cs" />
+    <Compile Include="Interface\Admin\IAdminSnPostsViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMActionMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMAreaPatchMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMBankMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMBillTypeMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMBrokenCallReasonMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMCauseMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMComplaintLoggingMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMContractTypesMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMCustomerSegementViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMFeedbackMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMLocationTypeMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMMachineFamilyMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMMachineMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMMIFMasterAndDetailsViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMServiceCallTypesViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMServiceMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMServiceReportMasterViewModel.cs" />
+    <Compile Include="Interface\CCRM\ICCRMSymptomMasterViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractArrearsCalculationViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractAttendanceViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractBillingTransactionViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractEmployeeAdvancesViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractEmployeeMasterViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractFixAttendanceViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractFixItemViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractJobWorkDataViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractJobWorkItemViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractMachineMasterViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractMachineTransactionViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractManPowerItemViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractMasterViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractPayementViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractRecieptViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractSalaryTransactionViewModel.cs" />
+    <Compile Include="Interface\Contract\ISaleContractServiceItemAttendanceViewModel.cs" />
+    <Compile Include="Interface\Contract\Report\ISaleContractEmployeePFReportViewModel.cs" />
+    <Compile Include="Interface\Dashboard\IDashboardViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmpDesignationMasterViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmpEmployeeMasterViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeeContactDetailsViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeeDependentsViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeeDocumentRequiredViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeeExperienceViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeePersonalDetailsViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeePictureDetailsViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeeQualificationViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeeShiftApplicableMasterViewModel.cs" />
+    <Compile Include="Interface\Employee\IEmployeeShiftMasterViewModel.cs" />
+    <Compile Include="Interface\Employee\IGeneralExperienceTypeMasterViewModel.cs" />
+    <Compile Include="Interface\Employee\IGeneralJobProfileViewModel.cs" />
+    <Compile Include="Interface\Employee\IGeneralJobStatusViewModel.cs" />
+    <Compile Include="Interface\Employee\IGeneralLevelMasterViewModel.cs" />
+    <Compile Include="Interface\Employee\IGeneralRelationshipTypeMasterViewModel.cs" />
+    <Compile Include="Interface\ExcelUpload\IInventoryExcelUploadViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IBankMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralCityMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralCountryMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralEducationMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralEducationTypeMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralGroupMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralLocationMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralNationalityMasterViewModel .cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralPolicyRulesViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralRegionMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralRunningNumbersForAccountViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralSupplierMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralTaxGroupMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralTaxMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralTitleMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralUnitMasterViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralUnitTypeViewModel.cs" />
+    <Compile Include="Interface\GeneralMaster\IGeneralWeekDaysViewModel.cs" />
+    <Compile Include="Interface\Inventory\IAddCentreOpeningBalanceForInventoryViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralAllocateSaleProcessUnitViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemCategoryMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMarchandiseBaseCategoryViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMarchandiseGroupViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMarchandiseSubCategoryViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMerchantiseCategoryViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralItemMerchantiseDepartmentViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralMovementTypeViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralOperatorRelatedRoleViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPackageTypeViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPriceGroupViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPriceListAndListLineViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralPurchaseGroupMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralTemperatureMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralTransactionMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralUnitsStorageLocationViewModel.cs" />
+    <Compile Include="Interface\Inventory\IGeneralUnitsViewModel.cs" />
+    <Compile Include="Interface\Inventory\IInventoryAttributeMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IInventoryBrandMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IInventoryLocationMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IInventoryStockAdjustmentViewModel.cs" />
+    <Compile Include="Interface\Inventory\IInventoryUoMGroupAndDetailsViewModel.cs" />
+    <Compile Include="Interface\Inventory\IInventoryUoMMasterViewModel.cs" />
+    <Compile Include="Interface\Inventory\IOrderingAndDeliveryDayViewModel.cs" />
+    <Compile Include="Interface\Inventory\IVendorMasterViewModel.cs" />
+    <Compile Include="Interface\Leave\IGeneralLeaveDocumentViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveApplicationViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveAttendanceExemptionViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveAttendanceSpanLockViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveAttendanceSpecialRequestViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveAvailedViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveCompensatoryWorkDayViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveDeductRuleExceptionForCentreViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveEmployeeApplicationStatusReportViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveLateMarkRulesDetailsViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveManualAttendanceViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveMasterViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeavePostViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveRuleApplicableDetails.cs" />
+    <Compile Include="Interface\Leave\ILeaveRuleExemptedEmployeeViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveRuleMasterViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveSessionViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveShiftAllocateToCentreViewModel.cs" />
+    <Compile Include="Interface\Leave\ILeaveSummaryViewModel.cs" />
+    <Compile Include="Interface\MonitoringSystem\IAttendenceMonitoringSystemViewModel.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationCentrewiseDepartmentViewModel.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationDepartmentMasterViewModel.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationMasterViewModel.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationStudyCentreMasterViewModel.cs" />
+    <Compile Include="Interface\Organisation\IOrganisationStudyCentrePrintingFormatViewModel.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeSalaryRulesViewModel.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeSalarySpanViewModel.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeBulkAttendenceViewModel.cs" />
+    <Compile Include="Interface\Payroll\IEmployeeSalaryTransactionViewModel.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseGRNMasterViewModel.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseInvoiceViewModel.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseOrderMasterAndDetailsViewModel.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseReplenishmentViewModel.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseRequirementMasterViewModel.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseRequisitionMasterViewModel.cs" />
+    <Compile Include="Interface\Purchase\IPurchaseReturnViewModel.cs" />
+    <Compile Include="Interface\Purchase\ISupplierPayementMasterViewModel.cs" />
+    <Compile Include="Interface\Purchase\Report\IPurchaseReportMasterViewModel.cs" />
+    <Compile Include="Interface\Salary\ISalaryAllowanceMasterViewModel.cs" />
+    <Compile Include="Interface\Salary\ISalaryDeductionMasterViewModel.cs" />
+    <Compile Include="Interface\Sales\ICustomerMasterViewModel.cs" />
+    <Compile Include="Interface\Sales\IGeneralShipperMasterViewModel.cs" />
+    <Compile Include="Interface\Sales\ISalesCustomerRecieptViewModel.cs" />
+    <Compile Include="Interface\Sales\ISalesEnquiryMasterAndDetailsViewModel.cs" />
+    <Compile Include="Interface\Sales\ISalesInvoiceMasterAndDetailsViewModel.cs" />
+    <Compile Include="Interface\Sales\ISalesOrderDeliveryMasterAndDetailsViewModel.cs" />
+    <Compile Include="Interface\Sales\ISalesOrderMasterAndDetailsViewModel.cs" />
+    <Compile Include="Interface\Sales\ISalesQuotationMasterAndDetails.cs" />
+    <Compile Include="Interface\TaskModel\IGeneralRequestMasterViewModel.cs" />
+    <Compile Include="Interface\TaskModel\IGeneralTaskModelViewModel.cs" />
+    <Compile Include="Interface\TaskModel\IGeneralTaskReportingDetailsViewModel.cs" />
+    <Compile Include="Interface\TaskModel\IRequestApprovalFormFieldNameMasterViewModel.cs" />
+    <Compile Include="Interface\TaskModel\ITaskApprovalFormFieldNameMasterViewModel.cs" />
+    <Compile Include="Interface\UserMaster\IUserMainMenuMasterViewModel.cs" />
+    <Compile Include="Interface\UserMaster\IUserMasterViewModel.cs" />
+    <Compile Include="Interface\UserMaster\IUserModuleMasterViewModel.cs" />
+    <Compile Include="JQueryDataTableParamModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\AERP.Base.DTO\AERP.Base.DTO.csproj">
+      <Project>{cfcf47cc-de41-4f48-805c-9420b3716d1e}</Project>
+      <Name>AERP.Base.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.Common\AERP.Common.csproj">
+      <Project>{c585a626-f8f4-4ba4-9b4c-497c52bb4e79}</Project>
+      <Name>AERP.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AERP.DTO\AERP.DTO.csproj">
+      <Project>{3b3c07e6-93af-48d2-8922-ab1969ee052a}</Project>
+      <Name>AERP.DTO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Implementation\ExcelUpload\vssver.scc" />
+    <None Include="Implementation\Purchase\Report\vssver.scc" />
+    <None Include="Implementation\TaskModel\vssver.scc" />
+    <None Include="Interface\ExcelUpload\vssver.scc" />
+    <None Include="Interface\Purchase\Report\vssver.scc" />
+    <None Include="Interface\TaskModel\vssver.scc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interface\WebAPI\CCRM\" />
+    <Folder Include="Interface\WebAPI\TransmissionNDistribution\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

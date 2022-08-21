@@ -1,0 +1,36 @@
+﻿@helper GetTreeView(List<AERP.DTO.AdminRoleMenuDetails> siteMenu, int parentID)
+{
+foreach (var i in siteMenu.Where(Model => Model.ParentMenuID.Equals(parentID)))
+{
+        <li>
+            @{var submenu = siteMenu.Where(Model => Model.ParentMenuID.Equals(i.MenuID)).Count();}
+            @if (submenu > 0)
+            {
+                <span class="rolemenucollapse collapsible">&nbsp;</span>
+            }
+            else
+            {
+                <span style="width:15px; display:inline-block">&nbsp;</span>
+            }
+            <span>
+                @if (@i.Status == true)
+                {
+                    <input id="ff" type="checkbox" checked="checked" value="@i.ID~@i.MenuID~@i.MenuCode~Check" /> @i.MenuName
+                }
+                @if (@i.Status == false)
+                {
+                    <input id="ff" type="checkbox" value="@i.ID~@i.MenuID~@i.MenuCode~Uncheck" /> @i.MenuName
+                }
+            </span>
+            @if (submenu > 0)
+            {
+                <ul>
+                    @Treeview.GetTreeView(siteMenu, i.MenuID)
+                    @* Recursive  Call for Populate Sub items here*@
+                </ul>
+            }
+        </li>
+                }
+}
+
+

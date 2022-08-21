@@ -1,0 +1,145 @@
+﻿@model AERP.ViewModel.AdminRoleMenuDetailsViewModel
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-checktree.js")" type="text/javascript"></script>
+
+
+<style>
+    /*Here We will add some css for style our treeview*/
+    .rolemenucollapse {
+        width: 15px;
+        background-image: url('../Content/images/ui-icons_454545_256x240.png');
+        background-repeat: no-repeat;
+        background-position: -36px -17px;
+        display: -moz-deck;
+        cursor: pointer;
+    }
+
+    .expand {
+        width: 15px;
+        background-image: url('../Content/images/ui-icons_454545_256x240.png');
+        background-repeat: no-repeat;
+        background-position: -50px -17px;
+        display: -moz-deck;
+        cursor: pointer;
+        padding-left:10px;
+    }
+
+    .treeview ul {
+        font: 14px Arial, Sans-Serif;
+        margin: 0px;
+        padding-left: 20px;
+        list-style: none;
+        /*opacity: 0;*/
+    }
+
+    .treeview > li > a {
+        font-weight: bold;
+        /*opacity: 0;*/
+    }
+
+    .treeview li {
+        /*opacity: 0;*/
+    }
+
+        .treeview li a {
+            padding: 4px;
+            font-size: 12px;
+            display: inline-block;
+            text-decoration: none;
+            width: auto;
+            /*opacity: 0;*/
+        }
+
+    .rolemenucollapse {
+        background-image: url("../Content/images/ui-icons_454545_256x240.png");
+        background-position: -36px -17px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        display: -moz-deck;
+        width: 17px;
+        padding-left:10px;
+    }
+</style>
+
+    <div>
+        <div id="aaa">
+            <div class="block-header">
+                <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Allocate Access Rights</h2>
+            </div>
+            <div class="card">
+
+                <form id="FormCreateAdminRoleMenuDetails" method="post">
+                    @Html.HiddenFor(model => model.ID)
+                    @Html.HiddenFor(model => model.AdminRoleMasterID)
+                    @Html.HiddenFor(model => model.AdminRoleCode)
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="card-body card-padding" style="padding-bottom:60px;">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <span>@Html.LabelFor(model => model.AdminRoleCode, new { style = "" })</span>
+                                    <div class="form-group fg-line">
+                                        @Html.TextBoxFor(model => model.AdminRoleCode, new { style = "background-color:#fff;", ReadOnly = "True", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <span>@Html.LabelFor(model => model.ModuleID, new { style = "" })</span>
+                                    <div class="form-group fg-line select">
+                                        @Html.DropDownListFor(model => model.ModuleID, (SelectList)ViewBag.AdminModuleList, "------Select Module------", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="col-sm-12">*@
+                            @if (Model.ModuleID != 0)
+                            {
+                                @*<div class="row">*@
+                                <div class="span6">
+                                    <div id="checkboxlist" class="treeview">
+                                        @if (Model != null)
+                                        {
+                                            <ul id="tree">
+                                                @Treeview.GetTreeView(Model.AdminMenuDetailsList, Model.AdminRoleMenuDetailsDTO.ParentMenuID)
+                                            </ul>
+                                        }
+                                    </div>
+                                </div>
+                                @*</div>*@
+                            }
+                            @*</div>*@
+                        </div>
+                        <div id="Success_Message" style="display: none; color: #000;" class="alert"></div>
+
+                        <div class="col-sm-12" style="padding-top:20px;">
+                            <button type="button" id="CreateAdminRoleMenuDetailsRecord" class="btn btn-primary" style="">@Resources.ButtonAction_Submit</button>
+                            <button id="reset" class="btn btn-default" value="@Resources.ButtonAction_Reset">@Resources.ButtonAction_Reset</button>
+                        </div>
+                    </div>
+
+                    
+                </form>
+
+            </div>
+        </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        AdminRoleMenuDetails.Initialize();
+
+        $(".treeview li>ul").css('display', 'none'); // Hide all 2-level ul
+        $(".collapsible").click(function (e) {
+            e.preventDefault();
+            $(this).toggleClass("rolemenucollapse expand");
+            $(this).closest('li').children('ul').slideToggle();
+        });
+        $('#tree').checktree();
+    });
+</script>

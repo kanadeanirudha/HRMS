@@ -1,0 +1,483 @@
+﻿
+@model AMS.ViewModel.SalePromotionActivityMasterAndDetailsViewModel
+@Html.HiddenFor(model => model.GeneralUnitsID)
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Sale Promotion Activity Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateSalePromotionActivityMasterAndDetails" role="form" class="row">
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.Name, new { })
+                        @Html.TextBoxFor(model => model.Name, new { maxlength = "100", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.PlanTypeCode, new { })
+                        @Html.DropDownListFor(model => model.PlanTypeCode, (SelectList)ViewBag.SalePromotionPlanAndDetailsList, "--Select Promotion Plan--", new { @class = "form-control input-sm" })
+                        
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PlanTypeCode)
+                </div>
+                <div class="form-group col-sm-4">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.FromDate, new { })
+                        @Html.TextBoxFor(model => model.FromDate, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.FromDate)
+                </div>
+                <div class="form-group col-sm-4">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.UptoDate, new { })
+                        @Html.TextBoxFor(model => model.UptoDate, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.UptoDate)
+                </div>
+                <div class="form-group col-sm-4">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.PromotionFor, new { })
+                         @Html.DropDownListFor(model => model.PromotionFor, ViewData["PromotionFor"] as IEnumerable<SelectListItem>, "---Select Promotion For ---",new { style = "", @class = "form-control" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PromotionFor)
+                </div>
+                <div class="row" style="display:none" id="FreeConcessionDiv">
+                    <div class="form-group col-sm-6">
+                        <div class="form-group select fg-line">
+                            <span style="color:red">*</span> @Html.LabelFor(model => model.ProductConcessionFreeType, new { })
+                            @Html.DropDownListFor(model => model.ProductConcessionFreeType, ViewData["ProductConcessionFreeType"] as IEnumerable<SelectListItem>, new { style = "", @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ProductConcessionFreeType)
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <div class="form-group  select fg-line">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.PlanDescription, new { })
+                            @Html.DropDownListFor(model => model.PlanDescription, (SelectList)ViewBag.SalepromotionPlanDescriptionList, "--Select Plan Description--", new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PlanDescription)
+                    </div>
+                </div><hr />
+         
+
+                <div id="ItemPerDiscount" class="row" style="display:none;">
+                    @Html.HiddenFor(model => model.ItemNumber)
+                    @Html.HiddenFor(model => model.InventoryVariationMasterID)
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ItemDescription, new { Style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.UOMCode, new { Style = "" })
+                        <div class="form-group fg-line">
+                            @*@Html.TextBoxFor(model => model.UOMCode, new { @class = "form-control", style = "", disabled = "disabled" })*@
+                            @Html.DropDownListFor(model => model.UOMCode, Enumerable.Empty<SelectListItem>(), "---Select UomCode ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.DiscountInPercentage, new { Style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.DiscountInPercentage, new { @class = "form-control", style = "" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2" id="btnAdd1" style="margin-bottom:-5%;">
+                        <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAdd"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+
+                <div id="ItemList" style="display:none;">
+                    <h4>List Of Items</h4>
+                    <table id="tblData" class="table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>UoM Code</th>
+                                <th>Discount (%)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @*@foreach (var item in Model.IngridentsListByVarients)
+                    {
+                        <tr>
+                            <td style="display:none">@item.ItemNumber</td>
+                            <td style="display:none">@item.InventoryRecipeFormulaDetailsID</td>
+                            <td>@item.ItemDescription</td>
+                            <td>@item.Quantity</td>
+                            @if (@item.IsOptionalIngrediant == true)
+                            {
+                                <td><input type="checkbox" checked="checked" disabled="disabled"></td>
+                            }
+                            else
+                            {
+                                <td><input type="checkbox" disabled="disabled"></td>
+                            }
+                            <td>@item.UoMCode</td>
+                            <td></td>
+                        </tr>
+                    }*@
+                        </tbody>
+                    </table>
+                 </div><br/>
+                <div id="ForSameItem" style="display:none">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.HiddenFor(model => model.ItemNumber)
+                                @Html.HiddenFor(model => model.InventoryVariationMasterID)
+
+                                @Html.LabelFor(model => model.ItemDescriptionForConcession, new { })
+                                @Html.TextBoxFor(model => model.ItemDescriptionForConcession, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.UOMCodeForConcession, new { })
+                                @*@Html.TextBoxFor(model => model.UOMCode, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })*@
+                                @Html.DropDownListFor(model => model.UOMCodeForConcession, Enumerable.Empty<SelectListItem>(), "---Select UomCode ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2" style="display:none">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.DiscountInPercentage, new { })
+                                @Html.TextBoxFor(model => model.DiscountInPercentage, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                        <div class="col-sm-1" id="btnAddConcessionActivity" style="margin-bottom:-5%;">
+                            <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddConcessionActivity"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 row">
+                        <div id="ListViewModel1" class="table-responsive">
+                            <div id="DivAddRowTable">
+                                <table id="tblDataCocessionActivityDetails" class="table">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Item Description</th>
+                                            <th>UOM</th>
+                                            @*<th>Discount in (%)</th>*@
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @*@foreach (var item in Model.GetItemList)
+                                {
+
+                                    <tr>
+                                        <td style="display:none;"><input type="text" id="ItemNumber" class="form-control" value="@item.ItemNumber"></td>
+                                        <td style="display:none;"><input type="text" id="SalePromotionActivityDetailsID" class="form-control" value="@item.SalePromotionActivityDetailsID"></td>
+                                        <td style="display:none;"><input type="text" id="PromotionActivityDiscounteItemListID" class="form-control" value="@item.PromotionActivityDiscounteItemListID"></td>
+                                        @if (@item.IsActive == true)
+                                        {
+                                            <td style="display:none;"><input type="text" id="IsActive" class="form-control" value="1"></td>
+                                        }
+                                        else
+                                        {
+                                            <td style="display:none;"><input type="text" id="IsActive" class="form-control" value="0"></td>
+                                        }
+                                        <td style="display:none;"><input type="text" id="DiscountInPercentage" class="form-control" value="@item.DiscountInPercentage"></td>
+                                        <td style="display:none;"><input type="text" id="InventoryVariationMasterID" class="form-control" value="@item.InventoryVariationMasterID"></td>
+                                        <td><input type="text" id="ItemDescription" class="form-control" value="@item.ItemDescription" disabled="disabled"></td>
+                                        <td><input type="text" id="UOMCode" class="form-control" value="@item.UOMCode" disabled="disabled"></td>
+                                        <td><input type="text" id="DiscountInPercentage1" class="form-control" value="@item.DiscountInPercentageForItemdetails"></td>
+                                        <td style="display:none;"><input type="text" id="PromotionActivityDiscounteItemListID" class="form-control" value="@item.PromotionActivityDiscounteItemListID"></td>
+                                        <td style="display:none;"><input type="text" id="ItemNumberVariationID" class="form-control" value="@item.ItemNumber~@item.InventoryVariationMasterID"></td>
+                                    </tr>
+                                }*@
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="SelectedItemConcession" style="display:none; overflow:auto; height:500px">
+                    <div id="ListViewModel" class="table-responsive">
+                        <div id="DivAddRowTable">
+                            <table id="tblDataForSelectedItemConcession" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="display: none"></th>
+                                        <th class="center">
+                                            @*<input type="checkbox" id="Check" class="checkall-user" name="checkbox12" disabled="disabled">*@
+                                            <div class="checkbox m-b-15" style="">
+                                                <label style="">
+                                                    <input type="checkbox" id="Check" class="checkall-user" name="checkbox12">
+                                                    <i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th style="font-size:small;display:none">GeneralItemMasterID </th>
+                                        <th style="font-size:small;display:none">ItemNumber</th>
+                                        <th style="font-size:small;">Item Description</th>
+                                        <th style="font-size:small;">Sale Uom code </th>
+                                        <th style="font-size:small;display:none ">VariationMasterID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*@foreach (var item in Model.InventoryUoMGroupDetailsList)
+                {
+                    <tr>
+                        <td>@item.AlternativeQuantity</td>
+                        <td>@item.AlternativeUomCode</td>
+                        <td>=</td>
+                        <td>@item.BaseUoMQuantity</td>
+                        <td>@item.BaseUomCode</td>
+                    </tr>
+                }*@
+                                </tbody>
+                            </table><br /><br /><br /><br />
+                        </div>
+                    </div>
+
+
+                </div>
+
+                    <div class="form-group col-sm-12">
+                        <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateSalePromotionActivityMasterAndDetailsRecord" type="button" />
+                    </div>
+
+</form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#FromDate").datetimepicker({
+            format: 'DD MMMM YYYY',
+            minDate: moment(),
+        });
+
+        //$("#FromDate").on("keydown", function () {
+        //    var keycode = (e.keyCode ? e.keyCode : e.which);
+        //    if (keycode != 9) {
+        //        return false;
+        //    }
+        //});
+        $("#UptoDate").datetimepicker({
+            format: 'DD MMMM YYYY',
+          //  minDate: moment(),
+        });
+
+        //$("#UptoDate").on("keydown", function () {
+        //    var keycode = (e.keyCode ? e.keyCode : e.which);
+        //    if (keycode != 9) {
+        //        return false;
+        //    }
+        //});
+        $("#FromDate").on("dp.change", function (e) {
+            var minDate = new Date(e.date.valueOf());
+            minDate.setDate(minDate.getDate());
+            $('#UptoDate').data("DateTimePicker").minDate(minDate);
+        });
+
+        $("#UptoDate").on("dp.change", function (e) {
+            var minDate = new Date(e.date.valueOf());
+            minDate.setDate(minDate.getDate());
+            $('#FromDate').data("DateTimePicker").maxDate(minDate);
+        });
+
+        SalePromotionActivityMasterAndDetails.Initialize();
+
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                var GeneralUnitsID = $("#GeneralUnitsID").val();
+                
+                $.ajax({
+                    url: "/SalePromotionActivityMasterAndDetails/GetItemSearchListForVarientsMenu",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, GeneralUnitsID: GeneralUnitsID },
+                    success: function (data) {
+                        
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.name] = response1;
+                            matches.push(response1.name);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+
+        $('#ItemDescription').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            $('#GeneralItemMasterID').val(map[item].id);
+            $('#ItemDescription').val(map[item].name);
+            $('#ItemNumber').val(map[item].ItemNumber);
+            $('#UOMCode').val(map[item].BaseUOMCode);
+            $('#InventoryVariationMasterID').val(map[item].InventoryVariationMasterID);
+            $('#MenuDescription').val(map[item].MenuDescription);
+
+            $.ajax({
+                
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": map[item].ItemNumber },
+                url: '/SalePromotionActivityMasterAndDetails/GetUoMCodeByItemNumber',
+                success: function (data) {
+                    debugger;
+                    var $ddlExam = $("#UOMCode");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">---Select UoM Code---</option>');
+                    debugger;
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                           
+                            $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+                        });
+                    }
+                    else {
+                        $ddlExam.append('<option value="EA">EA</option>');
+                    }
+
+
+                }
+            });
+
+        });
+
+        $('#ItemDescription').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $("#ItemDescription").val("");
+                $("#UOMCode").val("");
+                $('#DiscountInPercentage').val("0");
+
+            }
+
+        });
+      
+
+       
+        $("#ProductConcessionFreeType").on("change", function () {
+            if ($('#ProductConcessionFreeType').val() == "1") {
+                $('#SelectedItemConcession').hide();
+                $('#ForSameItem').show();
+            }
+
+            else if ($('#ProductConcessionFreeType').val() == "2") {
+
+                SalePromotionActivityMasterAndDetails.CheckedAllForSameItem();
+
+                $(".checkall-user").prop("disabled", false);
+                $("#tblDataForSelectedItemConcession").on("click", "tbody tr td .check-user", function () {
+                    var a = (parseInt($(".check-user").length));
+                    var b = parseInt($(".check-user:checked").length);
+                    if (a != b) {
+                        $("input[class=checkall-user]").attr("checked", false);
+                    }
+                    else {
+                        $("input[class=checkall-user]").prop("checked", true);
+                    }
+                });
+
+
+
+                var GeneralUnitsID = $("#GeneralUnitsID").val();
+                $.ajax(
+          {
+              cache: false,
+              type: "POST",
+              data: { "GeneralUnitsID": GeneralUnitsID },
+              dataType: "json",
+              url: "/SalePromotionActivityMasterAndDetails/GetSelectedItemFreeConcessionTypeList",
+              success: function (data) {
+                  //Rebind Grid Data
+                  $('#SelectedItemConcession').show();
+                  $('#ForSameItem').hide();
+                  $("#tblDataForSelectedItemConcession tbody tr").remove();
+                  $.each(data, function (i, response) {
+                      var tr = '<tr>'
+                                    + '<td><input id="check_1" type="checkbox" class="check-user" name="checkbox12" onclick="CheckedSingle()"><i class="input-helper"></i></td>'
+                                    + '<td style=display:none><input id="GeneralItemMasterID" type="hidden" value =' + response.GeneralItemMasterID + '></td>'
+                                    + '<td style=display:none><input id="ItemNumber" type="hidden"  value =' + response.ItemNumber + '></td>'
+                                    + '<td><input id="MenuDescription" type="text" style=display:none value =' + response.name + '>' + response.name + '</td>'
+                                    + '<td><input id="MenuDescription" type="text" style=display:none value =' + response.SaleUOMCode + '>' + response.SaleUOMCode + '</td>'
+                                    + '<td style=display:none><input id="GeneralItemMasterID" type="hidden" value =' + response.InventoryVariationMasterID + '></td>'
+                                + '</tr>';
+                      // alert(tr)
+                      $('#tblDataForSelectedItemConcession tbody').append(tr);
+
+                  });
+              }
+          });
+            }
+            else
+            { 
+                $('#SelectedItemConcession').hide(true);
+                $('#ForSameItem').hide(true);
+
+            }
+        });
+
+    });
+    
+    function CheckedSingle() {
+
+        $("#tblDataForSelectedItemConcession tbody tr td  input[class='check-user']").on('click', function () {
+
+            var CheckedArray = [];
+            debugger
+            var table = $('#tblDataForSelectedItemConcession').DataTable();
+            var data = table.$("input[class='check-user']").each(function () {
+                CheckedArray.push($(this).val());
+                var $this = $(this);
+                if ($this.is(":checked")) {
+                    CheckedArray.push($(this).val());
+                }
+
+            });
+        });
+    }
+</script>
+
+

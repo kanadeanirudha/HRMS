@@ -1,0 +1,638 @@
+﻿@model AERP.ViewModel.EmployeeSalaryTransactionViewModel
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Salary Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                @Html.HiddenFor(m => m.ID)
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Salary For Period : @Model.EmployeeSalaryTransactionList[0].SpanName
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        Employee Name : @Model.EmployeeSalaryTransactionList[0].EmployeeName
+                    </div>
+                    <div class="col-sm-2">
+                        Total Days : @Model.EmployeeSalaryTransactionList[0].TotalDays
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="col-sm-6">
+                            Paid Days : @Model.EmployeeSalaryTransactionList[0].TotalAttendance
+                        </div>
+                        <div class="col-sm-6">
+                            Adjusted : @Model.EmployeeSalaryTransactionList[0].AdjustedTotalDays
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        OT Days : @Model.EmployeeSalaryTransactionList[0].OvertimeHours
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Particular</th>
+                                <th>Monthly Pay</th>
+                                <th>Actual Pay</th>
+                                <th>Adjusted Pay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.EmployeeSalaryTransactionList.Count > 0)
+                            {
+                                decimal BasicAmount = Math.Round(Model.EmployeeSalaryTransactionList[0].BasicAmount, MidpointRounding.AwayFromZero);
+                                decimal TotalAttendance = Model.EmployeeSalaryTransactionList[0].TotalAttendance;
+                                byte TotalDays = Model.EmployeeSalaryTransactionList[0].TotalDays;
+                                decimal AdjustedTotalDays = Model.EmployeeSalaryTransactionList[0].AdjustedTotalDays;
+
+                                decimal ActualBasicAmount = Math.Round((BasicAmount / TotalDays) * AdjustedTotalDays, MidpointRounding.AwayFromZero);
+
+                                decimal FixedSalaryAmount = Math.Round(Model.EmployeeSalaryTransactionList[0].FixedSalaryAmount, MidpointRounding.AwayFromZero);
+                                decimal ActualFixedSalaryAmount = Math.Round((FixedSalaryAmount / TotalDays) * TotalAttendance, 0, MidpointRounding.AwayFromZero);
+                                decimal AdjustedFixedSalaryAmount = Math.Round((FixedSalaryAmount / TotalDays) * AdjustedTotalDays, 0, MidpointRounding.AwayFromZero);
+
+                                <tr>
+                                    <td>Basic Salary </td>
+                                    <td>@BasicAmount </td>
+                                    <td>@Math.Round(Model.EmployeeSalaryTransactionList[0].ActualBasicAmount)</td>
+                                    <td>@ActualBasicAmount</td>
+                                </tr>
+
+                                decimal TotalAmount = BasicAmount; decimal ActualTotalAmount = ActualBasicAmount; decimal GrossSalary = BasicAmount; decimal TotalEarnings = BasicAmount; decimal ActualGrossSalary = ActualBasicAmount; decimal ActualTotalEarnings = ActualBasicAmount; decimal TotalDeduction = 0; decimal ActualTotalDeduction = 0; decimal EmployerContribution = 0; decimal ActualEmployerContribution = 0; decimal ActualSalaryWithAdditionalAllowance = 0; decimal SalaryWithAdditionalAllowance = 0; decimal AdjustedSalaryWithAdditionalAllowance = 0;
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.HeadType == "DA")
+                                    {
+                                        decimal amount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                        }
+                                        else
+                                        {
+                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                            decimal CalculateOnAmount = 0;
+                                            foreach (var CalOn in CalculateOnValue)
+                                            {
+                                                var ReferenceID = CalOn.Split('~');
+                                                if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                {
+                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                }
+                                                else
+                                                {
+                                                    foreach (var itemSub in Model.EmployeeSalaryTransactionList)
+                                                    {
+                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                        {
+                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                        }
+                                        item.Amount = amount;
+                                        decimal Actualamount = Math.Round((amount / TotalDays) * AdjustedTotalDays, MidpointRounding.AwayFromZero);
+                                        TotalAmount = TotalAmount + amount;
+                                        GrossSalary = GrossSalary + amount;
+                                        TotalEarnings = TotalEarnings + amount;
+                                        ActualTotalAmount = ActualTotalAmount + Actualamount;
+                                        ActualGrossSalary = ActualGrossSalary + Actualamount;
+                                        ActualTotalEarnings = ActualTotalEarnings + Actualamount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>@item.ActualAmount</td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.HeadType == "AddA" && item.ComplianceType == 1)
+                                    {
+                                        decimal amount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                        }
+                                        else
+                                        {
+                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                            decimal CalculateOnAmount = 0;
+                                            foreach (var CalOn in CalculateOnValue)
+                                            {
+                                                var ReferenceID = CalOn.Split('~');
+                                                if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                {
+                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                }
+                                                else
+                                                {
+                                                    foreach (var itemSub in Model.EmployeeSalaryTransactionList)
+                                                    {
+                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                        {
+                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                        }
+                                        item.Amount = amount;
+                                        decimal Actualamount = Math.Round((amount / TotalDays) * AdjustedTotalDays, MidpointRounding.AwayFromZero);
+                                        TotalAmount = TotalAmount + amount;
+                                        GrossSalary = GrossSalary + amount;
+                                        TotalEarnings = TotalEarnings + amount;
+                                        ActualTotalAmount = ActualTotalAmount + Actualamount;
+                                        ActualGrossSalary = ActualGrossSalary + Actualamount;
+                                        ActualTotalEarnings = ActualTotalEarnings + Actualamount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>@item.ActualAmount</td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                <tr>
+                                    <td>Total Amount</td>
+                                    <td>@TotalAmount</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].TotalAmount</td>
+                                    <td>@ActualTotalAmount</td>
+                                </tr>
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && item.HeadType != "AddA" && item.ComplianceType == 1)
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount);
+                                            Actualamount = Math.Round((item.FixedAmount / TotalDays) * AdjustedTotalDays);
+                                        }
+                                        else
+                                        {
+                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                            decimal CalculateOnAmount = 0;
+                                            foreach (var CalOn in CalculateOnValue)
+                                            {
+                                                var ReferenceID = CalOn.Split('~');
+                                                if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                {
+                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                }
+                                                else
+                                                {
+                                                    foreach (var itemSub in Model.EmployeeSalaryTransactionList)
+                                                    {
+                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                        {
+                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100);
+                                            Actualamount = Math.Round((amount / TotalDays) * AdjustedTotalDays);
+                                        }
+                                        item.Amount = amount;
+                                        GrossSalary = GrossSalary + amount;
+                                        TotalEarnings = TotalEarnings + amount;
+                                        ActualGrossSalary = ActualGrossSalary + Actualamount;
+                                        ActualTotalEarnings = ActualTotalEarnings + Actualamount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                @item.ActualAmount
+                                            </td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+                                    <td>Gross Salary</td>
+                                    <td>@GrossSalary</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].GrossAmount</td>
+                                    <td>@ActualGrossSalary</td>
+                                </tr>
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Allowance" && item.HeadType == "OT")
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount);
+                                            Actualamount = Math.Round(item.FixedAmount);
+                                        }
+                                        item.Amount = amount;
+                                        TotalEarnings = TotalEarnings + amount;
+                                        ActualTotalEarnings = ActualTotalEarnings + Actualamount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                @item.ActualAmount
+                                            </td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.HeadType == "AddA" && item.ComplianceType == 2)
+                                    {
+                                        decimal amount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                        }
+
+                                        item.Amount = amount;
+                                        decimal Actualamount = Math.Round((amount / TotalDays) * AdjustedTotalDays, MidpointRounding.AwayFromZero);
+
+                                        item.Amount = amount;
+                                        TotalEarnings = TotalEarnings + amount;
+                                        ActualTotalEarnings = ActualTotalEarnings + Actualamount;
+
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                @item.ActualAmount
+                                            </td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                <tr>
+                                    <td>Total Earning</td>
+                                    <td>@TotalEarnings</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].TotalEarnings</td>
+                                    <td>@ActualTotalEarnings</td>
+                                </tr>
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType == "PT")
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0 && (item.RangeFrom <= ActualTotalEarnings && (item.RangeUpto == 0 || item.RangeUpto > ActualTotalEarnings)))
+                                        {
+                                            amount = Math.Round(item.FixedAmount);
+                                            Actualamount = Math.Round(item.ActualAmount);
+
+                                            item.Amount = amount;
+                                            TotalDeduction = TotalDeduction + amount;
+                                            ActualTotalDeduction = ActualTotalDeduction + Actualamount;
+                                            <tr>
+                                                <td>@item.HeadName</td>
+                                                <td>@amount</td>
+                                                <td>
+                                                    @Actualamount
+                                                </td>
+                                                <td>
+                                                    @item.AdjustedAmount
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType != "PT" && item.ComplianceType == 1)
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            if (item.HeadType == "ESIC")
+                                            {
+                                                amount = Math.Ceiling(item.FixedAmount);
+                                                Actualamount = Math.Ceiling((item.FixedAmount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                            else
+                                            {
+                                                amount = Math.Round(item.FixedAmount);
+                                                Actualamount = Math.Round((item.FixedAmount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                            decimal CalculateOnAmount = 0;
+                                            foreach (var CalOn in CalculateOnValue)
+                                            {
+                                                var ReferenceID = CalOn.Split('~');
+                                                if (Convert.ToByte(ReferenceID[0]) == 0 && Convert.ToByte(ReferenceID[1]) == 1)
+                                                {
+                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                }
+                                                else if (Convert.ToByte(ReferenceID[0]) == 0 && Convert.ToByte(ReferenceID[1]) == 4)
+                                                {
+                                                    CalculateOnAmount = CalculateOnAmount + item.CalculateOnFixedAmount;
+                                                }
+                                                else
+                                                {
+                                                    foreach (var itemSub in Model.EmployeeSalaryTransactionList)
+                                                    {
+                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                        {
+                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (item.HeadType == "ESIC")
+                                            {
+                                                amount = Math.Ceiling(CalculateOnAmount * item.Percentage / 100);
+                                                Actualamount = Math.Ceiling((amount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                            else
+                                            {
+                                                amount = Math.Round(CalculateOnAmount * item.Percentage / 100);
+                                                Actualamount = Math.Round((amount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                        }
+                                        TotalDeduction = TotalDeduction + amount;
+                                        ActualTotalDeduction = ActualTotalDeduction + Actualamount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                @item.ActualAmount
+                                            </td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+                                    <td>Total Deduction</td>
+                                    <td>@TotalDeduction</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].TotalDeduction</td>
+                                    <td>@ActualTotalDeduction</td>
+                                </tr>
+                                decimal NetPayable = TotalEarnings - TotalDeduction;
+                                decimal ActualNetPayable = ActualTotalEarnings - ActualTotalDeduction;
+
+                                <tr>
+                                    <td>Net Payable</td>
+                                    <td>@NetPayable</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].NetPayable</td>
+                                    <td>@ActualNetPayable</td>
+                                </tr>
+
+
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Allowance" && item.HeadType == "Other" && item.ComplianceType == 2)
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount);
+                                            Actualamount = Math.Round(item.FixedAmount);
+                                        }
+                                        item.Amount = amount;
+                                        NetPayable = NetPayable + item.ActualAmount;
+                                        ActualNetPayable = ActualNetPayable + item.AdjustedAmount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                <input type="text" class="ActualTransAmount form-control ActualAmountAllowanceEmployeeNonCompliance" value="@item.ActualAmount" disabled>
+                                                <input type="hidden" class="ActualTransAllowanceID" value="@item.EmployeeSalaryRulesAllowanceID">
+                                                <input type="hidden" class="ActualTransDeductionID" value="@item.EmployeeSalaryRulesDeductionID">
+                                                @if (item.IsAllowance == true)
+                                                {
+                                                    <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                }
+                                                else
+                                                {
+                                                    <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                }
+
+                                            </td>
+                                          
+                                            <td><input type="text" class="AdjustedAmount AdjustedAmountAllowanceEmployeeNonCompliance form-control" value="@Actualamount" disabled></td>
+                                        </tr>
+                                    }
+                                }
+
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Allowance" && item.HeadType == "RIA")
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount);
+                                            Actualamount = Math.Round(item.FixedAmount);
+                                        }
+                                        item.Amount = amount;
+                                        NetPayable = NetPayable + amount;
+                                        ActualNetPayable = ActualNetPayable + item.AdjustedAmount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                0
+                                            </td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+                                    <td>Total Amount Payable</td>
+                                    <td>@FixedSalaryAmount</td>
+                                    <td>@ActualFixedSalaryAmount</td>
+                                    <td>@ActualFixedSalaryAmount</td>
+                                </tr>
+                                if (FixedSalaryAmount > 0)
+                                {
+                                    SalaryWithAdditionalAllowance = FixedSalaryAmount;
+                                    ActualSalaryWithAdditionalAllowance = ActualFixedSalaryAmount;
+                                    AdjustedSalaryWithAdditionalAllowance = ActualFixedSalaryAmount;
+                                }
+                                else
+                                {
+                                    SalaryWithAdditionalAllowance = NetPayable;
+                                    ActualSalaryWithAdditionalAllowance = ActualNetPayable;
+                                    AdjustedSalaryWithAdditionalAllowance = ActualNetPayable;
+                                }
+                                
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Deduction" && item.ContributionType == 1 && item.ComplianceType == 2)
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            amount = Math.Round(item.FixedAmount);
+                                        }
+                                        item.Amount = amount;
+                                        Actualamount = amount;
+
+                                        if (FixedSalaryAmount > 0)
+                                        {
+                                            SalaryWithAdditionalAllowance = SalaryWithAdditionalAllowance - amount;
+                                            ActualSalaryWithAdditionalAllowance = ActualSalaryWithAdditionalAllowance - item.ActualAmount;
+                                            AdjustedSalaryWithAdditionalAllowance = AdjustedSalaryWithAdditionalAllowance - item.AdjustedAmount;
+                                        }
+                                        else
+                                        {
+                                            SalaryWithAdditionalAllowance = SalaryWithAdditionalAllowance - amount;
+                                            ActualSalaryWithAdditionalAllowance = ActualSalaryWithAdditionalAllowance - item.ActualAmount;
+                                            AdjustedSalaryWithAdditionalAllowance = AdjustedSalaryWithAdditionalAllowance - item.AdjustedAmount;
+                                        }
+
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                @item.ActualAmount
+                                            </td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+                                    <td>Total Salary</td>
+                                    <td>@SalaryWithAdditionalAllowance</td>
+                                    <td>@ActualSalaryWithAdditionalAllowance<input type="hidden" id="ActualSalaryWithAdditionalAllowance" class="form-control" value="@ActualSalaryWithAdditionalAllowance"></td>
+                                    <td><input type="text" id="AdjustedSalaryWithAdditionalAllowance" class="form-control" value="@AdjustedSalaryWithAdditionalAllowance" disabled></td>
+                                </tr>
+                                foreach (var item in Model.EmployeeSalaryTransactionList)
+                                {
+                                    if (item.RuleType == "Deduction" && item.ContributionType == 2)
+                                    {
+                                        decimal amount = 0; decimal Actualamount = 0;
+                                        if (item.FixedAmount > 0)
+                                        {
+                                            if (item.HeadType == "ESIC")
+                                            {
+                                                amount = Math.Ceiling(item.FixedAmount);
+                                                Actualamount = Math.Ceiling((item.FixedAmount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                            else
+                                            {
+                                                amount = Math.Round(item.FixedAmount);
+                                                Actualamount = Math.Round((item.FixedAmount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                            decimal CalculateOnAmount = 0;
+                                            foreach (var CalOn in CalculateOnValue)
+                                            {
+                                                var ReferenceID = CalOn.Split('~');
+                                                if (Convert.ToByte(ReferenceID[0]) == 0 && Convert.ToByte(ReferenceID[1]) == 1)
+                                                {
+                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                }
+                                                else if (Convert.ToByte(ReferenceID[0]) == 0 && Convert.ToByte(ReferenceID[1]) == 4)
+                                                {
+                                                    CalculateOnAmount = CalculateOnAmount + item.CalculateOnFixedAmount;
+                                                }
+                                                else
+                                                {
+                                                    foreach (var itemSub in Model.EmployeeSalaryTransactionList)
+                                                    {
+                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                        {
+                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (item.HeadType == "ESIC")
+                                            {
+                                                amount = Math.Ceiling(CalculateOnAmount * item.Percentage / 100);
+                                                Actualamount = Math.Ceiling((amount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                            else
+                                            {
+                                                amount = Math.Round(CalculateOnAmount * item.Percentage / 100);
+                                                Actualamount = Math.Round((amount / TotalDays) * AdjustedTotalDays);
+                                            }
+                                        }
+                                        EmployerContribution = EmployerContribution + amount;
+                                        ActualEmployerContribution = ActualEmployerContribution + Actualamount;
+                                        <tr>
+                                            <td>@item.HeadName</td>
+                                            <td>@amount</td>
+                                            <td>
+                                                @item.ActualAmount
+                                            </td>
+                                            <td>
+                                                @item.AdjustedAmount
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+                                    <td>Employer Contribution</td>
+                                    <td>@EmployerContribution</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].EmployerContributionTotal</td>
+                                    <td>@ActualEmployerContribution</td>
+                                </tr>
+                                decimal TotalSalary = TotalEarnings + EmployerContribution;
+                                decimal ActualTotalSalary = ActualTotalEarnings + ActualEmployerContribution;
+                                <tr>
+                                    <td>Total Salary</td>
+                                    <td>@TotalSalary</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].TotalSalary</td>
+                                    <td>@Model.EmployeeSalaryTransactionList[0].AdjustedTotalSalary</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        EmployeeSalaryTransaction.Initialize();
+
+    });
+</script>

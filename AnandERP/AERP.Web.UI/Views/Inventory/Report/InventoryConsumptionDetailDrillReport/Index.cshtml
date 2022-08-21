@@ -1,0 +1,121 @@
+﻿@model AMS.ViewModel.InventoryConsumptionDetailDrillReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/Reports/InventoryConsumptionDetailDrillReport.js")" type="text/javascript"></script>
+
+<div class="container" style="padding-bottom:10px;">
+    @using (Html.BeginForm("Index", "InventoryConsumptionDetailDrillReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+                 @if (Model.ProcessUnitID == 1)
+                      {
+                       <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Consumption And Wastage Report</h2>
+                      }
+                 else if (Model.ProcessUnitID == 0)
+                 {
+                     <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Sales And Wastage Report</h2>
+                 }
+                
+        </div>
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding" style="padding-bottom:10%;">
+                @Html.HiddenFor(m => m.GeneralUnitsName)
+                @Html.HiddenFor(m => m.GranularityName)
+                @Html.HiddenFor(m => m.CentreName)
+                @Html.HiddenFor(m => m.IsPosted)
+             
+                <div class="row col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownListFor(model => model.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "------Select Centre-------", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Store Type*" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownListFor(model => model.SelectedGeneralUnitsID, (SelectList)ViewBag.GeneralUnitsList, "------Select Unit-------", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Store Type*" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownListFor(m => m.Granularity, (SelectList)ViewBag.GranularityList, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Item Type*" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="fg-line form-group">
+                            @Html.TextBoxFor(model => model.DateFrom, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="fg-line form-group">
+                            @Html.TextBoxFor(model => model.DateTo, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" id="btnInventoryConsumptionDetailDrillReportSubmit" class="btn-primary btn">Show</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="container" style="margin-top:-10px">
+
+    <div id="aaa">
+        <div class="card" style="overflow: auto;">
+            @*<div class="card-header"></div>*@
+            <div class="card-body card-padding">
+                @if (Model.ProcessUnitID == 1)
+                {
+                @Html.Partial("/Views/Inventory_1/Report/InventoryConsumptionDetailDrillReport/InventoryConsumptionDrillingReport.aspx")
+                }
+                else if (Model.ProcessUnitID == 0)
+                {
+                @Html.Partial("/Views/Inventory_1/Report/InventoryConsumptionDetailDrillReport/InventorySaleandWastageReport.aspx")
+                }
+               </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#DateFrom").datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+        $("#DateTo").datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+
+        $("#DateFrom").on("dp.change", function (e) {
+            var minDate = new Date(e.date.valueOf());
+            minDate.setDate(minDate.getDate());
+            $('#DateTo').data("DateTimePicker").minDate(minDate);
+
+        });
+
+        $("#DateTo").on("dp.change", function (e) {
+            var minDate = new Date(e.date.valueOf());
+            minDate.setDate(minDate.getDate());
+            $('#DateFrom').data("DateTimePicker").maxDate(minDate);
+        });
+
+        InventoryConsumptionDetailDrillReport.Initialize();
+    });
+</script>
+
+

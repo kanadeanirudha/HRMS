@@ -1,0 +1,112 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<input type="hidden" id="TaskCode" value="GeneralItemSalesData" />
+@Html.HiddenFor(model => model.GeneralItemMasterID)
+@Html.HiddenFor(model => model.TaskCode)
+@Html.HiddenFor(model => model.GeneralItemCodeID)
+@Html.HiddenFor(model => model.InventoryItemCodeUnitLevelSpecificInfoID)
+
+
+<div id="custom-content">
+    <div class="card">
+        <div class="card-body card-padding">
+            <form id="FormCreateInventoryUoMGroupAndDetail" role="form" class="row">
+                <div class="col-sm-12 row">
+                    <div id="ListViewModel1" class="table-responsive">
+                        <div id="DivAddRowTable">
+                            <table id="SaleUoMDetailstblData" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Store</th>
+                                        <th>Location</th>
+                                        <th>Sale Uom Code</th>
+                                        <th>Bar Code </th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.GeneralItemMasterListForSaleData.Count > 0)
+                                    {
+                                        foreach (var item in Model.GeneralItemMasterListForSaleData)
+                                        {
+                                            <tr>
+
+                                                <td>@item.CentreCode</td>
+                                                <td>@item.UnitName</td>
+                                                <td style="display:none" id="InventoryItemCodeUnitLevelSpecificInfoID"><input type="text" style="display:none" value="@item.InventoryItemCodeUnitLevelSpecificInfoID"></td>
+                                                <td style="display:none" id="GeneralItemCodeID"><input type="text" style="display:none" value="@item.GeneralItemCodeID"></td>
+                                                <td style="display:none" id="ItemNumber"><input type="text" style="display:none" value="@item.ItemNumber"></td>
+                                                @if (@item.IsBaseUom == true)
+                                                {
+                                                    <td style="display:none" id="IsBaseUom"><input type="text" style="display:none" value=1></td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="display:none" id="IsBaseUom"><input type="text" style="display:none" value=0></td>
+                                                }
+                                                <td style="display:none" id="LowerLevelUomCode"><input type="text" style="display:none" value="@item.LowerLevelUomCode"></td>
+                                                <td style="display:none" id="ConversionFactor"><input type="text" style="display:none" value="@item.ConvertionFactor"></td>
+                                                <td>@item.UomCode<input type="text" style="display:none" value="@item.UomCode"></td>
+                                                <td>@item.BarCode<input type="text" style="display:none" value="@item.BarCode"></td>
+                                                <td>
+                                                    <div class="form-group fg-line">
+                                                        <input type="text" class="form-control" id="Price" value="@Math.Round(item.LastPurchasePrice,2)" maxlength="8" />
+                                                    </div>
+                                                </td>
+                                                <td style="display:none">@item.UnitName<input type="text" style="display:none" value="@item.GeneralUnitsID"></td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //foreach (var item in Model.GeneralItemMasterListForSaleUoMDetails)
+                                        foreach (var item in Model.GeneralItemMasterListForSaleData)
+                                        {
+                                            <tr>
+                                                <td>@item.CentreCode</td>
+                                                <td>@item.UnitName</td>
+                                                <td style="display:none" id="InventoryItemCodeUnitLevelSpecificInfoID"><input type="text" style="display:none" value="@Model.InventoryItemCodeUnitLevelSpecificInfoID"></td>
+                                                <td style="display:none" id="GeneralItemCodeID"><input type="text" style="display:none" value="@item.GeneralItemCodeID"></td>
+                                                <td style="display:none" id="ItemNumber"><input type="text" style="display:none" value="@item.ItemNumber"></td>
+                                                @if (@item.IsBaseUom == true)
+                                                {
+                                                    <td style="display:none" id="IsBaseUom"><input type="text" style="display:none" value=1></td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="display:none" id="IsBaseUom"><input type="text" style="display:none" value=0></td>
+                                                }
+                                                <td style="display:none" id="LowerLevelUomCode"><input type="text" style="display:none" value="@item.LowerLevelUomCode"></td>
+                                                @*<td style="display:none" id="ConversionFactor"><input type="text" style="display:none" value="@item.ConversionFactor"></td>*@
+                                                <td style="display:none" id="ConversionFactor"><input type="text" style="display:none" value="@item.ConvertionFactor"></td>
+                                                <td>@item.UomCode<input type="text" style="display:none" value="@item.UomCode"></td>
+                                                <td>@item.BarCode<input type="text" style="display:none" value="@item.BarCode"></td>
+                                                <td>
+                                                    <div class="form-group fg-line">
+                                                        @*<input type="text" class="form-control" id="Price" value="@item.Price" maxlength="8" />*@
+                                                        <input type="text" class="form-control" id="Price" value="@Math.Round(item.LastPurchasePrice,2)" maxlength="8" />
+                                                    </div>
+                                                </td>
+                                                <td style="display:none">@item.UnitName<input type="text" style="display:none" value="@item.GeneralUnitsID"></td>
+                                            </tr>
+                                        }
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralItemMaster.Initialize();
+    });
+</script>
+

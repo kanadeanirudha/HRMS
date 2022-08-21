@@ -1,0 +1,85 @@
+﻿@model AERP.ViewModel.AccountGroupMasterReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/AccountGroupMasterReport.js")" type="text/javascript"></script>
+
+<div class="container">
+    @using (Html.BeginForm("Index", "AccountGroupMasterReport", FormMethod.Post, new { enctype = "multipart/form-data", id = "GroupForm" }))
+    {
+
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Account Group Report</h2>
+        </div>
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding" style="padding-bottom:10%;">
+                @Html.HiddenFor(m => m.AccountBalsheetMstID)
+                @Html.HiddenFor(m => m.IsPosted)
+
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownListFor(m => m.SelectedHeadID, Model.AccountHeadMasterReportItems, "All", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Head name" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.SelectedHeadID)
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownListFor(m => m.SelectedCategoryID, Model.AccountCategoryMasterReportItems, "All", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Category" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.SelectedCategoryID)
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="fg-line select form-group">
+                           @Html.DropDownListFor(m => m.SelectedGroupID, Model.AccountGroupMasterReportItems, "All", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Group" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.SelectedGroupID)
+                        @Html.HiddenFor(m => m.CreatedBy)
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" id="btnAccountGroupMasterReportSubmit" class="btn-primary btn">Show</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    }
+</div>
+
+<div class="container" style="margin-top:-10px">
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.Partial("/Views/Accounts/Report/AccountGroupMasterReport/AccountGroupMasterReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountGroupMasterReport.Initialize();
+        $("#GroupForm").submit(function () {
+            $("#CreatedBy").val($("#selectedBalsheetID").val());
+        });
+    });
+</script>
+<script type="text/javascript">
+    $("#printDiv").on("click", function () {
+        var divContents = $("#GroupPrint").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>DIV Contents</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    });
+</script>

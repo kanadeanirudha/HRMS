@@ -1,0 +1,194 @@
+﻿@model AERP.ViewModel.GeneralMapTypeOfAccountViewModel
+<div id="custom-content">
+    @*@Html.HiddenFor(model => model.GeneralMapTypeOfAccountID)
+        @Html.HiddenFor(model => model.GeneralItemGeneralDataID)*@
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp; General Map Type Account</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralMapTypeOfAccount" role="form" class="">
+
+                <div class="col-sm-12 row">
+                    <div class="col-sm-6">
+                        <div class="form-group select fg-line">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.ModuleName, new { })
+                            @Html.DropDownListFor(model => model.ModuleName, (SelectList)ViewBag.UserModuleMasterList, "--Select Module Name--", new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ModuleName)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group select fg-line">
+                            <span style="color:red">*</span>
+                            @Html.LabelFor(model => model.MenuName, new { })
+                            @Html.DropDownListFor(model => model.MenuName, (SelectList)ViewBag.UserMenuMasterList, "--Select Menu Name--", new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.MenuName)
+                    </div>
+                </div>
+
+                <div class="col-sm-12 row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(m => m.GeneralTypeOfAccountId)
+                            @Html.LabelFor(model => model.AccName, new { })
+                            @Html.TextBoxFor(model => model.AccName, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.AccName)
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.DebitCreditStatus, new { })
+                            <select id="DebitCreditStatus" style="width:100px" class="form-control input-sm">
+                                <option value="1">Debit</option>
+                                <option value="0">Credit</option>
+                            </select>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DebitCreditStatus)
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddAccountMaster"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 row">
+                    <div id="ListViewModel1" class="table-responsive">
+                        <div id="DivAddRowTable">
+                            <table id="tblData" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Account Master</th>
+                                        <th>Debit/Credit</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralMapTypeOfAccountRecord" type="button" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralMapTypeOfAccount.Initialize();
+
+        mapAccountName = [];
+        var getDataAccountName = function () {
+            debugger;
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/AccountMaster/GetAccountMasterSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.AccountMasterName)) {
+                                mapAccountName[response.AccountMasterName] = response;
+                                matches.push(response.AccountMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#AccName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataAccountName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#GeneralTypeOfAccountId").val(mapAccountName[item].AccountMasterID);
+            $("#AccName").val(mapAccountName[item].AccountMasterName);
+        });
+
+        $('#AccName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#AccName').typeahead('val', '');
+                $("#AccName").val("");
+                $("#GeneralTypeOfAccountId").val("0");
+            }
+        });
+
+        $('#btnAddAccountMaster').on("click", function () {
+            if ($('#AccName').val() == "" || ($('#GeneralTypeOfAccountId').val() == "0" || $('#GeneralTypeOfAccountId').val() == "")) {
+                $("#displayErrorMessage p").text("Please Select Account Master.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                return false;
+            }
+
+            var DataArray = [];
+            var data = $('#tblData tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 2) {
+                if (DataArray[i] == $('#GeneralTypeOfAccountId').val()) {
+                    $("#displayErrorMessage p").text("You Cannot Enter the Same Account Master.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                    $("#AccName").typeahead('val', '');
+                    $("#AccName").val("");
+                    $("#GeneralTypeOfAccountId").val("0");
+                    return false;
+                }
+            }
+
+            $("#tblData tbody").append(
+                            "<tr>" +
+                            "<td><input type='hidden' value='" + $("#GeneralTypeOfAccountId").val() + "'  />" + $('#AccName').val() + "</td>" +
+                            "<td><input type='hidden' value='" + $('#DebitCreditStatus').val() + "' />" + $('#DebitCreditStatus :selected').text() + "</td>" +
+                            "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                            "</tr>"
+                            );
+
+            $("#tblData tbody").unbind("click").on("click", "tr td i", function () {
+                $(this).closest('tr').remove();
+            });
+
+            $("#AccName").typeahead('val', '');
+            $("#AccName").val("");
+            $('#GeneralTypeOfAccountId').val('0');
+            $('#DebitCreditStatus').val('1');
+        });
+    });
+</script>

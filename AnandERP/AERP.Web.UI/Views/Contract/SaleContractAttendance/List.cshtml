@@ -1,0 +1,52 @@
+﻿@model AERP.ViewModel.SaleContractAttendanceViewModel
+
+<table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+    <thead>
+        <tr>
+            <th>Employee Name</th>
+            @if (Model.SaleContractAttendanceList.Count > 0)
+            {
+                String[] CurrentStatusArray = Model.SaleContractAttendanceList[0].AttendanceDays.Split(new char[] { ',' });
+                for (var i = 0; i < CurrentStatusArray.Length; i++)
+                {
+                    <th style="padding:2px;">@CurrentStatusArray[i]</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SaleContractAttendanceList)
+        {
+            <tr>
+                <td>@item.SaleContractEmployeeMasterName</td>
+                @if (item.AttendanceStatusList != null)
+                {
+                    String[] AttendanceStatusArray = item.AttendanceStatusList.Split(new char[] { ',' });
+                    for (var i = 0; i < AttendanceStatusArray.Length; i++)
+                    {
+                        if (Convert.ToByte(AttendanceStatusArray[i]) == 1)
+                        {
+                            <td style="color:green;padding:2px;font-weight:bold;">Y</td>
+                        }
+                        else if (Convert.ToByte(AttendanceStatusArray[i]) == 2)
+                        {
+                            <td style="color:red;padding:2px;font-weight:bold;">N</td>
+                        }
+                        else if (Convert.ToByte(AttendanceStatusArray[i]) == 3)
+                        {
+                            <td style="color:brown;padding:2px;font-weight:bold;">W</td>
+                        }
+                        else if (Convert.ToByte(AttendanceStatusArray[i]) == 4)
+                        {
+                            <td style="color:blue;padding:2px;font-weight:bold;">H</td>
+                        }
+                        else
+                        {
+                            <td style="padding:2px;"></td>
+                        }
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>

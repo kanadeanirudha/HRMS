@@ -1,0 +1,90 @@
+﻿@model AERP.ViewModel.AccountSessionMasterViewModel
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Account Session</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditAccountSessionMaster">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.ID)
+                @Html.HiddenFor(m => m.SessionStartDatetime)
+                @Html.HiddenFor(m => m.SessionEndDatetime)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group  fg-line">
+                            @Html.LabelFor(model => model.SessionStartDatetime, new { style = "float:left;font-weight: bold;" })&nbsp;<b>:</b> &nbsp;<b>@Html.DisplayFor(model => model.SessionStartDatetime, new { style = "font-weight: bold;" })</b>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group  fg-line">
+                            @Html.LabelFor(model => model.SessionEndDatetime, new { style = "float:left;font-weight: bold;" })&nbsp;<b>:</b> &nbsp;<b> @Html.DisplayFor(model => model.SessionEndDatetime, new { style = "font-weight: bold;" })</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(m => m.Account_System, new { style = "" })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("Account_System", ViewData["Account_System"] as List<SelectListItem>, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                    </div>
+
+                    @if (Model.AccountSessionMasterDTO.IsActive)
+                    {
+                        <div class="col-sm-6">
+                            <div class="checkbox m-b-15" style="padding-top:8%;">
+                                <label>
+                                    <input type="checkbox" id="IsActive" checked>
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.IsActive)
+                                </label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-6">
+                            <div class="checkbox m-b-15" style="padding-top:8%;">
+                                <label>
+                                    <input type="checkbox" id="IsActive">
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.IsActive)
+                                </label>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="form-group" style="margin-left: 2%; ">
+                    <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditAccountSessionMasterRecord" type="button" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountSessionMaster.Initialize();
+        $("#Account_System").prop("disabled", true)
+    });
+</script>
+
+

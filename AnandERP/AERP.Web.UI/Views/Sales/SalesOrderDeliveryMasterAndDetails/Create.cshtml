@@ -1,0 +1,464 @@
+﻿@model AERP.ViewModel.SalesOrderDeliveryMasterAndDetailsViewModel
+@Html.HiddenFor(m => m.SalesOrderMasterID)
+<div class="card" style="padding-top:15px;padding-right:15px;padding-left:15px;padding-bottom:5px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Sales Delivery</h2>
+        </div>
+    </div>
+    <div id="displayErrorMessage" role="alert" hidden class="alert">
+        <button class="close" type="button"><span aria-hidden="true">×</span></button>
+        <p id="messageContent"></p>
+    </div>
+
+    <form id="FormCreateSalesOrderDeliveryMasterAndDetails">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.DeliveryTransDate, new { })
+                    @Html.TextBoxFor(model => model.DeliveryTransDate, new { @class = "form-control input-sm typeahead", Value = "" + DateTime.UtcNow.ToString("d MMM yyyy") + "", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.GeneralUnitsID, new { })
+                    @Html.DropDownListFor(model => model.GeneralUnitsID, Model.ListGetGeneralUnitsItems, "------Select Unit-------", new { @class = "form-control input-sm AddGeneralUnitsID", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Units Type*", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.VehicalNumber, new { })
+                    @Html.TextBoxFor(model => model.VehicalNumber, new { @class = "form-control input-sm typeahead" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.GeneralShipperID, new { })
+                    @Html.DropDownListFor(model => model.GeneralShipperID, (SelectList)ViewBag.GeneralItemShipperName, "--Select Shipper--", new { @class = "form-control input-sm" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.ShipToCountryID, new { })
+                    @Html.DropDownListFor(m => m.ShipToCountryID, (SelectList)ViewBag.GeneralCountryMaster, Resources.ddlHeaders_CountryName, new { @class = "form-control", style = "" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.ShipToStateID, new { })
+                    @Html.DropDownListFor(m => m.ShipToStateID, Enumerable.Empty<SelectListItem>(), Resources.ddlHeaders_RegionName, new { @class = "form-control", style = "" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.ShipToCityID, new { })
+                    @Html.DropDownListFor(m => m.ShipToCityID, Enumerable.Empty<SelectListItem>(), Resources.ddlHeaders_CityName, new { @class = "form-control", style = "" })
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.ShipToAddress, new { })
+                    @Html.TextBoxFor(model => model.ShipToAddress, new { @class = "form-control input-sm typeahead" })
+                </div>
+            </div><div class="col-sm-3">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.TransportationMode, new { })
+                    @Html.TextBoxFor(model => model.TransportationMode, new { @class = "form-control input-sm typeahead" })
+                </div>
+            </div>
+        </div>
+        <table class="table table-responsive " id="TableData">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>UOM</th>
+                    <th>Quantity</th>
+                    <th>Current Stock</th>
+                    <th>Dispatched Qty</th>
+                    <th>Remaining Qty</th>
+                    <th>Storage Location</th>
+                    <th>Batch</th>
+                    <th>Expiry Date</th>
+                    <th>Rate</th>
+                    <th>Tax Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (int i = 0; i < Model.SalesOrderDeliveryMasterAndDetailsListFromPO.Count; i++)
+                {
+                    decimal PurchaseTaxableAmount = 0, PurchaseTaxAmount=0, PurchaseGrossAmount=0;
+                    PurchaseTaxableAmount = @Math.Round((@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].PurchasePrice * @Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].DispatchedQuantity), 2);
+                    PurchaseTaxAmount = @Math.Round((@Math.Round(@Math.Round((@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].PurchasePrice * @Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].DispatchedQuantity), 2) * @Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].TaxRate, 2)) / 100, 2);
+                     PurchaseGrossAmount = @Math.Round(PurchaseTaxableAmount + PurchaseTaxAmount, 2);
+
+                    <tr style="overflow:visible;">
+                        <td style="vertical-align:middle;">@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].ItemDescription<input type="text" name="ItemName" style="display:none;" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].ItemNumber" /></td>
+                        <td style="vertical-align:middle;">@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].SalesUomCode<input type="text" name="ItemName" style="display:none;" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].SalesUomCode" /></td>
+                        <td style="vertical-align:middle;"><input id="Quantity" type="text" class="form-control input-sm typeahead SOQTY" disabled="disabled" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].DispatchedQuantity"></td>
+                        <td style="vertical-align:middle;"><span class="CurrentStockQty">@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].CurrentStockQty</span><span class="BaseUoMReceivedQuantity" style="display:none">@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].BaseUoMReceivedQuantity</span><span class="Itemdescription" style="display:none">@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].ItemDescription</span></td>
+
+                        <td style="vertical-align:middle;"><input id="ReceivedQuantity" type="text" class="form-control input-sm typeahead DisptchedQTY" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].DispatchedQuantity"></td>
+                        <td style="vertical-align:middle;"><input id="RemainingQuantity" type="text" class="form-control input-sm typeahead" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].RemainingQuantity"></td>
+                        <td style="vertical-align:middle;">@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].LocationName<input type="text" name="LocationName" style="display:none;" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].LocationName" /></td>
+                        @if ((@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].SerialAndBatchManagedBy == 2))
+                        {
+                            <td class="" style="vertical-align:middle;">
+                                <div class="fg-line">
+                                    <input id='BatchNumber' type="text" name="BatchNumber" title="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].BatchNumber" tag="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].ItemNumber" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].BatchNumber" style="width: 120px; height: 30px;border-color:saddlebrown;" class="input-sm form-control typeahead typeahead1">
+                                </div>
+                                <input type="hidden" id="BatchID" value="" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="" style="vertical-align:middle;">
+                                <div class="fg-line">
+                                    <input id='BatchNumber' type="text" name="BatchNumber" tag="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].ItemNumber" value="" style="width: 120px; height: 30px;" class="input-sm form-control typeahead typeahead1" disabled="disabled">
+                                </div>
+                                <input type="hidden" id="BatchID" value="" />
+                            </td>
+                        }
+                        @if ((@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].SerialAndBatchManagedBy == 2))
+                        {
+                            <td style="vertical-align:middle;">
+                                <input type="text" name="ExpiryDate" id="ExpiryDate" class="abc form-control" style="width:120px; height:30px;border-color:saddlebrown" />
+
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="vertical-align:middle;">
+                                <input type="text" name="ExpiryDate" id="ExpiryDate" class="abc form-control" style="width:120px; padding-top: 2px; height 30px;" disabled="disabled" />
+
+                            </td>
+                        }
+
+
+                        <td style="display:none"><input type="hidden" name="BaseUOMCode" id="BaseUOMCode" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].BaseUOMCode" /></td>
+                        <td style="display:none"><input type="hidden" name="BaseUOMQuantity" id="BaseUOMQuantity" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].BaseUOMQuantity" /></td>
+                        <td style="display:none"><input type="hidden" name="Barcode" id="Barcode" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].BarCode" /></td>
+                        <td><input type="text" disabled="disabled" name="Rate" id="Rate" class="form-control" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].Rate" /></td>
+                        <td style="display:none"><input type="hidden" name="GeneralItemCodeID" id="GeneralItemCodeID" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].GeneralItemCodeID" /></td>
+                        <td style="display:none"><input type="hidden" name="LocationID" id="LocationID" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].LocationID" /></td>
+
+                        <td style="display:none"><input id="TaxAmount" type="hidden" style="display:none" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].TaxAmount"></td>
+                        <td style="display:none"><input id="TaxAbleAmount" type="hidden" style="display:none" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].TaxableAmount"></td>
+                        <td style="display:none"><input id="NetAmount" type="hidden" style="display:none" value="@Math.Round((@Math.Round(@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].TaxableAmount,2)+@Math.Round(@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].TaxAmount,2)),2)"></td>
+
+
+                        <td><input type="text" class="form-control" disabled="disabled" id="TaxRate" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].TaxRate" /></td>
+                        <td style="display:none"><input type="hidden" id="GenTaxGroupMasterID" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].GenTaxGroupMasterID" /></td>
+                        <td style="display:none"><input type="hidden" id="OldRemainingQuantity" value=@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].RemainingQuantity /></td>
+                        <td style="display: none;"><input type="hidden" id="SerialAndBatchManagedBy" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].SerialAndBatchManagedBy " /></td>
+                        <td style="display: none;"><input type="hidden" id="ConversionFactor" value="@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].ConversionFactor " /></td>
+                        <td style="display: none;"><span class="PurchasePrice">@Model.SalesOrderDeliveryMasterAndDetailsListFromPO[i].PurchasePrice</span><span class="PurchaseNetAmount">@PurchaseTaxableAmount</span><span class="PurchaseTaxableAmount">@PurchaseTaxAmount</span><span class="PurchaseGrossAmount">@PurchaseGrossAmount</span></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.TotalTaxAmount, new { })
+                    @Html.TextBoxFor(model => model.TotalTaxAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.TotalAmount, new { })
+                    @Html.TextBoxFor(model => model.TotalAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.TotalBillAmount, new { })
+                    @Html.TextBoxFor(model => model.TotalBillAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.TotalPurchaseTaxAmount, new { })
+                    @Html.TextBoxFor(model => model.TotalPurchaseTaxAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.TotalPurchaseAmount, new { })
+                    @Html.TextBoxFor(model => model.TotalPurchaseAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.TotalPurchaseBillAmount, new { })
+                    @Html.TextBoxFor(model => model.TotalPurchaseBillAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+    <div class="form-group" style="margin-left:1%;margin-bottom:1%;padding-bottom:1%;">
+        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateSalesOrderDeliveryMasterAndDetailsRecord" type="button" />
+
+
+        <div class="checkbox m-b-15" style="float:right;">
+            <label style="padding-left:0%;margin-top:5%;">
+
+                <input type="checkbox" id="IsComplete">
+                <i class="input-helper"></i>
+                @Html.LabelFor(model => model.IsComplete)
+            </label>
+        </div>
+    </div>
+
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        SalesOrderDeliveryMasterAndDetails.Initialize();
+        SalesOrderDeliveryMasterAndDetails.TotalPurchaseAmount();
+        SalesOrderDeliveryMasterAndDetails.TotalPurchaseTaxAmount();
+        SalesOrderDeliveryMasterAndDetails.TotalPurchaseBillAmount();
+        $('#ExpiryDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            minDate: moment(),
+        });
+
+
+        $(".abc").each(function () {
+            $(this).datetimepicker({
+                format: 'DD MMMM YYYY',
+                minDate: moment(),
+            }).on('dp.show', function () {
+                var datepicker = $('body').find('.bootstrap-datetimepicker-widget:last');
+                if (datepicker.hasClass('bottom')) {
+                    var top = $(this).offset().top - (datepicker.outerHeight() / 2) + 30;
+                    var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+                    datepicker.css({
+                        'top': top + 'px',
+                        'bottom': 'auto',
+                        'left': left + 'px'
+                    });
+                } else if (datepicker.hasClass('top')) {
+                    var top = $(this).offset().top - datepicker.outerHeight();
+                    var left = $(this).offset().left - datepicker.outerWidth();
+                    // var left = $(this).offset().left - (datepicker.outerWidth() + (datepicker.outerWidth() / 4));
+                    datepicker.css({
+                        'top': top + 'px',
+                        'bottom': 'auto',
+                        'left': left + 'px'
+                    });
+                }
+            });
+        })
+        $(".abc").on("keydown", function (e) {
+
+            var keycode = (e.keyCode ? e.keyCode : e.which);
+            if (keycode != 9) {
+                return false;
+            }
+        })
+
+        var map = {};
+        var getData = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+                var ItemNumber = document.activeElement.getAttribute("tag");
+                // an array that will be populated with substring matches
+                matches = [];
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                $.ajax({
+                    url: "/PurchaseGRNMaster/GetBatchNumberOfItem",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, ItemNumber: ItemNumber },
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response) {
+                            if (substrRegex.test(response.name)) {
+                                map[response.name] = response;
+                                matches.push(response.name);
+                            }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+        $('.typeahead1').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+
+        },
+        {
+            source: getData(),
+            replace: function () {
+
+                var val = $(this).val();
+
+            }
+        }).on("typeahead:selected", function (obj, item) {
+            $(this).closest('tbody tr').find('td input[id=ExpiryDate]').val(map[item].expiryDate);
+            $(this).closest('tbody tr').find('td input[id=BatchID]').val(map[item].id);
+            $(this).closest('tbody tr').find('td input[id=ExpiryDate]').prop("disabled", true)
+
+        });
+
+        $('input[id^=ReceivedQuantity]').on("keydown", function (e) {
+            AERPValidation.AllowNumbersWithDecimalOnly(e);
+            AERPValidation.NotAllowSpaces(e);
+        });
+        $("#TableData tbody").on("keyup", "tr td input[id^=ReceivedQuantity]", function () {
+
+            debugger;
+            var Quantity = parseFloat($(this).closest('tr').find('td input[id=Quantity]').val()).toFixed(2);
+            var RecivedQuantity = parseFloat($(this).closest('tr').find('td input[id=ReceivedQuantity]').val()).toFixed(2);
+            var RemainingQuantity = parseFloat($(this).closest('tr').find('td input[id=RemainingQuantity]').val()).toFixed(2);
+            var OldRemainingQuantity = parseFloat($(this).closest('tr').find('td input[id=OldRemainingQuantity]').val()).toFixed(2);
+            var TaxRate = parseFloat($(this).closest('tr').find('td input[id=TaxRate]').val()).toFixed(2);
+            var SerialAndBatchManagedBy = $(this).closest('tr').find('td input[id=SerialAndBatchManagedBy]').val();
+            var ConversionFactor = $(this).closest('tr').find('td input[id=ConversionFactor]').val();
+
+            if (SerialAndBatchManagedBy == 2) {
+
+                if (parseFloat(RecivedQuantity) == 0) {
+                    $(this).closest('tr').find('td input[id=BatchNumber]').val('');
+                    $(this).closest('tr').find('td input[id=BatchID]').val('');
+                    $(this).closest('tr').find('td input[id=ExpiryDate]').val('');
+                }
+            }
+
+
+            var Rate = parseFloat($(this).closest('tr').find('td input[id=Rate]').val()).toFixed(2);
+            debugger;
+            if (parseFloat(Quantity) == parseFloat(RecivedQuantity)) {
+                var Islocked = true;
+                $(this).closest('tr').find('td input[name=IsLocked]').val(true);
+                var abc = parseFloat(Quantity - RecivedQuantity).toFixed(3);
+                $(this).closest('tr').find('td input[id=RemainingQuantity]').val(abc);
+
+
+                $(this).closest('tr').find('td input[id=BaseUOMQuantity]').val(RecivedQuantity * ConversionFactor);
+
+                var TaxAbleAmount = parseFloat(RecivedQuantity * Rate).toFixed(2);
+                $(this).closest('tr').find('td input[id=TaxAbleAmount]').val(TaxAbleAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalAmount();
+
+                var TaxAmount = parseFloat((TaxAbleAmount * TaxRate) / 100).toFixed(2);
+                $(this).closest('tr').find('td input[id=TaxAmount]').val(TaxAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalTaxAmount();
+
+                var NetAmount = parseFloat(parseFloat(TaxAbleAmount) + parseFloat(TaxAmount)).toFixed(2);
+                $(this).closest('tr').find('td input[id=NetAmount]').val(NetAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalBillAmount();
+
+                var PurchasePrice = parseFloat($(this).closest('tr').find('span.PurchasePrice').text()).toFixed(2);
+                var NetPurchaseAmount = parseFloat(RecivedQuantity * PurchasePrice).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseNetAmount').text(NetPurchaseAmount);
+                var PurchaseTaxAmount = parseFloat((NetPurchaseAmount * TaxRate) / 100).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseTaxableAmount').text(PurchaseTaxAmount);
+                var GrosspurchaseAmount = parseFloat(parseFloat(NetPurchaseAmount) + parseFloat(PurchaseTaxAmount)).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseGrossAmount').text(GrosspurchaseAmount);
+
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseAmount();
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseTaxAmount();
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseBillAmount();
+
+            }
+            else if (parseFloat(Quantity) > parseFloat(RecivedQuantity)) {
+
+                var Islocked = false;
+                $(this).closest('tr').find('td input[name=IsLocked]').val(false);
+                var abc = parseFloat(Quantity - RecivedQuantity).toFixed(3)
+                $(this).closest('tr').find('td input[id=RemainingQuantity]').val(abc);
+
+                $(this).closest('tr').find('td input[id=BaseUOMQuantity]').val(RecivedQuantity * ConversionFactor);
+                var TaxAbleAmount = parseFloat(RecivedQuantity * Rate).toFixed(2);
+                $(this).closest('tr').find('td input[id=TaxAbleAmount]').val(TaxAbleAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalAmount();
+
+                var TaxAmount = parseFloat((TaxAbleAmount * TaxRate) / 100).toFixed(2);
+                $(this).closest('tr').find('td input[id=TaxAmount]').val(TaxAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalTaxAmount();
+
+                var NetAmount = parseFloat(parseFloat(TaxAbleAmount) + parseFloat(TaxAmount)).toFixed(2);
+                $(this).closest('tr').find('td input[id=NetAmount]').val(NetAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalBillAmount();
+
+                var PurchasePrice = parseFloat($(this).closest('tr').find('span.PurchasePrice').text()).toFixed(2);
+                var NetPurchaseAmount = parseFloat(RecivedQuantity * PurchasePrice).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseNetAmount').text(NetPurchaseAmount);
+                var PurchaseTaxAmount = parseFloat((NetPurchaseAmount * TaxRate) / 100).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseTaxableAmount').text(PurchaseTaxAmount);
+                var GrosspurchaseAmount = parseFloat(parseFloat(NetPurchaseAmount) + parseFloat(PurchaseTaxAmount)).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseGrossAmount').text(GrosspurchaseAmount);
+
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseAmount();
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseTaxAmount();
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseBillAmount();
+
+            }
+
+            else if (parseFloat(Quantity) < parseFloat(RecivedQuantity)) {
+
+                var Islocked = false;
+                $(this).closest('tr').find('td input[name=IsLocked]').val(false);
+                var abc = parseFloat(Quantity - RecivedQuantity).toFixed(3)
+                $(this).closest('tr').find('td input[id=RemainingQuantity]').val(abc);
+
+                $(this).closest('tr').find('td input[id=BaseUOMQuantity]').val(RecivedQuantity * ConversionFactor);
+                var TaxAbleAmount = parseFloat(RecivedQuantity * Rate).toFixed(2);
+                $(this).closest('tr').find('td input[id=TaxAbleAmount]').val(TaxAbleAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalAmount();
+
+                var TaxAmount = parseFloat((TaxAbleAmount * TaxRate) / 100).toFixed(2);
+                $(this).closest('tr').find('td input[id=TaxAmount]').val(TaxAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalTaxAmount();
+
+                var NetAmount = parseFloat(parseFloat(TaxAbleAmount) + parseFloat(TaxAmount)).toFixed(2);
+                $(this).closest('tr').find('td input[id=NetAmount]').val(NetAmount);
+                SalesOrderDeliveryMasterAndDetails.TotalBillAmount();
+
+                var PurchasePrice = parseFloat($(this).closest('tr').find('span.PurchasePrice').text()).toFixed(2);
+                var NetPurchaseAmount = parseFloat(RecivedQuantity * PurchasePrice).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseNetAmount').text(NetPurchaseAmount);
+                var PurchaseTaxAmount = parseFloat((NetPurchaseAmount * TaxRate) / 100).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseTaxableAmount').text(PurchaseTaxAmount);
+                var GrosspurchaseAmount = parseFloat(parseFloat(NetPurchaseAmount) + parseFloat(PurchaseTaxAmount)).toFixed(2);
+                $(this).closest('tr').find('span.PurchaseGrossAmount').text(GrosspurchaseAmount);
+
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseAmount();
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseTaxAmount();
+                SalesOrderDeliveryMasterAndDetails.TotalPurchaseBillAmount();
+
+
+            }
+
+
+        });
+
+    });
+
+</script>
+

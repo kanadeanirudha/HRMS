@@ -1,0 +1,129 @@
+﻿@model AERP.ViewModel.SaleContractEmployeeAdvancesViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Contract/SaleContractEmployeeAdvances.js")" type="text/javascript"></script>
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Contract Employee Advance</h2>
+    </div>
+    <div class="card" style="margin-bottom: 0px;">
+        <div class="card-header">
+            <ul class="actions" style="display:none;" id="linkForCreate">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown" title="Add New">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a class="mfpAjaxModal" id="btnCreateList" href="@Url.Action("Create", "SaleContractEmployeeAdvances")">
+                                <i class="zmdi zmdi-plus-square"></i> &nbsp; @Resources.DisplayName_AddNew
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="row" role="form">
+                <div class="col-sm-4">
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(m => m.ContractEmployeeMasterID)
+                        @Html.LabelFor(model => model.ContractEmployeeMasterName)
+                        @Html.TextBoxFor(model => model.ContractEmployeeMasterName, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        <button type="button" class="btn btn-primary m-t-20" id="btnShowList">@Resources.GlobalProperties_ShowList</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div id="ListViewModel"> </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        SaleContractEmployeeAdvances.Initialize();
+
+        mapSaleContractEmployee = [];
+        var getDataSaleContractEmployee = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractEmployeeMaster/GetSaleContractEmployeeSearchList",
+                    type: "POST",
+                    data: { term: q, GenderCode: "" },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.SaleContractEmployeeMasterName)) {
+                                mapSaleContractEmployee[response.SaleContractEmployeeMasterName] = response;
+                                matches.push(response.SaleContractEmployeeMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#ContractEmployeeMasterName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataSaleContractEmployee()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#ContractEmployeeMasterID").val(mapSaleContractEmployee[item].SaleContractEmployeeMasterID);
+            $("#ContractEmployeeMasterName").val(mapSaleContractEmployee[item].SaleContractEmployeeMasterName);
+
+            $("#linkForCreate").show();
+            $("#btnCreateList").attr("href", "SaleContractEmployeeAdvances/Create?ContractEmployeeMasterID=" + mapSaleContractEmployee[item].SaleContractEmployeeMasterID + "&ContractEmployeeMasterName=" + mapSaleContractEmployee[item].SaleContractEmployeeMasterName);
+        });
+
+        $('#ContractEmployeeMasterName').on("keydown", function (e) {
+            
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#ContractEmployeeMasterName').typeahead('val', '');
+                $("#ContractEmployeeMasterName").val("");
+                $("#ContractEmployeeMasterID").val("");
+                $("#linkForCreate").hide();
+                $("#btnCreateList").attr("href", "");
+                $('#ListViewModel').html('');
+            }
+        });
+    });
+</script>

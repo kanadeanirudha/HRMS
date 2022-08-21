@@ -1,0 +1,47 @@
+﻿@model AMS.ViewModel.AdminRoleDetailsViewModel
+
+
+@using (Ajax.BeginForm("Delete", "AdminRoleDetails", null,
+        new AjaxOptions
+        {
+            UpdateTargetId = "update-message",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "deleteSuccess"
+        }, new
+        {
+            @id = "FormAdminRoleDelete"
+        }))
+{ 
+    @Html.AntiForgeryToken()
+    
+    
+    <div class="widget-block" style="width:230px;">
+        <div class="widget-head">
+            <h5>Delete Role Details </h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+                <form class="form-horizontal well white-box">
+                    @* <fieldset>*@
+                    <div class="control-group" style="padding:10px;">
+                        &nbsp;&nbsp;<img src="~/Content/images/warning.png" />&nbsp;&nbsp;Do you want to delete? 
+                        <div class="controls">
+                        </div>
+                    </div>
+						
+                      <div class="control-group" style="padding:10px;text-align:right;margin-bottom:0px;border: 1px solid #e5e5e5;">
+                       
+                        <button type="submit" class="btn btn-primary">Delete</button>
+                        </div>
+                    @*
+                    </fieldset>*@
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="update-message" class="error invisible"></div>
+    @Html.HiddenFor(model => model.ID)  
+}
+
+

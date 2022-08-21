@@ -1,0 +1,64 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<div id="custom-content">
+    @Html.HiddenFor(model => model.GeneralItemMasterID)
+    @Html.HiddenFor(model => model.ItemNumber)
+
+    <input type="hidden" id="TaskCode" value="GeneralItemAttributeData" />
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralItemMaster" role="form" class="row">
+               
+                <div class="col-sm-6">
+                    <div class="form-group select fg-line">
+                        @Html.LabelFor(model => model.AttributeName, new { })
+                        @Html.DropDownListFor(model => model.AttributeName, (SelectList)ViewBag.InventoryAttributeMasterList, "--Select Attribute Name--", new { @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AttributeName)
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAttribute"><i class="zmdi zmdi-plus"></i></button>
+                </div>
+                <br/>
+                <div class="col-sm-12">
+                    <div id="ListViewModel" class="">
+                        <div id="DivAddRowTable">
+                            <table id="tblDataAttr" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Attribute Description</th>
+                                        <th>@Resources.DisplayName_Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in Model.GeneralItemMasterAttributeList)
+                                 {
+                                    <tr>
+                                        <td style="display:none"><input type="text" style="display:none" value="@item.GeneralItemAttributeDataID"></td>
+                                        <td style="display:none"><input type="text" style="display:none" value="@item.GeneralItemMasterID"></td>
+                                        <td style="display:none"><input type="text" style="display:none" value="@item.ItemNumber"></td>
+                                        <td style="display:none"><input type="text" style="display:none" value="@item.InventoryAttributeMasterID"></td>
+                                        <td>@item.AttributeName<input type="text" style="display:none" value="@item.AttributeName"></td>
+
+                                    </tr>
+                                  }
+                                </tbody>
+                            </table><br /><br /><br /><br />
+                        </div>
+                    </div>
+                </div>
+</form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+          GeneralItemMaster.Initialize();
+    });
+</script>

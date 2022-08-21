@@ -1,0 +1,99 @@
+﻿@model AERP.ViewModel.SaleContractAttendanceViewModel
+
+
+<div class="col-sm-12">
+    <table id="tblAttendanceData" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Attendance</th>
+                <th>Is Half Day</th>
+                <th>Over Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SaleContractAttendanceList)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@item.ID">
+                        <input type="hidden" value="@item.SaleContractManPowerItemID">
+                        <input type="hidden" value="@item.SaleContractEmployeeMasterID">
+                        @item.SaleContractEmployeeMasterName
+                    </td>
+                    <td>
+                        @if (item.AttendanceStatus == 1)
+                        {
+                            <input type="checkbox" class="AttStatusFlag" checked>
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="AttStatusFlag">
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsHalfDayLeave == true)
+                        {
+                            <input type="checkbox" class="HalfDayLeaveFlag" checked>
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="HalfDayLeaveFlag">
+                        }
+                    </td>
+                    <td>
+                        <input type="text" class="" value="@item.OvertimeHours">
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="col-sm-12">
+    <div class="form-group fg-line">
+        <div class="checkbox">
+            <label>
+                @if (Model.SaleContractAttendanceList.Count > 0)
+            {
+                if (Model.SaleContractAttendanceList[0].AttendanceStatus == 3)
+                {
+                        <input type="checkbox" value="" id="IsWeeklyOff" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" value="" id="IsWeeklyOff">
+                    }
+                }
+                <i class="input-helper"></i>
+                Weekly Off
+            </label>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                @if (Model.SaleContractAttendanceList.Count > 0)
+            {
+                if (Model.SaleContractAttendanceList[0].AttendanceStatus == 4)
+                {
+                        <input type="checkbox" value="" id="IsHoliday" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" value="" id="IsHoliday">
+                    }
+                }
+                <i class="input-helper"></i>
+                Holiday
+            </label>
+        </div>
+
+        <button type="button" class="btn btn-primary m-t-20" id="SaveSaleContractAttendance">@Resources.ButtonAction_Save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractAttendance.Initialize();
+    });
+</script>

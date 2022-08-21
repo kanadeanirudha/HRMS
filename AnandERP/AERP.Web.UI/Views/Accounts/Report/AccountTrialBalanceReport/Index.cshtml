@@ -1,0 +1,79 @@
+﻿@model AERP.ViewModel.AccountTrialBalanceReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/AccountTrialBalanceReport.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+<div class="container" style="padding-bottom:10px;">
+    @using (Html.BeginForm("Index", "AccountTrialBalanceReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Account Trial Balance Report</h2>
+        </div>
+
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding">
+                @Html.HiddenFor(m => m.BalanceSheetMstID)
+                @Html.HiddenFor(m => m.IsPosted)
+                @Html.HiddenFor(m => m.AccBalsheetName)
+                <div class="row col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownListFor(m => m.AccountSessionID, Model.AccountSessionMasterReportItems, "------Select Account Session-------", new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Account Session*" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.AccountSessionID)
+                    </div>
+                </div>
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="fg-line form-group">
+                            @Html.TextBoxFor(m => m.SessionFromDate, new { @class = "form-control", @placeholder = "Session from date", ReadOnly = "True", style = "background-color:white", data_toggle = "tooltip", data_placement = "top", data_original_title = "Session from date" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SessionFromDate)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="fg-line form-group">
+                            @Html.TextBoxFor(m => m.SessionUptoDate, new { @class = "form-control", ReadOnly = "True", style = "background-color:white", @placeholder = "Session upto date", data_toggle = "tooltip", data_placement = "top", data_original_title = "Session upto date" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SessionUptoDate)
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="fg-line select form-group">
+                            @Html.DropDownList("GroupBy", ViewData["GroupBy"] as List<SelectListItem>, new { @class = "form-control", data_toggle = "tooltip", data_placement = "top", data_original_title = "Group" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-left:1%;">
+                    <button type="submit" id="btnAccountTrialBalanceReportSubmit" name="submit" class="btn btn-primary">Show</button>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+<div class="container" style="margin-top:-10px">
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+               @Html.Partial("/Views/Accounts/Report/AccountTrialBalanceReport/AccountTrialBalanceReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountTrialBalanceReport.Initialize();
+    });
+</script>
+
+

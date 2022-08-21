@@ -1,0 +1,24 @@
+﻿@model IEnumerable<AERP.ViewModel.AccountMasterViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 75%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/AccountCentreOpeningBalance.js")" type="text/javascript"></script>
+<div id="ListViewModel" class="container">
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountCentreOpeningBalance.LoadList();
+    });
+</script>
+
+
+
+
+
+

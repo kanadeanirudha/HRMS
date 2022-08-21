@@ -1,0 +1,316 @@
+﻿@model AERP.ViewModel.AccountChequeBookDetailsViewModel
+<style>
+    .columnDisplay {
+        display: none;
+    }
+</style>
+<div id="custom-content">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Cheque Cancellation</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2 style="text-transform: none;">@Html.DisplayFor(model => model.AccountName)</h2>
+        </div>
+
+        <div id="displayErrorMessage" role="alert" hidden class="alert" style="width:50%; margin-left:auto; margin-right:auto;">
+            <button class="close" type="button"><span aria-hidden="true">×</span></button>
+            <p id="messageContent"></p>
+        </div>
+
+        <form id="FormEditInfoAccountChequeBookDetails" method="post" class="">
+     
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.AccountID)
+                @Html.HiddenFor(model => model.ChequeBookID)
+
+                <div class="bootgrid-header container-fluid" id="data-table-command-header">
+                    <div class="row">
+                        <div class="col-sm-12 actionBar">
+                            <div class="search form-group">
+                                <div class="input-group">
+                                    <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                                    <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                                </div>
+                            </div>
+                            <div class="actions btn-group">
+                                <div class="dropdown btn-group">
+                                    <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                                        <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                                    </button>
+                                    <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                                        <li class="active" aria-selected="true">
+                                            <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                                        </li>
+                                        <li aria-selected="false">
+                                            <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                                        </li>
+                                        <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown btn-group">
+                                    <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                                        <span class="dropdown-text">
+                                            <span class="zmdi icon zmdi-view-module"></span>
+                                        </span><span class="caret"></span>
+                                    </button>
+                                    <ul role="menu" id="toggleTableColumn1" class="dropdown-menu pull-right">
+
+                                        <li>
+                                            <div class="checkbox">
+                                                <label class="dropdown-item" aria-disabled="false">
+                                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="ChequeNumber">
+                                                    Cheque Number<i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                        </li>
+
+
+                                        <li>
+                                            <div class="checkbox">
+                                                <label class="dropdown-item" aria-disabled="false">
+                                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="ChequeDescription">
+                                                    Cheque Description<i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="checkbox">
+                                                <label class="dropdown-item" aria-disabled="false">
+                                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Status">
+                                                    Status<i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                        </li>
+
+
+                                        <li>
+                                            <div class="checkbox">
+                                                <label class="dropdown-item" aria-disabled="false">
+                                                    <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="Action">
+                                                    @Resources.TableHeaders_Action<i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                        </li>
+
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <table id="chequeList_DataTable" class="table table-striped table-condensed table-vmiddle table-responsive ">
+                    <thead>
+                        <tr>
+                            <th>Cheque Number</th>
+                            <th>Cheque Description</th>
+                            <th>Status</th>
+                            <th>@Resources.TableHeaders_Action</th>
+                            <th>Cheque Book ID</th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <div class="card-header">
+
+                    <ul class="header-inner" style="display:none" id="DivChequeRemark">
+
+                        <li style="padding-top:1%">
+                            <span>Cheque No &nbsp;: &nbsp;</span>
+                        </li>
+                        <li>
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ChequeNo, new { @class = "form-control input-sm", @disabled = "disabled" })
+                            </div>
+                        </li>
+
+                        <li style="padding-top:1%">
+                            <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                            <span style="font-weight: bold;">Remark &nbsp;: </span>
+
+                        </li>
+                        <li>
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ChequeDescription, new { @class = "form-control input-sm", maxlength = "200",style="width:400px;" })
+                            </div>
+                        </li>
+                        <li style="padding-left:2%;">
+                            <div class="form-group  fg-line">
+                                <input type="button" id="EditInfoAccountChequeBookDetailsRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+        </form>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+@*<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>*@
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        var oTable1;
+        AccountChequeBookDetails.Initialize();
+
+
+        oTable1 = $('#chequeList_DataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "AccountChequeBookDetails/AjaxHandlerForEditView",
+            "bJQueryUI": true,
+            //"sScrollY": false,
+            //"scrollY": "200px",
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "SelectedBalancesheetID", "value": $("#selectedBalsheetID").val() });
+                aoData.push({ "name": "AccountID", "value": $("#AccountID").val() });
+            },
+            "columnDefs": [
+                            {
+                                "targets": 0,
+                                "bSearchable": true,
+                            },
+                             {
+                                 "targets": 1,
+                                 "data": null,
+                                 "bSearchable": true,
+                                 "render": function (data, type, full, meta) {
+
+                                     return data[2];
+
+                                 }
+
+                             },
+
+                             {
+                                 "targets": 2,
+                                 "bSortable": false,
+                                 "data": null,
+                                 "bSearchable": true,
+                                 "render": function (data, type, full, meta) {
+
+
+                                     if (data[1] == null) {
+                                         var result = '<p><span class="btn btn-xs btn-success">@Resources.DisplayChkstatus_Available</span></p>'
+                                     }
+                                     else if (data[1] == "C") {
+                                         var result = '<p><span class="btn btn-xs btn-important">@Resources.DisplayChkstatus_Cancelled</span></p>'
+                                     }
+                                     else if (data[1] == "U") {
+                                         var result = '<p><span class="btn btn-xs btn-warning">@Resources.Displaychkstatus_Pending</span></p>'
+                                     }
+                                     else if (data[1] == "L") {
+                                         var result = '<p><span class="btn btn-xs btn-warning">L</span></p>'
+                                     }
+                                     return result;
+
+                                 }
+
+                             },
+                            {
+                                "targets": 3,
+                                "bSortable": false,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+
+                                    if (data[1] == null) {
+
+                                        //previously commented
+                                        @*var result = '@Html.ActionLink("EditInfo", "CancelCheque", new { ChequeNumber = "chequeNumber", ChequeBookID = "chequeBookID", AccountName = Model.AccountName, AccountID = Model.AccountID }, new { @class = "ajax  cboxElement", style = "text-decoration:none" })';
+                                        result = result.replace('EditInfo', '<button title="@Resources.ToolTip_Cancel" class="btn btn-default"><i class="zmdi zmdi-delete"></i></button>');
+                                        result = result.replace('chequeNumber', data[0]);
+                                        result = result.replace('chequeBookID', data[3]);*@
+                                        //
+
+                                        
+                                        var result = '<button type="button" title="@Resources.ToolTip_Cancel" class="btn btn-default"><i class="zmdi zmdi-delete"></i></button>';
+                                        var result = "<p style=' height:5px;' >" + result + "</p>";
+                                        return result;
+                                    }
+                                    else if (data[1] == "C") {
+                                        return null;
+                                    }
+                                    else if (data[1] == "U") {
+                                        var result = '<p style="height:5px;"><button type="button" title="@Resources.ToolTip_Cancel" class="btn btn-default"><i class="zmdi zmdi-delete"></i></button></p>';
+                                        return result;
+                                    }
+                                    else if (data[1] == "L") {
+                                        var result = '<p style="height:5px;"><button type="button" title="@Resources.ToolTip_Cancel" class="btn btn-default"><i class="zmdi zmdi-delete"></i></button></p>';
+                                        return result;
+                                    }
+
+                                }
+                            },
+                            {
+                                "targets": 4,
+                                //"visible": false,
+                                "sClass": "columnDisplay",
+                                "data": null,
+                                "bSearchable": true,
+                                "render": function (data, type, full, meta) {
+
+                                    return data[3];
+
+
+                                }
+                            },
+            ]
+        });
+
+
+        DataTableSettings(oTable1, "chequeList_DataTable", "toggleTableColumn1");
+
+        $('#chequeList_DataTable tbody').on('click', 'tr td p button', function () {
+            var chequeNumber = $(this).closest('tr').find('td').eq(0).text();
+            var chequeBookID = $(this).closest('tr').find('td').eq(4).text();
+
+            
+            $('#ChequeDescription').focus();
+            $('#ChequeNo').val(chequeNumber);
+            $('input[name=ChequeBookID]').val(chequeBookID);
+            $("#DivChequeRemark").show(true);
+            
+            $('#ChequeDescription').val("");
+            //AccountChequeBookDetails.AjaxCallAccountChequeBookDetails(chequeNumber, chequeBookID, AccountName, AccountID);
+
+        });
+
+
+    });
+
+    function AccountChequeBookDetailsChequeList() {
+        var oTable1 = $('#chequeList_DataTable').dataTable();
+        oTable1.fnReloadAjax('AccountChequeBookDetails/AjaxHandlerForEditView');
+    }
+
+
+</script>
+
+

@@ -1,0 +1,718 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <div class="form-group fg-line">
+            @Html.HiddenFor(m => m.SaleContractManPowerItemID)
+            <input type="hidden" id="TotalAmount" />
+            @Html.LabelFor(model => model.SaleContractManPowerItemName, new { })
+            @Html.TextBoxFor(model => model.SaleContractManPowerItemName, new { maxlength = "50", @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractManPowerItemName)
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractManPowerItemRequired, new { })
+            @Html.TextBoxFor(model => model.SaleContractManPowerItemRequired, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractManPowerItemRequired)
+    </div>
+    <div class="col-sm-3" style="display:none;">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.Gender, new { })
+            @Html.DropDownListFor(model => model.Gender, (SelectList)ViewBag.GenderList, new { @class = "form-control", style = "", })
+        </div>
+        @Html.ValidationMessageFor(model => model.Gender)
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group  fg-line">
+            @Html.LabelFor(model => model.IsSalaryDaysCountFix, new { style = "" })
+            <div class="checkbox">
+                <label>
+                    @if (Model.IsSalaryDaysCountFix == true)
+                    {
+                        <input type="checkbox" value="" id="IsSalaryDaysCountFix" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" value="" id="IsSalaryDaysCountFix">
+                    }
+                    <i class="input-helper"></i>
+
+                </label>
+            </div>
+        </div>
+        @Html.ValidationMessageFor(model => model.IsSalaryDaysCountFix)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.FixedDays, new { })
+            @Html.TextBoxFor(model => model.FixedDays, new { @class = "form-control", style = "", disabled = "disabled" })
+        </div>
+        @Html.ValidationMessageFor(model => model.FixedDays)
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.IsSalaryDaysOnWeeklyOff, new { })
+            <div class="checkbox">
+                <label>
+                    @if (Model.IsSalaryDaysOnWeeklyOff == true)
+                    {
+                        <input type="checkbox" value="" id="IsSalaryDaysOnWeeklyOff" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" value="" id="IsSalaryDaysOnWeeklyOff">
+                    }
+                    <i class="input-helper"></i>
+                </label>
+            </div>
+        </div>
+        @Html.ValidationMessageFor(model => model.IsSalaryDaysOnWeeklyOff)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group  fg-line">
+            @Html.LabelFor(model => model.IsBillingDaysFixed, new { style = "" })
+            <div class="checkbox">
+                <label>
+                    @if (Model.IsBillingDaysFixed == true)
+                    {
+                        <input type="checkbox" value="" id="IsBillingDaysFixed" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" value="" id="IsBillingDaysFixed">
+                    }
+                    <i class="input-helper"></i>
+
+                </label>
+            </div>
+        </div>
+        @Html.ValidationMessageFor(model => model.IsBillingDaysFixed)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.FixedBillingDays, new { })
+            @Html.TextBoxFor(model => model.FixedBillingDays, new { @class = "form-control", style = "", disabled = "disabled" })
+        </div>
+        @Html.ValidationMessageFor(model => model.FixedBillingDays)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group  fg-line">
+            @Html.LabelFor(model => model.IsBillingDaysOnWeeklyOff, new { style = "" })
+            <div class="checkbox">
+                <label>
+                    @if (Model.IsBillingDaysOnWeeklyOff == true)
+                    {
+                        <input type="checkbox" value="" id="IsBillingDaysOnWeeklyOff" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" value="" id="IsBillingDaysOnWeeklyOff">
+                    }
+                    <i class="input-helper"></i>
+
+                </label>
+            </div>
+        </div>
+        @Html.ValidationMessageFor(model => model.IsBillingDaysOnWeeklyOff)
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.FixedRate, new { })
+            @Html.TextBoxFor(model => model.FixedRate, new { @class = "form-control", style = "" })
+        </div>
+        @Html.ValidationMessageFor(model => model.FixedRate)
+    </div>
+    <div class="col-sm-1">
+        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddManPowerItem"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblManPowerItem" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Post Name</th>
+                <th>Required Number</th>
+                <th style="display:none;">Gender</th>
+                <th>Is Salary Days Fixed</th>
+                <th>Fixed Days</th>
+                <th>Is Salary Days On Off Days</th>
+                <th>Is Billing Days Fixed</th>
+                <th>Fixed Billing Days</th>
+                <th>Is Billing Days On Off Days</th>
+                <th>Total Salary</th>
+                <th>Total Amount</th>
+                <th>Fixed Rate</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SaleContractMasterListForManPowerItem)
+            {
+                <tr>
+                    <td>
+                        <input type='hidden' value='@item.SaleContractRequirementDetailsID' />
+                        <input type='hidden' value='@item.SaleContractManPowerItemID' />@item.SaleContractManPowerItemName
+                    </td>
+                    <td><input type='text' class="form-control SelectedSaleContractManPowerItemRequired" value='@item.SaleContractManPowerItemRequired' /><span style="display:none;">@item.SaleContractManPowerItemRequired</span></td>
+                    <td style="display:none;"><input type='hidden' value='@item.Gender' />@(item.Gender == 1 ? "Male" : "Female")</td>
+                    <td><input type='hidden' value='@(item.IsSalaryDaysCountFix == true ? "1" : "0")' />@(item.IsSalaryDaysCountFix == true ? "Yes" : "No")</td>
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <input type='text' class="form-control" value='@item.FixedDays' />
+                        }
+                        else
+                        {
+                            <input type='hidden' value='@item.FixedDays' />@item.FixedDays
+                        }
+                    </td>
+                    <td><input type='hidden' value='@(item.IsSalaryDaysOnWeeklyOff == true ? "1" : "0")' />@(item.IsSalaryDaysOnWeeklyOff == true ? "Yes" : "No")</td>
+                    <td><input type='hidden' value='@(item.IsBillingDaysFixed == true ? "1" : "0")' />@(item.IsBillingDaysFixed == true ? "Yes" : "No")</td>
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <input type='text' class="form-control" value='@item.FixedBillingDays' />
+                        }
+                        else
+                        {
+                            <input type='hidden' value='@item.FixedBillingDays' />@item.FixedBillingDays
+                        }
+                    </td>
+                    <td><input type='hidden' value='@(item.IsBillingDaysOnWeeklyOff == true ? "1" : "0")' />@(item.IsBillingDaysOnWeeklyOff == true ? "Yes" : "No")</td>
+                    <td><input type='hidden' value='@Math.Round(item.Rate)' />@Math.Round(item.Rate)</td>
+                    <td><input type='hidden' value='@Math.Round(item.Rate * item.SaleContractManPowerItemRequired)' />@Math.Round(item.Rate * item.SaleContractManPowerItemRequired)</td>
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <input type='text' class="form-control" value='@Math.Round(item.FixedRate)' />
+                        }
+                        else
+                        {
+                            <input type='hidden' value='@Math.Round(item.FixedRate)' />@Math.Round(item.FixedRate)
+                        }
+                    </td>
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title='Delete'></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="col-sm-12">
+    <h4>Assign Contract Employee</h4>
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SelectedSaleContractManPowerItemID, new { })
+            @if (Model.SaleContractMasterListForManPowerItem.Count > 0)
+            {
+                <select name="SelectedSaleContractManPowerItemID" id="SelectedSaleContractManPowerItemID" class="form-control input-sm">
+                    <option value="">--Select Post--</option>
+                    @foreach (var ManPowerItem in Model.SaleContractMasterListForManPowerItem)
+                    {
+                        <option value="@ManPowerItem.SaleContractManPowerItemID">@ManPowerItem.SaleContractManPowerItemName </option>
+                    }
+                </select>
+            }
+            else
+            {
+                @Html.DropDownListFor(model => model.SelectedSaleContractManPowerItemID, Enumerable.Empty<SelectListItem>(), "--Select Post--", new { maxlength = "50", @class = "form-control input-sm" })
+            }
+        </div>
+        @Html.ValidationMessageFor(model => model.SelectedSaleContractManPowerItemID)
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.HiddenFor(m => m.SaleContractEmployeeMasterID)
+            @Html.LabelFor(model => model.SaleContractEmployeeMasterName, new { })
+            @Html.TextBoxFor(model => model.SaleContractEmployeeMasterName, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractEmployeeMasterName)
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.ManPowerAssignFromDate, new { })
+            @Html.TextBoxFor(model => model.ManPowerAssignFromDate, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.ManPowerAssignFromDate)
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.EmployeeShiftMasterID, new { })
+            @Html.DropDownListFor(model => model.EmployeeShiftMasterID, (SelectList)ViewBag.ShiftMasterList, new { @class = "form-control", style = "", })
+        </div>
+        @Html.ValidationMessageFor(model => model.EmployeeShiftMasterID)
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractEmployeeAdditionalAmount, new { })
+            @Html.TextBoxFor(model => model.SaleContractEmployeeAdditionalAmount, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractEmployeeAdditionalAmount)
+    </div>
+    <div class="col-sm-2">
+        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAssignContractEmployee"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblAssignContractEmployee" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Post Name</th>
+                <th>Contract Employee</th>
+                <th>From Date</th>
+                <th>Sift</th>
+                <th>Additional Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SaleContractMasterListForAssignedEmployee)
+            {
+                <tr>
+                    <td>
+                        <input type='hidden' value='@item.SaleContractManPowerAssignID' />
+                        <input type='hidden' value='@item.SaleContractManPowerItemID' />@item.SaleContractManPowerItemName
+                    </td>
+                    <td><input type='hidden' value='@item.SaleContractEmployeeMasterID' />@item.SaleContractEmployeeMasterName</td>
+                    <td><input type='hidden' value='@item.ManPowerAssignFromDate' />@item.ManPowerAssignFromDate</td>
+                    <td><input type='hidden' value='@item.EmployeeShiftMasterID' />@item.EmployeeShiftMasterName</td>
+                    <td><input type='hidden' value='@item.SaleContractEmployeeAdditionalAmount' />@item.SaleContractEmployeeAdditionalAmount</td>
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title='Delete'></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+
+        $('#ManPowerAssignFromDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        })
+
+        $("#IsSalaryDaysCountFix").change(function () {
+            if ($(this).is(":checked")) {
+                $("#FixedDays").prop("disabled", false);
+            } else {
+                $("#FixedDays").val(0);
+                $("#FixedDays").prop("disabled", true);
+            }
+        });
+
+        $("#IsBillingDaysFixed").change(function () {
+            if ($(this).is(":checked")) {
+                $("#FixedBillingDays").prop("disabled", false);
+            } else {
+                $("#FixedBillingDays").val(0);
+                $("#FixedBillingDays").prop("disabled", true);
+            }
+        });
+
+        $('.SelectedSaleContractManPowerItemRequired').on("keydown", function (e) {
+            AERPValidation.AllowNumbersOnly(e);
+            AERPValidation.NotAllowSpaces(e);
+        });
+
+        //$(".SelectedSaleContractManPowerItemRequired").keyup(function () {
+        //    var ItemRequired = $(this).val();
+        //    var SelectedItemRequired = $(this).next().text();
+
+        //    if (ItemRequired == "") {
+        //        notify("Please enter Required Number", "warning");
+        //    }
+
+        //    if (parseInt(ItemRequired) < parseInt(SelectedItemRequired)) {
+        //        notify("Please enter Required Number greater than selected Number", "warning");
+        //        $(this).val(SelectedItemRequired);
+        //    }
+        //});
+
+        $(".SelectedSaleContractManPowerItemRequired").focusout(function () {
+            var ItemRequired = $(this).val();
+            var SelectedItemRequired = $(this).next().text();
+
+            if (ItemRequired == "" && $("#TaskCode").val() == "GeneralModifyContract") {
+                $(this).val(SelectedItemRequired);
+                notify("Please enter Required Number", "warning");
+            }
+            if (parseInt(ItemRequired) < parseInt(SelectedItemRequired) && $("#TaskCode").val() == "GeneralModifyContract") {
+                notify("Please enter Required Number greater than selected Number", "warning");
+                $(this).val(SelectedItemRequired);
+            }
+        });
+
+        mapSaleContractManPowerItem = [];
+        var getDataSaleContractManPowerItem = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractManPowerItem/GetSaleContractManPowerItemSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val(), CustomerBranchMasterID: $("#CustomerBranchMasterID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.SaleContractManPowerItemName)) {
+                                mapSaleContractManPowerItem[response.SaleContractManPowerItemName] = response;
+                                matches.push(response.SaleContractManPowerItemName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SaleContractManPowerItemName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataSaleContractManPowerItem()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SaleContractManPowerItemID").val(mapSaleContractManPowerItem[item].SaleContractManPowerItemID);
+            $("#SaleContractManPowerItemName").val(mapSaleContractManPowerItem[item].SaleContractManPowerItemName);
+            $("#TotalAmount").val(mapSaleContractManPowerItem[item].TotalAmount)
+        });
+
+        $('#SaleContractManPowerItemName').on("keydown", function (e) {
+            if ($("#CustomerMasterID").val() == "0" || $("#CustomerMasterID").val() == "") {
+                notify("Please select Customer.", "warning");
+                return false;
+            }
+            if ($("#CustomerType").val() == "2" && ($("#CustomerBranchMasterID").val() == "" || $("#CustomerBranchMasterID").val() == "0")) {
+                notify("Please select Branch.", "warning");
+                return false;
+            }
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SaleContractManPowerItemName').typeahead('val', '');
+                $("#SaleContractManPowerItemName").val("");
+                $("#SaleContractManPowerItemID").val("");
+                $("#TotalAmount").val("");
+            }
+        });
+
+        $("#tblManPowerItem tbody").unbind("click").on("click", "tr td i", function () {
+            ManPowerItemID = $(this).closest('tr').children("td:eq(0)").children("input:eq(1)").val();
+            Gender = $(this).closest('tr').children("td:eq(2)").children("input").val();
+            debugger
+            var EmployeeArray = [];
+            var data = $('#tblAssignContractEmployee tbody tr td  input').each(function () {
+                EmployeeArray.push($(this).val());
+            });
+
+            var TotalRecord = EmployeeArray.length;
+            var RecordAddedForPost = false;
+            for (var i = 0; i < TotalRecord; i = i + 6) {
+                if (EmployeeArray[i + 1] == ManPowerItemID) {
+                    RecordAddedForPost = true;
+                }
+            }
+
+            if (RecordAddedForPost == true) {
+                notify("Employees are added for this Post.", "warning");
+                return false;
+            }
+
+            $(this).closest('tr').remove();
+            $("#SelectedSaleContractManPowerItemID option[value='" + ManPowerItemID + "']").remove()
+        });
+
+        $('#btnAddManPowerItem').on("click", function () {
+            if ($('#SaleContractManPowerItemName').val() == "" && ($('#SaleContractManPowerItemID').val() == "0" || $('#SaleContractManPowerItemID').val() == "")) {
+                notify("Please Select Post.", "warning");
+                return false;
+            }
+            if ($('#SaleContractManPowerItemRequired').val() == "" || $('#SaleContractManPowerItemRequired').val() == 0) {
+                notify("Please Enter Required Quantity.", "warning");
+                return false;
+            }
+            //if ($('#Gender').val() == "" || $('#Gender').val() == 0) {
+            //    notify("Please Select Gender.", "warning");
+            //    return false;
+            //}
+            if ($('#IsSalaryDaysCountFix').is(":checked") && ($('#FixedDays').val() == 0 || $('#FixedDays').val() == "")) {
+                notify("Please Enter Fixed Days.", "warning");
+                return false;
+            }
+            if ($('#IsBillingDaysFixed').is(":checked") && ($('#FixedBillingDays').val() == 0 || $('#FixedBillingDays').val() == "")) {
+                notify("Please Enter Fixed Days.", "warning");
+                return false;
+            }
+            if ($('#BillingType').val() == 2 && $("#FixedBillingType").val() != 1 && ($('#FixedRate').val() == 0 || $('#FixedRate').val() == "")) {
+                notify("Please Enter Fixed Rate for Fixed Billing.", "warning");
+                return false;
+            }
+            // alert($('#AttributeName :selected').val())
+
+            var DataArray = [];
+            var data = $('#tblManPowerItem tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 13) {
+                if (DataArray[i + 1] == $('#SaleContractManPowerItemID').val()) {
+                    notify("You Cannot Enter the Same Post.", "warning");
+                    $("#SaleContractManPowerItemName").typeahead('val', '');
+                    $("#SaleContractManPowerItemName").val("");
+                    $("#SaleContractManPowerItemID").val("");
+                    $('#SaleContractManPowerItemRequired').val('');
+                    $('#Gender').val('0');
+                    $('#TotalAmount').val('');
+                    $('#FixedRate').val('0');
+                    return false;
+                }
+            }
+            $("#tblManPowerItem tbody").append(
+                                                   "<tr>" +
+                                                    "<td><input type='hidden' value='0' /><input type='hidden' value='" + $("#SaleContractManPowerItemID").val() + "'  />" + $('#SaleContractManPowerItemName').val() + "</td>" +
+                                                    "<td><input type='hidden' value='" + $('#SaleContractManPowerItemRequired').val() + "' />" + $('#SaleContractManPowerItemRequired').val() + "</td>" +
+                                                     "<td style='display:none;'><input type='hidden' value='" + $('#Gender').val() + "' />" + $('#Gender :selected').text() + "</td>" +
+                                                     "<td><input type='hidden' value='" + ($('#IsSalaryDaysCountFix').is(":checked") ? true : false) + "' />" + ($('#IsSalaryDaysCountFix').is(":checked") ? "Yes" : "No") + "</td>" +
+                                                     "<td><input type='hidden' value='" + $('#FixedDays').val() + "' />" + $('#FixedDays').val() + "</td>" +
+                                                     "<td><input type='hidden' value='" + ($('#IsSalaryDaysOnWeeklyOff').is(":checked") ? true : false) + "' />" + ($('#IsSalaryDaysOnWeeklyOff').is(":checked") ? "Yes" : "No") + "</td>" +
+                                                      "<td><input type='hidden' value='" + ($('#IsBillingDaysFixed').is(":checked") ? true : false) + "' />" + ($('#IsBillingDaysFixed').is(":checked") ? "Yes" : "No") + "</td>" +
+                                                     "<td><input type='hidden' value='" + $('#FixedBillingDays').val() + "' />" + $('#FixedBillingDays').val() + "</td>" +
+                                                     "<td><input type='hidden' value='" + ($('#IsBillingDaysOnWeeklyOff').is(":checked") ? true : false) + "' />" + ($('#IsBillingDaysOnWeeklyOff').is(":checked") ? "Yes" : "No") + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#TotalAmount').val() + "' />" + $('#TotalAmount').val() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#TotalAmount').val() * $('#SaleContractManPowerItemRequired').val() + "' />" + $('#TotalAmount').val() * $('#SaleContractManPowerItemRequired').val() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#FixedRate').val() + "' />" + $('#FixedRate').val() + "</td>" +
+                                                   "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                                                   "</tr>"
+                                                  );
+            $("#SelectedSaleContractManPowerItemID").append("<option value='" + $("#SaleContractManPowerItemID").val() + "'>" + $('#SaleContractManPowerItemName').val() + "</option>")
+
+            $("#tblManPowerItem tbody").unbind("click").on("click", "tr td i", function () {
+                ManPowerItemID = $(this).closest('tr').children("td:eq(0)").children("input:eq(1)").val();
+                Gender = $(this).closest('tr').children("td:eq(2)").children("input").val();
+                debugger
+                var EmployeeArray = [];
+                var data = $('#tblAssignContractEmployee tbody tr td  input').each(function () {
+                    EmployeeArray.push($(this).val());
+                });
+
+                var TotalRecord = EmployeeArray.length;
+                var RecordAddedForPost = false;
+                for (var i = 0; i < TotalRecord; i = i + 6) {
+                    if (EmployeeArray[i + 1] == ManPowerItemID) {
+                        RecordAddedForPost = true;
+                    }
+                }
+
+                if (RecordAddedForPost == true) {
+                    notify("Employees are added for this Post.", "warning");
+                    return false;
+                }
+
+                $(this).closest('tr').remove();
+                $("#SelectedSaleContractManPowerItemID option[value='" + ManPowerItemID + "']").remove()
+            });
+
+            $("#SaleContractManPowerItemName").typeahead('val', '');
+            $("#SaleContractManPowerItemName").val("");
+            $("#SaleContractManPowerItemID").val("");
+            $('#SaleContractManPowerItemRequired').val('');
+            $('#TotalAmount').val('');
+            $('#IsSalaryDaysCountFix').prop('checked', false);
+            $('#FixedDays').val(0);
+            $('#FixedDays').prop('disabled', true);
+            $('#IsSalaryDaysOnWeeklyOff').prop('checked', false);
+            $('#IsBillingDaysFixed').prop('checked', false);
+            $('#FixedBillingDays').val(0);
+            $('#FixedBillingDays').prop('disabled', true);
+            $('#IsBillingDaysOnWeeklyOff').prop('checked', false);
+            $('#FixedRate').val(0);
+        });
+
+        mapSaleContractEmployee = [];
+        var getDataSaleContractEmployee = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                var GenderCode = "M";
+
+
+                $.ajax({
+                    url: "/SaleContractEmployeeMaster/GetSaleContractEmployeeSearchList",
+                    type: "POST",
+                    data: { term: q, GenderCode: GenderCode, CentreCode: $("#CentreCode").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.SaleContractEmployeeMasterName)) {
+                                mapSaleContractEmployee[response.SaleContractEmployeeMasterName] = response;
+                                matches.push(response.SaleContractEmployeeMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SaleContractEmployeeMasterName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataSaleContractEmployee()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SaleContractEmployeeMasterID").val(mapSaleContractEmployee[item].SaleContractEmployeeMasterID);
+            $("#SaleContractEmployeeMasterName").val(mapSaleContractEmployee[item].SaleContractEmployeeMasterName);
+        });
+
+        $('#SaleContractEmployeeMasterName').on("keydown", function (e) {
+            if ($("#SelectedSaleContractManPowerItemID").val() == "0" || $("#SelectedSaleContractManPowerItemID").val() == "") {
+                notify("Please select Post.", "warning");
+                return false;
+            }
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SaleContractEmployeeMasterName').typeahead('val', '');
+                $("#SaleContractEmployeeMasterName").val("");
+                $("#SaleContractEmployeeMasterID").val("");
+            }
+        });
+
+        $("#tblAssignContractEmployee tbody").unbind("click").on("click", "tr td i", function () {
+            $(this).closest('tr').remove();
+        });
+
+        $('#btnAssignContractEmployee').on("click", function () {
+            if ($('#SaleContractEmployeeMasterName').val() == "" || ($('#SaleContractEmployeeMasterID').val() == "0" || $('#SaleContractEmployeeMasterID').val() == "")) {
+                notify("Please Select Employee.", "warning");
+                return false;
+            }
+            if ($('#SelectedSaleContractManPowerItemID').val() == "" || $('#SelectedSaleContractManPowerItemID').val() == 0) {
+                notify("Please Select Post.", "warning");
+                return false;
+            }
+            if ($('#EmployeeShiftMasterID').val() == "" || $('#EmployeeShiftMasterID').val() == 0) {
+                notify("Please Select Shift.", "warning");
+                return false;
+            }
+            if ($('#ManPowerAssignFromDate').val() == "") {
+                notify("Please Select Assign From Date.", "warning");
+                return false;
+            }
+            // alert($('#AttributeName :selected').val())
+
+            var DataArray = [];
+            var data = $('#tblAssignContractEmployee tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 6) {
+                if (DataArray[i + 2] == $('#SaleContractEmployeeMasterID').val() && DataArray[i + 1] == $('#SelectedSaleContractManPowerItemID').val()) {
+                    notify("You Cannot Enter the Same Employee.", "warning");
+                    $("#SaleContractEmployeeMasterName").typeahead('val', '');
+                    $("#SaleContractEmployeeMasterName").val("");
+                    $("#SaleContractEmployeeMasterID").val("");
+                    return false;
+                }
+            }
+
+            var NoOfEmployeeAssigned = 0;
+            for (var i = 0; i < TotalRecord; i = i + 6) {
+                if (DataArray[i + 1] == $('#SelectedSaleContractManPowerItemID').val()) {
+                    NoOfEmployeeAssigned++;
+                }
+            }
+
+            var DataArrayCheck = [];
+            var dataCheck = $('#tblManPowerItem tbody tr td  input').each(function () {
+                DataArrayCheck.push($(this).val());
+            });
+            var TotalRecordCheck = DataArrayCheck.length;
+
+            for (var i = 0; i < TotalRecordCheck; i = i + 13) {
+                if (DataArrayCheck[i + 1] == $('#SelectedSaleContractManPowerItemID').val() && DataArrayCheck[i + 2] == NoOfEmployeeAssigned) {
+                    notify("Number Of Employee is matched with Required Number.", "warning");
+                    $("#SaleContractEmployeeMasterName").typeahead('val', '');
+                    $("#SaleContractEmployeeMasterName").val("");
+                    $("#SaleContractEmployeeMasterID").val("");
+                    $('#SelectedSaleContractManPowerItemID').val('');
+                    $('#SaleContractEmployeeAdditionalAmount').val('0');
+                    return false;
+                }
+            }
+
+            $("#tblAssignContractEmployee tbody").append(
+                                                   "<tr>" +
+                                                    "<td><span class='ManPowerCount m-r-5'>" + (NoOfEmployeeAssigned + 1) + "</span><input type='hidden' value='0' /><input type='hidden' value='" + $("#SelectedSaleContractManPowerItemID").val() + "'  />" + $('#SelectedSaleContractManPowerItemID :selected').text() + "</td>" +
+                                                    "<td><input type='hidden' value='" + $('#SaleContractEmployeeMasterID').val() + "' />" + $('#SaleContractEmployeeMasterName').val() + "</td>" +
+                                                    "<td><input type='hidden' value='" + $('#ManPowerAssignFromDate').val() + "' />" + $('#ManPowerAssignFromDate').val() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#EmployeeShiftMasterID').val() + "' />" + $('#EmployeeShiftMasterID :selected').text() + "</td>" +
+                                                   "<td><input type='hidden' value='" + $('#SaleContractEmployeeAdditionalAmount').val() + "' />" + $('#SaleContractEmployeeAdditionalAmount').val() + "</td>" +
+                                                   "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                                                   "</tr>"
+                                                  );
+
+            $("#tblAssignContractEmployee tbody").unbind("click").on("click", "tr td i", function () {
+                $(this).closest('tr').remove();
+            });
+
+            $("#SaleContractEmployeeMasterName").typeahead('val', '');
+            $("#SaleContractEmployeeMasterName").val("");
+            $("#SaleContractEmployeeMasterID").val("");
+            $('#SelectedSaleContractManPowerItemID').val('');
+            $('#SaleContractEmployeeAdditionalAmount').val('0');
+        });
+    })
+</script>

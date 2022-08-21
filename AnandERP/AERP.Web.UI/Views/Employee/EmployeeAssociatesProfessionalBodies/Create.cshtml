@@ -1,0 +1,141 @@
+﻿@*@model AMS.ViewModel.EmployeeAssociatesProfessionalBodiesViewModel
+
+<form id="FormCreateEmployeeAssociatesProfessionalBodies" method="post">
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.EmployeeID)
+    <div id="update-message" class="error invisible"></div>
+
+
+    <div class="widget-block">
+        <div class="widget-head">
+            <h5>@Resources.FormCreate_EmployeeProfessionalsBody </h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box" style="padding: 15px">
+                <div class="control-group control-label">
+                    @Html.LabelFor(model => model.ActivityName, new { style = "font-Weight:Bold;" })
+
+                    <div class="controls input-xlarge text-tip">
+                        @Html.TextBoxFor(model => model.ActivityName, new { maxlength = "100" })
+                        <br />
+                        @Html.ValidationMessageFor(model => model.ActivityName)
+                    </div>
+                </div>
+                <div class="control-group control-label">
+                    @Html.LabelFor(model => model.FromPeriod, new { style = "font-Weight:Bold;" })
+
+                    <div class="controls input-xlarge text-tip">
+                        @Html.TextBoxFor(model => model.FromPeriod, new { @class = "input-large", ReadOnly = "True" })
+                        <br />
+                        @Html.ValidationMessageFor(model => model.FromPeriod)
+                    </div>
+                </div>
+                <div class="control-group control-label">
+                    @Html.LabelFor(model => model.UptoPeriod, new { style = "font-Weight:Bold;" })
+
+                    <div class="controls input-xlarge text-tip">
+                        @Html.TextBoxFor(model => model.UptoPeriod, new { @class = "input-large", ReadOnly = "True" })
+                        <br />
+                        @Html.ValidationMessageFor(model => model.UptoPeriod)
+                    </div>
+                </div>
+
+
+
+                <div class="form-actions" style="border: 1px solid #e5e5e5;text-align:right">
+                    <input type="button" id="CreateEmployeeAssociatesProfessionalBodiesRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+                    <input name="" id="reset" type="submit" class="btn btn-secondary" value="@Resources.ButtonAction_Reset" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeAssociatesProfessionalBodies.Initialize();
+    });
+</script>*@
+
+@*----------------new code-------------------*@
+
+
+
+@model AMS.ViewModel.EmployeeAssociatesProfessionalBodiesViewModel
+@{
+
+    Layout = null;
+}
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormCreate_EmployeeProfessionalsBody </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:250px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+            <form id="FormCreateEmployeeAssociatesProfessionalBodies" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.EmployeeID)
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ActivityName, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.ActivityName, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ActivityName)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.FromPeriod, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.FromPeriod, new { @class = "form-control", ReadOnly = "True", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FromPeriod)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.UptoPeriod, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.UptoPeriod, new { @class = "form-control", ReadOnly = "True", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.UptoPeriod)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" id="CreateEmployeeAssociatesProfessionalBodiesRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        <button type="button" id="reset" class="btn btn-default">@Resources.ButtonAction_Reset</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeAssociatesProfessionalBodies.Initialize();
+    });
+</script>
+
+

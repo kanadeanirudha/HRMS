@@ -1,0 +1,58 @@
+﻿@model AERP.ViewModel.GeneralAllocateSaleProcessUnitViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Invntory/GeneralAllocateSaleProcessUnit.js")" type="text/javascript"></script>
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;View Process Unit</h2>
+    </div>
+    <div class="card">
+
+        <div id="displayErrorMessage" role="alert" hidden class="alert">
+            <button class="close" type="button"><span aria-hidden="true">×</span></button>
+            <p id="messageContent"></p>
+        </div>
+        <form id="FormViewGeneralAllocateSaleProcessUnit" role="form">
+            <div class="col-sm-6">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.UnitName, new { })
+                    @Html.TextBoxFor(model => model.UnitName, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+
+
+            <div class="col-sm-6">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.ProcessUnitName, new { })
+                    @Html.TextBoxFor(model => model.ProcessUnitName, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.AllocatedFromDate, new { })
+                    @Html.TextBoxFor(model => model.AllocatedFromDate, new { @class = "form-control input-sm date-picker", disabled = "disabled" })
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group fg-line">
+                    @Html.LabelFor(model => model.AllocatedUptoDate, new { })
+                    @Html.TextBoxFor(model => model.AllocatedUptoDate, new { @class = "form-control input-sm date-picker", disabled = "disabled" })
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // GeneralAllocateSaleProcessUnit.Initialize();
+    });
+</script>

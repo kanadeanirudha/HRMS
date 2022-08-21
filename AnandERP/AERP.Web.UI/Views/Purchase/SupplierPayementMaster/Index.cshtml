@@ -1,0 +1,422 @@
+﻿@model AERP.ViewModel.SupplierPayementMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style type="text/css">
+    .mfp-content {
+        width: 70%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Purchase/SupplierPayementMaster.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Manage Supplier Payement</h2>
+    </div>
+    <div class="card" style="margin-bottom: 0px;">
+       
+        <form id="FormCreateSupplierPayementMaster" class="form-horizontal">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="SectionErrorMessage"></p>
+            </div>
+            <div class="card-body card-padding">
+                <div class="row">
+                    @Html.HiddenFor(m => m.CreatedBy)
+                    @Html.HiddenFor(m => m.VendorId)
+                    @Html.HiddenFor(model => model.VendorNumber)
+
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(model => model.vendor, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            <div class="fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.vendor, new { @class = "form-control input-sm " })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        @Html.LabelFor(model => model.payementmode, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            <label class="radio radio-inline">
+                                @Html.RadioButtonFor(model => model.payementmode, true, new { @checked = true, id = "Cash" })&nbsp;Cash &nbsp;&nbsp;&nbsp;
+                                <i class="input-helper"></i>
+                            </label>
+
+                            <label class="radio radio-inline">
+                                @Html.RadioButtonFor(model => model.payementmode, false, new { id = "Bank" })&nbsp;Bank
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(model => model.CreditAmount, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            <div class="fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.CreditAmount, new { @class = "form-control input-sm ", disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(model => model.PaidAmount, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            <div class="fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.PaidAmount, new { @class = "form-control input-sm " })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(model => model.CentreCode, new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            <div class="fg-line dtp-container">
+                                @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "-----Select Centre-----", new { id = "CentreCode", @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = " Centre Name" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="BankDetails" style="display:none" class="row">
+                    <h4>Bank Details</h4><hr>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <span style="color:red"> * </span>
+                            @Html.LabelFor(model => model.BankName)
+                            @Html.TextBoxFor(model => model.BankName, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.BranchName)
+                            @Html.TextBoxFor(model => model.BranchName, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.BankAddress)
+                            @Html.TextBoxFor(model => model.BankAddress, new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.AccountNo)
+                            @Html.TextBoxFor(model => model.AccountNo, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color:red"> * </span>
+                            @Html.LabelFor(model => model.IFSCCode)
+                            @Html.TextBoxFor(model => model.IFSCCode, new { @class = "form-control input-sm" })
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="color:red"> * </span>
+                            @Html.LabelFor(model => model.ChequeNumber)
+                            @Html.TextBoxFor(model => model.ChequeNumber, new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4>Invoice Details</h4>
+                    <div id="ListViewModel" class="">
+                        <div id="DivAddRowTable">
+                            <table id="tblDataInvoice" class="table table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th style="display: none"></th>
+                                        <th class="center">
+                                            @*<input type="checkbox" id="Check" class="checkall-user" name="checkbox12" disabled="disabled">*@
+                                            <div class="checkbox m-b-15" style="display:none">
+                                                <label style="">
+                                                    <input type="checkbox" id="Check" class="checkall-user" name="checkbox12">
+                                                    <i class="input-helper"></i>
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th>Invoice Number</th>
+                                        <th>Invoice Date</th>
+                                        <th>Amount</th>
+                                        <th>Paid Invoice Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbltbody"></tbody>
+                            </table><br /><br /><br /><br />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 pull-right">
+                    <button type="button" id="CreateSupplierPayementMasterRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+
+    
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        SupplierPayementMaster.Initialize();
+        map = [];
+        var getDataVender = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+
+                $.ajax({
+                    url: "/PurchaseReturn/GetVendorSearchList",
+                    type: "POST",
+                    data: { SearchWord: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.vendor)) {
+                                map[response.vendor] = response;
+                                matches.push(response.vendor);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#vendor").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataVender()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#VendorId").val(parseFloat(map[item].VendorId));
+            $("#vendor").val(parseFloat(map[item].vendor));
+            $("#VendorNumber").val(parseFloat(map[item].VendorNumber));
+            $("#CreditAmount").val(parseFloat(map[item].CreditAmount));
+            $("#PaidAmount").prop("disabled", false)
+
+
+            var VendorID = $("#VendorId").val();
+
+            debugger;
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "VendorID": VendorID },
+                url: '/SupplierPayementMaster/GetVendorWiseInvoiceDetails',
+                async: false,
+                success: function (data) {
+                    $("#tblDataInvoice tbody").html('');
+                    TotalRecord = data.length;
+                    for (var i = 0; i < TotalRecord; i++) {
+
+                        $('#CreatedBy').val(data[0].CreatedBy)
+                        $('#BankAddress').val(data[0].BankAddress)
+                        $('#BankName').val(data[0].BankName)
+                        $('#IFSCCode').val(data[0].IFSCCode)
+                        $('#BranchName').val(data[0].BranchName)
+                        $('#AccountNo').val(data[0].AccountNo)
+
+                        if (data[i]['StatusFlag'] == 0) {
+                            var statusflag = "<td><input  type='hidden' value='" + 0 + "'/><span class='btn btn-xs btn-warning statusFlag'>Pending</span></td>"
+                        }
+                        else if (data[i]['StatusFlag'] == 1) {
+                            var statusflag = "<td><input type='hidden' value='" + 1 + "'/><span class='btn btn-xs btn-success statusFlag'>Complete</span></td>"
+                        }
+                        else if (data[i]['StatusFlag'] == 2) {
+                            var statusflag = "<td><input type='hidden' value='" + 2 + "'/><span class='btn btn-xs btn-primary statusFlag'>Partially Paid</span></td>"
+                        }
+
+                        $("#tblDataInvoice tbody").append(
+
+                            "<tr>" +
+                                 "<td><input id='check_1' type='checkbox' class='check-user' name='checkbox12' ><i class='input-helper'></i></td>" +
+                                 "<td><input id='ItemNumber' type='hidden' value='" + data[i]['InvoiceNumber'] + "'/>" + data[i]['InvoiceNumber'] + "</td>" +
+                                 "<td><input id='InvoiceDate' type='hidden' value='" + data[i]['InvoiceDate'] + "'/>" + data[i]['InvoiceDate'] + "</td>" +
+                                 "<td><input id='InvoiceAmount' type='hidden' class ='InvoiceAmount' value='" + data[i]['InvoiceAmount'] + "'/>" + data[i]['InvoiceAmount'] + "</td>" +
+                                 "<td><input id='PaidInvoiceAmount' class='PaidInvoiceAmount' type='hidden' value=''/><span>" + 0 + "</span></td>" +
+
+                                  statusflag +
+                                  "<td style='display:none'><input id='PurchaseInvoiceMasterID' class='PurchaseInvoiceMasterID' type='hidden' value='" + data[i]['PurchaseInvoiceMasterID'] + "'/><span>" + data[i]['PurchaseInvoiceMasterID'] + "</span></td>" +
+                            "</tr>");
+                    }
+                    CheckedSingle();
+                }
+            });
+        });
+
+        $('#vendor').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#vendor').typeahead('val', '');
+                $("#tblDataInvoice tbody").html('');
+                $('#CreditAmount').val(0);
+                $('#PaidAmount').val(0);
+
+            }
+        });
+
+       // SupplierPayementMaster.CheckedAll();
+
+        $(".checkall-user").prop("disabled", false);
+        $("#tblDataInvoice").on("click", "tbody tr td .check-user", function () {
+            var a = (parseInt($(".check-user").length));
+            var b = parseInt($(".check-user:checked").length);
+            if (a != b) {
+                $("input[class=checkall-user]").attr("checked", false);
+            }
+            else {
+                $("input[class=checkall-user]").prop("checked", true);
+            }
+        });
+
+    });
+
+    function CheckedSingle() {
+        var totalpaidamount;
+        $("#tblDataInvoice tbody tr td  input[class='check-user']").on('click', function () {
+            debugger;
+            var CheckedArray = [];
+            var PaidAmount = $("#PaidAmount").val();
+            if (PaidAmount == "") {
+                PaidAmount = 0
+            }
+            $("input[class='check-user']").each(function () {
+                debugger;
+                CheckedArray.push($(this).val());
+                var $this = $(this);
+                if ($this.is(":checked")) {
+
+
+                    var InvoiceAmount = parseFloat($(this).parent().next().next().next().children().val());
+
+                    if (parseFloat(PaidAmount) >= parseFloat(InvoiceAmount)) {
+                        PaidAmount = parseFloat(parseFloat(PaidAmount) - parseFloat(InvoiceAmount)).toFixed(2);
+                        $(this).parent().next().next().next().next().children('input').val(InvoiceAmount);
+                        $(this).parent().next().next().next().next().children('span').text(InvoiceAmount);
+                        $(this).parent().next().next().next().next().next().children('input').val(1);
+
+                        if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-warning')) {
+                            $(this).parent().next().next().next().next().next().children('span').removeClass('btn-warning');
+                        }
+                        if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-primary')) {
+                            $(this).parent().next().next().next().next().next().children('span').removeClass('btn-primary');
+                        }
+                        $(this).parent().next().next().next().next().next().children('span').addClass('btn-success');
+                        $(this).parent().next().next().next().next().next().children('span').text('Complete');
+                        $(this).prop("checked", true);
+                    }
+
+                    else {
+                        $(this).parent().next().next().next().next().children('input').val(PaidAmount);
+                        $(this).parent().next().next().next().next().children('span').text(PaidAmount);
+
+                        if (PaidAmount == 0) {
+
+                            if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-success')) {
+                                $(this).parent().next().next().next().next().next().children('span').removeClass('btn-success');
+
+
+                            }
+                            if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-primary')) {
+                                $(this).parent().next().next().next().next().next().children('span').removeClass('btn-primary');
+
+                            }
+                            $(this).parent().next().next().next().next().next().children('span').addClass('btn-warning');
+                            $(this).prop("checked", false);
+                            $(this).parent().next().next().next().next().next().children('span').text('Pending');
+                            $(this).parent().next().next().next().next().next().children('input').val(0);
+
+                        }
+                        else {
+                            if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-success')) {
+                                $(this).parent().next().next().next().next().next().children('span').removeClass('btn-success');
+
+                            }
+                            if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-warning')) {
+                                $(this).parent().next().next().next().next().next().children('span').removeClass('btn-warning');
+
+
+                            }
+                            $(this).parent().next().next().next().next().next().children('span').addClass('btn-primary');
+                            $(this).parent().next().next().next().next().next().children('span').text('Partial');
+                            $(this).parent().next().next().next().next().next().children('input').val(2);
+                            $(this).prop("checked", true);
+
+                        }
+                        PaidAmount = 0;
+
+                    }
+
+
+
+                }
+
+
+            });
+            $("input[class='check-user']").each(function () {
+                debugger;
+                CheckedArray.push($(this).val());
+                var $this = $(this);
+                if (!$this.is(":checked")) {
+                    if (PaidAmount == 0) {
+                        $(this).prop("disabled", true)
+                    }
+                    else {
+                        $(this).prop("disabled", false)
+                    }
+                    $(this).parent().next().next().next().next().children('input').val(0);
+                    $(this).parent().next().next().next().next().children('span').text(0);
+
+                    if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-success')) {
+                        $(this).parent().next().next().next().next().next().children('span').removeClass('btn-success');
+
+
+                    }
+                    if ($(this).parent().next().next().next().next().next().children('span').hasClass('btn-primary')) {
+                        $(this).parent().next().next().next().next().next().children('span').removeClass('btn-primary');
+
+                    }
+                    $(this).parent().next().next().next().next().next().children('span').addClass('btn-warning');
+                    $(this).prop("checked", false);
+                    $(this).parent().next().next().next().next().next().children('span').text('Pending');
+                    $(this).parent().next().next().next().next().next().children('input').val(0);
+
+
+                }
+            });
+        });
+    }
+
+</script>
+

@@ -1,0 +1,102 @@
+﻿@*
+    @model AMS.ViewModel.EmployeeQualificationViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if(ViewBag.Data== 1)
+{
+    <h3 class="my-caption">@Resources.DisplayName_EducationalQualification</h3>
+    
+<div id="my-Qualification" style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="nonboxy-widget">
+                <div class="widget-head">
+                    <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.DisplayName_EducationalQualification</h5>
+
+                </div>
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                    <table id="DataTables_Table_0" class="data-tbl-striped table table-striped table-bordered dataTable">
+                        <thead>
+                            <tr role="row">
+                                <th aria-label=" Task : activate to sort column ascending" style="width: 25%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_DegreeName </th>
+                                <th aria-label=" Dead Line : activate to sort column ascending" style="width: 35%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_CollegeInstitute </th>
+                                <th aria-label=" Priority : activate to sort column ascending" style="width: 25%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_Univarsity </th>
+                                <th aria-label=" Status : activate to sort column ascending" style="width: 15%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">@Resources.TableHeaders_Yearofpassingawarded </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in ViewBag.ListEmployeeQualificationDetails)
+                        {
+                            <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                <tr class="odd">
+                                    <td style="text-align:left" >@item.EducationName</td>
+                                    <td style="text-align:left">@item.NameOfInstitution </td>
+                                    <td style="text-align:left">@item.UniversityName</td>
+                                    <td style="text-align:center">@item.YearOfPassing</td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+    *@
+
+
+@*----------------------------------------------new code-------------------------------------------------*@
+
+
+@model AMS.ViewModel.EmployeeQualificationViewModel
+@{
+
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+
+@if (ViewBag.Data == 1)
+{ 
+    <div class="col-sm-12">
+            <div class="card rating-list">
+                <div class="listview">
+                    <div class="lv-header">
+                        <div class="m-t-0">
+                            @Resources.DisplayName_EducationalQualification
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    @*<div class="lv-body">*@
+                        <div class="table-responsive" id="DataTables_Table_0_wrapper">
+                            <table id="DataTables_Table_0" class="table">
+                                <thead>
+                                    <tr class="warning c-white">
+                                        <th>@Resources.TableHeaders_DegreeName </th>
+                                        <th>@Resources.TableHeaders_CollegeInstitute </th>
+                                        <th>@Resources.TableHeaders_Univarsity </th>
+                                        <th>@Resources.TableHeaders_Yearofpassingawarded </th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in ViewBag.ListEmployeeQualificationDetails)
+                                {
+                                    <tbody>
+                                        <tr class="active">
+                                            <td>@item.EducationName</td>
+                                            <td>@item.NameOfInstitution </td>
+                                            <td>@item.UniversityName</td>
+                                            <td>@item.YearOfPassing</td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+
+}

@@ -1,0 +1,153 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <div class="form-group fg-line">
+            @Html.HiddenFor(m => m.SaleContractServiceItemNumber)
+            @Html.LabelFor(model => model.SaleContractServiceItemName, new { })
+            @Html.TextBoxFor(model => model.SaleContractServiceItemName, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractServiceItemName)
+    </div>
+    
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractServiceItemRate, new { })
+            @Html.TextBoxFor(model => model.SaleContractServiceItemRate, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractServiceItemRate)
+    </div>
+    <div class="col-sm-2">
+        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddServiceItem"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblAddServiceItem" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Service Item Name</th>
+                <th>Service Item Rate</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.SaleContractMasterListForServiceItem)
+            {
+                <tr>
+                    <td>@item.SaleContractServiceItemName</td>
+                    <td>@item.SaleContractServiceItemRate</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+        mapServiceItemName = [];
+        var getDataServiceItemName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractManPowerItem/GetItemSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.ItemDescription)) {
+                                mapServiceItemName[response.ItemDescription] = response;
+                                matches.push(response.ItemDescription);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SaleContractServiceItemName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataServiceItemName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SaleContractServiceItemNumber").val(mapServiceItemName[item].ItemNumber);
+            $("#SaleContractServiceItemName").val(mapServiceItemName[item].ItemDescription);
+        });
+
+        $('#SaleContractServiceItemName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SaleContractServiceItemName').typeahead('val', '');
+                $("#SaleContractServiceItemName").val("");
+                $("#SaleContractServiceItemNumber").val("");
+            }
+        });
+
+        $('#btnAddServiceItem').on("click", function () {
+            if ($('#SaleContractServiceItemName').val() == "" && ($('#SaleContractServiceItemNumber').val() == "0" || $('#SaleContractServiceItemNumber').val() == "")) {
+                notify("Please Select Service Item.", "warning");
+                return false;
+            }
+            if ($('#SaleContractServiceItemRate').val() == "" || $('#SaleContractServiceItemNumber').val() == "0") {
+                notify("Please enter Service Item Rate.", "warning");
+                return false;
+            }
+            // alert($('#AttributeName :selected').val())
+
+            var DataArray = [];
+            var data = $('#tblAddServiceItem tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 2) {
+                if (DataArray[i] == $('#SaleContractServiceItemNumber').val()) {
+                    notify("You Cannot Enter the Same Service Item.", "warning");
+                    $("#SaleContractServiceItemName").typeahead('val', '');
+                    $("#SaleContractServiceItemName").val("");
+                    $("#SaleContractServiceItemNumber").val("");
+                    $("#SaleContractServiceItemRate").val("");
+                    return false;
+                }
+            }
+            $("#tblAddServiceItem tbody").append(
+                                                   "<tr>" +
+                                                    "<td><input type='hidden' value='" + $("#SaleContractServiceItemNumber").val() + "'  />" + $('#SaleContractServiceItemName').val() + "</td>" +
+                                                    "<td><input type='hidden' value='" + $("#SaleContractServiceItemRate").val() + "'  />" + $('#SaleContractServiceItemRate').val() + "</td>" +
+                                                   "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                                                   "</tr>"
+                                                  );
+            $("#tblAddServiceItem tbody").on("click", "tr td i", function () {
+                $(this).closest('tr').remove();
+            });
+
+            $("#SaleContractServiceItemName").typeahead('val', '');
+            $("#SaleContractServiceItemName").val("");
+            $("#SaleContractServiceItemNumber").val("");
+            $("#SaleContractServiceItemRate").val("");
+        });
+    })
+</script>

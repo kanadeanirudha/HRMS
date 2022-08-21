@@ -1,0 +1,155 @@
+﻿@model AERP.ViewModel.EmpEmployeeMasterViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Employee Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Vendor CSS -->
+    <!-- fullcalendar -->
+    <!-- animate css -->
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/animate.css/animate.min.css")" rel="stylesheet" type="text/css" />
+
+    <!-- sweet alert css -->
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css")" rel="stylesheet" type="text/css" />
+
+    <!-- font material -->
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" />
+    <!-- animate.css -->
+
+    <link href="@Url.Content("~/Content/Theme/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css")" rel="stylesheet" type="text/css" />
+    <!-- CSS -->
+    <!-- CSS -->
+
+    <link href="@Url.Content("~/Content/Theme/css/app.min.1.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/Theme/css/app.min.2.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/Theme/dist/css/style.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/plugins/Magnific-Popup-master/dist/magnific-popup.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/plugins/data-tables-1.10.11/media/css/dataTables.bootstrap.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/jquery/dist/jquery.min.js")" type="text/javascript"></script>
+
+    <!-- custom -->
+    <script src="@Url.Content("~/Scripts/AERP_Scripts/Application/makeAjaxRequest.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/AERP_Scripts/Application/AERPValidation.js")" type="text/javascript"></script>
+
+</head>
+<body>
+
+    <!-- header -->
+    @Html.Partial("_ProfileHeader")
+    <!-- header -->
+
+
+    <section id="main" data-layout="layout-1">
+
+        <!-- sidebar -->
+        <!--Sidebar(Left/Right Menu) Start -->
+        @Html.Partial("_ProfileSidebar")
+        <!--Sidebar(Left/Right Menu) End -->
+        <!-- sidebar -->
+        <section id="content">
+
+            @RenderBody()
+
+        </section>
+    </section>
+
+    <!--newly added-->
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/Waves/dist/waves.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bootstrap-growl/bootstrap-growl.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js")" type="text/javascript"></script>
+
+    <!-- Placeholder for IE9 -->
+    <!--[if IE  9 ]>
+        <script src="@Url.Content("~/Content/Theme/vendors/bower_components/jquery-placeholder/jquery.placeholder.min")" type="text/javascript"></script>
+    <![endif]-->
+
+    <script src="@Url.Content("~/Content/Theme/js/charts.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/js/functions.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/js/demo.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/data-tables-1.10.11/media/js/jquery.dataTables.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+    <script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script> 
+
+    <!--closed newly added -->
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            AERPValidation.Initialize();
+
+            $(function () {
+
+                setNavigation();
+            });
+
+            //$(".main-menu li ul").hide();
+
+            function setNavigation() {
+
+                var href = '';
+                var path = window.location.pathname;
+
+                $(".main-menu li ul li a").each(function () {
+
+                    href = $(this).attr("href");
+                    if (path === href) {
+
+                        $(this).closest('li ul li a').addClass('active');
+
+                        $(this).closest("ul").css("display", "block");
+                    }
+                });
+
+            }
+
+            //$('body').on('change', '#toggle-width input:checkbox', function () {
+            //    if ($(this).is(':checked')) {
+            //        setTimeout(function () {
+            //            $('body').addClass('toggled sw-toggled');
+            //            localStorage.setItem('ma-layout-status', 1);
+            //        }, 250);
+            //    }
+            //    else {
+            //        setTimeout(function () {
+            //            $('body').removeClass('toggled sw-toggled');
+            //            localStorage.setItem('ma-layout-status', 0);
+            //        }, 250);
+            //    }
+            //});
+
+
+
+
+        });
+    </script>
+
+</body>
+</html>

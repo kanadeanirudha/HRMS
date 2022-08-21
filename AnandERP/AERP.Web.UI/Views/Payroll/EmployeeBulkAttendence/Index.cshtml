@@ -1,0 +1,95 @@
+﻿@model AERP.ViewModel.EmployeeBulkAttendenceViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .mfp-content {
+        width: 80%;
+    }
+</style>
+<link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Payroll/EmployeeBulkAttendence.js")" type="text/javascript"></script>
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Employee Attendence</h2>
+        <ul class="actions" id="btnDownload" style="display:none">
+            <li>
+                <a href="@Url.Action("Download", "EmployeeBulkAttendence")" id="DownloadFilelink" title="Download Excel">
+                    <button  style="margin-left:-44px;height:36px"; class="btn bgm-orange waves-effect" data-val="true" data-toggle="tooltip" data-placement="top" data-original-title="Download Data Sheet"><i class="zmdi zmdi-download zmdi-hc-fw"></i></button>
+                </a>
+            </li>
+            <li>
+                <a title="Upload Excel" href="@Url.Action("UploadExcel", "EmployeeBulkAttendence", new { })" id="UploadFilelink" class="mfpAjaxModal">
+                    <i class="zmdi zmdi-plus-square btn btn-default waves-effect" style="padding-bottom:3px;margin-left:-14px;"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card" style="margin-bottom: 0px;">
+        <div class="card-header">
+            <ul class="actions" id="CreateButton" style="display:none">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown" title="Add New">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a id="CreateView" class="mfpAjaxModal" href="@Url.Action("Create", "EmployeeBulkAttendence")">
+                                <i class="zmdi zmdi-plus-square"></i> &nbsp; @Resources.DisplayName_AddNew
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li>
+            </ul>
+            <div class="row">
+
+                <div class="col-sm-3">
+                    @Resources.DisplayName_CentreName
+                    <div class="form-group fg-line select">
+                        @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "--Select Centre--", new { id = "CentreCode", @class = "form-control", style = "" })
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    Span
+                    <div class="form-group fg-line select">
+                        @Html.DropDownListFor(m => m.SpanID, Model.ListGetEmployeeSalarySpan, "--Select Span--", new { id = "SpanID", @class = "form-control", style = "" })
+                    </div>
+                </div>
+
+                <div class="col-sm-3" style="margin-top:10px;">
+                    <button type="button" id="ShowList" class="btn btn-primary" style="margin-bottom: 10%;">@Resources.ButtonAction_ShowList</button>
+                </div>
+                <div>
+               
+                </div>
+            </div>
+
+        </div>
+        <div id="ListViewModel"> </div>
+    </div>
+
+    @Html.HiddenFor(m => m.errorMessage)
+</div>
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        if ($('input[name=errorMessage]').val() != "NoMessage" && $('input[name=errorMessage]').val() != "")
+        {
+            var splitedMsg = ($('input[name=errorMessage]').val()).split(',');
+            notify(splitedMsg[0], splitedMsg[1]);
+            $('input[name=errorMessage]').val("NoMessage");
+        }
+        EmployeeBulkAttendence.Initialize();
+        EmployeeBulkAttendence.LoadList();
+
+    });
+</script>

@@ -1,0 +1,29 @@
+﻿@model AMS.ViewModel.AdminRoleDetailsViewModel
+
+      @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+<div id="update-message" class="error invisible"></div>
+   
+        @Html.ValidationSummary(true)
+         
+
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AdminRoleCode)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.AdminRoleCode)           
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsActive)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.IsActive)          
+        </div>
+    
+
+
+

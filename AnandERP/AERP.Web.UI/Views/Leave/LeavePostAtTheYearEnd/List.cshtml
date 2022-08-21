@@ -1,0 +1,183 @@
+﻿@model AMS.ViewModel.LeavePostViewModel
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+<style type="text/css">
+    .ui-widget-header {
+        color: #333;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container-fluid">
+    <form id="FormLeavePostAtTheYearEnd">
+        <ul class="breadcrumb">
+            <li><a href="#">@Resources.Mainheading_Leave</a><span class="divider">»</span></li>
+            <li class="active">
+                Post Leave At the Year End
+            </li>
+        </ul>
+        <ul class="breadcrumb" style="height: 30px;">
+            <li>
+                &nbsp;&nbsp;&nbsp;
+                <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_CentreName&nbsp;</span>
+                @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, Resources.ddlHeaders_CentreName, new { id = "CentreCode", @class = "form-control chosen-select", style = "font-weight:bold;" })
+                @Html.HiddenFor(m => m.CentreCode)
+                @Html.HiddenFor(m => m.CentreName)
+            </li>
+
+            <li>
+                &nbsp;&nbsp;&nbsp;
+                <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_SessionFrom&nbsp;</span>
+                @Html.DropDownListFor(m => m.SelectedFromSessionID, Model.ListFromLeaveSessionItems, Resources.ddlHeaders_FromLeaveSession, new { @class = "form-control chosen-select", style = "font-weight:bold;width:250px;" })
+            </li>
+
+            <li>
+                &nbsp;&nbsp;&nbsp;
+                <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_SessionTo&nbsp;</span>
+                @Html.DropDownListFor(m => m.SelectedToSessionID, Model.ListToLeaveSessionItems, Resources.ddlHeaders_ToLeaveSession, new { @class = "form-control chosen-select", style = "font-weight:bold;width:250px;" })
+            </li>
+
+        </ul>
+        <ul class="breadcrumb" style="height: 30px; text-align: right">
+            <li>
+                <button type="button" id="ShowList" class="btn btn-primary" style="margin-bottom: 10%;">@Resources.GlobalProperties_ShowList</button>
+            </li>
+        </ul>
+        <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-block">
+                    <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+
+                    <div class="widget-head">
+                        <h5 id="hFive"><i class="black-icons users"></i>&nbsp; Manage Post Leave At the Year End</h5>
+
+                        <div class="pull-right" style="margin: -24px 60px 0px 10px;">
+                            <div class="input-append" id="" style="float: right;">
+                                <div style="display: none;">
+                                    <input type="hidden" name="_method" value="POST">
+                                </div>
+                                <div>
+                                    <select name="data[User][searchby]" class="" id="showrecord" tabindex="16" style="float: left;">
+                                        <option value="10">@Resources.GlobalProperties_ShowRecords</option>
+                                        <option value="10">10</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    &nbsp;&nbsp;
+                                    <input type="text" name="data[User][search]" class="search_query input-medium" placeholder="@Resources.GlobalProperties_Search..." size="16" autocomplete="off" id="UserSearch">
+                                    <button class="btn" type="button" id="searchBtn"><i class="icon-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="widget-box">
+                            <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                                <div class="table_content">
+                                    <table id="myDataTable" class="table user-tbl">
+                                        <thead id="myDataTable_thead">
+                                            <tr>
+
+                                                <th style="text-align: center; font-weight: bold; color: #000; width: 20%">@Resources.TableHeaders_EmployeeName</th>
+                                                @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                {
+                                                    for (int i = 0; i < Convert.ToInt32(ViewBag.numberOfcolumn); i++)
+                                                    {
+                                                        <th style="text-align: center; font-weight: bold; color: #000; ">@ViewBag.listLeaveType[i]</th>
+                                                    }
+                                                }
+
+                                            </tr>
+                                            @* <tr>
+                                                    @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                    {
+                                                        for (int i = 0; i < Convert.ToInt32(ViewBag.numberOfcolumn); i++)
+                                                        {
+                                                        <th style="text-align: center; font-weight: bold; color: #000; line-height: 40px">Carry Forward</th>
+                                                        }
+                                                    }
+
+                                                </tr>*@
+                                        </thead>
+                                        <tbody>
+                                            @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                            {
+                                                int j = 0;
+                                                for (int i = 0; i < Convert.ToInt32(ViewBag.TotalRecords); i++)
+                                                {
+                                                    <tr>
+                                                        <td style="padding: 0px 0px 0px 5px; font-weight:bold">@ViewBag.ListLeavePost[i].EmployeeFirstName &nbsp; @ViewBag.ListLeavePost[i].EmployeeLastName</td>
+                                                        @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                        {
+                                                            var splitedLeaveList = ViewBag.ListLeavePost[i].LeaveList.Split(',');
+                                                            int splitedLeaveListlength = 0;
+                                                            foreach (var item in splitedLeaveList)
+                                                            {
+                                                                splitedLeaveListlength = splitedLeaveListlength + 1;
+                                                            }
+
+                                                            int m = 0;
+                                                            if (splitedLeaveListlength <= ViewBag.numberOfcolumn)
+                                                            {
+
+                                                                m = Convert.ToInt32(ViewBag.numberOfcolumn) - splitedLeaveListlength;
+                                                                m = Convert.ToInt32(ViewBag.numberOfcolumn) - m;
+                                                            }
+                                                            for (j = 0; j < m; j++)
+                                                            {
+
+                                                                var splitedLeaveAndNumber = splitedLeaveList[j].Split('#');
+                                                                if ((Convert.ToString(splitedLeaveAndNumber[0]).Trim() == ViewBag.listLeaveType[j]))
+                                                                {
+                                                                    <td style="text-align: center; font-weight: bold; color: #000; padding: 3px 0px 0px 0px">@splitedLeaveAndNumber[5]</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    var u = splitedLeaveList[j+1];                                                                  
+                                                                    splitedLeaveList[j+1] = splitedLeaveList[j];
+                                                                    splitedLeaveList[j] = u;
+                                                                    j = j - 1;
+                                                                }
+                                                            }
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Model.SelectedToSessionID > 0)
+                                                {
+                                                    <tr>
+                                                        <td style="color:#ff0000"><span class="color-icons exclamation_co"></span>@Resources.Headers_PleaseApplyLeaveRuleToNextLeaveSessionFirst.</td>
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="widget-bottom" style="padding-top: 1%; text-align: right; padding-right: 10px;">
+                                    @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                    {
+                                        <button type="button" id="CreateLeavePostAtTheYearEndRecord" class="btn btn-primary">Submit</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeavePostAtTheYearEnd.Initialize();
+    });
+</script>

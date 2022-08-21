@@ -1,0 +1,68 @@
+﻿@model AERP.ViewModel.SaleContractMachineTransactionViewModel
+
+
+<div class="col-sm-12">
+    <table id="tblAttendanceData" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Machine Name</th>
+                <th>Total Days</th>
+                <th>Present Days</th>
+            </tr>
+        </thead>
+        @if (Model.ListSaleContractMachineTransaction.Count > 0)
+        {
+            decimal TotalDaysSum = 0; decimal TotalAttendanceSum = 0;
+            <tbody>
+
+                @foreach (var item in Model.ListSaleContractMachineTransaction)
+                {
+                    TotalDaysSum = TotalDaysSum + item.TotalDays;
+                    TotalAttendanceSum = TotalAttendanceSum + item.TotalAttendance;
+                    <tr>
+                        <td>
+                            <input type="hidden" value="@item.ID">
+                            <input type="hidden" value="@item.SaleContractMachineAttendanceID">
+                            @*<input type="hidden" value="@item.SaleContractEmployeeMasterID">*@
+                            <span class="SaleContractEmployeeMasterName">@item.Name</span>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm TotalDays" value="@item.TotalDays" disabled>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm TotalAttendance" value="@item.TotalAttendance">
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th><span>@TotalDaysSum</span></th>
+                    <th><span id="TotalAttendanceSum">@TotalAttendanceSum</span></th>
+                </tr>
+            </tfoot>
+        }
+    </table>
+</div>
+<div class="col-sm-12">
+    <div class="form-group fg-line">
+        <button type="button" class="btn btn-primary m-t-20" id="SaveSaleContractMachineTransaction">@Resources.ButtonAction_Save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractMachineTransaction.Initialize();
+
+        $(".TotalAttendance").keyup(function () {
+            var TotalAttendanceSum = 0.0;
+            $(".TotalAttendance").each(function () {
+                TotalAttendanceSum = (parseFloat(TotalAttendanceSum) + parseFloat($(this).val())).toFixed(2);
+            });
+            $("#TotalAttendanceSum").text(TotalAttendanceSum);
+        });
+
+    });
+</script>

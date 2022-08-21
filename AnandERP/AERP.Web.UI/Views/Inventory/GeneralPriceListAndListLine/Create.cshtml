@@ -1,0 +1,226 @@
+﻿@model AERP.ViewModel.GeneralPriceListAndListLineViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/GeneralPriceListAndListLine.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Price List</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralPriceListAndListLine" role="form" class="row">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.PriceListName, new { })
+                        </label>
+                        @Html.TextBoxFor(model => model.PriceListName, new { maxlength = "50", @class = "form-control input-sm typeahead" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.BasePriseListID, new { })
+                        </label>
+                        @* @Html.TextBoxFor(model => model.BasePriseListID, new { maxlength = "50", @class = "form-control input-sm typeahead" })*@
+                        @Html.DropDownListFor(model => model.BasePriseListID, (SelectList)ViewBag.GeneralPriceListAndListLineList, "--Select Base Price List--", new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.Factor, new { })
+                        </label>
+                        @Html.TextBoxFor(model => model.Factor, new { @class = "form-control input-sm typeahead" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.PriceGroupId, new { })
+                        </label>
+                        @*@Html.TextBoxFor(model => model.PriceGroupId, new { maxlength = "50", @class = "form-control input-sm typeahead", Style = "padding-left: 0;" })*@
+                        @Html.DropDownListFor(model => model.PriceGroupId, (SelectList)ViewBag.GeneralPriceGroupList, "--Select Price Group--", new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.ValidFromDate, new { })
+                        </label>
+                        @Html.TextBoxFor(model => model.ValidFromDate, new { @class = "form-control input-sm date-picker" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.ValidUptoDate, new { })
+                        </label>
+                        @Html.TextBoxFor(model => model.ValidUptoDate, new { @class = "form-control input-sm date-picker" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.IsRoot, new { style = "margin-left:-10%;" })
+                        </label>
+                        @if (Model.IsRootCount > 0)
+                        {
+                            <div class="checkbox col-sm-2" style="margin-top:2%;">
+                                <input type="checkbox" id="IsRoot" name="IsRoot" disabled="disabled">
+                                <i class="input-helper"></i>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="checkbox col-sm-2" style="margin-top:2%;">
+                                <input type="checkbox" id="IsRoot" name="IsRoot">
+                                <i class="input-helper"></i>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        <label>
+
+                            @Html.LabelFor(model => model.IsActive, new { })
+                        </label>
+                        @*@Html.TextBoxFor(model => model.IsActive, new { maxlength = "50", @class = "form-control input-sm typeahead", Style = "padding-left: 0;" })*@
+                        <div class="checkbox col-sm-2" style="margin-top:2%;">
+                            <input type="checkbox" id="IsActive" name="IsActive">
+                            <i class="input-helper"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        <label>
+                            @Html.LabelFor(model => model.IsRounding, new { })
+                        </label>
+                        @*@Html.TextBoxFor(model => model.IsUpdationAutomatic, new { maxlength = "50", @class = "form-control input-sm typeahead", Style = "padding-left: 0;" })*@
+                        <div class="checkbox col-sm-2" style="margin-top:2%;">
+                            <input type="checkbox" id="IsRounding" name="IsRounding">
+                            <i class="input-helper"></i>
+                        </div>
+                    </div>
+                </div>
+              
+                    <div class="col-sm-3" style="display:none" id="RoundingMethodDiv">
+                        <div class="form-group fg-line">
+                            <label class="sr-only" for="RoundingMethod">Rounding Upto Places</label>
+                            @Html.TextBoxFor(model => model.RoundingMethod, new { maxlength = "4", @class = "form-control input-sm typeahead", placeholder = "Round upto places" })
+
+                        </div>
+                        @*<div class="col-sm-3" style="display:none" id="RoundingMethodDiv">
+                <div class="form-group fg-line">
+                    <label>
+                        @Html.LabelFor(model => model.RoundingMethod, new { })
+                    </label>
+
+                    @Html.TextBoxFor(model => model.RoundingMethod, new { maxlength = "50", @class = "form-control input-sm typeahead" })
+
+                </div>*@
+
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            <label>
+                                @Html.LabelFor(model => model.IsUpdationAutomatic, new { })
+                            </label>
+                            @*@Html.TextBoxFor(model => model.IsUpdationAutomatic, new { maxlength = "50", @class = "form-control input-sm typeahead", Style = "padding-left: 0;" })*@
+                            <div class="checkbox col-sm-3" style="margin-top:2%;">
+                                <input type="checkbox" id="IsUpdationAutomatic" name="IsUpdationAutomatic">
+                                <i class="input-helper"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-top:20px">
+                        <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                        <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralPriceListAndListLineRecord" type="button" />
+                        @*<button type="button" title="Add row"  id="CreateGeneralPriceListAndListLineRecord"><i class="zmdi zmdi-plus"></i></button>*@
+                    </div>
+</form>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $("#ValidFromDate").datetimepicker({
+        format: 'DD MMMM YYYY',
+        maxDate: moment(),
+       
+    });
+
+    $("#ValidFromDate").on("keydown", function () {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+        if (keycode != 9) {
+            return false;
+        }
+    });
+    $("#ValidUptoDate").datetimepicker({
+        format: 'DD MMMM YYYY',
+        minDate: moment(),
+    });
+
+    $('#RoundingMethodDiv').on("keydown", function (e) {
+        AERPValidation.AllowNumbersOnly(e);
+    });
+
+    $("#ValidUptoDate").on("keydown", function () {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+        if (keycode != 9) {
+            return false;
+        }
+    });
+
+    $('#IsRounding').change(function () {
+       
+        if (this.checked) {
+            $("#RoundingMethodDiv").show();
+
+        } else {
+            $("#RoundingMethodDiv").hide();
+        }
+    });
+    $('#IsRoot').change(function () {
+       
+        if (this.checked) {
+            $("#BasePriseListID").val("");
+            $("#BasePriseListID").prop("disabled", true);
+            $('#PriceGroupId').val("");
+            $("#PriceGroupId").prop("disabled", true);
+            $('#Factor').val("");
+            $("#Factor").prop("disabled", true);
+            $("#IsRounding").prop("disabled", true);
+
+        } else {
+            $("#BasePriseListID").prop("disabled", false);
+            $("#PriceGroupId").prop("disabled", false);
+            $('#Factor').prop("disabled", false);
+
+        }
+    });
+
+    GeneralPriceListAndListLine.Initialize();
+
+    function ListViewReload() {
+        var Table = $('#myDataTable').dataTable();
+        Table.fnReloadAjax('GeneralPriceListAndListLine/AjaxHandler');
+    };
+
+</script>
+
+

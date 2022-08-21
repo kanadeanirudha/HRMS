@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        @if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"]) != "")
+            {
+            @Resources.ResourceManager.GetString(string.Concat(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"])))
+        }
+        else
+        {
+            @Resources.ProjectEnvoirnment_AIS
+        }
+    </title>
+    <link href="../Content/Theme/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet" />
+    <link href="../Content/Theme/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet" />
+    <link href="../Content/Theme/css/app.min.1.css" rel="stylesheet" />
+    <link href="../Content/Theme/css/app.min.1.css" rel="stylesheet" />
+
+    <style type="text/css">
+        .alert {
+            margin: 0 auto 20px;
+        }
+    </style>
+    <script src="@Url.Content("~/Content/Theme/vendors/bower_components/jquery/dist/jquery.min.js")" type="text/javascript"></script>
+
+</head>
+
+@if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"]) != "")
+{
+    <body class="login-content">
+
+        <!--Top Navigation End -->
+        @*@if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["LandingPage_Image_OR_Name_OR_Both_OR_None"]) != "None")
+        {
+            <div class="alert" style="text-align: center; font-size: x-large; background-color: #FFF; opacity: 0.9; color: #1b74e0; font-weight: BOLD; font-size: 28px;">
+                @if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["LandingPage_Image_OR_Name_OR_Both_OR_None"]) == "Name")
+                {
+                    @Resources.ResourceManager.GetString(string.Concat(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"])))
+                }
+                else if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["LandingPage_Image_OR_Name_OR_Both_OR_None"]) == "Image")
+                {
+                    <span>
+                        <img src="../Content/images/@Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectLogo"])" />
+                    </span>
+                }
+                else if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["LandingPage_Image_OR_Name_OR_Both_OR_None"]) == "Both")
+                {
+                    <span>
+                        <img src="../Content/images/@Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectLogo"])" />
+                    </span>
+                    @Resources.ResourceManager.GetString(string.Concat(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"])))
+                }
+
+            </div>
+        }*@
+        <div class="lc-block toggled" id="l-login">
+            @RenderBody()
+        </div>
+
+        
+
+        <script src="../Content/Theme/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../Content/Theme/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        <script src="../Content/Theme/js/functions.js"></script>
+        @*@RenderSection("scripts", required: false)*@
+
+    </body>
+}
+
+else
+{
+    <body class="login-content">
+
+        @*<div class="alert" style="text-align: center; font-size: x-large; background-color: #FFF; opacity: 0.9; color: #1b74e0; font-weight: BOLD; font-size: 28px;">
+                @* @Resources.AppName
+                @Resources.ProjectEnvoirnment_BCS
+            </div>*@
+        <div class="lc-block toggled" id="l-login">
+            @RenderBody()
+        </div>
+
+        <script src="../Content/Theme/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../Content/Theme/vendors/bower_components/Waves/dist/waves.min.js"></script>
+        <script src="../Content/Theme/js/functions.js"></script>
+        @*@RenderSection("scripts", required: false)*@
+
+    </body>
+}
+</html>

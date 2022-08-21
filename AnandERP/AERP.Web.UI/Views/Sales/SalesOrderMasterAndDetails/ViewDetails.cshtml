@@ -1,0 +1,181 @@
+﻿@model AERP.ViewModel.SalesOrderMasterAndDetailsViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Sales/SalesOrderMasterAndDetails.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;View Sales Order </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateSalesOrder" role="form">
+
+                <div class="row">
+                    <div class="form-group ">
+                        <Label class="col-sm-2 control-label m-t-15">Units</Label>
+                        <div class="col-sm-3">
+                            <div class="fg-line">
+                                @Html.DropDownListFor(model => model.GeneralUnitsID, Model.ListGetGeneralUnitsItems, "------Select Unit-------", new { @class = "form-control input-sm AddGeneralUnitsID", disabled="disabled",  data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Units Type*" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <Label class="col-sm-3 control-label m-t-10">PO Number</Label>
+                        <div class="col-sm-4">
+                            <div class="fg-line">
+                                @Html.TextBoxFor(model => model.PurchaseOrderNumberClient, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.CustomerMasterID)
+                            @Html.HiddenFor(model => model.SalesQuotationMasterID)
+                            @Html.HiddenFor(model => model.CustomerType)
+
+
+                            @Html.LabelFor(model => model.CustomerName, new { })
+                            @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control input-sm typeahead",disabled="disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.CustomerBranchMasterID)
+                            @Html.LabelFor(model => model.CustomerBranchMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerBranchMasterName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ContactPersonID)
+                            @Html.LabelFor(model => model.ContactPersonName, new { })
+                            @Html.TextBoxFor(model => model.ContactPersonName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <br />
+                    </div>
+                </div>
+                <h4>List Of Items</h4>
+
+                <table id="tblData" class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Description</th>
+                            <th>Quantity</th>
+                            <th>UOM</th>
+                            <th>Rate</th>
+                            <th>Tax Amt</th>
+                            <th>TaxAble Amt</th>
+                            <th>Net Amt</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.QuotationDetailsByEnquiryMasterID)
+                        {
+
+                            var NetAmount = (@Math.Round((@item.Rate * @item.Quantity), 2)) + (@Math.Round(@item.TaxAmount, 2));
+                            Model.TotalAmount = Model.TotalAmount + (@Math.Round((@item.Rate * @item.Quantity), 2));
+                            Model.TotalBillAmount = Model.TotalBillAmount + NetAmount;
+                            <tr>
+                                <td>@item.ItemDescription</td>
+                                <td>@Math.Round(@item.Quantity, 3)</td>
+                                <td>@item.UOM</td>
+                                <td>@Math.Round(@item.Rate, 2)</td>
+                                <td>@Math.Round(@item.TaxAmount, 2)</td>
+                                <td>@Math.Round((@item.Rate * @item.Quantity), 2)</td>
+                                <td>@NetAmount</td>
+                            </tr>
+                            Model.Freight = @Math.Round(item.Freight, 2);
+                            Model.TotalTaxAmount = @Math.Round(item.TotalTaxAmount, 2);
+                            Model.Discount = @Math.Round(item.Discount, 2);
+                            Model.ShippingHandling = @Math.Round(item.ShippingHandling, 2);
+                           
+                        }
+                       
+
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Freight, new { })
+                            @Html.TextBoxFor(model => model.Freight, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ShippingHandling, new { })
+                            @Html.TextBoxFor(model => model.ShippingHandling, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Tradein, new { })
+                            @Html.TextBoxFor(model => model.Tradein, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Discount, new { })
+                            @Html.TextBoxFor(model => model.Discount, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.TotalTaxAmount, new { })
+                            @Html.TextBoxFor(model => model.TotalTaxAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.TotalAmount, new { })
+                            @Html.TextBoxFor(model => model.TotalAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.TotalBillAmount, new { })
+                            @Html.TextBoxFor(model => model.TotalBillAmount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        SalesOrderMasterAndDetails.Initialize();
+    });
+</script>
+

@@ -1,0 +1,101 @@
+﻿@model AERP.ViewModel.AccountChequeBookMasterViewModel
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Account Cheque Book</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateAccountChequeBookMaster" class="row" method="post">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.AccountID)
+                @Html.HiddenFor(model => model.AccBalsheetMstID)
+                @Html.HiddenFor(model => model.CentreCode)
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.AccountName, new { })
+                        @Html.TextBoxFor(model => model.AccountName, new { maxlength = "50", @class = "form-control input-sm", @disabled = "disabled" })
+
+                    </div>
+                    
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.SelectedBalanceSheet, new { })
+                        @Html.TextBoxFor(model => model.SelectedBalanceSheet, new { maxlength = "50", @class = "form-control input-sm", @disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.ChequeFromNo, new { })
+
+                        @if (Model.ChequeFromNo == 0)
+                        {
+                            @Html.TextBoxFor(model => model.ChequeFromNo, new { maxlength = "50", Value = "", tabindex = "0", @class = "form-control input-sm", min = "1" })
+                            
+                            @Html.ValidationMessageFor(model => model.ChequeFromNo)
+
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.ChequeFromNo, new { maxlength = "50", @class = "form-control input-sm", @disabled = "disabled" })
+                            
+                            @Html.ValidationMessageFor(model => model.ChequeFromNo)
+
+                        }
+                    </div>
+                    
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ChequeToNo, new { })
+                        @Html.TextBoxFor(m => m.ChequeToNo, new { @class = "form-control input-sm", Value = "", maxlength = "50", @disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.TotalNoCheque, new { })
+                        @Html.TextBoxFor(m => m.TotalNoCheque, new { @class = "form-control input-sm", Value = "", maxlength = "50", min = "1" })
+                    </div>
+                        @Html.ValidationMessageFor(m => m.TotalNoCheque)
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateAccountChequeBookMasterRecord" type="button" />
+                        <input name="" id="reset" type="button" class="btn btn-default btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Reset" />
+                        
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+@*<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+  <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>*@
+
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountChequeBookMaster.Initialize();
+    });
+</script>
+

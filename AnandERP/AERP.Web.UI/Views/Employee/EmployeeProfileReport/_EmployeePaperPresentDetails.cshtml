@@ -1,0 +1,136 @@
+﻿@*@model AMS.ViewModel.EmployeePaperPresentViewModel
+@{
+   
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{
+    <h3 class="my-caption">@Resources.DisplayName_Conference_Symposium_JournalPaper_Books_Published  </h3>
+    
+    <div id="my-Subject" style="position: relative; overflow: visible; transform: translateZ(0px); background-color: rgb(229, 227, 223);">
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="nonboxy-widget">
+                    <div class="widget-head">
+                        <h5 class="pull-left"><i class="black-icons list_images"></i>@Resources.DisplayName_Conference_Symposium_JournalPaper_Books_Published</h5>
+
+                    </div>
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                        <table id="DataTables_Table_0" class="data-tbl-striped table table-striped table-bordered dataTable">
+                            <thead>
+                                <tr role="row">
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 40%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader"> @Html.LabelFor(model => model.PaperTopic, new { style = "font-Weight:Bold;" })</th>
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 30%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader"> @Resources.TableHeaders_PublishedIn</th>
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 3%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader"> @Html.LabelFor(model => model.EmployeeYear, new { style = "font-Weight:Bold;" })</th>
+                                   <th aria-label=" Task : activate to sort column ascending" style="width: 20%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">  @Resources.TableHeaders_ConferenceName</th>
+                                    <th aria-label=" Task : activate to sort column ascending" style="width: 17%; background-color: #fff; text-align: center" colspan="1" rowspan="1" aria-controls="DataTables_Table_0" tabindex="0" role="columnheader">  @Resources.TableHeaders_Level</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in ViewBag.ListEmployeePaperPresentDetails)
+                            {
+                                <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                    <tr class="odd">
+                                        <td style="text-align: left" class="">@item.PaperTopic</td>
+                                        <td style="text-align: left" class="">@item.JournalName</td>
+                                        <td style="text-align: center" class="">@item.EmployeeYear</td>
+                                        <td style="text-align: left" class="">@item.ConferenceName</td>
+                                        @if (@item.GeneralLevel == "International")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-success">International</span></p>
+                                            </td>
+                                        }
+                                        else if (@item.GeneralLevel == "National")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-warning">National</span></p>
+                                            </td>
+                                        }
+                                        else if (@item.GeneralLevel == "State")
+                                        {
+                                            <td style="text-align: left">
+                                                <p style="text-align: center;"><span style="text-align: center;" class="label label-info">State</span></p>
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}*@
+
+@*----------------new code------------------*@
+
+@model AMS.ViewModel.EmployeePaperPresentViewModel
+@{
+
+    Layout = null;
+}
+@Html.HiddenFor(model => model.EmployeeID)
+@if (ViewBag.Data == 1)
+{ 
+    <div class="col-sm-12">
+            <div class="card rating-list">
+                <div class="listview">
+                    <div class="lv-header">
+                        <div class="m-t-0">
+                            @Resources.DisplayName_Conference_Symposium_JournalPaper_Books_Published
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    @*<div class="lv-body">*@
+                        <div class="table-responsive" id="DataTables_Table_0_wrapper">
+                            <table id="DataTables_Table_0" class="table">
+                                <thead>
+                                    <tr class="success c-white">
+                                        <th>@Html.LabelFor(model => model.PaperTopic)</th>
+                                        <th>@Resources.TableHeaders_PublishedIn</th>
+                                        <th>@Html.LabelFor(model => model.EmployeeYear)</th>
+                                        <th>@Resources.TableHeaders_ConferenceName</th>
+                                        <th>@Resources.TableHeaders_Level</th>
+                                    </tr>
+                                </thead>
+                               @foreach (var item in ViewBag.ListEmployeePaperPresentDetails)
+                                {
+                                    <tbody>
+                                        <tr class="active">
+                                            <td>@item.PaperTopic</td>
+                                            <td>@item.JournalName</td>
+                                            <td>@item.EmployeeYear</td>
+                                            <td>@item.ConferenceName</td>
+                                            @if (@item.GeneralLevel == "International")
+                                            {
+                                                <td>
+                                                    <p style="text-align: center;"><button style="" class="btn btn-success btn-xs waves-effect">International</button></p>
+                                                </td>
+                                            }
+                                            else if (@item.GeneralLevel == "National")
+                                            {
+                                                <td>
+                                                    <p style="text-align: center;"><button style="" class="btn btn-warning btn-xs waves-effect">National</button></p>
+                                                </td>
+                                            }
+                                            else if (@item.GeneralLevel == "State")
+                                            {
+                                                <td>
+                                                    <p style="text-align: center;"><button style="" class="btn btn-primary btn-xs waves-effect">State</button></p>
+                                                </td>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+
+}

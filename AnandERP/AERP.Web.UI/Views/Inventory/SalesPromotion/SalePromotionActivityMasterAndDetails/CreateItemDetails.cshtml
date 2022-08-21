@@ -1,0 +1,267 @@
+﻿@model AMS.ViewModel.SalePromotionActivityMasterAndDetailsViewModel
+<input type="hidden" id="TaskCode" value="GeneralItemSalesData" />
+@Html.HiddenFor(model => model.SalePromotionActivityDetailsID)
+@Html.HiddenFor(model => model.GeneralUnitsID)
+@Html.HiddenFor(model => model.PlanTypeCode)
+<div id="custom-content">
+    <div class="block-header">
+        @*@Html.HiddenFor(model => model.IsDefaultCount)*@
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Create Item Details For (@Model.PlanTypeCode)</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateItemDetails" role="form" class="row">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ItemNumber)
+                            @Html.HiddenFor(model => model.InventoryVariationMasterID)
+
+                            @Html.LabelFor(model => model.ItemDescription, new { })
+                            @Html.TextBoxFor(model => model.ItemDescription, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.UOMCode, new { })
+                            @*@Html.TextBoxFor(model => model.UOMCode, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })*@
+                            @Html.DropDownListFor(model => model.UOMCode, Enumerable.Empty<SelectListItem>(), "---Select UomCode ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" })
+                        </div>
+                    </div>
+                    @if (@Model.PlanTypeCode == "ProductConcessionFree")
+                    {
+                        <div class="col-sm-2" style="display:none;">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.DiscountInPercentage, new { })
+                                @Html.TextBoxFor(model => model.DiscountInPercentage, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-2">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.DiscountInPercentage, new { })
+                                @Html.TextBoxFor(model => model.DiscountInPercentage, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+                    }
+                    <div class="col-sm-1" id="btnAddItemDetails" style="margin-bottom:-5%;">
+                        <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddItemDetails"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+                <div class="col-sm-12 row">
+                    <div id="ListViewModel1" class="table-responsive">
+                        <div id="DivAddRowTable">
+                            <table id="tblDataItemDetails" class="table">
+                                <thead>
+                                    <tr>
+
+                                        <th>Item Description</th>
+                                        <th>UOM</th>
+                                        @if (@Model.PlanTypeCode == "ProductConcessionFree")
+                                        {
+                                            <th style="display:none;">Discount in (%)</th>
+                                        }
+                                        else
+                                        {
+                                            <th>Discount in (%)</th> }
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.GetItemList)
+                                    {
+
+                                        <tr>
+                                            <td style="display:none;"><input type="text" id="ItemNumber" class="form-control" value="@item.ItemNumber"></td>
+                                            <td style="display:none;"><input type="text" id="SalePromotionActivityDetailsID" class="form-control" value="@item.SalePromotionActivityDetailsID"></td>
+                                            <td style="display:none;"><input type="text" id="PromotionActivityDiscounteItemListID" class="form-control" value="@item.PromotionActivityDiscounteItemListID"></td>
+                                            @if (@item.IsActive == true)
+                                            {
+                                                <td style="display:none;"><input type="text" id="IsActive" class="form-control" value="1"></td>
+                                            }
+                                            else
+                                            {
+                                                <td style="display:none;"><input type="text" id="IsActive" class="form-control" value="0"></td>
+                                            }
+                                            @if (@Model.PlanTypeCode == "ProductConcessionFree")
+                                            {
+                                                <td style="display:none;"><input type="text" id="DiscountInPercentage" class="form-control" value="@item.DiscountInPercentage"></td>
+                                            }
+                                            else
+                                            {
+                                                <td style="display:none;"><input type="text" id="DiscountInPercentage" class="form-control" value="@item.DiscountInPercentage"></td>
+                                            }
+                                            <td style="display:none;"><input type="text" id="InventoryVariationMasterID" class="form-control" value="@item.InventoryVariationMasterID"></td>
+                                            <td><input type="text" id="ItemDescription" class="form-control" value="@item.ItemDescription" disabled="disabled"></td>
+                                            <td><input type="text" id="UOMCode" class="form-control" value="@item.UOMCode" disabled="disabled"></td>
+                                            @if (@Model.PlanTypeCode == "ProductConcessionFree")
+                                            {
+                                                <td style="display:none;"><input type="text" id="DiscountInPercentage1" class="form-control" value="@item.DiscountInPercentageForItemdetails" style="display:none;"></td>
+                                            }
+                                            else
+                                            {
+                                                <td><input type="text" id="DiscountInPercentage1" class="form-control" value="@item.DiscountInPercentageForItemdetails"></td>
+                                            }
+
+                                            <td style="display:none;"><input type="text" id="PromotionActivityDiscounteItemListID" class="form-control" value="@item.PromotionActivityDiscounteItemListID"></td>
+                                            <td style="display:none;"><input type="text" id="ItemNumberVariationID" class="form-control" value="@item.ItemNumber~@item.InventoryVariationMasterID"></td>
+                                            <td>
+                                                <i class='zmdi zmdi-delete zmdi-hc-fw PromotionActivityDiscounteItemListIDVal' style='cursor:pointer' title=Delete value="@item.PromotionActivityDiscounteItemListID">
+                                                </i>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-left:2%;">
+                    <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateItemDetailsRecord" type="button" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SalePromotionActivityMasterAndDetails.Initialize();
+
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                var GeneralUnitsID = $("#GeneralUnitsID").val();
+                debugger;
+                $.ajax({
+                    url: "/SalePromotionActivityMasterAndDetails/GetItemSearchListForVarientsMenu",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, GeneralUnitsID: GeneralUnitsID },
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.name] = response1;
+                            matches.push(response1.name);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+        //$("#tblDataItemDetails tbody").on("click", "tr td i", function () {
+        //    alert("hi");
+        //    var nikita = $(this).closest('td').find('input[id^=PromotionActivityDiscounteItemListIDVal]').val();
+        //    alert(nikita);
+        //});
+
+        $('#ItemDescription').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            $('#GeneralItemMasterID').val(map[item].id);
+            $('#ItemDescription').val(map[item].name);
+            $('#ItemNumber').val(map[item].ItemNumber);
+            $('#UOMCode').val(map[item].BaseUOMCode);
+            $('#InventoryVariationMasterID').val(map[item].InventoryVariationMasterID);
+            $('#MenuDescription').val(map[item].MenuDescription);
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": map[item].ItemNumber },
+                url: '/SalePromotionActivityMasterAndDetails/GetUoMCodeByItemNumber',
+                success: function (data) {
+                    var $ddlExam = $("#UOMCode");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">---Select UoM Code---</option>');
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                            $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+                        });
+                    }
+                    else {
+                        $ddlExam.append('<option value="EA">EA</option>');
+                    }
+
+
+                }
+            });
+
+        });
+
+        $('#ItemDescription').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $("#ItemDescription").val("");
+                $("#UOMCode").val("");
+                $('#DiscountInPercentage').val("0");
+
+            }
+
+        });
+        //-----------------Delete--------------------
+        //$("#tblDataItemDetails tbody").on("Click", "tr td input[id^=PromotionActivityDiscounteItemListIDVal]", function () {
+        $("#tblDataItemDetails tbody").on("click", "tr td i.PromotionActivityDiscounteItemListIDVal", function () {
+
+            debugger;
+            var PromotionActivityDiscounteItemListID = $(this).attr('value');
+            $.ajax(
+      {
+          cache: false,
+          type: "GET",
+          dataType: "json",
+          data: { "PromotionActivityDiscounteItemListID": PromotionActivityDiscounteItemListID },
+          url: '/SalePromotionActivityMasterAndDetails/DeleteDiscountItemList',
+          context: this,
+          success: function (result) {
+              var splitData = result.split(',');
+              if (splitData[1] == 'success') {
+                  $(this).closest('tr').remove();
+
+                  if ($("#tblData tbody tr").length == 0) {
+                      $('#PromotionActivityDiscounteItemListID').val(0);
+                  }
+
+              }
+              $("#displayErrorMessage p").text(splitData[0]).closest('div').fadeIn().closest('div').addClass('alert-' + splitData[1]);
+          }
+
+      });
+
+        });
+
+    });
+</script>

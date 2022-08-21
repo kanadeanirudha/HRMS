@@ -1,0 +1,109 @@
+﻿
+@*<script src="~/Scripts/plugin/GraphAndChart/exporting.js"></script>*@
+<div class="card col-sm-6" style="background: rgba(0, 0, 0, 0) none repeat scroll 0 0;box-shadow: none;">
+    <div class="card-body">
+        <div class="">
+            <div id="MonthlyRetailSaleGraphContainer" class=""></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: 'InventoryDashboard/GetMonthlySaleReport',
+            dataType: "json",
+            type: "GET",
+            //   data: { FromDate: valuFromDate, UptoDate: ValuUptoDate },
+            contentType: 'application/json; charset=utf-8',
+            // async: false,
+            //  processData: false,
+            cache: false,
+            delay: 15,
+            success: function (data) {
+               
+                if (data.length > 0) {
+
+                    //   var chartData = [{ name: 'Honda', data: [0.00, 0.00, 0.00, 0.00, 0.00, 50000.00, 40000.00, 0.00, 0.00, 0.00, 0.00, 0.00] }];
+                    var chartCategories = [];
+
+                    var chartData = [];
+                    var chartData123 = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var months = data[i].invoiceMonth.trim().split(',');
+                        for (var j = 0 ; j < 12 ; j++) {
+                            chartCategories.push((months[j]))
+                        }
+                        var invoiceAmountList = [];
+                        var aaa = data[i].totalInvoiceAmountList.trim().split(',');
+                        for (var j = 0 ; j < 12 ; j++) {
+                            invoiceAmountList.push(parseFloat(aaa[j]))
+                        }
+                        chartData123 = {
+                            name: data[i].CentreList,
+                            data: invoiceAmountList,
+                        }
+                        chartData.push(chartData123)
+                    }
+                    DrawRetailSaleColumnChart(chartCategories, chartData);
+                }
+                else {
+                    var chartData = [{ name: 'Months', data: [3500, 0.00, 0.00, 2000.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1500, 0.00, 0.00] }];
+                    var chartCategories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    DrawRetailSaleColumnChart(chartCategories, chartData);
+                }
+
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    });
+
+
+
+    function DrawRetailSaleColumnChart(chartCategories, chartData) {
+        $('#MonthlyRetailSaleGraphContainer').highcharts({
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: 'Monthly Sale Details',
+                x: -20 //center
+            },
+            //subtitle: {
+            //    text: 'Source: WorldClimate.com',
+            //    x: -20
+            //},
+            xAxis: {
+                categories: chartCategories
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Amount'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            //tooltip: {
+            //    valueSuffix: '°C'
+            //},
+            plotOptions: {
+                spline: {
+                    marker: {
+                        radius: 4,
+                        lineColor: '#666666',
+                        lineWidth: 1,
+                        symbol: 'circle'
+                    }
+                }
+            },
+            series: chartData
+        });
+    }
+</script>
+

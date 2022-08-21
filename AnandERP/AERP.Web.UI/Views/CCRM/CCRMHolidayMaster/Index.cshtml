@@ -1,0 +1,23 @@
+﻿@model IEnumerable<AERP.ViewModel.CCRMHolidayMasterViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/CCRM/CCRMHolidayMaster.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        CCRMHolidayMaster.LoadList();
+    });
+</script>
+
+

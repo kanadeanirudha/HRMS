@@ -1,0 +1,576 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Inventory/GeneralItemMaster.js")" type="text/javascript"></script>
+
+
+<div id="custom-content">
+    <div class="block-header">
+
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;General Item Master</h2>
+        <ul class="actions">
+
+            <li>
+                <button style="margin-left:-65px;height:36px;" class="btn bgm-red waves-effect" id="DeleteItem" data-val="true" data-toggle="tooltip" data-placement="top" data-original-title="Delete">
+                    <i class="zmdi zmdi-delete zmdi-hc-fw"></i>
+                </button>
+
+            </li>
+
+            <li>
+                <a href="@Url.Action("Download", "GeneralItemMaster")" title="Download Excel">
+                    <button style="margin-left:-24px;height:36px;" class="btn bgm-orange waves-effect" data-val="true" data-toggle="tooltip" data-placement="top" data-original-title="Download Data Sheet"><i class="zmdi zmdi-download zmdi-hc-fw"></i></button>
+                </a>
+            </li>
+            <li>
+                <a title="Upload Excel" href="@Url.Action("UploadExcel", "GeneralItemMaster", new { })" class="mfpAjaxModal">
+                    <i class="zmdi zmdi-plus-square btn btn-default waves-effect" style="padding-bottom:3px;"></i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="ha-search" style="float:right; margin-top:-58px;display:none">
+        <div class="fg-line">
+            <input class="form-control" type="text" placeholder="Search...">
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body card-padding">
+        @*<div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">X</span></button>
+                <p id="messageContent"></p>
+            </div>*@
+        <form id="FormCreateGeneralItemMaster" role="form" class="row">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(model => model.OrderingUnitcheckboxFlag)
+                        @Html.HiddenFor(model => model.GeneralVendorID)
+                        @Html.HiddenFor(model => model.GeneralItemMasterID)
+                        @Html.HiddenFor(model => model.GeneralItemCodeID)
+                        @Html.HiddenFor(model => model.ItemCategoryCode_Param)
+                        @Html.LabelFor(model => model.ItemNumber, new { })
+
+                        @Html.TextBoxFor(m => m.ItemNumber, new { @class = "form-control input-sm", maxLength = "10", Value = "", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemNumber)
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ItemDescription, new { })
+                        @Html.TextBoxFor(m => m.ItemDescription, new { maxlength = "150", @class = "form-control input-sm " })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemDescription)
+                    <span id="DataValidationMessageForItemName"></span>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ItemCode, new { })
+                        @Html.TextBoxFor(m => m.ItemCode, new { maxlength = "50", @class = "form-control input-sm " })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ItemCode)
+                    
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.ItemType, new { })
+                        <div class="checkbox m-b-15">
+                            <label>
+                                <input type="checkbox" value="" id="RetailSale">
+                                <i class="input-helper"></i>
+                                Retail Sale
+                            </label>
+                        </div>
+                      
+                        <div class="checkbox m-b-15">
+                            <label>
+                                <input type="checkbox" value="" id="IsFixedAssetItem">
+                                <i class="input-helper"></i>
+                                Fixed Asset
+
+                            </label>
+                        </div>
+                        <div class="checkbox m-b-15 m-t-05">
+                            <label>
+                                <input type="checkbox" value="" id="IsServiceItem">
+                                <i class="input-helper"></i>
+                                Service Item
+                            </label>
+                        </div>
+                      
+                        <div class="checkbox m-b-15" style="display:none;">
+                            <label>
+                                <input type="checkbox" value="" id="BOM">
+                                <i class="input-helper"></i>
+                                BOM
+                            </label>
+                        </div>
+                        <div class="checkbox m-b-15" style="display:none">
+                            <label>
+                                <input type="checkbox" value="" id="Restaurant">
+                                <i class="input-helper"></i>
+                                Restaurant
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        <div class="checkbox m-b-15 m-t-30">
+                            <label>
+                                <input type="checkbox" value="" id="IsMultipleVendor">
+                                <i class="input-helper"></i>
+                                Multiple Vendor
+                            </label>
+                        </div>
+                        <div class="checkbox m-b-15 m-t-05">
+                            <label>
+                                <input type="checkbox" value="" id="IsConsumable">
+                                <i class="input-helper"></i>
+                                Is Consumable
+                            </label>
+                        </div>
+                        <div class="checkbox m-b-15 m-t-05">
+                            <label>
+                                <input type="checkbox" value="" id="IsMachine">
+                                <i class="input-helper"></i>
+                                Is Machine
+                            </label>
+                        </div>
+                        <div class="checkbox m-b-15 m-t-05" style="display:none;">
+                            <label>
+                                <input type="checkbox" value="" id="IsEComItem">
+                                <i class="input-helper"></i>
+                                e-commerce
+                            </label>
+                        </div>
+                        
+                       
+                        <div class="checkbox m-b-15 m-t-05" style="display:none;">
+                            <label>
+                                <input type="checkbox" value="" id="IsToner">
+                                <i class="input-helper"></i>
+                                Is Toner
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr />
+        <div class="card-body card-padding" style="margin-left:-10px;margin-top:-30px">
+            <div>
+                <ul class="tab-nav" id="TaskList">
+                    <li class="active" id="GeneralItemGeneralData">
+                        <a id="r1" href="GeneralItemGeneralData" aria-controls="GeneralItemGeneralData" role="tab" data-toggle="tab">&nbsp;General</a>
+                    </li>
+                    <li class="" id="GeneralItemAttributeData">
+                        <a id="r8" href="GeneralItemAttributeData" aria-controls="GeneralItemAttributeData" role="tab" data-toggle="tab">&nbsp; Attribute</a>
+                    </li>
+                    <li class="" id="GeneralItemUoMData">
+                        <a id="r2" href="GeneralItemUoMData" aria-controls="GeneralItemUoMData" role="tab" data-toggle="tab">&nbsp; UoM Details</a>
+                    </li>
+                    @*<li class="" id="GeneralItemDimensionData">
+                            <a id="r8" href="GeneralItemDimensionData" aria-controls="GeneralItemDimensionData" role="tab" data-toggle="tab">&nbsp;Dimension Data&nbsp;</a>
+                        </li>*@
+                    <li class="" id="GeneralItemSupliersData">
+                        <a id="r3" href=GeneralItemSupliersData aria-controls="GeneralItemSupliersData" role="tab" data-toggle="tab">&nbsp; Purchase</a>
+                    </li>
+                    @*<li class="" id="GeneralItemWarehouseData">
+                            <a id="r4" href="GeneralItemWarehouseData" aria-controls="GeneralItemWarehouseData" role="tab" data-toggle="tab">&nbsp; Warehouse </a>
+                        </li>*@
+                    <li class="" id="GeneralItemstoreData">
+                        <a id="r5" href="GeneralItemStoreData" aria-controls="GeneralItemStoreData" role="tab" data-toggle="tab">&nbsp; Sites</a>
+                    </li>
+                    <li class="" id="GeneralItemSalesData">
+                        <a id="r6" href="GeneralItemSalesData" aria-controls="GeneralItemSalesData" role="tab" data-toggle="tab">&nbsp; Sale</a>
+                    </li>
+                    <li class="" id="GeneralItemRestaurantData" style="display:none;">
+                        <a id="r7" href="GeneralItemRestaurantData" aria-controls="GeneralItemRestaurantData" role="tab" data-toggle="tab">&nbsp; Restaurant</a>
+                    </li>
+                    <li class="" id="GeneralItemEcommerceData" style="display:none;">
+                        <a id="r9" href="GeneralItemEcommerceData" aria-controls="GeneralItemEcommerceData" role="tab" data-toggle="tab">&nbsp; e-commerce</a>
+                    </li>
+                    <li class="" id="GeneralItemServiceData">
+                        <a id="r10" href="GeneralItemServiceData" aria-controls="GeneralItemServiceData" role="tab" data-toggle="tab">&nbsp; Service</a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="GeneralItemGeneralData" class="tab-pane active">
+
+                        @{Html.RenderAction("CreateGeneralItemGeneralData", "GeneralItemMaster"); }
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemMasterRecord" type="button" />
+                    <input class="btn bgm-green " style="margin-left:1%" value="Save" id="SaveGeneralItemMasterRecord" type="button" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        GeneralItemMaster.Initialize();
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                debugger;
+                $.ajax({
+                    url: "/GeneralItemMaster/GetItemNumberSearchList",
+                    type: "POST",
+
+                    dataType: "json",
+                    data: { term: q },
+                    success: function (data) {
+                        debugger;
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.name] = response1;
+                            matches.push(response1.name);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+    
+        $('#ItemDescription').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+        },
+        {
+            name: 'states',
+            limit: '10',
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            $('#GeneralItemMasterID').val(map[item].id);
+            //alert($('#GeneralItemMasterID').val())
+            $('#ItemDescription').val(map[item].name);
+            $('#ItemDescription').val(map[item].ItemDescription);
+            $('#ItemNumber').val(map[item].ItemNumber);
+            $('#ItemCategoryCode').val(map[item].ItemCategoryCode);
+            $('#ItemCategoryCode_Param').val(map[item].ItemCategoryCode);
+            $('#UoMGroupCode').val(map[item].UoMGroupCode);
+            $('#BaseUoMcode').val(map[item].BaseUoMcode);
+            $('#Price').val(map[item].LastPurchasePrice);
+            $('#GeneralCurrencyListItems').val(map[item].CurrencyCode);
+            $('#BaseBarCode').val(map[item].BaseBarCode);
+            $('#BasePriceListID').val(map[item].BasePriceListID);
+            $('#InventoryPurchaseGroupMasterId').val(map[item].InventoryPurchaseGroupMasterId);
+            $('#GeneralItemCodeID').val(map[item].GeneralItemCodeID);
+            $('#GeneralVendorID').val(map[item].GeneralVendorID);
+            $('#IsInventoryItem').val(map[item].IsInventoryItem);
+            if ($('#IsInventoryItem').val() == "true") {
+                $('#IsInventoryItem').prop('checked', true);
+            }
+            else {
+                $('#IsInventoryItem').prop('checked', false);
+            }
+            $('#IsSalesItem').val(map[item].IsSalesItem);
+            if ($('#IsSalesItem').val() == "true") {
+                $('#IsSalesItem').prop('checked', true);
+            }
+            else {
+                $('#IsSalesItem').prop('checked', false);
+            }
+            $('#IsPurchaseItem').val(map[item].IsPurchaseItem);
+            if ($('#IsPurchaseItem').val() == "true") {
+                $('#IsPurchaseItem').prop('checked', true);
+            }
+            else {
+                $('#IsPurchaseItem').prop('checked', false);
+            }
+            $('#IsFixedAssetItem').val(map[item].IsFixedAssetItem);
+            if ($('#IsFixedAssetItem').val() == "true") {
+                $('#IsFixedAssetItem').prop('checked', true);
+            }
+            else {
+                $('#IsFixedAssetItem').prop('checked', false);
+            }
+            $('#RetailSale').val(map[item].RetailSale);
+            if ($('#RetailSale').val() == "true") {
+                $('#RetailSale').prop('checked', true);
+            }
+            else {
+                $('#RetailSale').prop('checked', false);
+            }
+            $('#BOM').val(map[item].BOM);
+            if ($('#BOM').val() == "true") {
+                $('#BOM').prop('checked', true);
+
+            }
+            else {
+                $('#BOM').prop('checked', false);
+            }
+
+            $('#Restaurant').val(map[item].Restaurant);
+            if ($('#Restaurant').val() == "true") {
+                $('#Restaurant').prop('checked', true);
+
+                var TaskCode = 'GeneralItemRestaurantData';
+                $("li#" + TaskCode).click();
+                $('ul#TaskList li').removeClass("active");
+                $('ul#TaskList li:eq(6)').addClass("active");
+
+            }
+            else {
+                $('#Restaurant').prop('checked', false);
+            }
+            $('#IsMultipleVendor').val(map[item].IsMultipleVendor);
+            if ($('#IsMultipleVendor').val() == "true") {
+                $('#IsMultipleVendor').prop('checked', true);
+
+            }
+            else {
+                $('#IsMultipleVendor').prop('checked', false);
+            }
+            $('#IsEComItem').val(map[item].IsEComItem);
+            if ($('#IsEComItem').val() == "true") {
+                $('#IsEComItem').prop('checked', true);
+
+            }
+            else {
+                $('#IsEComItem').prop('checked', false);
+            }
+            $('#IsServiceItem').val(map[item].IsServiceItem);
+            if ($('#IsServiceItem').val() == "true") {
+                $('#IsServiceItem').prop('checked', true);
+
+                var TaskCode = 'GeneralItemServiceData';
+                $("li#" + TaskCode).click();
+                $('ul#TaskList li').removeClass("active");
+                $('ul#TaskList li:eq(8)').addClass("active");
+            }
+            else {
+                $('#IsServiceItem').prop('checked', false);
+            }
+            $('#IsConsumable').val(map[item].IsConsumable);
+            if ($('#IsConsumable').val() == "true") {
+                $('#IsConsumable').prop('checked', true);
+
+            }
+            else {
+                $('#IsConsumable').prop('checked', false);
+            }
+            $('#IsMachine').val(map[item].IsMachine);
+            if ($('#IsMachine').val() == "true") {
+                $('#IsMachine').prop('checked', true);
+
+            }
+            else {
+                $('#IsMachine').prop('checked', false);
+            }
+            $('#IsToner').val(map[item].IsToner);
+            if ($('#IsToner').val() == "true") {
+                $('#IsToner').prop('checked', true);
+                $("#IsToner").parent().parent("div").show();
+            }
+            else {
+                $('#IsToner').prop('checked', false);
+                $("#IsToner").parent().parent("div").hide();
+            }
+
+            //data From GeneralItemSupliersData
+            $('#GeneralItemSupliersDataID').val(map[item].GeneralItemSupliersDataID);
+            $('#ManufacturCatalogNumber').val(map[item].ManufacturCatalogNumber);
+            $('#GeneralPurchaseGroupMasterID').val(map[item].GeneralPurchaseGroupMasterID);
+            $('#GenTaxGroupMasterID').val(map[item].GenTaxGroupMasterID);
+            $('#ItemNumber').val(map[item].ItemNumber);
+            $('#VendorName').val(map[item].VendorName);
+            $('#PackageType').val(map[item].PackageType);
+            $('#PurchaseUoMCode').val(map[item].PurchaseUoMCode);
+            $('#HSNCode').val(map[item].HSNCode);
+            $('#ItemCode').val(map[item].ItemCode);
+
+            //GeneralItemGeneralData
+            $('#SerialAndBatchManagedBy').val(map[item].SerialAndBatchManagedBy);
+            $('#ManagementMethod').val(map[item].ManagementMethod);
+            $('#IssueMethod').val(map[item].IssueMethod);
+            $('#Temprature').val(map[item].Temprature);
+            //$('#TempratureUpto').val(map[item].TempratureUpto);
+            $('#GeneralItemGeneralDataID').val(map[item].GeneralItemGeneralDataID);
+            $('#NetContentPerPiece').val(map[item].NetContentPerPiece);
+            $('#NetContentUOM').val(map[item].NetContentUOM);
+            $('#NetWeightPerPiece').val(map[item].NetWeightPerPiece);
+            $('#SpecialFeature').val(map[item].SpecialFeature);
+            $('#ShortDescription').val(map[item].ShortDescription);
+            $('#ArabicTransalation').val(map[item].ArabicTransalation);
+            $('#BrandName').val(map[item].BrandName);
+
+        });
+
+        $('#ItemDescription').bind('paste', function (e) {
+            var self = this;
+
+            $("#ItemDescription").val("");
+            $("#ItemNumber").val("0");
+
+            $("#ItemCategoryCode").val("");
+            $('#ManufacturCatalogNumber').val("");
+            $('#UoMGroupCode').val("");
+            $('#BaseUoMcode').val("");
+            $('#Price').val("");
+            $('#BaseBarCode').val("");
+            $('#GeneralCurrencyListItems').val("");
+            $('#BasePriceListID').val(" ");
+            $('#InventoryPurchaseGroupMasterId').val("");
+            $('#Temprature').val("");
+            //$('#TempratureUpto').val("");
+            $('#IsFixedAssetItem').removeAttr('checked');
+            $('#IsSalesItem').removeAttr('checked');
+            $('#IsPurchaseItem').removeAttr('checked');
+            $('#IsInventoryItem').removeAttr('checked');
+            $('#RetailSale').removeAttr('checked');
+            $('#IsServiceItem').removeAttr('checked');
+            $('#BOM').removeAttr('checked');
+            $('#Restaurant').removeAttr('checked');
+            $('#IsMultipleVendor').removeAttr('checked');
+            $('#IsEComItem').removeAttr('checked');
+            $('#VendorName').val("");
+            $('#GenTaxGroupMasterID').val("");
+            $('#GeneralItemSupliersDataID').val("");
+            $('#GeneralPurchaseGroupMasterID').val("");
+            $('#PurchaseUoMCode').val("");
+            $('#PackageType').val("");
+            $('#GeneralItemMasterID').val(0);
+            $('#GeneralItemCodeID').val("");
+            $('#HSNCode').val("");
+            $('#ItemCode').val("");
+            $('#IsConsumable').removeAttr('checked');
+            $('#IsMachine').removeAttr('checked');
+            $('#IsToner').removeAttr('checked');
+            $('#NetContentPerPiece').val("");
+            $('#NetContentUOM').val("");
+            $('#NetWeightPerPiece').val("");
+            $('#SpecialFeature').val("");
+            $('#ShortDescription').val("");
+            $('#BrandName').val("");
+
+            setTimeout(function (e) {
+                var val = $(self).val();
+                if (!/^[a-zA-Z0-9_&',-.+%/() ]+$/.test(val)) {
+                    $('#DataValidationMessageForItemName').text("Please enter alpha-numeric text.").css("color", "red");
+                    return false;
+                }
+                $('#DataValidationMessageForItemName').text("");
+            }, 0);
+        });
+
+
+        $('#ItemDescription').on("keydown", function (e) {
+            //AERPValidation.AllowAlphaNumericOnly(e);
+
+            $('#DataValidationMessageForItemName').text("");
+            if (e.keyCode == 8 || e.keyCode == 46) {
+
+                $('#ItemDescription').typeahead('val', '');
+                $("#ItemDescription").val("");
+                $("#ItemNumber").val("0");
+                $("#ItemCategoryCode").val("");
+                $('#ManufacturCatalogNumber').val("");
+                $('#UoMGroupCode').val("");
+                $('#BaseUoMcode').val("");
+                $('#Price').val("");
+                $('#BaseBarCode').val("");
+                $('#GeneralCurrencyListItems').val("");
+                $('#BasePriceListID').val(" ");
+                $('#InventoryPurchaseGroupMasterId').val("");
+                $('#Temprature').val("");
+                //$('#TempratureUpto').val("");
+                $('#IsFixedAssetItem').removeAttr('checked');
+                $('#IsSalesItem').removeAttr('checked');
+                $('#IsPurchaseItem').removeAttr('checked');
+                $('#IsInventoryItem').removeAttr('checked');
+                $('#RetailSale').removeAttr('checked');
+                $('#IsServiceItem').removeAttr('checked');
+                $('#BOM').removeAttr('checked');
+                $('#Restaurant').removeAttr('checked');
+                $('#IsMultipleVendor').removeAttr('checked');
+                $('#IsEComItem').removeAttr('checked');
+
+                $('#IsConsumable').removeAttr('checked');
+                $('#IsMachine').removeAttr('checked');
+               
+               
+                if ($('#IsToner').is('checked')) {
+                    $('#IsToner').prop('checked', true);
+                    $("#IsToner").parent().parent("div").show();
+                }
+                else {
+                    $('#IsToner').prop('checked', false);
+                    $("#IsToner").parent().parent("div").hide();
+                }
+
+                $('#VendorName').val("");
+                $('#GenTaxGroupMasterID').val("");
+                $('#GeneralItemSupliersDataID').val("");
+                $('#GeneralPurchaseGroupMasterID').val("");
+                $('#PurchaseUoMCode').val("");
+                $('#PackageType').val("");
+                $('#GeneralItemMasterID').val(0);
+                $('#GeneralItemCodeID').val("");
+
+                $('#NetContentPerPiece').val("");
+                $('#NetContentUOM').val("");
+                $('#NetWeightPerPiece').val("");
+                $('#SpecialFeature').val("");
+                $('#ShortDescription').val("");
+                $('#BrandName').val("");
+                $('#HSNCode').val("");
+                $('#ItemCode').val("");
+            }
+
+            $('ul#TaskList li:eq(0)').addClass("active");
+            $('ul#TaskList li:eq(1)').removeClass("active");
+            $('ul#TaskList li:eq(2)').removeClass("active");
+            $('ul#TaskList li:eq(3)').removeClass("active");
+            $('ul#TaskList li:eq(4)').removeClass("active");
+            $('ul#TaskList li:eq(5)').removeClass("active");
+            $('ul#TaskList li:eq(6)').removeClass("active");
+            $('ul#TaskList li:eq(7)').removeClass("active");
+            TaskCode = 'GeneralItemGeneralData'
+            $("#" + TaskCode).click();
+        });
+
+
+
+        GeneralItemMaster.Create();
+        GeneralItemMaster.Save();
+        GeneralItemMaster.CreateTab();
+    });
+
+</script>
+

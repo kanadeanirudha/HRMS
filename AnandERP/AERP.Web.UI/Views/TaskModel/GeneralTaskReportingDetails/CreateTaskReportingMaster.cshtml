@@ -1,0 +1,110 @@
+﻿@model AERP.ViewModel.GeneralTaskReportingDetailsViewModel
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/jquery-ui.theme.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create General Task Reporting Master</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateTaskReportingMaster">
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.TaskCode, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.TaskCode, Model.ListGeneralTaskModelListItems, "--Select Task--", new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.TaskCode)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.ApprovalType, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.ApprovalType, ViewData["ApprovalType"] as List<SelectListItem>, new { @class = "form-control", style = "" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.NumberOfApprovalStages, new { })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.NumberOfApprovalStages, new { @class = "form-control", style = "", maxlength = "10", Min = "1" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.NumberOfApprovalStages)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.TaskApprovalBasedTable, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.TaskApprovalBasedTable, Model.TaskApprovalBasedTableListItems, "--Select Table--", new { @class = "form-control", style = "" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.TaskApprovalParamPrimaryKey, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.TaskApprovalParamPrimaryKey, ViewBag.TaskApprovalParamPrimaryKeyList as List<SelectListItem>, "--Select Primary Key --", new { @class = "form-control", style = "", maxlength = "10" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.TaskApprovalParamPrimaryKey)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(m => m.TaskApprovalTableDisplayField, new { style = "" })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.TaskApprovalTableDisplayField, ViewBag.TaskApprovalTableDisplayFieldList as List<SelectListItem>, "--Select Display Field--", new { @class = "form-control", style = "", maxlength = "10" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div id="checkboxlist" class="form-group">
+                            @Html.LabelFor(model => model.TaskApprovalKeyValue, new { style = "" })
+                            <p id="e5_f">
+                               @* <select id="TaskApprovalKeyValue" class="form-group selectpicker" multiple name="selectDisplayFormat">*@
+                                @Html.DropDownListFor(model => model.TaskApprovalKeyValue, ViewBag.TaskApprovalKeyValueList as List<SelectListItem>, new { @class = "form-control selectpicker", style = "", value= "",multiple = "multiple"})
+                              @* </select>*@
+                            </p>
+                        </div>
+                    </div>
+                </div>
+               @* <img id="populate_ddl" alt="clear" style="cursor:pointer; width: 27px; height: 26px; margin-left: 53px" title="populate" src="/content/images/button-refresh-icon1.png" />*@
+
+                <div class="form-group" style="margin-left: 2%; ">
+                    <button type="button" id="CreateGeneralTaskReportingMasterRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.multiple.select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        GeneralTaskReportingDetails.Initialize();
+        //$('#checkboxlist1').multipleSelect();
+        $('.selectpicker').selectpicker();
+        $(".placeholder").text("Select Table Key values");
+    });
+</script>

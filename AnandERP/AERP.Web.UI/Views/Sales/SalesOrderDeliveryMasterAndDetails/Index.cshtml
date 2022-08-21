@@ -1,0 +1,132 @@
+﻿@model AERP.ViewModel.SalesOrderDeliveryMasterAndDetailsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 90%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Sales/SalesOrderDeliveryMasterAndDetails.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Manage Delivary Memo</h2>
+    </div>
+    <div class="card" style="margin-bottom: 0px;">
+        @*<div class="card-header">
+                &nbsp;
+            </div>*@
+        <div class="card-body card-padding">
+            <form class="row" role="form">
+                <div class="col-sm-3">
+                    <div class="select form-group fg-line">
+                        @Html.DropDownList("SOStatus", ViewData["SOStatus"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "DM Status" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line ">
+                        @Html.HiddenFor(m => m.CustomerMasterID)
+                        @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control input-sm typeahead", placeholder = "Customer" })
+                    </div>
+                </div><div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        @Html.DropDownList("MonthName", ViewData["MonthName"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "MonthList*" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MonthName)
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group fg-line">
+                        @Html.DropDownList("MonthYear", ViewData["MonthYear"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "YearList*" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.MonthYear)
+                </div>
+
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-primary" id="btnShowList">@Resources.GlobalProperties_ShowList</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="ListViewModel"> </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        SalesOrderDeliveryMasterAndDetails.LoadList();
+
+        $("#btnShowList").on('click', function () {
+
+            SalesOrderDeliveryMasterAndDetails.LoadList();
+        });
+
+
+        mapCustomerName = [];
+        var getDataCustomerName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/CustomerMaster/GetCustomerMasterSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.CustomerMasterName)) {
+                                mapCustomerName[response.CustomerMasterName] = response;
+                                matches.push(response.CustomerMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#CustomerName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataCustomerName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#CustomerMasterID").val(mapCustomerName[item].CustomerMasterID);
+            $("#CustomerName").val(mapCustomerName[item].CustomerMasterName);
+
+        });
+
+
+        $('#CustomerName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#CustomerName').typeahead('val', '');
+                $("#CustomerMasterID").val(0);
+
+            }
+
+        });
+    });
+</script>
+
+

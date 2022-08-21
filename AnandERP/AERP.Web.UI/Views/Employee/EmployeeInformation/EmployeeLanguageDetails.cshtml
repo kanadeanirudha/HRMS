@@ -1,0 +1,243 @@
+﻿@model AMS.ViewModel.EmployeeLanguageDetailsViewModel
+@{
+    Layout = null;
+}
+
+
+<script src="~/Scripts/fnGetColumnData.js"></script>
+@* <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>*@
+
+
+<form id="FormEditEmployeeLanguageDetails" method="post" class="form-horizontal well">
+    @Html.HiddenFor(model => model.EmployeeID)
+
+    <div class="nonboxy-widget">
+
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-block">
+                    <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+                    <div class="widget-head">
+
+                        <h5 id="hhFive"><i class="black-icons users"></i>&nbsp; @Resources.FormName_LanguageDetails</h5>
+                        <div class="pull-right" style="margin: -2.5% 10px 0px 10px;">
+                            <div class="input-append" id="" style="float: right;">
+                                <div style="display: none;">
+                                    <input type="hidden" name="_method" value="POST">
+                                </div>
+                                <div style="margin-top: -4%">
+                                    <select name="data[User][searchby]" class="" id="showrecordLanguageDetails" tabindex="16">
+                                        <option value="10">@Resources.GlobalProperties_ShowRecords</option>
+                                        <option value="10">@Resources.GlobalProperties_10</option>
+                                        <option value="50">@Resources.GlobalProperties_50</option>
+                                        <option value="100">@Resources.GlobalProperties_100</option>
+                                    </select>
+                                    &nbsp;&nbsp;
+                                <input type="text" name="data[User][search]" class="search_query input-medium" placeholder="@Resources.GlobalProperties_Search..." size="16" autocomplete="off" id="UserSearchLanguageDetails">
+                                    <button class="btn" type="button" id="searchBtnLanguageDetails"><i class="icon-search"></i></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="widget-box">
+                            <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                                <div class="table_content">
+                                    <table id="myDataTableEmpLanguageDetails" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 0px">@Resources.TableHeaders_Select</th>
+                                                <th style="text-align: center; width: 300px">@Resources.TableHeaders_Language</th>
+                                                <th style="text-align: center; width: 150px">@Resources.TableHeaders_Read</th>
+                                                <th style="text-align: center; width: 150px">@Resources.TableHeaders_Write</th>
+                                                <th style="text-align: center; width: 150px">@Resources.TableHeaders_Speak</th>
+                                                <th style="display: none; width: 0px">ID</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="widget-bottom">
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+        <button type="button" id="btnUpdateEmployeeLanguageDetails" class="btn btn-primary">@Resources.ButtonAction_SaveChanges</button>
+        <input type="button" class="btn" value="Cancel" />
+    </div>
+</form>
+
+
+
+
+<script type="text/javascript">
+    var oTable;
+    $(document).ready(function () {
+        EmployeeInformation.Initialize();
+
+        debugger;
+        oTable = $('#myDataTableEmpLanguageDetails').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/EmployeeInformation/AjaxHandlerEmpLanguageDetails",
+            "bProcessing": true,
+            //"pagingType": "full_numbers",
+            "scrollY": "300px",
+            "dom": "frtiS",
+            "deferRender": true,
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "EmployeeID", "value": $('input[name=EmployeeID]').val() });
+                //aoData.push({ "name": "SelectedAccountType", "value": $('#AccountType').val() });
+            },
+            "columnDefs": [
+                {
+                    "visible": true, "targets": 0,
+                    //"sClass": "columnDisplay", "aTargets": [0],
+                    "targets": 0,
+                    "bSortable": false,
+                    "data": null,
+                    "render": function (data, type, full, meta) {
+                        //This column is hidden and used to compare the data for Insert/Update
+                        if (data[5] == 0) {
+
+                            var result = "<p  style='text-align: center;'>" + "<input type='checkbox'   tag=" + data[0] + "  value=" + data[0] + '~' + data[2] + "~" + data[3] + "~" + data[4] + "~" + data[5] + "~" + 0 + " id='languageID type='checkbox'' />" + "</p>";
+                        }
+                        else if (data[5] > 0) {
+                            chkStatus = 'checked';
+                            var result = "<p  style='text-align: center;'>" + "<input type='checkbox'  tag=" + data[0] + "  value=" + data[0] + '~' + data[2] + "~" + data[3] + "~" + data[4] + "~" + data[5] + "~" + 1 + " id='languageID' type='checkbox'" + chkStatus + "/>" + "</p>";
+                        }
+                        return result;
+
+
+                    }
+                },
+                {
+                    "visible": true, "targets": 1,
+                    "data": null,
+                    "render": function (data, type, full, meta) {
+                        var result = "<p  style=''>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[1] + "</p>";
+                        return result;
+                    }
+                },
+                {
+                    "targets": 2,
+                    "data": null,
+                    "render": function (data, type, full, meta) {
+                        //This column shows Debit/Credit Dropdown list
+                        if (data[2] == null) {
+
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option selected="selected" value="">' +@Resources.ddlHeaders_Select +'</option><option value="Poor~' + data[0] + '">' +@Resources.DisplayName_Poor +'</option><option value="Basic~' + data[0] + '">' +@Resources.DisplayName_Basic +'</option><option value="Good~' + data[0] + '">' +@Resources.DisplayName_Good +'</option></select></p>';
+                        }
+                        // if data[2] is Read than Read will be selected
+                        if (data[2] == "Poor") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">' +@Resources.ddlHeaders_Select +'</option><option selected="selected" value="Poor~' + data[0] + '">'+@Resources.DisplayName_Poor+'</option><option value="Basic~' + data[0] + '">'+@Resources.DisplayName_Basic+'</option><option value="Good~' + data[0] + '">'+@Resources.DisplayName_Good+'</option></select></p>';
+                        }
+                        //  if data[2] is Write than Write will be selected
+                        if (data[2] == "Basic") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">' +@Resources.ddlHeaders_Select +'</option><option value="Poor~' + data[0] + '">'+@Resources.DisplayName_Poor+'</option><option selected="selected" value="Basic~' + data[0] + '">'+@Resources.DisplayName_Basic+'</option><option value="Good~' + data[0] + '">'+@Resources.DisplayName_Good+'</option></select></p>';
+                        }
+                        //  if data[4] is Speak than Speak will be selected
+                        if (data[2] == "Good") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">' +@Resources.ddlHeaders_Select +'</option><option value="Poor~' + data[0] + '">'+@Resources.DisplayName_Poor+'</option><option value="Basic~' + data[0] + '">'+@Resources.DisplayName_Basic+'</option><option selected="selected" value="Good~' + data[0] + '">'+@Resources.DisplayName_Good+'</option></select></p>';
+                        }
+
+                        return result;
+                    }
+                },
+                {
+                    "targets": 3,
+                    "data": null,
+                    "render": function (data, type, full, meta) {
+                        //This column shows Debit/Credit Dropdown list
+                        if (data[3] == null) {
+
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option selected="selected" value="">Select</option><option value="Poor~' + data[0] + '">Poor</option><option value="Basic~' + data[0] + '">Basic</option><option value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+                        // if data[3] is Read than Read will be selected
+                        if (data[3] == "Poor") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">Select</option><option selected="selected" value="Poor~' + data[0] + '">Poor</option><option value="Basic~' + data[0] + '">Basic</option><option value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+                        //  if data[3] is Write than Write will be selected
+                        if (data[3] == "Basic") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">Select</option><option value="Poor~' + data[0] + '">Poor</option><option selected="selected" value="Basic~' + data[0] + '">Basic</option><option value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+                        //  if data[3] is Speak than Speak will be selected
+                        if (data[3] == "Good") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">Select</option><option value="Poor~' + data[0] + '">Poor</option><option value="Basic~' + data[0] + '">Basic</option><option selected="selected" value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+
+                        return result;
+                    }
+                },
+                {
+                    "targets": 4,
+                    "data": null,
+                    "render": function (data, type, full, meta) {
+                        //This column shows Debit/Credit Dropdown list
+                        if (data[4] == null) {
+
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option selected="selected" value="">Select</option><option value="Poor~' + data[0] + '">Poor</option><option value="Basic~' + data[0] + '">Basic</option><option value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+                        // if data[4] is Read than Read will be selected
+                        if (data[4] == "Poor") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">Select</option><option selected="selected" value="Poor~' + data[0] + '">Poor</option><option value="Basic~' + data[0] + '">Basic</option><option value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+                        //  if data[4] is Write than Write will be selected
+                        if (data[4] == "Basic") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">Select</option><option value="Poor~' + data[0] + '">Poor</option><option selected="selected" value="Basic~' + data[0] + '">Basic</option><option value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+                        //  if data[4] is Speak than Speak will be selected
+                        if (data[4] == "Good") {
+                            var result = "<p  style='text-align: center;'>" + '<select id="combobox" style="width:120px"><option value="">Select</option><option value="Poor~' + data[0] + '">Poor</option><option value="Basic~' + data[0] + '">Basic</option><option selected="selected" value="Good~' + data[0] + '">Good</option></select></p>';
+                        }
+
+
+                        return result;
+
+                    }
+                },
+                {
+                    "visible": false, "targets": 5,
+                }
+
+
+
+            ],
+            "order": [[0, 'asc']],
+            //"drawCallback": function (settings) {
+            //    debugger;
+            //    var api = this.api();
+            //    var rows = api.rows({ page: 'current' }).nodes();
+            //    var last = null;
+            //    var table = $('#myDataTable').dataTable();
+            //    var selectedBalncesheet = $('#SelectedBalanceSheet').val();
+            //    api.column(3, { page: 'current' }).data().each(function (group, i) {
+            //        if (last !== group) {
+            //            $(rows).eq(i).before(
+            //                '<tr class="group"><td colspan="5" style="font-weight:bold;background-color:rgba(128,128,128,0.2);color:#000;font-size:12px;font-family: verdana;">' + group +
+            //                '</td>'// <td style="text-align:center"><a class="ajax cboxElement" href="/AccountCentreOpeningBalance/Create?GroupVal=' + GroupID[i++] + ":" + group.replace(/ /g, "~") + ":" + selectedBalncesheet + '"><i class="icon-plus" style="margin-left: 7px;"></i></a></td></tr>'
+            //            );
+
+            //            last = group;
+
+            //        }
+            //    });
+            //}
+        });
+    });
+
+    //function ReloadAccountCentreOpeningBalance()
+    //{
+    //    oTable = $('#myDataTable').dataTable();
+    //    oTable.fnReloadAjax('AccountCentreOpeningBalance/AjaxHandler');
+    //};
+
+</script>
+

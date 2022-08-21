@@ -1,0 +1,37 @@
+﻿
+
+
+@model AERP.ViewModel.PurchaseReportMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Artical Movement Report</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 0px;">
+        @Html.HiddenFor(m => m.errorMessage)
+        <form class="row" role="form">
+            <div class="card-body card-padding">
+                <div class="col-sm-4">
+                    <div class="form-group fg-line">
+                        @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3" style="margin-bottom:0px;">
+                    <button type="button" class="btn btn-primary" id="btnShowList">@Resources.GlobalProperties_ShowList</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div id="ListViewModel">
+        @{Html.RenderAction("ArticalMovement", "ArticalReportMaster");}
+    </div>
+</div>

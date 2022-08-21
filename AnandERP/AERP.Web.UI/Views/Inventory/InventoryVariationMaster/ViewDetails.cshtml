@@ -1,0 +1,47 @@
+﻿@model AMS.ViewModel.InventoryVariationMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;View Recipe Variations</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateInventoryVariationMaster" role="form" class="row">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Title, new { })
+                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Description, new { })
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.RecipeVariationTitle, new { })
+                        @Html.TextBoxFor(model => model.RecipeVariationTitle, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.RecipeVariationTitle)
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        InventoryVariationMaster.Initialize();
+    });
+</script>
+

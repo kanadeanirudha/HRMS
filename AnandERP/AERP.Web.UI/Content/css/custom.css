@@ -1,0 +1,79 @@
+﻿.sidebar {
+    height: 90%;
+    height: -webkit-calc(100% - 65px);
+    height: -moz-calc(100% - 65px);
+    height: calc(100% - 65px);
+}
+
+body.sw-toggled #content > .container {
+    width: 100%;
+    width: -webkit-calc(100% - 30px);
+    width: -moz-calc(100% - 30px);
+    width: calc(100% - 30px);
+}
+
+html, body {
+    overflow-y: auto;
+    -ms-overflow-style: scrollbar;
+}
+
+    html:not(.ismobile) .page-loader2 {
+        background: #fff none repeat scroll 0 0;
+        height: 100%;
+        left: 0;
+        opacity: 0.5;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1043;
+    }
+
+        html:not(.ismobile) .page-loader2 .preloader {
+            /*animation-duration: 3000ms;*/
+            animation-fill-mode: both;
+            animation-name: fadeIn;
+            left: 50%;
+            margin-left: -25px;
+            margin-top: -55px;
+            position: absolute;
+            top: 50%;
+            width: 50px;
+        }
+
+            html:not(.ismobile) .page-loader2 .preloader p {
+                color: #ccc;
+                left: -9px;
+                position: relative;
+                top: 22px;
+                white-space: nowrap;
+            }
+
+#ModuleList {
+    max-height: 500px;
+}
+
+.dropdown-menu:not([class*="bgm-"]) > div > div > li > a {
+    color: #4c4c4c;
+}
+
+.dropdown-menu > div > div > li > a {
+    padding: 8px 17px;
+    transition: background-color 300ms ease 0s;
+}
+
+.dropdown-menu > div > div > li > a {
+    clear: both;
+    color: #333333;
+    display: block;
+    font-weight: normal;
+    line-height: 1.42857;
+    /*padding: 3px 20px;*/
+    white-space: nowrap;
+}
+
+.dropdown-menu.dm-icon > div > div > li > a > .zmdi {
+    font-size: 18px;
+    line-height: 100%;
+    vertical-align: top;
+    width: 28px;
+}

@@ -1,0 +1,98 @@
+﻿@model AERP.ViewModel.AccountGeneralLedgerReportViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/AccountIndividualBalanceReport.js")" type="text/javascript"></script>
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+<div class="container">
+
+    @using (Html.BeginForm("Index", "AccountIndividualBalanceReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Parameter of Individual Balance</h2>
+        </div>
+
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding">
+                @Html.HiddenFor(m => m.AccountName)
+                @Html.HiddenFor(m => m.PersonTypeName)
+                @Html.HiddenFor(m => m.AccountBalsheetMstID)
+                @Html.HiddenFor(m => m.IsPosted)
+                
+                    <div class="row col-sm-12">
+                        <div class="col-sm-12">
+                            <div class="fg-line select form-group">
+                                @Html.DropDownListFor(m => m.AccountSessionID, Model.AccountSessionMasterReportItems, "------Select Account Session-------", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Account Session*" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.AccountSessionID)
+                        </div>
+                    </div>
+
+                    <div class="row col-sm-12">
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line dtp-container">
+                                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control input-sm", @readonly = "readonly", @placeholder = "Session from date", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Session from date", style = "background-color:white" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FromDate)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line dtp-container">
+                                @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control input-sm", @readonly = "readonly", @placeholder = "Session to date", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Session to date", style = "background-color:white" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ToDate)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="fg-line select form-group">
+                                @Html.DropDownListFor(m => m.ControlHead, Model.UserTypeListItems, "-----Select Control Head-----", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Person type" })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ControlHead)
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="fg-line select form-group">
+                                @Html.DropDownListFor(m => m.AccountID, Model.AccountNameReportItems, "------Select Account Name-------", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Account name*" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.AccountID)
+                        </div>
+                    </div>
+
+                   
+                    <div class="row" style="margin-left:2%; margin-top:15%;">
+                        <button type="submit" id="btnAccountIndividualBalanceReportSubmit" name="submit" class="btn btn-primary">Show</button>
+                    </div>
+
+                </div>
+        </div>
+    }
+
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.Partial("/Views/Accounts/Report/AccountIndividualBalanceReport/AccountIndividualBalanceReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountIndividualBalanceReport.Initialize();
+        $('#FromDate').attr("readonly", true);
+        $('#FromDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+        $("#ToDate").datetimepicker({
+            format: "DD MMMM YYYY",
+            ignoreReadonly: true,
+        });
+});
+</script>
+
+
+
+

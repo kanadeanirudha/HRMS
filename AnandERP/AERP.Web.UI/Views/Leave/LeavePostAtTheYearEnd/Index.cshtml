@@ -1,0 +1,17 @@
+﻿@model IEnumerable<AERP.ViewModel.LeavePostViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/Vendors")
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Leave/LeavePostAtTheYearEnd.js")" type="text/javascript"></script>
+@* Commented By Ambarish *@
+@*<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />*@
+<div id="ListViewModel">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {        
+        LeavePostAtTheYearEnd.LoadList();
+    });
+</script>

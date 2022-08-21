@@ -1,0 +1,168 @@
+﻿@model AERP.ViewModel.SaleContractMasterViewModel
+
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <div class="form-group fg-line">
+            @Html.HiddenFor(m => m.SaleContractJobWorkItemID)
+            @Html.LabelFor(model => model.SaleContractJobWorkItemName, new { })
+            @Html.TextBoxFor(model => model.SaleContractJobWorkItemName, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractJobWorkItemName)
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group fg-line">
+            @Html.LabelFor(model => model.SaleContractJobWorkItemRate, new { })
+            @Html.TextBoxFor(model => model.SaleContractJobWorkItemRate, new { @class = "form-control input-sm" })
+        </div>
+        @Html.ValidationMessageFor(model => model.SaleContractJobWorkItemRate)
+    </div>
+    <div class="col-sm-2">
+        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddJobWorkItem"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+</div>
+<div class="col-sm-12">
+    <table id="tblModifyJobWorkItem" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Job Work Item Name</th>
+                <th>Job Work Item Rate</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.SaleContractMasterListForJobWorkItem)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@item.SaleContractRequirementDetailsID" />
+                        <input type='hidden' value='@item.SaleContractJobWorkItemID' />@item.SaleContractJobWorkItemName
+                    </td>
+                    <td><input type="hidden" value="@item.SaleContractJobWorkItemRate" />@Math.Round(item.SaleContractJobWorkItemRate,2)</td>
+                    <td>
+                        @if (Model.TaskCode == "GeneralRenewContract")
+                        {
+                            <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title='Delete'></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        SaleContractMaster.Initialize();
+        mapJobWorkItemName = [];
+        var getDataJobWorkItemName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractJobWorkItem/GetJobWorkItemSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.JobWorkItemName)) {
+                                mapJobWorkItemName[response.JobWorkItemName] = response;
+                                matches.push(response.JobWorkItemName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SaleContractJobWorkItemName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataJobWorkItemName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SaleContractJobWorkItemID").val(mapJobWorkItemName[item].JobWorkItemID);
+            $("#SaleContractJobWorkItemName").val(mapJobWorkItemName[item].JobWorkItemName);
+            $("#SaleContractJobWorkItemRate").val(mapJobWorkItemName[item].JobWorkItemRate);
+        });
+
+        $('#SaleContractJobWorkItemName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SaleContractJobWorkItemName').typeahead('val', '');
+                $("#SaleContractJobWorkItemName").val("");
+                $("#SaleContractJobWorkItemID").val("");
+                $("#SaleContractJobWorkItemRate").val("");
+            }
+        });
+
+        $("#tblModifyJobWorkItem tbody").on("click", "tr td i", function () {
+            $(this).closest('tr').remove();
+        });
+
+        $('#btnAddJobWorkItem').on("click", function () {
+            if ($('#SaleContractJobWorkItemName').val() == "" && ($('#SaleContractJobWorkItemID').val() == "0" || $('#SaleContractJobWorkItemID').val() == "")) {
+                notify("Please Select Job Work Item.", "warning");
+                return false;
+            }
+            if ($('#SaleContractJobWorkItemRate').val() == "" || $('#SaleContractJobWorkItemRate').val() == 0) {
+                notify("Please Enter Job Work Item Rate.", "warning");
+                return false;
+            }
+            // alert($('#AttributeName :selected').val())
+
+            var DataArray = [];
+            var data = $('#tblModifyJobWorkItem tbody tr td  input').each(function () {
+                DataArray.push($(this).val());
+            });
+            var TotalRecord = DataArray.length;
+
+            for (var i = 0; i < TotalRecord; i = i + 3) {
+                if (DataArray[i+1] == $('#SaleContractJobWorkItemID').val()) {
+                    notify("You Cannot Enter the Same Job Work Item.", "warning");
+                    $("#SaleContractJobWorkItemName").typeahead('val', '');
+                    $("#SaleContractJobWorkItemName").val("");
+                    $("#SaleContractJobWorkItemID").val("");
+                    $('#SaleContractJobWorkItemRate').val('');
+                    return false;
+                }
+            }
+            $("#tblModifyJobWorkItem tbody").append(
+                                                   "<tr>" +
+                                                    "<td><input type='hidden' value='0' /><input type='hidden' value='" + $("#SaleContractJobWorkItemID").val() + "'  />" + $('#SaleContractJobWorkItemName').val() + "</td>" +
+
+                                                   "<td><input type='hidden' value='" + $('#SaleContractJobWorkItemRate').val() + "' />" + $('#SaleContractJobWorkItemRate').val() + "</td>" +
+                                                   "<td> <i class='zmdi zmdi-delete zmdi-hc-fw' style='cursor:pointer' title = 'Delete'></td>" +
+                                                   "</tr>"
+                                                  );
+            $("#tblModifyJobWorkItem tbody").on("click", "tr td i", function () {
+                $(this).closest('tr').remove();
+            });
+
+            $("#SaleContractJobWorkItemName").typeahead('val', '');
+            $("#SaleContractJobWorkItemName").val("");
+            $("#SaleContractJobWorkItemID").val("");
+            $('#SaleContractJobWorkItemRate').val('');
+        });
+    })
+</script>

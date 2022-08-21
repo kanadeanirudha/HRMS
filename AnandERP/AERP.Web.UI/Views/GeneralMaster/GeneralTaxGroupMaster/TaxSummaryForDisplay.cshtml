@@ -1,0 +1,49 @@
+﻿@model AERP.ViewModel.GeneralTaxGroupMasterViewModel
+
+<div class="col-sm-12">
+    <h4>Tax Summary</h4>
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Sr No</th>
+                @if (ViewBag.TaxList != null)
+                {
+                    String[] TaxColumns = ViewBag.TaxColumns.Split(new char[] { ',' });
+
+                    foreach (var item in TaxColumns)
+                    {
+                        String[] TaxName = item.Split(new char[] { ' ' });
+                        <th>@TaxName[0]</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.TaxList != null)
+            {
+                var count = 1;
+                foreach (var item in ViewBag.TaxList)
+                {
+                    <tr>
+                        <td>@count</td>
+                        @if (item.TaxAmount != null)
+                        {
+                            String[] TaxColumns = ViewBag.TaxColumns.Split(new char[] { ',' });
+                            String[] TaxAmount = item.TaxAmountList.Replace(", ", ",").Split(new char[] { ',' });
+                            String[] TaxRate = item.TaxRateList.Replace(", ", ",").Split(new char[] { ',' });
+                            for (int i = 0; i < TaxAmount.Count(); i++)
+                            {
+                                String[] TaxName = TaxColumns[i].Split(new char[] { ' ' });
+                                <td>@TaxAmount[i] ( @TaxRate[i] % )<input type="hidden" style="display:none" value="@TaxAmount[i]" class="@TaxName[0]"></td>
+                            }
+                        }
+
+                    </tr>
+
+                    count++;
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

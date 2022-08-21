@@ -1,0 +1,239 @@
+﻿@model AERP.ViewModel.PurchaseReplenishmentViewModel
+
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+@*<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Replenishment</h2>
+</div>*@
+
+<div class="card" id="abc">
+    <div class="card-header" style="display:none;">
+        <div style="display:none" id="divAddbtn">
+            <ul class="actions">
+                <li class="dropdown">
+                    <a href="" data-toggle="dropdown">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li id="divAddbtn">
+                            <a class="mfpAjaxModal" title="Add New" href="@Url.Action("Create", "PurchaseReplenishment")">
+                                <i class="zmdi zmdi-plus-square"></i>&nbsp;Add New
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body card-padding">
+        <form class="row" role="form">
+          
+        </form>
+    </div>
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+                <div class="search form-group">
+                    <div class="input-group">
+                        <span class="zmdi icon input-group-addon glyphicon-search"></span>
+                        <input type="text" id="UserSearch" placeholder="Search" class="search-field form-control">
+                    </div>
+                </div>
+                <div class="actions btn-group">
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                            <span class="dropdown-text" id="tblDisplayRowLength">@Resources.GlobalProperties_10</span> <span class="caret"></span>
+                        </button>
+                        <ul role="menu" style="cursor: pointer" id="showrecords" class="dropdown-menu pull-right">
+                            <li class="active" aria-selected="true">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_10">@Resources.GlobalProperties_10</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_25">@Resources.GlobalProperties_25</a>
+                            </li>
+                            <li aria-selected="false"><a class="dropdown-item dropdown-item-button" data-action="@Resources.GlobalProperties_50">@Resources.GlobalProperties_50</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                            <span class="dropdown-text">
+                                <span class="zmdi icon zmdi-view-module"></span>
+                            </span><span class="caret"></span>
+                        </button>
+                        <ul role="menu" id="toggleTableColumn" class="dropdown-menu pull-right">
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="0" name="Vendor">
+                                        Vendor<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="1" name="Total Articals">
+                                        Total Articals<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="2" name="Amount">
+                                        Amount<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="3" name="CREATE PR">
+                                        CREATE PR<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="4" name="CREATE PO">
+                                        CREATE PO<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label class="dropdown-item" aria-disabled="false">
+                                        <input type="checkbox" checked="checked" class="dropdown-item-checkbox" value="5" name="View PO">
+                                        View PO<i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTable" class="table table-striped table-vmiddle table-responsive ">
+        <thead>
+            <tr>
+                <th>Vendor</th>
+                <th>Total Articals</th>
+                <th>Amount</th>
+                <th>Create PR</th>
+                <th>Create PO</th>
+                <th>View PO</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.jquery.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var oTable;
+        $("#GeneralUnitsID").tooltip();
+        oTable = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "Replenishment/AjaxHandler",
+            "bJQueryUI": true,
+            "sScrollY": false,
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "GeneralUnitsID", "value": $("#GeneralUnitsID").val() });
+            },
+            "columnDefs": [
+                            {
+                                "targets": 0,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    var result = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[1];
+                                    return result;
+                                }
+                            },
+                            {
+                                "targets": 1,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    var result = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[2];
+                                    return result;
+                                }
+                            },
+                            {
+                                "targets": 2,
+                                "data": null,
+                                "render": function (data, type, full, meta) {
+                                    var result = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + data[3];
+                                    return result;
+                                }
+                            },
+                            {
+                                "targets": 3,
+                                "data": null,
+                                "bSortable": false,
+                                "render": function (data, type, full, meta) {
+                                    var result = '@Html.ActionLink("CREATE PR", "Index", "PurchaseRequisitionMaster", new { VendorID = "VendorID1", ReplishmentCode = "ReplishmentCode1", CenterCode = "CenterCode1", GeneralUnitsID = "GeneralUnitsID1" }, null)';
+                                    result = result.replace('VendorID1', data[0]);
+                                    result = result.replace('ReplishmentCode1', 'ReplishmentCode');
+                                    result = result.replace('CenterCode1', $('#SelectedCentreCode :selected').val());
+                                    result = result.replace('GeneralUnitsID1', $('#GeneralUnitsID :selected').val());
+                                    result = result.replace("CREATE PR", '<span class=\"zmdi zmdi-plus-square btn btn-default waves-effect\" title =\"@Resources.ToolTip_Edit\"></span>');
+                                    return result;
+                                }
+                            },
+                             {
+                                 "targets": 4,
+                                 "bSortable": false,
+                                 "data": null,
+                                 "render": function (data, type, full, meta) {
+                                     var result = '@Html.ActionLink("VIEW PO", "ReplenishmentView", "PurchaseRequisitionMaster", new { ReplishmentCode = "ReplishmentCode1", centerCode = "centreCode1", GeneralUnitsID = "GeneralUnitsID1" }, null)';
+                                     result = result.replace('ReplishmentCode1', 'ReplishmentCode');
+                                     result = result.replace('centreCode1', $('#SelectedCentreCode :selected').val());
+                                     result = result.replace('GeneralUnitsID1', $('#GeneralUnitsID :selected').val());
+                                     result = result.replace("VIEW PO", '<span class=\"zmdi zmdi-plus-square btn btn-default waves-effect\" title =\"@Resources.ToolTip_Edit\"></span>');
+                                     return result;
+
+                                 }
+                             },
+                              {
+                                  "targets": 5,
+                                  "bSortable": false,
+                                  "data": null,
+                                  "render": function (data, type, full, meta) {
+                                      var result = '@Html.ActionLink("CREATE PR", "Index", "PurchaseOrderMasterAndDetails", new { VendorID = "VendorID1", ReplishmentCode = "ReplishmentCode1", centerCode = "centreCode1", GeneralUnitsID = "GeneralUnitsID1" }, null)';
+                                      result = result.replace('VendorID1', data[0]);
+                                      result = result.replace('ReplishmentCode1', 'ReplishmentCode');
+                                      result = result.replace('centreCode1', $('#SelectedCentreCode :selected').val());
+                                      result = result.replace('GeneralUnitsID1', $('#GeneralUnitsID :selected').val());
+                                     result = result.replace("CREATE PR", '<span class=\"zmdi zmdi-view-toc btn btn-default waves-effect\" title =\"@Resources.ToolTip_Edit\"></span>');
+                                     return result;
+                                  }
+                              },
+
+            ],
+        });
+
+        //DataTableSettings(oTable);
+        DataTableSettings(oTable, "myDataTable", 'toggleTableColumn');
+
+    });
+
+
+</script>

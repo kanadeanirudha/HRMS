@@ -1,0 +1,211 @@
+﻿@model AERP.ViewModel.GrossOperatingProfitReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/GrossOperatingProfitReport.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<div class="container" style="padding-bottom:10px;">
+    @using (Html.BeginForm("Index", "GrossOperatingProfitReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Gross Operating Profit Report</h2>
+        </div>
+
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(m => m.IsPosted)
+                            @Html.HiddenFor(m => m.CustomerType)
+                            @Html.HiddenFor(m => m.CustomerMasterID)
+                            @Html.LabelFor(model => model.CustomerMasterName)
+                            @Html.TextBoxFor(model => model.CustomerMasterName, new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="select form-group fg-line">
+                            @Html.HiddenFor(m => m.CustomerBranchMasterID)
+                            @Html.LabelFor(model => model.CustomerBranchMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerBranchMasterName, new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4" style="margin-top:33px;">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" id="btnGrossOperatingProfitReportSubmit" class="btn-primary btn">Show</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="container" style="margin-top:-10px">
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding" style="overflow-x:auto;">
+                @Html.Partial("/Views/Contract/Report/GrossOperatingProfitReport/GrossOperatingProfitReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#btnGrossOperatingProfitReportSubmit").click(function () {
+            $("#IsPosted").val(true);
+        })
+
+        mapCustomerMasterName = [];
+        var getDataCustomerMasterName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/CustomerMaster/GetCustomerMasterSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.CustomerMasterName)) {
+                                mapCustomerMasterName[response.CustomerMasterName] = response;
+                                matches.push(response.CustomerMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#CustomerMasterName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataCustomerMasterName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#CustomerMasterID").val(mapCustomerMasterName[item].CustomerMasterID);
+            $("#CustomerMasterName").val(mapCustomerMasterName[item].CustomerMasterName);
+            $("#CustomerType").val(mapCustomerMasterName[item].CustomerType);
+
+            if (mapCustomerMasterName[item].CustomerType == 1) {
+                $("#CustomerBranchMasterID").val("0");
+                $("#CustomerBranchMasterName").val("");
+                $("#CustomerBranchMasterName").prop("disabled", true);
+            } else {
+                $("#CustomerBranchMasterName").prop("disabled", false);
+            }
+
+        });
+
+        mapCustomerBranchMasterName = [];
+        var getDataCustomerBranchMasterName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/CustomerMaster/GetCustomerBranchMasterSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.CustomerBranchMasterName)) {
+                                mapCustomerBranchMasterName[response.CustomerBranchMasterName] = response;
+                                matches.push(response.CustomerBranchMasterName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#CustomerBranchMasterName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataCustomerBranchMasterName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#CustomerBranchMasterID").val(mapCustomerBranchMasterName[item].CustomerBranchMasterID);
+            $("#CustomerBranchMasterName").val(mapCustomerBranchMasterName[item].CustomerBranchMasterName);
+        });
+
+        $('#CustomerMasterName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+
+                $('#CustomerMasterName').typeahead('val', '');
+                $("#CustomerMasterName").val("");
+                $("#CustomerMasterID").val("");
+                $('#CustomerBranchMasterName').typeahead('val', '');
+                $("#CustomerBranchMasterID").val("0");
+                $("#CustomerBranchMasterName").val("");
+            }
+        });
+        $('#CustomerBranchMasterName').on("keydown", function (e) {
+
+            if ($("#CustomerMasterID").val() == "0" && e.keyCode != 9) {
+                notify("Please Select Customer", "warning");
+                return false;
+            }
+            if ($("#CustomerMasterID").val() != "0" && $("#CustomerType").val() == "1" && e.keyCode != 9) {
+                return false;
+            }
+
+            if (e.keyCode == 8 || e.keyCode == 46) {
+
+                $('#CustomerBranchMasterName').typeahead('val', '');
+                $("#CustomerBranchMasterName").val("");
+                $("#CustomerBranchMasterID").val("0");
+            }
+        });
+    });
+</script>
+
+
+
+
+
+

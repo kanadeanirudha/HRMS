@@ -1,0 +1,122 @@
+﻿@model AERP.ViewModel.MachineTransactionReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/MachineTransactionReport.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<div class="container" style="padding-bottom:10px;">
+    @using (Html.BeginForm("Index", "MachineTransactionReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Machine details</h2>
+        </div>
+
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-body card-padding">
+
+
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        @Html.HiddenFor(m => m.IsPosted)
+                        @Html.HiddenFor(m => m.MachineMasterID)
+                        @Html.LabelFor(model => model.MachineMasterName)
+                        @Html.TextBoxFor(model => model.MachineMasterName, new { @class = "form-control input-sm" })
+                    </div>
+                   
+                    <div class="col-sm-4" style="">
+                        <div class="fg-line">
+                            <button type="submit" name="submit" id="btnMachineTransactionReportSubmit" class="btn-primary btn">Show</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="container" style="margin-top:-10px">
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.Partial("/Views/Contract/Report/MachineTransactionReport/MachineTransactionReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnMachineTransactionReportSubmit").click(function () {
+            $("#IsPosted").val(true);
+        })
+
+        mapMachineMasterName = [];
+        var getDataMachineMasterName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/MachineTransactionReport/GetMachineMasterSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.MachineMasterName)) {
+                                mapMachineMasterName[response.MachineMasterName] = response;
+                                matches.push(response.MachineMasterName);
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#MachineMasterName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataMachineMasterName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#MachineMasterID").val(mapMachineMasterName[item].MachineMasterID);
+            $("#MachineMasterName").val(mapMachineMasterName[item].MachineMasterName);
+        });
+
+        $('#MachineMasterName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+
+                $('#MachineMasterName').typeahead('val', '');
+                $("#MachineMasterName").val("");
+                $("#MachineMasterID").val("0");
+            }
+        });
+    });
+</script>
+
+
+
+
+
+

@@ -1,0 +1,28 @@
+﻿@model AMS.ViewModel.AccountSessionMasterViewModel
+
+<form id="FormDeleteAccountSessionMaster" method="post">
+    @Html.HiddenFor(model => model.ID)
+    <div class="widget-block" style="width:230px;height:144px;">
+        <div class="widget-head">
+            <h5>@Resources.FormDelete_AccountSessionMaster</h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+                <div class="control-group" style="padding: 10px;">
+                    &nbsp;&nbsp;<img src="~/Content/images/warning.png" />&nbsp;&nbsp;@Resources.DisplayName_DeleteMessage
+                    <div class="controls">
+                    </div>
+                </div>
+                <div class="control-group" style="padding: 10px; text-align: right; margin-bottom: 0px; border: 1px solid #e5e5e5;">
+                    <input type="button" id="DeleteAccountSessionMasterRecord" value="@Resources.ButtonAction_Delete" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div id="update-message" class="error invisible"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountSessionMaster.Initialize();
+    });
+</script>

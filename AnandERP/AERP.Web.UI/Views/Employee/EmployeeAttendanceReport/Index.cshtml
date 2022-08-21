@@ -1,0 +1,152 @@
+﻿@model AMS.ViewModel.EmployeeAttendanceReportViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .widget-block {
+        margin-bottom: -5px;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Employee/EmployeeAttendanceReport.js")" type="text/javascript"></script>
+
+@*@using (Html.BeginForm("Index", "EmployeeAttendanceReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{*@
+    <div id="FormEmployeeAttendanceReport">
+    @Html.HiddenFor(model => model.IsPosted)
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li>Reports<span class="divider">»</span></li>
+            <li>Employee Attendance Report</li>
+        </ul>
+        <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+        <div class="">
+            <div class="">
+                <div class="widget-block">
+                    <div class="widget-head">
+                        <h5>Employee Attendance Report</h5>
+                    </div>
+
+                    <div class="widget-content">
+                        <div class="widget-box">
+
+                            <fieldset>
+                                <br />
+
+                                <div class="row control-group">
+                                    <div class="span">&nbsp;</div>
+                                    <div class="span2">
+                                        @Html.LabelFor(model => model.CentreCode, new { style = "font-Weight:Bold;" })
+                                    </div>
+                                    <div class="span2">
+                                        @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "--------Select Centre-------", new { id = "CentreCode", @class = "form-control chosen-select", style = "font-weight:bold; width:108%; margin-left: -50%;" })
+                                        <br />
+                                    </div>
+                                    <div class="span">&nbsp;</div>
+                                    <div class="span2">
+                                        @Html.LabelFor(model => model.DepartmentID, new { style = "font-Weight:Bold; margin-left: -58%;" })
+                                    </div>
+                                    <div class="span2">
+                                        @Html.DropDownListFor(m => m.DepartmentID, Model.ListOrganisationDepartmentMasterItems, "All", new { id = "DepartmentID", @class = "form-control chosen-select", style = "font-weight:bold; width:108%; margin-left: -91%;" })
+                                        <br />
+                                    </div>
+
+                                    <div class="span">&nbsp;</div>
+                                    <div class="span2">
+                                        @Html.LabelFor(model => model.EmployeeID, new { style = "font-Weight:Bold; margin-left:-98%;" })
+                                    </div>
+                                    <div class="span2">
+                                        @Html.DropDownListFor(m => m.EmployeeID, Model.ListGetCentreEmployeeNameItems, "All", new { id = "EmployeeID", @class = "form-control chosen-select", style = "font-weight:bold; width:108%; margin-top:-18%;" })
+                                        <br />
+                                    </div>
+                                </div>
+
+
+                                <div class="row control-group">
+                                    <div class="span">&nbsp;</div>
+                                    <div class="span2">
+                                        @Html.LabelFor(model => model.FromDate, new { style = "font-Weight:Bold;" })
+                                    </div>
+                                    <div class="span3">
+                                        @Html.TextBoxFor(model => model.FromDate, new { @value = @Model.FromDate, style = "font-Weight:Bold; width:108%; margin-left:-32%; width:65%" })
+                                        <br />
+                                    </div>
+                                    <div class="span">&nbsp;</div>
+                                    <div class="span2">
+                                        @Html.LabelFor(model => model.UptoDate, new { style = "font-Weight:Bold; margin-left:-116%" })
+                                    </div>
+                                    <div class="span3">
+                                        @Html.TextBoxFor(model => model.UptoDate, new { @value = @Model.FromDate, style = "font-Weight:Bold; margin-left:-94%; width:65%" })
+                                        <br />
+                                    </div>
+
+                                    <div class="span">&nbsp;</div>
+                                    <input type="submit" id="btnEmployeeAttendanceReportSubmit" name="submit" value="Show" class="btn btn-primary" style="margin-left: 68%; margin-top: -6%; text-align: right" />
+
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+@*}*@
+
+
+
+@if (System.Configuration.ConfigurationManager.AppSettings["IsEmployeeAttendanceHtmlReports"] == "0")
+{
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div id="aaa">
+                <div class="span12" style="float: left">
+                    <div class="widget-block">
+                        <div class="widget-head">
+                            <h5>Employee Attendance Report</h5>
+                        </div>
+                        <div class="widget-content">
+                            <div class="widget-box" style="padding: 15px">
+                                @Html.Partial("/Views/Employee/EmployeeAttendanceReport/EmployeeAttendanceReport.aspx")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (System.Configuration.ConfigurationManager.AppSettings["IsEmployeeAttendanceHtmlReports"] == "1")
+{
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div id="aaa">
+            <div class="span12" style="float: left">
+                <div class="widget-block">
+                    <div class="widget-head">
+                        <h5>Employee Attendance Report</h5>
+                    </div>
+                    <div class="widget-content">
+                        <div id="aaa">
+                            <div class="widget-box" style="padding: 15px">
+                                @Html.Partial("/Views/Employee/EmployeeAttendanceReport/List.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeAttendanceReport.Initialize();
+    });
+
+</script>

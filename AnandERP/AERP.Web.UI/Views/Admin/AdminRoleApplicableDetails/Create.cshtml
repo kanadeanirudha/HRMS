@@ -1,0 +1,485 @@
+﻿@model AERP.ViewModel.AdminRoleApplicableDetailsViewModel
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<style>
+    .bootgrid-header {
+        padding: 0 25px 90px;
+    }
+</style>
+<div class="">
+
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Allocate Role To Employee</h2>
+    </div>
+
+    <div class="card">
+
+        @if (Model.AdminRoleCode == null)
+        {
+            <div class="form-horizontal well">
+                <div class="row control-group">
+                    <div class="span4">
+                        <b><u>No Role Is Available For This Designation</u></b>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+
+            <form id="FormCreateAdminRoleApplicableDetails" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.CentreCode)
+                @Html.HiddenFor(model => model.CentreCodeWithName)
+                @Html.HiddenFor(model => model.DepartmentIdWithName)
+                @Html.HiddenFor(model => model.EmployeeID)
+                @Html.HiddenFor(model => model.AdminRoleMasterID)
+                @Html.HiddenFor(model => model.RoleApplicableID)
+                @Html.HiddenFor(model => model.RoleType)
+                @Html.HiddenFor(model => model.DesignationID)
+                <div class="card-body card-padding">
+                    <div class="row">
+                        <h5>&nbsp;Allocate Regular Role</h5>
+                        <hr>
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <span>@Html.LabelFor(model => model.EmployeeName, new { style = "" })</span>
+                                <div class="form-group fg-line">
+                                    @Html.DisplayFor(model => model.EmployeeName, new { @class = "form-control", style = "", ReadOnly = "True" })
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <span>@Html.LabelFor(model => model.AdminRoleCode, new { style = "" })</span>
+                                <div class="form-group fg-line">
+                                    @Html.TextBoxFor(model => model.AdminRoleCode, new { @class = "form-control", style = "background-color:#fff;", ReadOnly = "True" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <span>@Html.LabelFor(model => model.WorkFromDate, new { style = "" })</span>
+                                <div class="form-group fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.WorkFromDate, new { @class = "form-control", style = "background-color:#fff;", ReadOnly = "True" })
+                                </div>
+                            </div>
+
+                            @if (@Model.AdminRoleApplicableDetailsDTO.IsActive)
+                            {
+                                <div class="col-sm-6">
+                                    <div class="checkbox m-b-15" style="padding-top:8%;">
+                                        <label>
+                                            <input type="checkbox" id="IsActive" checked>
+                                            <i class="input-helper"></i>
+                                            @Html.LabelFor(model => model.IsActive)
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+
+                                <div class="col-sm-6">
+                                    <div class="checkbox m-b-15" style="padding-top:8%;">
+                                        <label>
+                                            <input type="checkbox" id="IsActive">
+                                            <i class="input-helper"></i>
+                                            @Html.LabelFor(model => model.IsActive)
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <span>@Html.LabelFor(model => model.Reason, new { style = "" })</span>
+                                <div class="form-group fg-line">
+                                    @Html.TextAreaFor(model => model.Reason, new { @class = "form-control", maxlength = "260" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Reason)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5>&nbsp;Allocate Additional Role</h5>
+                <hr>
+
+                <div class="bootgrid-header container-fluid" id="data-table-command-header">
+                    <div class="row">
+                        <table id="myCreateDataTable" class="table table-striped table-vmiddle table-responsive ">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Centre Name</th>
+                                    <th>Role Code</th>
+                                    <th>From Date</th>
+                                    <th>Upto Date</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div class="col-sm-3" style="margin-top:-45px">
+                    <button type="button" id="CreateAdminRoleApplicableDetailsRecord" class="btn btn-primary" style="">Submit</button>
+                    <button name="" id="reset" type="submit" class="btn btn-default" value="@Resources.ButtonAction_Reset">@Resources.ButtonAction_Reset</button>
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var oTable;
+        AdminRoleApplicableDetails.Initialize();
+        oTable = $('#myCreateDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "AdminRoleApplicableDetails/AjaxHandlerForAdditionalRole",
+            "bJQueryUI": true,
+            "bProcessing": true,
+            "bAutoWidth": true,
+            //"scrollY": "300px",
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "CentreCode", "value": $("#CentreCode").val() });
+                aoData.push({ "name": "DepartmentID", "value": $("#DepartmentIdWithName").val() });
+                aoData.push({ "name": "EmployeeID", "value": $("#EmployeeID").val() });
+            },
+            "oLanguage": {
+                "sInfoEmpty": "No entries to show",
+            },
+            "columnDefs": [
+                               {
+                                   "targets": 0,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       var chkStatus = '';
+                                       var value1 = '';
+                                       if (data[0] == "True") {
+                                           chkStatus = 'checked';
+                                           value1 = data[7] + '~checked~' + data[8] + '~' + data[2] + '~' + data[3];                //RoleApplicableID~Checked~DesigantionID~AdminRoleCode~AdminRoleMasterID
+                                       }
+                                       else {
+                                           chkStatus = '';
+                                           value1 = data[7] + '~Unchecked~' + data[8] + '~' + data[2] + '~' + data[3];
+                                       }
+                                       //var result = "<p  style='text-align: center;margin: 0 0 0px;'>" + '<input id="Select_Row~' + data[2] + '~' + data[3] + '" class="CheckBox" value="' + value1 + '" type="checkbox" ' + chkStatus + ' />' + "</p>";
+                                       var result = "<p  class='checkbox' style='margin-left: 10%; margin-top: 0%;'>" + '<input id="Select_Row~' + data[2] + '~' + data[3] + '" value="' + value1 + '" type="checkbox"  ' + chkStatus + ' /><i class="input-helper"></i>' + "</p>";
+                                       return result;
+                                   }
+                               },
+                               {
+                                   "visible": false, "targets": 1,
+                               },
+                               {
+                                   "targets": 2,
+                                   "bSortable": false,
+                               },
+                               {
+                                   "targets": 3,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       if (data[4] == null) {
+                                           //var result = "<p  style='text-align: center;margin: 0 0 0px;'>" + ' <input id="WorkFromDate_' + data[3] + '" type="text" style="width:145px;" value="" class="form-control_Internal_Row" />' + "</p>";
+                                           var result = "<p class='form-group fg-line' style=''>" + ' <input id="WorkFromDate_' + data[3] + '" type="text" style="" value="" class="form-control_Internal_Row" />' + "</p>";
+
+                                       }
+                                       else {
+                                           //var result = "<p  style='text-align: center;margin: 0 0 0px;'>" + '<input id="WorkFromDate_' + data[3] + '" type="text" style="width:145px;" value="' + data[4] + '" class="form-control_Internal_Row"  />' + "</p>";
+                                           var result = "<p class='form-group fg-line' style=''>" + ' <input id="WorkFromDate_' + data[3] + '" type="text" style="" value="' + data[4] + '" class="form-control_Internal_Row" />' + "</p>";
+                                       }
+                                       return result;
+                                   }
+                               },
+                               {
+                                   "targets": 4,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       if (data[5] == null) {
+                                           //var result = "<p style='text-align: center;margin: 0 0 0px;'>" + ' <input id="WorkToDate_' + data[3] + '" type="text" style="width:145px;" value="" class="form-control_WorkToDate" />' + "</p>";
+                                           var result = "<p class='form-group fg-line' style=''>" + ' <input id="WorkToDate_' + data[3] + '" type="text" style="" value="" class="form-control_WorkToDate" />' + "</p>";
+                                       }
+                                       else {
+                                           //var result = "<p  style='text-align: center;margin: 0 0 0px;'>" + '<input id="WorkToDate_' + data[3] + '" type="text" style="width:145px;" value="' + data[5] + '" class="form-control_WorkToDate"  />' + "</p>";
+                                           var result = "<p  class='form-group fg-line' style=''>" + '<input id="WorkToDate_' + data[3] + '" type="text" style="" value="' + data[5] + '" class="form-control_WorkToDate"  />' + "</p>";
+                                       }
+                                       return result;
+                                   }
+                               },
+                               {
+                                   "targets": 5,
+                                   "bSortable": false,
+                                   "data": null,
+                                   "render": function (data, type, full, meta) {
+                                       if (data[6] == null) {
+                                           //var result = "<p style='text-align: center;margin: 0 0 0px;'>" + ' <input id="Reason_' + data[3] + '" type="text" value="" style="width:161px;" class="form-control_Reason" />' + "</p>";
+                                           var result = "<p class='form-group fg-line' style=''>" + ' <input id="Reason_' + data[3] + '" type="text" value="" style="" class="form-control" />' + "</p>";
+                                       }
+                                       else {
+                                           //var result = "<p style='text-align: center;margin: 0 0 0px;'>" + ' <input id="Reason_' + data[3] + '" type="text" value="' + data[6] + '" style="width:161px;" class="form-control_Reason" />' + "</p>";
+                                           var result = "<p class='form-group fg-line' style=''>" + ' <input id="Reason_' + data[3] + '" type="text" value="' + data[6] + '" style="" class="form-control" />' + "</p>";
+                                       }
+                                       return result;
+                                   }
+                               }
+
+            ],
+
+            "order": [[1, 'asc']],
+            //"displayLength": 25,
+            "drawCallback": function (settings) {
+                debugger;
+                //$('.form-control_Internal_Row').datepicker({
+                //    dateFormat: 'd-M-yy',
+                //    minDate: new Date(),
+                //});
+
+                $('.form-control_Internal_Row').datetimepicker({
+                    format: 'DD MMMM YYYY',
+                    ignoreReadonly: true,
+                    //minDate: new Date(),
+                });
+
+                //$('.form-control_WorkToDate').datepicker({
+                //    dateFormat: 'd-M-yy',
+                //    minDate: new Date(),
+                //});
+
+                $('.form-control_WorkToDate').datetimepicker({
+                    format: 'DD MMMM YYYY',
+                    ignoreReadonly: true,
+                    //minDate: new Date(),
+                });
+
+                var api = this.api();
+                var rows = api.rows({ page: 'current' }).nodes();
+                var last = null;
+
+                api.column(1, { page: 'current' }).data().each(function (group, i) {
+
+                    if (last !== group) {
+                        $(rows).eq(i).before(
+                            '<tr class="group"><td colspan="5" style="font-weight:bold;background-color:rgba(128,128,128,0.2);color:#000;font-size:12px;font-family: verdana;">' + group + '</td></tr>'
+                        );
+
+                        last = group;
+                    }
+                });
+            }
+        });
+
+        DataTableSettings(oTable, "myCreateDataTable", "toggleTableColumn");
+
+        //$('.form-control_WorkToDate').datepicker({
+
+        //    numberOfMonths: 1,
+        //    dateFormat: "dd-mm-yyyy",
+        //    minDate: new Date(),
+        //});
+
+        $('.form-control_WorkToDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            //minDate: new Date(),
+        });
+
+
+    });
+
+
+
+    @*-----------------------------*@
+
+    if ($('.fg-line')[0]) {
+        $('body').on('focus', '.fg-line .form-control_Internal_Row', function () {
+            $(this).closest('.fg-line').addClass('fg-toggled');
+        })
+
+        $('body').on('focus', '.fg-line .form-control_WorkToDate', function () {
+            $(this).closest('.fg-line').addClass('fg-toggled');
+        })
+
+        $('body').on('blur', '.form-control_Internal_Row', function () {
+            var p = $(this).closest('.form-group, .input-group');
+            var i = p.find('.form-control_Internal_Row').val();
+
+            if (p.hasClass('fg-float')) {
+                if (i.length == 0) {
+                    $(this).closest('.fg-line').removeClass('fg-toggled');
+                }
+            }
+            else {
+                $(this).closest('.fg-line').removeClass('fg-toggled');
+            }
+        });
+
+        $('body').on('blur', '.form-control_WorkToDate', function () {
+            var p = $(this).closest('.form-group, .input-group');
+            var i = p.find('.form-control_WorkToDate').val();
+
+            if (p.hasClass('fg-float')) {
+                if (i.length == 0) {
+                    $(this).closest('.fg-line').removeClass('fg-toggled');
+                }
+            }
+            else {
+                $(this).closest('.fg-line').removeClass('fg-toggled');
+            }
+        });
+    }
+
+    //Add blue border for pre-valued fg-flot text feilds
+    //if ($('.fg-float')[0]) {
+    //    $('.fg-float .form-control').each(function () {
+    //        var i = $(this).val();
+
+    //        if (!i.length == 0) {
+    //            $(this).closest('.fg-line').addClass('fg-toggled');
+    //        }
+
+    //    });
+    //}
+
+
+</script>
+
+
+
+<style>
+    .form-control_Internal_Row:not(.fc-alt) {
+        -moz-appearance: none;
+        border-left: 0 none;
+        border-right: 0 none;
+        border-top: 0 none;
+        padding: 0;
+    }
+
+    .form-control_Internal_Row[disabled], .form-control_Internal_Row[readonly], fieldset[disabled] .form-control_Internal_Row {
+        background-color: #eeeeee;
+        opacity: 1;
+    }
+
+    .form-control_Internal_Row {
+        box-shadow: none !important;
+        resize: none;
+    }
+
+    .form-control_Internal_Row {
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #e0e0e0;
+        border-radius: 0;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        color: #000000;
+        display: block;
+        font-size: 13px;
+        height: 35px;
+        line-height: 1.42857;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        width: 100%;
+    }
+
+        .form-control_Internal_Row::-moz-placeholder {
+            color: #999999;
+            opacity: 1;
+        }
+    /*fg-toggled*/
+</style>
+
+
+<style>
+    .form-control_Internal_Row:not(.fc-alt) {
+        -moz-appearance: none;
+        border-left: 0 none;
+        border-right: 0 none;
+        border-top: 0 none;
+        padding: 0;
+    }
+
+    .form-control_Internal_Row[disabled], .form-control_Internal_Row[readonly], fieldset[disabled] .form-control_Internal_Row {
+        background-color: #eeeeee;
+        opacity: 1;
+    }
+
+    .form-control_Internal_Row {
+        box-shadow: none !important;
+        resize: none;
+    }
+
+    .form-control_Internal_Row {
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #e0e0e0;
+        border-radius: 0;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        color: #000000;
+        display: block;
+        font-size: 13px;
+        height: 35px;
+        line-height: 1.42857;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        width: 100%;
+    }
+
+        .form-control_Internal_Row::-moz-placeholder {
+            color: #999999;
+            opacity: 1;
+        }
+    /*fg-toggled*/
+</style>
+
+
+
+<style>
+    .form-control_WorkToDate:not(.fc-alt) {
+        -moz-appearance: none;
+        border-left: 0 none;
+        border-right: 0 none;
+        border-top: 0 none;
+        padding: 0;
+    }
+
+    .form-control_WorkToDate[disabled], .form-control_WorkToDate[readonly], fieldset[disabled] .form-control_WorkToDate {
+        background-color: #eeeeee;
+        opacity: 1;
+    }
+
+    .form-control_WorkToDate {
+        box-shadow: none !important;
+        resize: none;
+    }
+
+    .form-control_WorkToDate {
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #e0e0e0;
+        border-radius: 0;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        color: #000000;
+        display: block;
+        font-size: 13px;
+        height: 35px;
+        line-height: 1.42857;
+        padding: 6px 12px;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        width: 100%;
+    }
+
+        .form-control_WorkToDate::-moz-placeholder {
+            color: #999999;
+            opacity: 1;
+        }
+    /*fg-toggled*/
+</style>

@@ -1,0 +1,535 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content-wrapper">
+    <div class="wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Quatation
+                <small>Please fill in all the data fields, before save.</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Forms</a></li>
+                <li class="active">Quatation</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <form class="content" id="formTest" action="{% url 'JCBcrm_stores:GRN' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- SELECT2 EXAMPLE -->
+            <div class="box box-default">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Quatation Date -->
+                            <div class="form-group">
+                                <label class="col-lg-3" for="input_qu_Date">Order Date:<font color="red">*</font></label>
+                                <div class='col-lg-6'>
+                                    <input id="input_qu_Date" class="form-control" name="input_qu_Date" type="text" style="height:40px" placeholder="DD-MM-YYYY"  required />
+                                </div>
+                                <div id="errDate"></div>
+                            </div>
+                            <br><br>
+                            <!-- Quatation Number -->
+                            <div class="form-group">
+                                <label class="col-lg-3 " for="input_qu_No">Quoatation No. <font color="red">*</font></label>
+                                <div class="col-md-6">
+                                    <input id="input_qu_No" class="form-control" type="text" placeholder="Quoatation No."  required />
+                                </div>
+                                <div id="errQuoatation"></div>
+                            </div>
+                            <br><br>
+                            <!-- Quatation Customer -->
+                            <div class="form-group">
+                                <label class="col-lg-3 " for="input_qu_Customer">Customer <font color="red">*</font></label>
+                                <div class="col-md-6">
+                                    <select required class="form-control" id="input_qu_Customer">
+                                        <option value="">Select</option>
+                                        <option>XYZ Construction co.</option>
+                                        <option>ABC Construction co.</option>
+                                        <option>CTC co.</option>
+                                    </select>
+                                </div>
+                                <div id="errCustomer"></div>
+                            </div>
+                            <br><br>
+                            <!-- Quatation State-->
+                            <div class="form-group">
+                                <label class="col-lg-3 " for="input_qu_State">State <font color="red">*</font></label>
+                                <div class="col-md-6">
+                                    <select required class="form-control" id="input_qu_State" required >
+                                        <option value="">Select</option>
+                                        <option>Maharashtra</option>
+                                        <option>Chhatisgarh</option>
+                                        <option>Madhya Pradesh</option>
+                                        <option>Uttar Pradesh</option>
+                                        <option>Gujarat</option>
+                                    </select>
+                                </div>
+                                <div id="errState"></div>
+                            </div>
+                            <br><br>
+                            <!-- /.form-group -->
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Quatation Time -->
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="input_qu_Time">Time</label>
+                                <div class="col-lg-6">
+                                    <input id="input_qu_Time" class="form-control" type="time" placeholder="Time" style="height:40px" />
+                                </div>
+                            </div>
+                            <br><br>
+                            <!-- Quatation Documnet Number-->
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="input_qu_Doc">Doc No.</label>
+                                <div class="col-lg-6">
+                                    <input id="input_qu_Doc" class="form-control" type="text" placeholder="Doc No."  />
+                                </div>
+                            </div>
+                            <br><br>
+                            <!-- Quatation Documnet Date -->
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label" for="input_qu_Doc_Date">Doc Date</label>
+                                <div class="col-lg-6">
+                                    <input id="input_qu_Doc_Date" class="form-control" type="text" style="height:40px" placeholder="DD-MM-YYYY"  />
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <div class="col-lg-12">
+                        <div class="bs-component">
+                            <div>
+                            </div>
+                            <!-- Table -->
+                            <table class="table table-hover table-bordered" id="datatable" name="tbl_enquiries_view">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">#</th>
+                                        <th width="30%">Item_Description</th>
+                                        <th width="10%">Batch_No</th>
+                                        <th width="10%">GST%</th>
+                                        <th width="10%">Disc%</th>
+                                        <th width="10%">Quantity</th>
+                                        <th width="10%">Rate</th>
+                                        <th width="10%">Amount</th>
+                                        <th width="10%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr id="myRow">
+                                        <td></td>
+                                        <!--Item Description-->
+                                        <td>
+                                            <input id='id1' name="item_discription" type="text" class="form-control1" style="width:100%" required />
+                                        </td>
+                                        <!--Batch Number-->
+                                        <td>
+                                            <input id='id2' required name="batch_no" class="form-control1" type="text" style="width:100%" />
+                                        </td>
+                                        <!-- GST-->
+                                        <td>
+                                            <input id='id3' name="GST" class="form-control1" type="number" style="width:100%" />
+                                        </td>
+                                        <!--Discount-->
+                                        <td>
+                                            <input id='id4' name="discount" class="form-control1" type="number" style="width:100%" />
+                                        </td>
+                                        <!-- Quantity-->
+                                        <td>
+                                            <input id='id5' name="quantity" class="form-control1" type="number" style="width:100%" step="0.01" />
+                                        </td>
+                                        <!-- Rate-->
+                                        <td>
+                                            <input id='id6' name="rate" class="form-control1" type="number" style="width:100%" step="0.01" />
+                                        </td>
+                                        <!-- amount and GST result will be display-->
+                                        <td>
+                                            <input id='id7' name='amount' class="form-control" type="number" style="width:100%" readonly />
+                                            <input id='id8' name='gst' class="form-control" type="number" style="width:100%" readonly />
+                                            <input id='id9' name='disc' class="form-control" type="number" style="width:100%" readonly />
+                                        </td>
+                                        <!--addition button-->
+                                        <td>
+                                            <input type="button" value="+" id='savebutton'  />
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <!-- Table Ends-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <form class="form-horizontal">
+                                <!--Terms & Conditions-->
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="input_Terms_condition">Terms & Conditions</label>
+                                    <div class="col-lg-12">
+                                        <textarea rows="4" align="center" style="width:330px" class="form-control" id="input_Terms_condition" value=""></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!----------ends------->
+                        <div class="col-md-6">
+                            <form class="form-horizontal">
+                                <!-- Quatation Gross Amount-->
+                                <div class="form-group" style="margin-left: 240px;">
+                                    <label class="col-lg-6 control-label" for="input_Gross_Amount">Gross Amount</label>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="number" id="input_Gross_Amount"  readonly>
+                                    </div>
+                                </div>
+                                <!-- Quatation Total Discount-->
+                                <div class="form-group" style="margin-left: 240px;">
+                                    <label class="col-lg-6 control-label" for="input_Total_Discount">Total Discount</label>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="number" id="input_Total_Discount" readonly>
+                                    </div>
+                                </div>
+                                <!-- Quatation Total GST-->
+                                <div class="form-group" style="margin-left: 240px;">
+                                    <label class="col-lg-6 control-label" for="input_Total_GST">Total GST</label>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="number" id="input_Total_GST" readonly>
+                                    </div>
+                                </div>
+                                <!-- Quatation Add Freight-->
+                                <div class="form-group" style="margin-left: 240px;">
+                                    <label class="col-lg-6 control-label" for="input_Add_Freight">Add Freight</label>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="number" id="input_Add_Freight">
+                                    </div>
+                                </div>
+                                <!-- Quatation Add Others-->
+                                <div class="form-group" style="margin-left: 240px;">
+                                    <label class="col-lg-6 control-label" for="input_Add_Others">Add Others</label>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="number" id="input_Add_Others">
+                                    </div>
+                                </div>
+                                <!-- Quatation Net Amount-->
+                                <div class="form-group" style="margin-left: 240px;">
+                                    <label class="col-lg-6 control-label" for="input_Net_Amount">Net Amount</label>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="number" disabled="" id="input_Net_Amount">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quatation Submit and Camcel Button-->
+            <div style="margin-left: 1000px;">
+                <button class="btn btn-primary icon-btn" type="submit" value="submit" name="submit" id="input_Submit" onclick="validateval();">
+                    <i class="fa fa-fw fa-lg fa-check-circle"></i>SUBMIT
+                </button>
+                <button class="btn btn-primary icon-btn" type="cancel" value="clear" name="clear" id="input_Cancel">
+                    <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel
+                </button>
+            </div>
+        </form>
+        <br><br>
+        </section>
+        <!-- /.content -->
+    </div>
+</div>
+
+
+<script type="text/javascript">
+        //Recalculation ID Function
+        function recalcId(){
+			var i = 1;
+			$("#dataTable tbody tr").each(function(){
+				$(this).find("td:first input").val(i);
+				//$(this).find("td:first input").val($(this).index() + 1);
+				i++;
+			})
+        }
+        //Adding for a row function
+       $('#savebutton').click(function() {
+            debugger
+            if($('#id1').val() == ''){
+				alert('Please enter value for id1.');
+				return false;
+			}
+			if($('#id2').val() == ''){
+				alert('Please enter value for id2.');
+				return false;
+			}
+			if($('#id3').val() == ''){
+				alert('Please enter value for id3.');
+				return false;
+			}
+			if($('#id4').val() == ''){
+				alert('Please enter value for id4.');
+				return false;
+			}
+			if($('#id5').val() == ''){
+				alert('Please enter value for id5.');
+				return false;
+			}
+			if($('#id6').val() == ''){
+				alert('Please enter value for id6.');
+				return false;
+			}
+			if($('#id7').val() == ''){
+				alert('Please enter value for id7.');
+				return false;
+			}
+
+            var tableRowNo = parseInt($("#datatable tbody tr").length) + 1;
+	        var appendstring = '<tr>';
+			appendstring += '<td><input type="text" style="width:100%" readonly value="'+ tableRowNo +'" /></td>';
+			appendstring += '<td><input type="text" style="width:100%" class="id1" readonly value="'+$('#id1').val()+'" id="col1_'+ tableRowNo +'"/></td>';
+			appendstring += '<td><input type="text" style="width:100%" class="id2" readonly value="'+$('#id2').val()+'" /></td>';
+			appendstring += '<td><input type="text" style="width:100%" class="id3" readonly value="'+$('#id3').val()+'" /></td>';
+			appendstring += '<td><input type="text" style="width:100%" class="id4" readonly value="'+$('#id4').val()+'" /></td>';
+			appendstring += '<td><input type="text" style="width:100%" class="id5" readonly value="'+$('#id5').val()+'" /></td>';
+			appendstring += '<td><input type="text" style="width:100%" class="id6" readonly value="'+$('#id6').val()+'" /></td>';
+			appendstring += '<td><input type="text" style="width:100%" class="id7" readonly value="'+$('#id7').val()+'"/><input type="text" style="width:100%" class="id8" value="'+$('#id8').val()+'" /><input type="text" style="width:100%" class="id9" value="'+$('#id9').val()+'" /></td>';
+			appendstring += '<td><button type="button" id="deletbutton" class="deletbutton"><i class="fa fa-remove deleteEntry"></i></button><button type="button" class="editbutton"  id="editbutton"  ><i class="fa fa-edit editEntry"></i></button><button type="button" id="SaveEdit" class="btnSaveEdit" style="display: none;"><i class="fa fa-save SaveEdit"></i></button></td>';
+			appendstring += '</tr>';
+
+           // fetch_SalesOrder();
+
+			$("#datatable tbody").append(appendstring);
+			$('#id1').val('');
+            $('#id2').val('');
+            $('#id3').val('');
+            $('#id4').val('');
+            $('#id5').val('');
+            $('#id6').val('');
+            $('#id7').val('');
+            $('#id8').val('');
+            $('#id9').val('');
+
+            //Delete row function
+            $("#datatable tbody tr td button.deletbutton").click(function () {
+				$(this).closest("tr").remove();
+				recalcId();
+				cal_gross();
+				cal_tot_disc();
+			    cal_tot_gst();
+			    cal_net();
+			});
+
+            //Edit row function
+			$("#datatable tbody tr td button.editbutton").unbind("click").click(function () {
+                debugger
+				$(this).closest("tr").children("td").children("input").removeAttr('readonly');
+				$(this).closest("tr").children("td:eq(7)").children("input").attr('readonly',true);
+
+				$(this).closest("tr").find("td:last").children('.btnSaveEdit').show();
+				$(this).closest("tr").find("td:last").children('.deletbutton').hide();
+				$(this).closest("tr").find("td:last").children('.editbutton').hide();
+
+				$("#datatable tbody tr td button.btnSaveEdit").unbind("click").click(function () {
+				    $(this).closest("tr").children("td").children("input").attr('readonly', true);
+
+				    var quantity = $(this).parent().prev().prev().prev().children().val();
+				    var rate = $(this).parent().prev().prev().children().val();
+				    var txtDisc = $(this).parent().prev().prev().prev().prev().children().val();
+				    var gst = $(this).parent().prev().prev().prev().prev().prev().children().val();
+
+				    var result = (parseFloat(quantity) * parseFloat(rate) * (1 - (parseFloat(txtDisc) * 0.01))).toFixed(2);
+				    var get_disc = (parseFloat(quantity) * parseFloat(rate) * (parseFloat(txtDisc)) * 0.01).toFixed(2);
+				    var get_gst = (parseFloat(gst) * (parseFloat(result)) / 100).toFixed(2);
+
+				    if (!isNaN(result)) {
+				        $(this).parent().prev().children('.id7').val(result);
+				        $(this).parent().prev().children('.id8').val(get_gst);
+				        $(this).parent().prev().children('.id9').val(get_disc);
+				    }
+
+				    cal_gross();
+				    cal_tot_disc();
+				    cal_tot_gst();
+				    cal_net();
+
+				    $(this).closest("tr").find("td:last").children('.btnSaveEdit').hide();
+				    $(this).closest("tr").find("td:last").children('.deletbutton').show();
+				    $(this).closest("tr").find("td:last").children('.editbutton').show();
+				});
+			});
+			cal_gross();
+			cal_tot_disc();
+			cal_tot_gst();
+			cal_net();
+
+       });
+
+	   $("#id5").on("keyup",function(){
+			cal_amount();
+			cal_disc();
+	   });
+
+	   $("#id6").on("keyup",function(){
+			cal_amount();
+			cal_disc();
+	   });
+	   $("#id4").on("keyup",function(){
+			cal_amount();
+			cal_disc();
+	   });
+	   $("#id3").on("keyup",function(){
+			cal_amount();
+	   });
+
+        //Calculation of amount
+         function cal_amount() {
+         var discount = $('#id4').val();
+         var quantity = $('#id5').val();
+         var rate = $('#id6').val();
+         var result = (parseFloat(quantity) * parseFloat(rate)* (1 - (parseFloat(discount) * 0.01))).toFixed(2);
+         if (!isNaN(result)) {
+             $('#id7').val(result);
+         }
+         cal_gst();
+     }
+
+
+
+
+
+       //Calculation of GST
+       function cal_gst() {
+			var gst = $('#id3').val();
+            var amount = $('#id7').val();
+            var get_gst = (parseFloat(gst) * (parseFloat(amount)) / 100 ).toFixed(2);
+            if (!isNaN(get_gst)) {
+                $('#id8').val(get_gst);
+            }
+	   }
+       //Calculation of discount
+	   function cal_disc() {
+	   var quantity = $('#id5').val();
+	   var rate = $('#id6').val();
+	   var discount = $('#id4').val();
+	    var get_disc =(parseFloat(quantity) * parseFloat(rate) * (parseFloat(discount)) * 0.01).toFixed(2);
+           if (!isNaN(get_disc)) {
+                    $('#id9').val(get_disc);
+                }
+	   }
+       //Calculation of gross salary
+	   function cal_gross() {
+			var  groos_amt = 0;
+			$(".id7").each(function () {
+			    alert($(this).val())
+				groos_amt = parseFloat(groos_amt) +  parseFloat($(this).val());
+			})
+			$('#input_Gross_Amount').val(groos_amt.toFixed(2));
+	   }
+	    //Calculation of Total Discount
+	   function cal_tot_disc() {
+			var  tot_disc = 0;
+			$(".id9").each(function(){
+				tot_disc = parseFloat(tot_disc) +  parseFloat($(this).val());
+			})
+			$('#input_Total_Discount').val(tot_disc.toFixed(2));
+	   }
+	   //Calculation of Total GST
+	   function cal_tot_gst() {
+			var  tot_gst = 0;
+			$(".id8").each(function(){
+				tot_gst = parseFloat(tot_gst) +  parseFloat($(this).val());
+			})
+			$('#input_Total_GST').val(tot_gst.toFixed(2));
+	   }
+	   //Calculation of Net
+	   function cal_net() {
+	   var tot_gst = 0;
+	   var add_freight = 0;
+	   var groos_amt = $('#input_Gross_Amount').val();
+	   tot_gst = $('#input_Total_GST').val();
+	   add_freight = $('#input_Add_Freight').val();
+	   var add_other = $('#input_Add_Other').val();
+	   var net_amt =(parseFloat(groos_amt) + parseFloat(tot_gst));
+           if (!isNaN(net_amt)) {
+               $('#input_Net_Amount').val(net_amt.toFixed(2));
+                }
+	   }
+
+</script>
+
+<script>
+
+    var divs = new Array();
+
+	divs[0] = "errDate";
+
+	divs[1] = "errQuoatation";
+
+    divs[2] = "errCustomer";
+
+	divs[3] = "errState";
+
+	function validateval()
+
+	{
+
+	     var inputs = new Array();
+
+	     inputs[0] = document.getElementById('input_qu_Date').value;
+
+	     inputs[1] = document.getElementById('input_qu_No').value;
+
+	     inputs[2] = document.getElementById('input_qu_Customer').value;
+
+	     inputs[3] = document.getElementById('input_qu_State').value;
+
+
+	      var errors = new Array();
+
+	     errors[0] = "<span style='color:red'>Please enter date</span>";
+
+	     errors[1] = "<span style='color:red'>Please enter number</span>";
+
+	     errors[2] = "<span style='color:red'>Please enter customer name</span>";
+
+	     errors[3] = "<span style='color:red'>Please enter state</span>";
+
+	      for (i in inputs)
+
+	     {
+
+	          var errMessage = errors[i];
+
+	          var div = divs[i];
+
+	 
+
+	          if (inputs[i] == "")
+
+	              document.getElementById(div).innerHTML = errMessage;
+
+	           else
+
+	              document.getElementById(div).innerHTML = "OK!";
+
+	     }
+
+	}
+
+
+
+</script>

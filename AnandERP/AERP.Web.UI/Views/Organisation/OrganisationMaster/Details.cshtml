@@ -1,0 +1,152 @@
+﻿@model AERP.ViewModel.OrganisationMasterViewModel
+@{
+    ViewBag.Title = "Details";
+}
+@Styles.Render("~/Content/")
+@Html.Partial("_LeftMenu")
+
+<div id="dlgEdit">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Organisation Master : Details</h2>
+    </div>
+        
+<form id="">
+    <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.OrganisationName, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.OrganisationName
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.EstablishmentCode, new { style = "" })
+                <div class="form-group  fg-line">
+                   @Model.EstablishmentCode 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.FounderMembers, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.FounderMembers
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.FoundationDate, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.FoundationDate
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.PlotNo, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.PlotNo
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.StreetNumber, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.StreetNumber
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.Address1, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.Address1
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.PinCode, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.PinCode
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.Address2, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.Address2
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.FaxNo, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.FaxNo
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.Location, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.Location
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.OfficeContactNo, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.OfficeContactNo
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.CellPhone, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.CellPhone
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.URL, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.URL
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.EmailID, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.EmailID
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                @Html.LabelFor(model => model.MissionStatement, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Model.MissionStatement
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+</form>
+
+            
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,2124 @@
+﻿@model AERP.ViewModel.SaleContractArrearsCalculationViewModel
+<style>
+    .form-control {
+        height: inherit;
+    }
+
+    .mfp-content {
+        width: 90% !important;
+    }
+
+    .table th {
+        width: 120px;
+    }
+
+    .table td input {
+        width: 100px;
+    }
+</style>
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Generate Bulk Arrears</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                @Html.HiddenFor(m => m.SaleContractMasterID)
+                @Html.HiddenFor(m => m.SaleContractBillingSpanID)
+                @Html.HiddenFor(m => m.SaleContractManPowerItemID)
+                @Html.HiddenFor(m => m.CreatedBy)
+
+                @if (Model.SaleContractArrearsCalculationList.Count > 0)
+                {
+                    bool PTAdded = false; bool PTAddedInFooter = false;
+                    string[] EmployeeIDList = Model.SaleContractArrearsCalculationList[0].SaleContractEmployeeMasterIDList.Replace(", ", ",").Split(new char[] { ',' });
+                    int ManPowerItemID = Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID;
+                    decimal FinalTotalBasic = 0; decimal FinalTotalDays = 0; decimal FinalOTDays = 0; decimal FinalTotalAmount = 0; decimal FinalGrossAmount = 0; decimal FinalTotalEarnings = 0; decimal FinalTotalDeduction = 0; decimal FinalNetPayable = 0; decimal FinalPayableAmount = 0; decimal FinalTotalSalary = 0; decimal FinalEmployerContribution = 0; decimal FinalTotalCTC = 0;
+                    bool HeadAdditionalInTotal = false; bool FootAdditionalInTotal = false;
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                Contract Number : @Model.SaleContractArrearsCalculationList[0].ContractNumber
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                Arrears For Period : @Model.SaleContractArrearsCalculationList[0].SaleContractBillingSpanName
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                <input type="text" class="form-control input-sm" id="SearchEmpForSalary" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12" style="overflow-x:scroll;max-height:400px;overflow-y:hidden;">
+                        <table class="table table-striped" style="">
+                            <thead style="display:ruby;">
+                                <tr>
+                                    <th style="width:60px;">NR</th>
+                                    <th style="width: 240px;">Employee</th>
+                                    <th>Total Days</th>
+                                    <th>OT Days</th>
+                                    <th>Basic Salary</th>
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.HeadType == "DA")
+                                        {
+                                            <th>@item.HeadName</th>
+                                        }
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.HeadType == "AddA" && item.ComplianceType == 1)
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "PF" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == true)
+                                            {
+                                                HeadAdditionalInTotal = true;
+                                                <th>@item.HeadName</th>
+                                            }
+                                        }
+                                    }
+                                    <th>Total Amount</th>
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && HeadAdditionalInTotal == false) || (item.HeadType != "AddA")))
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == true)
+                                            {
+                                                <th>@item.HeadName</th>
+                                            }
+                                        }
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType == "OT")
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == true)
+                                            {
+                                                <th>@item.HeadName</th>
+                                            }
+                                        }
+                                    }
+                                    <th>Gross Salary</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && HeadAdditionalInTotal == false) || (item.HeadType != "AddA")))
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == false)
+                                            {
+                                                <th>@item.HeadName</th>
+                                            }
+                                        }
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType == "OT")
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == false)
+                                            {
+                                                <th>@item.HeadName</th>
+                                            }
+                                        }
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.HeadType == "AddA" && item.ComplianceType == 2)
+                                        {
+                                            <th>@item.HeadName</th>
+                                        }
+                                    }
+                                    <th>Total Earnings</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType == "PT" && PTAdded == false)
+                                        {
+                                            PTAdded = true;
+                                            <th>@item.HeadName</th>
+                                        }
+                                    }
+                                    @if (PTAdded == false)
+                                    {
+                                        <th>Prof. Tax</th>
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType != "PT" && item.ComplianceType == 1)
+                                        {
+                                            <th>@item.HeadName</th>
+                                        }
+                                    }
+                                    <th>Total Deduction</th>
+
+                                    <th>Net Payable</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType == "RIA")
+                                        {
+                                            <th>@item.HeadName</th>
+                                            <th>Total Payable Amount</th>
+                                        }
+                                    }
+
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 1 && item.ComplianceType == 2)
+                                        {
+                                            <th style="">@item.HeadName</th>
+                                        }
+                                    }
+                                    <th>Total Salary</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 2)
+                                        {
+                                            <th>@item.HeadName</th>
+                                        }
+                                    }
+                                    <th>Employer Contribution</th>
+                                    <th style="">Total CTC</th>
+                                </tr>
+                            </thead>
+
+                            <tbody style="overflow-y:auto;overflow-x:hidden;height:200px;display:block;">
+                                @if (EmployeeIDList.Count() > 0)
+                                {
+                                    for (int i = 0, j = 0, isIncremented = 0; i < EmployeeIDList.Count(); i++)
+                                    {
+                                        bool PTValueAdded = false;
+                                        decimal BasicAmount = Math.Round(Model.SaleContractArrearsCalculationList[j].TotalAmount, MidpointRounding.AwayFromZero);
+                                        decimal PreviousBasicAmount = Math.Round(Model.SaleContractArrearsCalculationList[j].PreviousTotalAmount, MidpointRounding.AwayFromZero);
+                                        decimal TotalAttendance = Model.SaleContractArrearsCalculationList[j].TotalAttendance;
+                                        byte TotalDays = Model.SaleContractArrearsCalculationList[j].TotalDays;
+                                        int ManPowerId = Model.SaleContractArrearsCalculationList[j].SaleContractManPowerItemID;
+
+                                        FinalTotalDays += TotalAttendance;
+
+                                        decimal ActualBasicAmount = Math.Round((BasicAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                        decimal PreviousActualBasicAmount = Math.Round((PreviousBasicAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+
+                                        decimal MainBasicAmount = ActualBasicAmount - PreviousActualBasicAmount;
+
+                                        FinalTotalBasic += MainBasicAmount;
+
+                                        FinalOTDays += Model.SaleContractArrearsCalculationList[j].OvertimeHours;
+
+                                        decimal FixedSalaryAmount = Math.Round(Model.SaleContractArrearsCalculationList[j].FixedSalaryAmount, MidpointRounding.AwayFromZero);
+                                        decimal ActualFixedSalaryAmount = Math.Round((FixedSalaryAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+
+                                        decimal TotalAmount = MainBasicAmount;
+                                        decimal ActualTotalAmount = ActualBasicAmount - PreviousActualBasicAmount;
+                                        // decimal PreviousTotalAmount = PreviousBasicAmount;
+                                        decimal PreviousActualTotalAmount = PreviousActualBasicAmount;
+
+                                        decimal GrossSalary = MainBasicAmount;
+                                        decimal ActualGrossSalary = MainBasicAmount;
+                                        decimal ActualTotalEarnings = MainBasicAmount;
+                                        decimal TotalDeduction = 0;
+                                        decimal ActualTotalDeduction = 0;
+                                        decimal EmployerContribution = 0;
+                                        decimal ActualEmployerContribution = 0;
+                                        decimal NetPayable = 0; decimal ActualNetPayable = 0; decimal TotalSalary = 0; decimal ActualTotalSalary = 0; decimal ActualSalaryWithAdditionalAllowance = 0; decimal SalaryWithAdditionalAllowance = 0;
+                                        bool AdditionalInTotal = false; bool FixedAmountAdded = false;
+
+                                        <tr>
+                                            <td style="width:60px;"><input type="checkbox" class="RemoveForAdjustment" style="width:0;" /></td>
+                                            <td>
+                                                <span class="SalaryEmpName" style="display:none;"> @Model.SaleContractArrearsCalculationList[j].SaleContractEmployeeMasterName</span>
+                                                <input type="hidden" class="EmployeeMasterID" value="@Model.SaleContractArrearsCalculationList[j].SaleContractEmployeeMasterID" />
+                                                <input type="hidden" class="ManPowerItemID" value="@Model.SaleContractArrearsCalculationList[j].SaleContractManPowerItemID" />
+                                                @*<input type="text" class="form-control" style="width: 230px;" value="@Model.SaleContractArrearsCalculationList[j].SaleContractEmployeeMasterName" disabled>*@
+                                                <textarea style="width:230px;" class="form-control" disabled>@Model.SaleContractArrearsCalculationList[j].SaleContractEmployeeMasterName</textarea>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control AdjustedTotalAttendance" value="@Model.SaleContractArrearsCalculationList[j].TotalAttendance" />
+                                                <input type="hidden" class="ActualTotalAttendance" value="@Model.SaleContractArrearsCalculationList[j].TotalAttendance" />
+                                                <input type="hidden" class="OriginalTotalDays" value="@Model.SaleContractArrearsCalculationList[j].TotalDays" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control AdjustedOvertimeHours" value="@Model.SaleContractArrearsCalculationList[j].OvertimeHours" disabled />
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="ActualBasicAmount" class="form-control ActualBasicAmount" value="@MainBasicAmount">
+                                                <input type="text" id="AdjustedBasicAmount" class="form-control AdjustedBasicAmount" value="@MainBasicAmount" disabled>
+                                                <input type="hidden" id="OriginalBasicAmount" class="OriginalBasicAmount" value="@Math.Round(Model.SaleContractArrearsCalculationList[j].TotalAmount, MidpointRounding.AwayFromZero)">
+                                            </td>
+
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.HeadType == "DA")
+                                                {
+                                                    j++;
+                                                    isIncremented = 1;
+                                                    decimal amount = 0; decimal Actualamount = 0;
+                                                    decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                    if (item.FixedAmount == 0 && item.Percentage == 0)
+                                                    {
+                                                        amount = 0;
+                                                        Actualamount = 0;
+                                                    }
+                                                    else if (item.FixedAmount > 0)
+                                                    {
+                                                        amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                        Actualamount = Math.Round((item.FixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                        previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                        previousActualamount = Math.Round((item.PreviousFixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                    }
+                                                    else
+                                                    {
+                                                        var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        decimal CalculateOnAmount = 0;
+                                                        decimal PreviousCalculateOnAmount = 0;
+                                                        if (item.CalculateOnFixedAmount > 0)
+                                                        {
+                                                            CalculateOnAmount = item.CalculateOnFixedAmount;
+                                                            PreviousCalculateOnAmount = item.PreviousCalculateOnFixedAmount;
+                                                        }
+                                                        else
+                                                        {
+
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+                                                                if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                                {
+                                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                                    PreviousCalculateOnAmount = PreviousCalculateOnAmount + PreviousBasicAmount;
+                                                                }
+                                                                else
+                                                                {
+                                                                    foreach (var itemSub in Model.SaleContractArrearsCalculationList)
+                                                                    {
+                                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && itemSub.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && itemSub.SaleContractManPowerItemID == ManPowerId && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                                        {
+                                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                                            PreviousCalculateOnAmount = PreviousCalculateOnAmount + itemSub.PreviousAmount;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                        Actualamount = Math.Round(Math.Round((CalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.Percentage / 100, MidpointRounding.AwayFromZero);
+
+                                                        previousAmount = Math.Round(PreviousCalculateOnAmount * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                        previousActualamount = Math.Round(Math.Round((PreviousCalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                    }
+                                                    item.Amount = amount;
+                                                    item.PreviousAmount = previousAmount;
+
+                                                    decimal MainAmount = amount - previousAmount;
+                                                    decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                    item.FinalTotalAmount += MainActualAmount;
+                                                    TotalAmount = TotalAmount + MainAmount;
+                                                    GrossSalary = GrossSalary + MainAmount;
+                                                    ActualTotalAmount = ActualTotalAmount + MainActualAmount;
+                                                    ActualGrossSalary = ActualGrossSalary + MainActualAmount;
+                                                    ActualTotalEarnings = ActualTotalEarnings + MainActualAmount;
+                                                    <td>
+                                                        <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                        <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                        <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                        <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                        @if (item.IsAllowance == true)
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                        }
+                                                        <input type="text" class="AdjustedAmount AdjustedAmountDA form-control" value="@MainActualAmount" disabled>
+                                                    </td>
+                                                }
+                                            }
+
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.HeadType == "AddA" && item.ComplianceType == 1)
+                                                {
+                                                    bool IsGrossAllowance = false;
+                                                    foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                    {
+                                                        if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "PF" && checkitem.ComplianceType == 1)
+                                                        {
+                                                            var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+
+                                                                if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                                {
+                                                                    IsGrossAllowance = true;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (IsGrossAllowance == true)
+                                                    {
+                                                        j++;
+                                                        AdditionalInTotal = true;
+                                                        isIncremented = 1;
+                                                        decimal amount = 0; decimal Actualamount = 0;
+                                                        decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                        if (item.FixedAmount == 0 && item.Percentage == 0)
+                                                        {
+                                                            amount = 0;
+                                                            Actualamount = 0;
+                                                        }
+                                                        else if (item.FixedAmount > 0)
+                                                        {
+                                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round((item.FixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round((item.PreviousFixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                        }
+                                                        else
+                                                        {
+                                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            decimal CalculateOnAmount = 0;
+                                                            decimal previousCalculateOnAmount = 0;
+                                                            if (item.CalculateOnFixedAmount > 0)
+                                                            {
+                                                                CalculateOnAmount = item.CalculateOnFixedAmount;
+                                                                previousCalculateOnAmount = item.PreviousCalculateOnFixedAmount;
+                                                            }
+                                                            else
+                                                            {
+                                                                foreach (var CalOn in CalculateOnValue)
+                                                                {
+                                                                    var ReferenceID = CalOn.Split('~');
+                                                                    if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                                    {
+                                                                        CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                                        previousCalculateOnAmount = previousCalculateOnAmount + PreviousBasicAmount;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        foreach (var itemSub in Model.SaleContractArrearsCalculationList)
+                                                                        {
+                                                                            if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && itemSub.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && itemSub.SaleContractManPowerItemID == ManPowerId && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                                            {
+                                                                                CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                                                previousCalculateOnAmount = previousCalculateOnAmount + itemSub.PreviousAmount;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round(Math.Round((CalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(previousCalculateOnAmount * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round(Math.Round((previousCalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                        }
+                                                        item.Amount = amount;
+                                                        item.PreviousAmount = previousAmount;
+
+                                                        decimal MainAmount = amount - previousAmount;
+                                                        decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                        item.FinalTotalAmount += MainActualAmount;
+                                                        TotalAmount = TotalAmount + MainAmount;
+                                                        GrossSalary = GrossSalary + MainAmount;
+                                                        ActualTotalAmount = ActualTotalAmount + MainActualAmount;
+                                                        ActualGrossSalary = ActualGrossSalary + MainActualAmount;
+                                                        ActualTotalEarnings = ActualTotalEarnings + MainActualAmount;
+                                                        <td>
+                                                            <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                            <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                            <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                            <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                            @if (item.IsAllowance == true)
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                            }
+                                                            <input type="text" class="AdjustedAmount AdjustedAmountAddA form-control" value="@MainActualAmount" disabled>
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+
+                                            @if (ActualTotalAmount > 0)
+                                            {
+                                                FinalTotalAmount += ActualTotalAmount;
+                                            }
+                                            <td>
+                                                <input type="hidden" id="ActualTotalAmount" class="form-control ActualTotalAmount" value="@ActualTotalAmount">
+                                                <input type="text" id="AdjustedTotalAmount" class="form-control AdjustedTotalAmount" value="@ActualTotalAmount" disabled>
+                                            </td>
+
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && AdditionalInTotal == false) || (item.HeadType != "AddA")))
+                                                {
+                                                    bool IsGrossAllowance = false;
+                                                    foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                    {
+                                                        if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                        {
+                                                            var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+
+                                                                if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                                {
+                                                                    IsGrossAllowance = true;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (IsGrossAllowance == true)
+                                                    {
+                                                        j++;
+                                                        isIncremented = 1;
+                                                        decimal amount = 0; decimal Actualamount = 0;
+                                                        decimal previousAmount = 0; decimal previous3Actualamount = 0;
+
+                                                        if (item.FixedAmount == 0 && item.Percentage == 0)
+                                                        {
+                                                            amount = 0;
+                                                        }
+                                                        else if (item.FixedAmount > 0)
+                                                        {
+                                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round((item.FixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+
+                                                            previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                            previous3Actualamount = Math.Round((item.PreviousFixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                        }
+                                                        else
+                                                        {
+                                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            decimal CalculateOnAmount = 0;
+                                                            decimal previousCalculateOnAmount = 0;
+                                                            if (item.CalculateOnFixedAmount > 0)
+                                                            {
+                                                                CalculateOnAmount = item.CalculateOnFixedAmount;
+                                                                previousCalculateOnAmount = item.PreviousCalculateOnFixedAmount;
+                                                            }
+                                                            else
+                                                            {
+                                                                foreach (var CalOn in CalculateOnValue)
+                                                                {
+                                                                    var ReferenceID = CalOn.Split('~');
+                                                                    if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                                    {
+                                                                        CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                                        previousCalculateOnAmount = previousCalculateOnAmount + PreviousBasicAmount;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        foreach (var itemSub in Model.SaleContractArrearsCalculationList)
+                                                                        {
+                                                                            if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && itemSub.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && itemSub.SaleContractManPowerItemID == ManPowerId && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                                            {
+                                                                                CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                                                previousCalculateOnAmount = previousCalculateOnAmount + itemSub.PreviousAmount;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round(Math.Round((CalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.Percentage / 100, MidpointRounding.AwayFromZero);
+
+                                                            previousAmount = Math.Round(previousCalculateOnAmount * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                            previous3Actualamount = Math.Round(Math.Round((previousCalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                        }
+                                                        item.Amount = amount;
+                                                        item.PreviousAmount = previousAmount;
+
+                                                        decimal MainAmount = amount - previousAmount;
+                                                        decimal MainActualAmount = Actualamount - previous3Actualamount;
+
+                                                        item.FinalTotalAmount += MainActualAmount;
+                                                        GrossSalary = GrossSalary + MainAmount;
+                                                        ActualGrossSalary = ActualGrossSalary + MainActualAmount;
+                                                        ActualTotalEarnings = ActualTotalEarnings + MainActualAmount;
+                                                        <td>
+                                                            <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                            <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                            <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                            <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                            @if (item.IsAllowance == true)
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                            }
+                                                            <input type="text" class="AdjustedAmount AdjustedAmountAllowance @item.HeadType form-control" value="@MainActualAmount" disabled>
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Allowance" && item.HeadType == "OT")
+                                                {
+                                                    bool IsGrossAllowance = false;
+                                                    foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                    {
+                                                        if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                        {
+                                                            var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+
+                                                                if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                                {
+                                                                    IsGrossAllowance = true;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (IsGrossAllowance == true)
+                                                    {
+                                                        j++;
+                                                        isIncremented = 1;
+                                                        decimal amount = 0; decimal Actualamount = 0;
+                                                        decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                        if (item.FixedAmount > 0)
+                                                        {
+                                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                        }
+
+                                                        item.Amount = amount;
+                                                        item.PreviousAmount = previousAmount;
+
+                                                        decimal MainAmount = amount - previousAmount;
+                                                        decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                        item.FinalTotalAmount += MainActualAmount;
+                                                        GrossSalary = GrossSalary + MainAmount;
+                                                        ActualGrossSalary = ActualGrossSalary + MainActualAmount;
+                                                        ActualTotalEarnings = ActualTotalEarnings + MainActualAmount;
+                                                        <td>
+                                                            <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                            <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                            <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                            <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                            @if (item.IsAllowance == true)
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                            }
+                                                            <input type="text" class="AdjustedAmount AdjustedAmountAllowanceOT form-control" value="@MainActualAmount" disabled>
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+                                            <td>
+                                                <input type="hidden" id="ActualGrossSalary" class="form-control ActualGrossSalary" value="@ActualGrossSalary">
+                                                <input type="text" id="AdjustedGrossSalary" class="form-control AdjustedGrossSalary" value="@ActualGrossSalary" disabled>
+                                            </td>
+                                            @if (ActualGrossSalary > 0)
+                                            {
+                                                FinalGrossAmount += ActualGrossSalary;
+                                            }
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && AdditionalInTotal == false) || (item.HeadType != "AddA")))
+                                                {
+                                                    bool IsGrossAllowance = false;
+                                                    foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                    {
+                                                        if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                        {
+                                                            var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+
+                                                                if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                                {
+                                                                    IsGrossAllowance = true;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (IsGrossAllowance == false)
+                                                    {
+                                                        j++;
+                                                        isIncremented = 1;
+                                                        decimal amount = 0; decimal Actualamount = 0;
+                                                        decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                        if (item.FixedAmount == 0 && item.Percentage == 0)
+                                                        {
+                                                            amount = 0;
+                                                        }
+                                                        else if (item.FixedAmount > 0)
+                                                        {
+                                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round((item.FixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+
+                                                            previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round((item.PreviousFixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                        }
+                                                        else
+                                                        {
+                                                            var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            decimal CalculateOnAmount = 0;
+                                                            decimal previousCalculateOnAmount = 0;
+                                                            if (item.CalculateOnFixedAmount > 0)
+                                                            {
+                                                                CalculateOnAmount = item.CalculateOnFixedAmount;
+                                                                previousCalculateOnAmount = item.PreviousCalculateOnFixedAmount;
+                                                            }
+                                                            else
+                                                            {
+                                                                foreach (var CalOn in CalculateOnValue)
+                                                                {
+                                                                    var ReferenceID = CalOn.Split('~');
+                                                                    if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                                    {
+                                                                        CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                                        previousCalculateOnAmount = previousCalculateOnAmount + PreviousBasicAmount;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        foreach (var itemSub in Model.SaleContractArrearsCalculationList)
+                                                                        {
+                                                                            if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && itemSub.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && itemSub.SaleContractManPowerItemID == ManPowerId && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                                            {
+                                                                                CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                                                previousCalculateOnAmount = previousCalculateOnAmount + itemSub.PreviousAmount;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round(Math.Round((CalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.Percentage / 100, MidpointRounding.AwayFromZero);
+
+                                                            previousAmount = Math.Round(previousCalculateOnAmount * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round(Math.Round((previousCalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                        }
+                                                        item.Amount = amount;
+                                                        item.PreviousAmount = previousAmount;
+
+                                                        decimal MainAmount = amount - previousAmount;
+                                                        decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                        item.FinalTotalAmount += MainActualAmount;
+                                                        GrossSalary = GrossSalary + MainAmount;
+                                                        ActualTotalEarnings = ActualTotalEarnings + MainActualAmount;
+                                                        <td>
+                                                            <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                            <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                            <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                            <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                            @if (item.IsAllowance == true)
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                            }
+                                                            <input type="text" class="AdjustedAmount AdjustedAmountAllowance @item.HeadType form-control" value="@MainActualAmount" disabled>
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Allowance" && item.HeadType == "OT")
+                                                {
+                                                    bool IsGrossAllowance = false;
+                                                    foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                    {
+                                                        if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                        {
+                                                            var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+
+                                                                if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                                {
+                                                                    IsGrossAllowance = true;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (IsGrossAllowance == false)
+                                                    {
+                                                        j++;
+                                                        isIncremented = 1;
+                                                        decimal amount = 0; decimal Actualamount = 0;
+                                                        decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                        if (item.FixedAmount > 0)
+                                                        {
+                                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                        }
+
+                                                        item.Amount = amount;
+                                                        item.PreviousAmount = previousAmount;
+
+                                                        decimal MainAmount = amount - previousAmount;
+                                                        decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                        item.FinalTotalAmount += MainActualAmount;
+                                                        GrossSalary = GrossSalary + MainAmount;
+                                                        ActualTotalEarnings = ActualTotalEarnings + MainActualAmount;
+                                                        <td>
+                                                            <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                            <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                            <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                            <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                            @if (item.IsAllowance == true)
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                            }
+                                                            <input type="text" class="AdjustedAmount AdjustedAmountAllowanceOT form-control" value="@MainActualAmount" disabled>
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.HeadType == "AddA" && item.ComplianceType == 2)
+                                                {
+                                                    j++;
+                                                    isIncremented = 1;
+                                                    decimal amount = 0;
+                                                    decimal previousAmount = 0;
+                                                    if (item.FixedAmount > 0)
+                                                    {
+                                                        amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                        previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                    }
+
+                                                    item.Amount = amount;
+                                                    item.PreviousAmount = previousAmount;
+
+                                                    decimal MainAmount = amount - previousAmount;
+
+                                                    decimal Actualamount = Math.Round((amount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                    decimal previousActualamount = Math.Round((previousAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+
+                                                    decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                    item.FinalTotalAmount += MainActualAmount;
+                                                    GrossSalary = GrossSalary + MainAmount;
+                                                    ActualTotalEarnings = ActualTotalEarnings + MainActualAmount;
+
+                                                    <td>
+                                                        <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                        <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                        <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                        <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                        @if (item.IsAllowance == true)
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                        }
+                                                        <input type="text" class="AdjustedAmount AdjustedAmountAddANonC form-control" value="@MainActualAmount" disabled>
+                                                    </td>
+                                                }
+                                            }
+                                            @if (ActualTotalEarnings > 0)
+                                            {
+                                                FinalTotalEarnings += ActualTotalEarnings;
+                                            }
+                                            <td>
+                                                <input type="hidden" id="ActualTotalEarnings" class="form-control ActualTotalEarnings" value="@ActualTotalEarnings">
+                                                <input type="text" id="AdjustedTotalEarnings" class="form-control AdjustedTotalEarnings" value="@ActualTotalEarnings" disabled>
+                                            </td>
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType == "PT" && item.ComplianceType == 1)
+                                                {
+
+                                                    decimal amount = 0; decimal Actualamount = 0;
+                                                    decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                    j++;
+                                                    if (item.FixedAmount > 0 && (item.RangeFrom <= ActualTotalEarnings && (item.RangeUpto == 0 || item.RangeUpto > ActualTotalEarnings)))
+                                                    {
+                                                        PTValueAdded = true;
+                                                        isIncremented = 1;
+
+                                                        amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                        Actualamount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                        previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                        previousActualamount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+
+                                                        item.Amount = amount;
+                                                        item.PreviousAmount = previousAmount;
+
+                                                        decimal MainAmount = amount - previousAmount;
+                                                        decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                        item.FinalTotalAmount += MainActualAmount;
+                                                        TotalDeduction = TotalDeduction + MainAmount;
+                                                        ActualTotalDeduction = ActualTotalDeduction + MainActualAmount;
+
+                                                        <td>
+                                                            <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                            <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                            <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                            <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                            @if (item.IsAllowance == true)
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                            }
+                                                            <input type="text" class="AdjustedAmount AdjustedAmountDeductionPT form-control" value="@MainActualAmount" disabled>
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+                                            @if (PTValueAdded == false)
+                                            {
+                                                <td>
+                                                    <input type="hidden" class="TransAmount" value="0">
+                                                    <input type="hidden" class="ActualTransAmount" value="0">
+                                                    <input type="hidden" class="ActualTransAllowanceID" value="0">
+                                                    <input type="hidden" class="ActualTransDeductionID" value="0">
+
+                                                    <input type="hidden" class="ActualTransIsAllowance" value="0">
+
+                                                    <input type="text" class="AdjustedAmount AdjustedAmountDeductionPT form-control" value="0" disabled>
+                                                </td>
+                                            }
+                                            <td style="display:none;">
+                                                @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                                {
+                                                    if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType == "PT" && item.ComplianceType == 1)
+                                                    {
+                                                        <span class="PTFixedAmount">@item.FixedAmount</span>
+                                                        <span class="PTRangeFrom">@item.RangeFrom</span>
+                                                        <span class="PTRangeUpto">@item.RangeUpto</span>
+                                                    }
+                                                }
+                                            </td>
+
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType != "PT" && item.ComplianceType == 1)
+                                                {
+                                                    j++;
+                                                    isIncremented = 1;
+                                                    decimal amount = 0; decimal Actualamount = 0;
+                                                    decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                    if (item.FixedAmount == 0 && item.Percentage == 0)
+                                                    {
+                                                        amount = 0;
+                                                    }
+                                                    else if (item.FixedAmount > 0)
+                                                    {
+                                                        if (item.HeadType == "ESIC")
+                                                        {
+                                                            amount = Math.Ceiling(item.FixedAmount);
+                                                            Actualamount = Math.Ceiling((item.FixedAmount / TotalDays) * TotalAttendance);
+                                                            previousAmount = Math.Ceiling(item.PreviousFixedAmount);
+                                                            previousActualamount = Math.Ceiling((item.PreviousFixedAmount / TotalDays) * TotalAttendance);
+                                                        }
+                                                        else
+                                                        {
+                                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round((item.FixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round((item.PreviousFixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        decimal CalculateOnAmount = 0;
+                                                        decimal previousCalculateOnAmount = 0;
+                                                        if (item.CalculateOnFixedAmount > 0)
+                                                        {
+                                                            CalculateOnAmount = item.CalculateOnFixedAmount;
+                                                            previousCalculateOnAmount = item.PreviousCalculateOnFixedAmount;
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+                                                                if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                                {
+                                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                                    previousCalculateOnAmount = previousCalculateOnAmount + PreviousBasicAmount;
+                                                                }
+                                                                else
+                                                                {
+                                                                    foreach (var itemSub in Model.SaleContractArrearsCalculationList)
+                                                                    {
+                                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && itemSub.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && itemSub.SaleContractManPowerItemID == ManPowerId && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                                        {
+                                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                                            previousCalculateOnAmount = previousCalculateOnAmount + itemSub.PreviousAmount;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        if (item.HeadType == "ESIC")
+                                                        {
+                                                            amount = Math.Ceiling(CalculateOnAmount * item.Percentage / 100);
+                                                            Actualamount = Math.Ceiling(Math.Ceiling((CalculateOnAmount / TotalDays) * TotalAttendance) * item.Percentage / 100);
+
+                                                            previousAmount = Math.Ceiling(previousCalculateOnAmount * item.PreviousPercentage / 100);
+                                                            previousActualamount = Math.Ceiling(Math.Ceiling((previousCalculateOnAmount / TotalDays) * TotalAttendance) * item.PreviousPercentage / 100);
+                                                        }
+                                                        else
+                                                        {
+                                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round(Math.Round((CalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(previousCalculateOnAmount * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round(Math.Round((previousCalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                        }
+                                                    }
+                                                    item.Amount = amount;
+                                                    item.PreviousAmount = previousAmount;
+
+                                                    decimal MainAmount = amount - previousAmount;
+                                                    decimal MainActualAmount = Actualamount - previousActualamount;
+
+
+                                                    item.FinalTotalAmount += MainActualAmount;
+                                                    TotalDeduction = TotalDeduction + MainAmount;
+                                                    ActualTotalDeduction = ActualTotalDeduction + MainActualAmount;
+                                                    <td>
+                                                        <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                        <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                        <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                        <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                        @if (item.IsAllowance == true)
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                        }
+                                                        <input type="text" class="AdjustedAmount AdjustedAmountDeductionEmployee @item.HeadType@item.ContributionType@item.HeadSubType form-control" value="@MainActualAmount" disabled>
+                                                    </td>
+                                                }
+                                            }
+                                            <td>
+                                                <input type="hidden" id="ActualTotalDeduction" class="form-control ActualTotalDeduction" value="@ActualTotalDeduction">
+                                                <input type="text" id="AdjustedTotalDeduction" class="form-control AdjustedTotalDeduction" value="@ActualTotalDeduction" disabled>
+                                            </td>
+                                            @if (ActualBasicAmount > 0)
+                                            {
+                                                NetPayable = GrossSalary - TotalDeduction;
+                                                ActualNetPayable = ActualTotalEarnings - ActualTotalDeduction;
+                                                FinalTotalDeduction += ActualTotalDeduction;
+                                                FinalNetPayable += ActualNetPayable;
+                                            }
+
+                                            <td>
+                                                <input type="hidden" id="ActualNetPayable" class="form-control ActualNetPayable" value="@ActualNetPayable">
+                                                <input type="text" id="AdjustedNetPayable" class="form-control AdjustedNetPayable" value="@ActualNetPayable" disabled>
+                                            </td>
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Allowance" && item.HeadType == "RIA")
+                                                {
+                                                    j++;
+                                                    isIncremented = 1;
+                                                    decimal amount = 0; decimal Actualamount = 0;
+                                                    decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                    if (item.FixedAmount > 0)
+                                                    {
+                                                        amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                        Actualamount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                        previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                        previousActualamount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                    }
+
+                                                    item.Amount = amount;
+                                                    item.PreviousAmount = previousAmount;
+
+                                                    decimal MainAmount = amount - previousAmount;
+                                                    decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                    item.FinalTotalAmount += MainActualAmount;
+                                                    NetPayable = NetPayable + MainAmount;
+                                                    ActualNetPayable = ActualNetPayable + MainActualAmount;
+                                                    <td>
+                                                        <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                        <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                        <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                        <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                        @if (item.IsAllowance == true)
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                        }
+                                                        <input type="text" class="AdjustedAmount AdjustedAmountAllowanceRIA form-control" value="@MainActualAmount" disabled>
+                                                    </td>
+
+                                                    <td>
+                                                        <input type="hidden" id="ActualNetPayable" class="form-control ActualTotalAmountPayable" value="@ActualFixedSalaryAmount">
+                                                        <input type="text" id="AdjustedNetPayable" class="form-control AdjustedTotalAmountPayable" value="@ActualFixedSalaryAmount" disabled>
+                                                    </td>
+                                                    if (ActualFixedSalaryAmount > 0)
+                                                    {
+                                                        FinalPayableAmount += ActualFixedSalaryAmount;
+                                                    }
+                                                    if (FixedSalaryAmount > 0)
+                                                    {
+                                                        FixedAmountAdded = true;
+                                                        SalaryWithAdditionalAllowance = FixedSalaryAmount;
+                                                        ActualSalaryWithAdditionalAllowance = ActualFixedSalaryAmount;
+                                                    }
+
+                                                }
+                                            }
+                                            @if (FixedAmountAdded == false)
+                                            {
+                                                SalaryWithAdditionalAllowance = NetPayable;
+                                                ActualSalaryWithAdditionalAllowance = ActualNetPayable;
+                                            }
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Deduction" && item.ContributionType == 1 && item.ComplianceType == 2)
+                                                {
+                                                    j++;
+                                                    isIncremented = 1;
+                                                    decimal amount = 0;
+                                                    decimal previousAmount = 0;
+
+                                                    if (item.FixedAmount > 0)
+                                                    {
+                                                        amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                        previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+
+                                                    }
+
+                                                    item.Amount = amount;
+                                                    item.PreviousAmount = previousAmount;
+
+                                                    decimal MainAmount = amount - previousAmount;
+                                                    decimal Actualamount = amount;
+                                                    decimal previousActualamount = previousAmount;
+                                                    decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                    item.FinalTotalAmount += MainActualAmount;
+                                                    if (FixedSalaryAmount > 0)
+                                                    {
+                                                        SalaryWithAdditionalAllowance = SalaryWithAdditionalAllowance - MainAmount;
+                                                        ActualSalaryWithAdditionalAllowance = ActualSalaryWithAdditionalAllowance - MainActualAmount;
+                                                    }
+                                                    else
+                                                    {
+                                                        SalaryWithAdditionalAllowance = SalaryWithAdditionalAllowance - MainAmount;
+                                                        ActualSalaryWithAdditionalAllowance = ActualSalaryWithAdditionalAllowance - MainActualAmount;
+                                                    }
+
+                                                    <td>
+                                                        <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                        <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                        <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                        <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                        @if (item.IsAllowance == true)
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                        }
+                                                        <input type="text" class="AdjustedAmount AdjustedAmountDeductionEmployeeNonCompliance @item.HeadType@item.ContributionType@item.HeadSubType form-control" value="@MainActualAmount" @(item.SaleContractManPowerAllowanceID == 0 && item.SaleContractManPowerDeductionID == 0 ? "disabled" : "")>
+                                                    </td>
+                                                }
+                                            }
+                                            @if (ActualSalaryWithAdditionalAllowance > 0)
+                                            {
+                                                FinalTotalSalary += ActualSalaryWithAdditionalAllowance;
+                                            }
+                                            <td>
+                                                <input type="hidden" id="ActualSalaryWithAdditionalAllowance" class="form-control ActualSalaryWithAdditionalAllowance" value="@ActualSalaryWithAdditionalAllowance">
+                                                <input type="text" id="AdjustedSalaryWithAdditionalAllowance" class="form-control AdjustedSalaryWithAdditionalAllowance" value="@ActualSalaryWithAdditionalAllowance" disabled>
+                                            </td>
+                                            @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && item.SaleContractManPowerItemID == ManPowerId && item.RuleType == "Deduction" && item.ContributionType == 2)
+                                                {
+                                                    j++;
+                                                    isIncremented = 1;
+                                                    decimal amount = 0; decimal Actualamount = 0;
+                                                    decimal previousAmount = 0; decimal previousActualamount = 0;
+
+                                                    if (item.FixedAmount == 0 && item.Percentage == 0)
+                                                    {
+                                                        amount = 0;
+                                                    }
+                                                    else if (item.FixedAmount > 0)
+                                                    {
+                                                        if (item.HeadType == "ESIC")
+                                                        {
+                                                            amount = Math.Ceiling(item.FixedAmount);
+                                                            Actualamount = Math.Ceiling((item.FixedAmount / TotalDays) * TotalAttendance);
+                                                            previousAmount = Math.Ceiling(item.PreviousFixedAmount);
+                                                            previousActualamount = Math.Ceiling((item.PreviousFixedAmount / TotalDays) * TotalAttendance);
+                                                        }
+                                                        else
+                                                        {
+                                                            amount = Math.Round(item.FixedAmount, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round((item.FixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(item.PreviousFixedAmount, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round((item.PreviousFixedAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        decimal CalculateOnAmount = 0;
+                                                        decimal previousCalculateOnAmount = 0;
+                                                        if (item.CalculateOnFixedAmount > 0)
+                                                        {
+                                                            CalculateOnAmount = item.CalculateOnFixedAmount;
+                                                            previousCalculateOnAmount = item.PreviousCalculateOnFixedAmount;
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var CalOn in CalculateOnValue)
+                                                            {
+                                                                var ReferenceID = CalOn.Split('~');
+                                                                if (Convert.ToByte(ReferenceID[0]) == 0)
+                                                                {
+                                                                    CalculateOnAmount = CalculateOnAmount + BasicAmount;
+                                                                    previousCalculateOnAmount = previousCalculateOnAmount + PreviousBasicAmount;
+                                                                }
+                                                                else
+                                                                {
+                                                                    foreach (var itemSub in Model.SaleContractArrearsCalculationList)
+                                                                    {
+                                                                        if (itemSub.HeadID == Convert.ToByte(ReferenceID[0]) && itemSub.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[i]) && itemSub.SaleContractManPowerItemID == ManPowerId && ((itemSub.RuleType == "Allowance" && Convert.ToByte(ReferenceID[1]) == 2) || (itemSub.RuleType == "Deduction" && Convert.ToByte(ReferenceID[1]) == 3)))
+                                                                        {
+                                                                            CalculateOnAmount = CalculateOnAmount + itemSub.Amount;
+                                                                            previousCalculateOnAmount = previousCalculateOnAmount + itemSub.PreviousAmount;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        if (item.HeadType == "ESIC")
+                                                        {
+                                                            amount = Math.Ceiling(CalculateOnAmount * item.Percentage / 100);
+                                                            Actualamount = Math.Ceiling(Math.Ceiling((CalculateOnAmount / TotalDays) * TotalAttendance) * item.PreviousPercentage / 100);
+                                                            previousAmount = Math.Ceiling(previousCalculateOnAmount * item.PreviousPercentage / 100);
+                                                            previousActualamount = Math.Ceiling(Math.Ceiling((previousCalculateOnAmount / TotalDays) * TotalAttendance) * item.PreviousPercentage / 100);
+                                                        }
+                                                        else
+                                                        {
+                                                            amount = Math.Round(CalculateOnAmount * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            Actualamount = Math.Round(Math.Round((CalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.Percentage / 100, MidpointRounding.AwayFromZero);
+                                                            previousAmount = Math.Round(previousCalculateOnAmount * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                            previousActualamount = Math.Round(Math.Round((previousCalculateOnAmount / TotalDays) * TotalAttendance, MidpointRounding.AwayFromZero) * item.PreviousPercentage / 100, MidpointRounding.AwayFromZero);
+                                                        }
+                                                    }
+                                                    item.Amount = amount;
+                                                    item.PreviousAmount = previousAmount;
+
+                                                    decimal MainAmount = amount - previousAmount;
+                                                    decimal MainActualAmount = Actualamount - previousActualamount;
+
+                                                    item.FinalTotalAmount += MainActualAmount;
+                                                    EmployerContribution = EmployerContribution + MainAmount;
+                                                    ActualEmployerContribution = ActualEmployerContribution + MainActualAmount;
+                                                    <td>
+                                                        <input type="hidden" class="TransAmount" value="@MainAmount">
+                                                        <input type="hidden" class="ActualTransAmount" value="@MainActualAmount">
+                                                        <input type="hidden" class="ActualTransAllowanceID" value="@item.SaleContractManPowerAllowanceID">
+                                                        <input type="hidden" class="ActualTransDeductionID" value="@item.SaleContractManPowerDeductionID">
+                                                        @if (item.IsAllowance == true)
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="1">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="hidden" class="ActualTransIsAllowance" value="0">
+                                                        }
+                                                        <input type="text" class="AdjustedAmount AdjustedAmountDeductionEmployer @item.HeadType@item.ContributionType@item.HeadSubType form-control" value="@MainActualAmount" disabled>
+                                                    </td>
+                                                }
+                                            }
+                                            <td>
+                                                <input type="hidden" id="ActualEmployerContribution" class="form-control ActualEmployerContribution" value="@ActualEmployerContribution">
+                                                <input type="text" id="AdjustedEmployerContribution" class="form-control AdjustedEmployerContribution" value="@ActualEmployerContribution" disabled>
+                                            </td>
+                                            @if (ActualBasicAmount > 0)
+                                            {
+                                                TotalSalary = GrossSalary + EmployerContribution;
+                                                ActualTotalSalary = ActualTotalEarnings + ActualEmployerContribution;
+                                                FinalEmployerContribution += ActualEmployerContribution;
+                                                FinalTotalCTC += ActualTotalSalary;
+                                            }
+                                            <td>
+                                                <input type="hidden" id="ActualTotalSalary" class="form-control ActualTotalSalary" value="@ActualTotalSalary">
+                                                <input type="text" id="AdjustedTotalSalary" class="form-control AdjustedTotalSalary" value="@ActualTotalSalary" disabled>
+                                            </td>
+                                        </tr>
+                                        if (EmployeeIDList.Count() == Model.SaleContractArrearsCalculationList.Count && isIncremented == 0)
+                                        {
+                                            j++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+
+                            <tfoot style="display:ruby;">
+                                <tr>
+                                    <th style="width:60px;"></th>
+                                    <th style="width: 240px;">Total</th>
+                                    <th class="FinalTotalDays">@FinalTotalDays</th>
+                                    <th class="FinalTotalDays">@FinalOTDays</th>
+                                    <th class="FinalMainAmount">@FinalTotalBasic</th>
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.HeadType == "DA" && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.HeadType == "DA")
+                                        {
+                                            <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                        }
+                                    }
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.HeadType == "AddA" && item.ContributionType == 1 && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                bool IsGrossAllowance = false;
+                                                foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                {
+                                                    if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "PF" && checkitem.ComplianceType == 1)
+                                                    {
+                                                        var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        foreach (var CalOn in CalculateOnValue)
+                                                        {
+                                                            var ReferenceID = CalOn.Split('~');
+
+                                                            if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                            {
+                                                                IsGrossAllowance = true;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                if (IsGrossAllowance == true)
+                                                {
+                                                    FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                                }
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.HeadType == "AddA" && item.ContributionType == 1)
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == true)
+                                            {
+                                                FootAdditionalInTotal = true;
+                                                <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                            }
+                                        }
+                                    }
+
+                                    <th class="FinalMainAmount">@FinalTotalAmount</th>
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && FootAdditionalInTotal == false) || (item.HeadType != "AddA")) && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                bool IsGrossAllowance = false;
+                                                foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                {
+                                                    if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                    {
+                                                        var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        foreach (var CalOn in CalculateOnValue)
+                                                        {
+                                                            var ReferenceID = CalOn.Split('~');
+
+                                                            if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                            {
+                                                                IsGrossAllowance = true;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                if (IsGrossAllowance == true)
+                                                {
+                                                    FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                                }
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && FootAdditionalInTotal == false) || (item.HeadType != "AddA")))
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == true)
+                                            {
+                                                <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                            }
+                                        }
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Allowance" && item.HeadType == "OT" && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                bool IsGrossAllowance = false;
+                                                foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                {
+                                                    if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                    {
+                                                        var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        foreach (var CalOn in CalculateOnValue)
+                                                        {
+                                                            var ReferenceID = CalOn.Split('~');
+
+                                                            if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                            {
+                                                                IsGrossAllowance = true;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                if (IsGrossAllowance == true)
+                                                {
+                                                    FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                                }
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType == "OT")
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == true)
+                                            {
+                                                <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                            }
+                                        }
+                                    }
+                                    <th class="FinalMainAmount">@FinalGrossAmount</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && FootAdditionalInTotal == false) || (item.HeadType != "AddA")) && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                bool IsGrossAllowance = false;
+                                                foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                {
+                                                    if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                    {
+                                                        var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        foreach (var CalOn in CalculateOnValue)
+                                                        {
+                                                            var ReferenceID = CalOn.Split('~');
+
+                                                            if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                            {
+                                                                IsGrossAllowance = true;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                if (IsGrossAllowance == false)
+                                                {
+                                                    FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                                }
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType != "DA" && item.HeadType != "OT" && item.HeadType != "RIA" && ((item.HeadType == "AddA" && item.ComplianceType == 1 && FootAdditionalInTotal == false) || (item.HeadType != "AddA")))
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == false)
+                                            {
+                                                <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                            }
+                                        }
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Allowance" && item.HeadType == "OT" && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                bool IsGrossAllowance = false;
+                                                foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                                {
+                                                    if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                    {
+                                                        var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                        foreach (var CalOn in CalculateOnValue)
+                                                        {
+                                                            var ReferenceID = CalOn.Split('~');
+
+                                                            if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                            {
+                                                                IsGrossAllowance = true;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                if (IsGrossAllowance == false)
+                                                {
+                                                    FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                                }
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType == "OT")
+                                        {
+                                            bool IsGrossAllowance = false;
+                                            foreach (var checkitem in Model.SaleContractArrearsCalculationList)
+                                            {
+                                                if (checkitem.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && checkitem.SaleContractManPowerItemID == Model.SaleContractArrearsCalculationList[0].SaleContractManPowerItemID && checkitem.RuleType == "Deduction" && checkitem.ContributionType == 1 && checkitem.HeadType == "ESIC" && checkitem.ComplianceType == 1)
+                                                {
+                                                    var CalculateOnValue = checkitem.CalculateOnString.Replace(", ", ",").Split(',');
+                                                    foreach (var CalOn in CalculateOnValue)
+                                                    {
+                                                        var ReferenceID = CalOn.Split('~');
+
+                                                        if (item.HeadID == Convert.ToByte(ReferenceID[0]))
+                                                        {
+                                                            IsGrossAllowance = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (IsGrossAllowance == false)
+                                            {
+                                            <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                            }
+                                        }
+                                    }
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.HeadType == "AddA" && item.ComplianceType == 2 && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.HeadType == "AddA" && item.ComplianceType == 2)
+                                        {
+                                            <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                        }
+                                    }
+                                    <th class="FinalMainAmount">@FinalTotalEarnings</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType == "PT" && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType == "PT" && PTAddedInFooter == false)
+                                        {
+                                            PTAddedInFooter = true;
+                                            <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                        }
+                                    }
+                                    @if (PTAddedInFooter == false)
+                                    {
+                                        <th>0</th>
+                                    }
+                                    <th style="display:none;"></th>
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType != "PT" && item.ComplianceType == 1 && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 1 && item.HeadType != "PT" && item.ComplianceType == 1)
+                                        {
+                                            <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                        }
+                                    }
+                                    <th class="FinalMainAmount">@FinalTotalDeduction</th>
+
+                                    <th class="FinalMainAmount">@FinalNetPayable</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Allowance" && item.HeadType == "RIA" && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Allowance" && item.HeadType == "RIA")
+                                        {
+                                            <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                            <th class="FinalMainAmount">@FinalPayableAmount</th>
+                                        }
+                                    }
+
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Deduction" && item.ContributionType == 1 && item.ComplianceType == 2 && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 1 && item.ComplianceType == 2)
+                                        {
+                                            <th style="" class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                        }
+                                    }
+                                    <th class="FinalMainAmount">@FinalTotalSalary</th>
+                                    @foreach (var item in Model.SaleContractArrearsCalculationList)
+                                    {
+                                        decimal FinalTotalAmountDisplay = 0;
+                                        foreach (var innerItem in Model.SaleContractArrearsCalculationList)
+                                        {
+                                            if (item.RuleType == "Deduction" && item.ContributionType == 2 && item.RuleType == innerItem.RuleType && item.HeadType == innerItem.HeadType && item.HeadID == innerItem.HeadID)
+                                            {
+                                                FinalTotalAmountDisplay += innerItem.FinalTotalAmount;
+                                            }
+                                        }
+                                        if (item.SaleContractEmployeeMasterID == Convert.ToInt32(EmployeeIDList[0]) && item.SaleContractManPowerItemID == ManPowerItemID && item.RuleType == "Deduction" && item.ContributionType == 2)
+                                        {
+                                            <th class="FinalSubAmount">@FinalTotalAmountDisplay</th>
+                                        }
+                                    }
+                                    <th class="FinalMainAmount">@FinalEmployerContribution</th>
+                                    <th style="" class="FinalMainAmount">@FinalTotalCTC</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-2" style="float:right;">
+                            <div class="form-group fg-line">
+                                <button type="button" class="btn btn-primary m-t-20" id="CreateSaleContractBulkSalaryTransaction">@Resources.ButtonAction_Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-12">
+                        <div class="form-group fg-line">
+                            <p>Salary for this span is already generated.</p>
+                        </div>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractArrearsCalculation.Initialize();
+
+        //    var $table = $('.table'),
+        //$bodyCells = $table.find('tbody tr:first').children(),
+        //colWidth;
+
+        //    // Get the tbody columns width array
+        //    colWidth = $bodyCells.map(function () {
+        //        return $(this).width();
+        //    }).get();
+
+        //    // Set the width of thead columns
+        //    $table.find('thead tr').children().each(function (i, v) {
+        //        $(v).width(colWidth[i]);
+        //    });
+        //    $table.find('tfoot tr').children().each(function (i, v) {
+        //        $(v).width(colWidth[i]);
+        //    });
+
+
+                $(".AdjustedTotalAttendance").keyup(function () {
+            var AdjustedTotalAttendance = $(this).val();
+            var OriginalBasicAmount = $(this).closest("tr").find("td input.ActualBasicAmount").val();
+            var OriginalTotalDays = $(this).closest("tr").find("td input.OriginalTotalDays").val();
+            var ActualTotalAttendance = $(this).closest("tr").find("td input.ActualTotalAttendance").val();
+
+            var NewBasicSalary = parseFloat((parseFloat(OriginalBasicAmount) / parseFloat(ActualTotalAttendance)) * parseFloat(AdjustedTotalAttendance)).toFixed();
+
+            $(this).closest("tr").find("td input.AdjustedBasicAmount").val(NewBasicSalary);
+
+            var AdjustedAmountDA = 0;
+            $(this).closest("tr").find("td input.AdjustedAmountDA").each(function () {
+                var NewAdjustedAmountDA = parseFloat((parseFloat($(this).prev().prev().prev().prev().val()) / parseFloat(ActualTotalAttendance)) * parseFloat(AdjustedTotalAttendance)).toFixed();
+                $(this).val(NewAdjustedAmountDA);
+                AdjustedAmountDA = parseFloat(AdjustedAmountDA).toFixed() + parseFloat(NewAdjustedAmountDA).toFixed();
+            })
+            var AdjustedTotalAmount = parseFloat(NewBasicSalary) + parseFloat(AdjustedAmountDA);
+
+            var AdjustedAmountAddA = 0;
+            $(this).closest("tr").find("td input.AdjustedAmountAddA").each(function () {
+                var NewAdjustedAmountAddA = parseFloat((parseFloat($(this).prev().prev().prev().prev().val()) / parseFloat(ActualTotalAttendance)) * parseFloat(AdjustedTotalAttendance)).toFixed();
+                $(this).val(NewAdjustedAmountAddA);
+                AdjustedAmountAddA = parseFloat(AdjustedAmountAddA).toFixed() + parseFloat(NewAdjustedAmountAddA).toFixed();
+            })
+            var AdjustedTotalAmount = parseFloat(AdjustedTotalAmount) + parseFloat(AdjustedAmountAddA);
+
+            $(this).closest("tr").find("td input.AdjustedTotalAmount").val(AdjustedTotalAmount);
+
+            var AdjustedAmountAllowance = 0;
+            $(this).closest("tr").find("td input.AdjustedAmountAllowance").each(function () {
+                var NewAdjustedAmountAllowance = parseFloat((parseFloat($(this).prev().prev().prev().prev().val()) / parseFloat(ActualTotalAttendance)) * parseFloat(AdjustedTotalAttendance)).toFixed();
+                $(this).val(NewAdjustedAmountAllowance);
+                AdjustedAmountAllowance = parseFloat(AdjustedAmountAllowance) + parseFloat(NewAdjustedAmountAllowance);
+            })
+
+            var AdjustedGrossSalary = parseFloat(AdjustedTotalAmount) + parseFloat(AdjustedAmountAllowance);
+            $(this).closest("tr").find("td input.AdjustedGrossSalary").val(AdjustedGrossSalary);
+
+            var AdjustedTotalEarnings = AdjustedGrossSalary;
+            $(this).closest("tr").find("td input.AdjustedAmountAllowanceOT").each(function () {
+                var NewAdjustedAmountAllowanceOT = parseFloat($(this).val());
+                AdjustedTotalEarnings = parseFloat(AdjustedTotalEarnings) + parseFloat(NewAdjustedAmountAllowanceOT);
+            })
+
+            $(this).closest("tr").find("td input.AdjustedAmountAddANonC").each(function () {
+                var NewAdjustedAmountAddANonC = Math.round((Math.round($(this).prev().prev().prev().prev().val()) / Math.round(ActualTotalAttendance)) * Math.round(AdjustedTotalAttendance)).toFixed();
+                $(this).val(NewAdjustedAmountAddANonC);
+                AdjustedTotalEarnings = Math.round(AdjustedTotalEarnings) + Math.round(NewAdjustedAmountAddANonC);
+            })
+            $(this).closest("tr").find("td input.AdjustedTotalEarnings").val(AdjustedTotalEarnings);
+
+            var AdjustedAmountDeductionEmployee = 0;
+
+            $(this).closest("tr").find("td input.AdjustedAmountDeductionPT").each(function () {
+
+                var NewAdjustedPT = 0;
+                $(this).closest("tr").find("td span.PTFixedAmount").each(function () {
+                    if (parseFloat($(this).text()) > 0 && (parseFloat($(this).next("span.PTRangeFrom").text()) <= parseFloat(AdjustedTotalEarnings) && (parseFloat($(this).next().next("span.PTRangeUpto").text()) == 0 || parseFloat($(this).next().next("span.PTRangeUpto").text()) > parseFloat(AdjustedTotalEarnings)))) {
+                        NewAdjustedPT = $(this).text();
+                    }
+                })
+                $(this).val(parseFloat(NewAdjustedPT));
+                var NewAdjustedAmountDeductionPT = parseFloat($(this).val());
+                AdjustedAmountDeductionEmployee = parseFloat(AdjustedAmountDeductionEmployee) + parseFloat(NewAdjustedAmountDeductionPT);
+            })
+
+            $(this).closest("tr").find("td input.AdjustedAmountDeductionEmployee").each(function () {
+                var NewAdjustedAmountDeductionEmployee = parseFloat((parseFloat($(this).prev().prev().prev().prev().val()) / parseFloat(ActualTotalAttendance)) * parseFloat(AdjustedTotalAttendance)).toFixed();
+                $(this).val(NewAdjustedAmountDeductionEmployee);
+                AdjustedAmountDeductionEmployee = parseFloat(AdjustedAmountDeductionEmployee) + parseFloat(NewAdjustedAmountDeductionEmployee);
+            })
+            var AdjustedNetPayable = parseFloat(AdjustedTotalEarnings) - parseFloat(AdjustedAmountDeductionEmployee);
+            $(this).closest("tr").find("td input.AdjustedTotalDeduction").val(AdjustedAmountDeductionEmployee);
+
+            var ActualTotalAmountPayable = $(this).closest("tr").find("td input.ActualTotalAmountPayable").val();
+            if (Math.round(ActualTotalAmountPayable) > 0) {
+                var AdjustedAmountAllowanceRIA = parseFloat(ActualTotalAmountPayable) - parseFloat(AdjustedNetPayable);
+                $(this).closest("tr").find("td input.AdjustedAmountAllowanceRIA").val(AdjustedAmountAllowanceRIA);
+                $(this).closest("tr").find("td input.AdjustedAmountAllowanceRIA").parent().prev().children('input.ActualTransAmount').val(AdjustedAmountAllowanceRIA);
+            }
+
+            $(this).closest("tr").find("td input.AdjustedNetPayable").val(AdjustedNetPayable);
+
+            var AdjustedSalaryWithAdditionalAllowance = 0;
+            if (Math.round(ActualTotalAmountPayable) > 0) {
+                AdjustedSalaryWithAdditionalAllowance = Math.round(ActualTotalAmountPayable);
+            } else {
+                AdjustedSalaryWithAdditionalAllowance = Math.round(AdjustedNetPayable);
+            }
+
+            var AdjustedAmountDeductionEmployeeNonCompliance = 0;
+            $(this).closest("tr").find("td input.AdjustedAmountDeductionEmployeeNonCompliance").each(function () {
+                var NewAdjustedAmountDeductionEmployeeNonCompliance = $(this).val();
+                AdjustedAmountDeductionEmployeeNonCompliance = Math.round(AdjustedAmountDeductionEmployeeNonCompliance) + Math.round(NewAdjustedAmountDeductionEmployeeNonCompliance);
+            })
+
+            var AdjustedSalaryWithAdditionalAllowance = Math.round(AdjustedSalaryWithAdditionalAllowance) - Math.round(AdjustedAmountDeductionEmployeeNonCompliance);
+
+            $(this).closest("tr").find("td input.AdjustedSalaryWithAdditionalAllowance").val(AdjustedSalaryWithAdditionalAllowance);
+
+            var AdjustedAmountDeductionEmployer = 0.0;
+            $(this).closest("tr").find("td input.AdjustedAmountDeductionEmployer").each(function () {
+                var NewAdjustedAmountDeductionEmployer = parseFloat((parseFloat($(this).prev().prev().prev().prev().val()) / parseFloat(ActualTotalAttendance)) * parseFloat(AdjustedTotalAttendance)).toFixed();
+                $(this).val(NewAdjustedAmountDeductionEmployer);
+                AdjustedAmountDeductionEmployer = parseFloat(AdjustedAmountDeductionEmployer) + parseFloat(NewAdjustedAmountDeductionEmployer);
+            })
+            var AdjustedTotalSalary = parseFloat(AdjustedTotalEarnings) + parseFloat(AdjustedAmountDeductionEmployer);
+            $(this).closest("tr").find("td input.AdjustedEmployerContribution").val(AdjustedAmountDeductionEmployer);
+            $(this).closest("tr").find("td input.AdjustedTotalSalary").val(AdjustedTotalSalary);
+
+            CalculateFinalTotal();
+        });
+
+        $(".AdjustedAmountDeductionEmployeeNonCompliance").keyup(function () {
+
+            var ActualTotalAmountPayable = $(this).closest("tr").find("td input.ActualTotalAmountPayable").val();
+            var AdjustedNetPayable = $(this).closest("tr").find("td input.AdjustedNetPayable").val();
+            var ActualNetPayable = $(this).closest("tr").find("td input.ActualNetPayable").val();
+
+            $(this).prev().prev().prev().prev().val($(this).val());
+
+            var ActualAmountAddANonC = 0;
+            $(this).closest("tr").find("td input.ActualAmountAddANonC").each(function () {
+                var NewActualAmountAddANonC = $(this).val();
+                ActualAmountAddANonC = Math.round(ActualAmountAddANonC) + Math.round(NewActualAmountAddANonC);
+            })
+
+            var ActualSalaryWithAdditionalAllowance = 0;
+            if (Math.round(ActualTotalAmountPayable) > 0) {
+                ActualSalaryWithAdditionalAllowance = Math.round(ActualTotalAmountPayable);
+            } else {
+                ActualSalaryWithAdditionalAllowance = Math.round(ActualNetPayable);
+            }
+
+            var ActualAmountDeductionEmployeeNonCompliance = 0;
+            $(this).closest("tr").find("td input.ActualAmountDeductionEmployeeNonCompliance").each(function () {
+                var NewActualAmountDeductionEmployeeNonCompliance = $(this).val();
+                ActualAmountDeductionEmployeeNonCompliance = Math.round(ActualAmountDeductionEmployeeNonCompliance) + Math.round(NewActualAmountDeductionEmployeeNonCompliance);
+            })
+
+            var ActualSalaryWithAdditionalDeduction = Math.round(ActualSalaryWithAdditionalAllowance) - Math.round(ActualAmountDeductionEmployeeNonCompliance);
+
+            $(this).closest("tr").find("td input.ActualSalaryWithAdditionalAllowance").val(ActualSalaryWithAdditionalDeduction);
+
+            var AdjustedAmountAddANonC = 0;
+            $(this).closest("tr").find("td input.AdjustedAmountAddANonC").each(function () {
+                var NewAdjustedAmountAddANonC = $(this).val();
+                AdjustedAmountAddANonC = Math.round(AdjustedAmountAddANonC) + Math.round(NewAdjustedAmountAddANonC);
+            })
+
+            var AdjustedSalaryWithAdditionalAllowance = 0;
+            if (Math.round(ActualTotalAmountPayable) > 0) {
+                AdjustedSalaryWithAdditionalAllowance = Math.round(ActualTotalAmountPayable);
+            } else {
+                AdjustedSalaryWithAdditionalAllowance = Math.round(AdjustedNetPayable);
+            }
+
+            var AdjustedAmountDeductionEmployeeNonCompliance = 0;
+            $(this).closest("tr").find("td input.AdjustedAmountDeductionEmployeeNonCompliance").each(function () {
+                var NewAdjustedAmountDeductionEmployeeNonCompliance = $(this).val();
+                AdjustedAmountDeductionEmployeeNonCompliance = Math.round(AdjustedAmountDeductionEmployeeNonCompliance) + Math.round(NewAdjustedAmountDeductionEmployeeNonCompliance);
+            })
+
+            var AdjustedSalaryWithAdditionalDeduction = Math.round(AdjustedSalaryWithAdditionalAllowance) - Math.round(AdjustedAmountDeductionEmployeeNonCompliance);
+
+            $(this).closest("tr").find("td input.AdjustedSalaryWithAdditionalAllowance").val(AdjustedSalaryWithAdditionalDeduction);
+
+            CalculateFinalTotal();
+
+        });
+
+        $("#SearchEmpForSalary").keyup(function () {
+            var SearchWord = $(this).val().toLowerCase().trim();
+            $(".SalaryEmpName").each(function () {
+                var EmpName = $(this).text().toLowerCase().trim();
+                if (~EmpName.indexOf(SearchWord) != 0) {
+                    $(this).closest("tr").show();
+                }
+                else {
+                    $(this).closest("tr").hide();
+                }
+            });
+        });
+
+        $(".RemoveForAdjustment").change(function () {
+            CalculateFinalTotal();
+        });
+
+        $(".ActualTotalAmountPayable").each(function () {
+           // if (Math.round($(this).val()) == 0) {
+                $(this).closest("tr").find("td input.AdjustedTotalAttendance").attr('disabled', 'disabled');
+           // }
+        })
+
+        $(".PF1").each(function () {
+            var PF1 = $(this).val();
+            var PF2ACC01 = $(this).closest("tr").find("td input.PF2ACC01").val();
+            var PF2ACC10 = $(this).closest("tr").find("td input.PF2ACC10").val();
+
+            if (parseFloat(PF1) != (parseFloat(PF2ACC01) + parseFloat(PF2ACC10)))
+            {
+                if (parseFloat(PF1) > (parseFloat(PF2ACC01) + parseFloat(PF2ACC10)))
+                {
+                    NewPF2ACC01 = parseFloat(PF2ACC01) + (parseFloat(PF1) - (parseFloat(PF2ACC01) + parseFloat(PF2ACC10)))
+                } else if (parseFloat(PF1) < (parseFloat(PF2ACC01) + parseFloat(PF2ACC10))) {
+                    NewPF2ACC01 = parseFloat(PF2ACC01) - ((parseFloat(PF2ACC01) + parseFloat(PF2ACC10)) - parseFloat(PF1))
+                }
+                $(this).closest("tr").find("td input.PF2ACC01").val(NewPF2ACC01);
+            }
+
+        });
+    });
+
+    function CalculateFinalTotal() {
+        $("table tfoot th.FinalSubAmount").each(function () {
+            var FinalAmount = 0;
+            var $th = $(this).index();
+            $(this).closest('table').children('tbody').children('tr').each(function () {
+                if (!$(this).children('td').eq(0).children('.RemoveForAdjustment').is(':checked')) {
+                    FinalAmount = Math.round(FinalAmount) + Math.round($(this).children('td').eq($th).children('.AdjustedAmount').val())
+                }
+            });
+            $(this).text(FinalAmount);
+        });
+        $("table tfoot th.FinalMainAmount").each(function () {
+            var FinalAmount = 0;
+            var $th = $(this).index();
+            $(this).closest('table').children('tbody').children('tr').each(function () {
+                if (!$(this).children('td').eq(0).children('.RemoveForAdjustment').is(':checked')) {
+                    FinalAmount = Math.round(FinalAmount) + Math.round($(this).children('td').eq($th).children('input').eq(1).val())
+                }
+            });
+            $(this).text(FinalAmount);
+        });
+        $("table tfoot th.FinalTotalDays").each(function () {
+            var FinalAmount = 0;
+            var $th = $(this).index();
+            $(this).closest('table').children('tbody').children('tr').each(function () {
+                if (!$(this).children('td').eq(0).children('.RemoveForAdjustment').is(':checked')) {
+                    FinalAmount = parseFloat(parseFloat(FinalAmount) + parseFloat($(this).children('td').eq($th).children('input').eq(0).val())).toFixed(2);
+                }
+            });
+            $(this).text(FinalAmount);
+        });
+    }
+</script>

@@ -1,0 +1,118 @@
+﻿@model AERP.ViewModel.PurchaseReturnViewModel
+<div id="salesDiv">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.ID)
+
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;View Purchase Return</h2>
+    </div>
+
+    <div class="card">
+        <div class="" id="divContent">
+            <form id="FormViewPurchaseReturn">
+                <div class="card-body card-padding">
+                    <div class="row">
+                        <div class="col-sm-12">
+                         <div class="col-sm-4">
+                       Vendor
+                        <div class="form-group fg-line ">
+                              @Html.TextBoxFor(m => m.vendor, new { @class = "form-control input-sm ",disabled = "disabled"})
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        Transaction Date
+                        <div class="form-group fg-line">
+                             @Html.TextBoxFor(model => model.TransactionDate, new { @class = "form-control input-sm ",disabled = "disabled" })
+                             
+                         </div>
+                    </div>
+                
+                        <div class="col-sm-3">
+                       Location
+                        <div class="form-group fg-line">
+                           @Html.DropDownList("GeneralLocationList", ViewData["GeneralLocationList"] as List<SelectListItem>, "---Select Location ---",new { @class = "form-control input-sm" ,disabled = "disabled"})
+                         </div>
+                    </div>
+                  </div>
+                 </div>
+
+                    <div class="row">
+                        <hr />
+                        <div id="DivAddRowTable">
+                            <div class="card-body table-responsive">
+                                <table id="tblData" class="table">
+                                    <thead>
+                                        <tr>
+                                                <th style="font-size:13px;">Item Description</th>
+                                                <th style="font-size:13px;">PO Number</th>
+                                                <th style="font-size:13px;">GRN Number</th>
+                                                <th style="font-size:13px;">Batch</th>
+                                                <th style="font-size:13px;">Unit</th>
+                                                <th style="font-size:13px;">Qty</th>
+                                                <th style="font-size:13px;">Rate</th>
+                                                <th style="font-size:13px;">Amount</th>
+                                                <th style="font-size:13px;">Tax</th>
+                                                <th style="font-size:13px;">Tax Amount</th>
+                                                <th style="font-size:13px;">Gross Amount</th>
+
+                                                
+                                        </tr>
+                                    </thead>
+                                    <tbody id="">
+                                        @foreach (var item in Model.PurchaseReturnList)
+                                        {
+                                            <tr>
+                                               
+                                                @*<td>@item.vendor<input type="text" style="display:none" value="@item.vendor"></td>
+                                                <td>@item.TransactionDate<input type="text" style="display:none" value="@item.TransactionDate"></td>
+                                                <td>@item.LocationID<input type="text" style="display:none" value="@item.LocationID"></td>*@
+                                                <td>@item.ItemDescription<input type="text" style="display:none" value="@item.ItemDescription"></td>
+                                                <td>@item.PurchaseOrderNumber<input type="text" style="display:none" value="@item.PurchaseOrderNumber"></td>
+                                                <td>@item.PurchaseGrnNumber<input type="text" style="display:none" value="@item.PurchaseGrnNumber"></td>
+                                                <td>@item.BatchNumber<input type="text" style="display:none" value="@item.BatchNumber"></td>
+                                                <td>@item.UOMCode<input type="text" style="display:none" value="@item.UOMCode"></td>
+                                                <td>@item.Quantity<input type="text" style="display:none" value="@item.Quantity"></td>
+                                                <td>@item.Rate<input type="text" style="display:none" value="@item.Rate"></td>
+                                                <td>@Math.Round((@item.Rate * @item.Quantity), 2)<input type="text" style="display:none" value="@Math.Round((@item.Rate * @item.Quantity), 2)"></td>
+                                                <td>@item.TaxGroupName<input type="text" style="display:none" value="@item.TaxGroupName"></td>
+                                               <td> @Math.Round((item.TaxAmount),2)<input type="text" style="display:none" value="@Math.Round((item.TaxAmount),2)"></td>
+                                                <td>@Math.Round((item.NetAmount + item.TaxAmount),2)<input type="text" style="display:none" value="@Math.Round((item.NetAmount + item.TaxAmount),2)"></td>
+                                              </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                 <br />
+                 <br />
+                            <div class="col-sm-12">
+                            <div class="col-sm-4">
+                              Total Tax Amount
+                                <div class="form-group fg-line">
+                                    @Html.TextBoxFor(model => model.TotalTaxAmount, new { @class = "form-control input-sm ", @readonly = "readonly", maxlength = "60", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.TotalTaxAmount)
+                            </div>
+                            <div class="col-sm-4">
+                                Total Amount
+                                <div class="form-group fg-line">
+                                    @Html.TextBoxFor(model => model.RoundUpAmount, new {  @class = "form-control input-sm ", @readonly = "readonly",maxlength = "60",  disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.RoundUpAmount)
+                            </div>
+                              <div class="col-sm-4">
+                               Total Gross Amount
+                                <div class="form-group fg-line">
+                                    @Html.TextBoxFor(model => model.PurchaseReturnAmount, new {  @class = "form-control input-sm ", @readonly = "readonly", maxlength = "60", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PurchaseReturnAmount)
+                            </div>
+                        </div>      
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

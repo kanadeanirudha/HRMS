@@ -1,0 +1,238 @@
+﻿@model AMS.ViewModel.SalePromotionActivityMasterAndDetailsViewModel
+@Html.HiddenFor(model => model.SalePromotionActivityDetailsID)
+@Html.HiddenFor(model => model.GeneralUnitsID)
+@Html.HiddenFor(model => model.PlanTypeCode)
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/SalePromotionActivityMasterAndDetails.js")" type="text/javascript"></script>
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Gift Voucher </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGiftVoucherDetails" role="form">
+                <div class="row">
+                    <div class="col-sm-6" >
+                        <div class="form-group fg-line" style="display:none">
+                            @Html.LabelFor(model => model.PromotionFor, new { })
+                            @Html.TextBoxFor(model => model.PromotionFor, new { maxlength = "80", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="display:none">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.PromotionApplicableTo, new { })
+                            @Html.TextBoxFor(model => model.PromotionApplicableTo, new { maxlength = "12", @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.BillRange, new { })
+                            @Html.DropDownListFor(model => model.BillRange, (SelectList)ViewBag.SalePromotionPlanAndDetailsForBillRangeList, "--Select Bill Range--", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-sm-1" style="width:auto;margin-left:-15px">
+                        <label style="margin-top: 8%; margin-bottom: 3%;">
+                            <label class="fg-label">Is Percentage</label><br /><br />
+                            <div class="checkbox col-sm-4" style="margin-top:-7%;">
+                                <input type="checkbox" id="IsPercentage" name="IsPercentage">
+                                <i class="input-helper"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @*@Html.LabelFor(model => model.AltQty, new { })*@
+                            @Html.LabelFor(model => model.DiscountInPercentage, new { })
+                            @Html.TextBoxFor(model => model.DiscountInPercentage, new { maxlength = "8", @class = "form-control input-sm typeahead" ,disabled="disabled"})
+
+                        </div>
+                    </div>
+                    <div class="col-sm-1" style="width:auto;margin-left:-15px">
+                        <label style="margin-top: 8%; margin-bottom: 3%;">
+                            <label class="fg-label">Is Discount Amount</label><br /><br />
+                            <div class="checkbox col-sm-4" style="margin-top:-7%;">
+                                <input type="checkbox" id="IsDiscountAmount" name="IsDiscountAmount">
+                                <i class="input-helper"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @*@Html.LabelFor(model => model.AltQty, new { })*@
+                            @Html.LabelFor(model => model.BillDiscountAmount, new { })
+                            @Html.TextBoxFor(model => model.BillDiscountAmount, new { maxlength = "8", @class = "form-control input-sm typeahead", disabled = "disabled" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-1" style="width:auto;margin-left:-15px">
+                        <label style="margin-top: 8%; margin-bottom: 3%;">
+                            <label class="fg-label">Is Free Item</label><br /><br />
+                            <div class="checkbox col-sm-4" style="margin-top:-7%;">
+                                <input type="checkbox" id="IsFreeItem" name="IsFreeItem">
+                                <i class="input-helper"></i>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ItemNumber)
+                            @Html.HiddenFor(model => model.InventoryVariationMasterID)
+                            @Html.LabelFor(model => model.ItemDescription, new { })
+                            @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @*@Html.LabelFor(model => model.AltQty, new { })*@
+                            @Html.LabelFor(model => model.Quantity, new { })
+                            @Html.TextBoxFor(model => model.Quantity, new { maxlength = "8", @class = "form-control input-sm typeahead", disabled = "disabled" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.UOMCode, new { })
+                            @*@Html.TextBoxFor(model => model.UOMCode, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })*@
+                            @Html.DropDownListFor(model => model.UOMCode, Enumerable.Empty<SelectListItem>(), "---Select UomCode ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "" ,disabled="disabled"})
+                        </div>
+                    </div>
+                    <div class="col-sm-1" id="btnAdd1" style="margin-bottom:-5%;">
+                        <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnGiftVoucharAdd"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+        
+        </form>
+    </div>
+</div>
+</div>
+<h4>List Of Ingredients</h4>
+<table id="tblDataForGiftVouchar" class="table">
+    <thead>
+        <tr>
+            <th>Bill Range</th>
+            <th>IsPercentage</th>
+            <th>Discount(%)</th>
+            <th>IsDiscount</th>
+            <th>Discount Amount </th>
+            <th>Is Free</th>
+            <th>Item Description</th>
+            <th>Quantity</th>
+            <th>UoM Code</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+      
+    </tbody>
+</table>
+<div class="form-group" style="margin-left:2%;">
+    <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGiftVoucherRecord" type="button" />
+</div>
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SalePromotionActivityMasterAndDetails.Initialize();
+
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                var GeneralUnitsID = $("#GeneralUnitsID").val();
+                debugger;
+                $.ajax({
+                    url: "/SalePromotionActivityMasterAndDetails/GetItemSearchListForVarientsMenu",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, GeneralUnitsID: GeneralUnitsID },
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.name] = response1;
+                            matches.push(response1.name);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+
+        $('#ItemDescription').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            $('#GeneralItemMasterID').val(map[item].id);
+            $('#ItemDescription').val(map[item].name);
+            $('#ItemNumber').val(map[item].ItemNumber);
+            $('#UOMCode').val(map[item].BaseUOMCode);
+            $('#InventoryVariationMasterID').val(map[item].InventoryVariationMasterID);
+            $('#MenuDescription').val(map[item].MenuDescription);
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": map[item].ItemNumber },
+                url: '/SalePromotionActivityMasterAndDetails/GetUoMCodeByItemNumber',
+                success: function (data) {
+                    var $ddlExam = $("#UOMCode");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">---Select UoM Code---</option>');
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                            $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+                        });
+                    }
+                    else {
+                        $ddlExam.append('<option value="EA">EA</option>');
+                    }
+
+
+                }
+            });
+
+        });
+
+        $('#ItemDescription').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $("#ItemDescription").val("");
+                $("#UOMCode").val("");
+                $('#DiscountInPercentage').val("0");
+
+            }
+
+        });
+    });
+</script>
+

@@ -1,0 +1,101 @@
+﻿@model AERP.ViewModel.SaleContractAttendanceViewModel
+
+<div id="custom-content">
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="select form-group fg-line">
+                            @Html.HiddenFor(m => m.ID)
+                            @Html.HiddenFor(m => m.CustomerMasterID)
+                            @Html.HiddenFor(m => m.CustomerBranchMasterID)
+                            @Html.HiddenFor(m => m.SalaryForManPowerItemID)
+                            @Html.LabelFor(model => model.SalaryForManPowerItemName, new { })
+                            @Html.TextBoxFor(model => model.SalaryForManPowerItemName, new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SalaryForManPowerItemName)
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <button type="button" class="btn btn-primary m-t-20" id="SaveSalaryForManPowerItem">@Resources.ButtonAction_Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractAttendance.Initialize();
+
+        mapSaleContractManPowerItem = [];
+        var getDataSaleContractManPowerItem = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractManPowerItem/GetSaleContractManPowerItemSearchList",
+                    type: "POST",
+                    data: { term: q, CustomerMasterID: $("#CustomerMasterID").val(), CustomerBranchMasterID: $("#CustomerBranchMasterID").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.SaleContractManPowerItemName)) {
+                                mapSaleContractManPowerItem[response.SaleContractManPowerItemName] = response;
+                                matches.push(response.SaleContractManPowerItemName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SalaryForManPowerItemName").typeahead({
+            hint: true,
+            highlight: false,
+            minLength: 1
+        }, {
+            source: getDataSaleContractManPowerItem()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#SalaryForManPowerItemID").val(mapSaleContractManPowerItem[item].SaleContractManPowerItemID);
+            $("#SalaryForManPowerItemName").val(mapSaleContractManPowerItem[item].SaleContractManPowerItemName);
+        });
+
+        $('#SalaryForManPowerItemName').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SalaryForManPowerItemName').typeahead('val', '');
+                $("#SalaryForManPowerItemName").val("");
+                $("#SalaryForManPowerItemID").val("");
+            }
+        });
+    });
+</script>

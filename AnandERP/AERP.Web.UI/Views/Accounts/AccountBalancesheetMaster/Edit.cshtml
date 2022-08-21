@@ -1,0 +1,67 @@
+﻿@model AERP.ViewModel.AccountBalancesheetMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Balancesheet</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" >
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditAccountBalanceSheetMaster">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.CentreCode)
+                @Html.HiddenFor(model => model.AccBalsheetTypeID)
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.HiddenFor(model => model.CreatedDate)
+
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(model => model.CentreName, new { })
+                        @Html.TextBoxFor(m => m.CentreName, new { maxlength = "30", @disabled = "disabled", @class = "form-control input-sm" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.AccBalsheetTypeDesc, new { })
+                        @Html.TextBoxFor(m => m.AccBalsheetTypeDesc, new { maxlength = "30", @disabled = "disabled", @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group  fg-line">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.AccBalsheetHeadDesc, new { })
+                        @Html.TextBoxFor(m => m.AccBalsheetHeadDesc, new { maxlength = "50", @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AccBalsheetHeadDesc)
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                   <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.AccBalsheetCode, new { })
+                        @Html.TextBoxFor(m => m.AccBalsheetCode, new { maxlength = "20", @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AccBalsheetCode)
+                </div>
+                <div class="form-group" style="margin-left: 2%; ">
+                    <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditAccountBalanceSheetRecord" type="button" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountBalanceSheet.Initialize();
+
+    });
+</script>

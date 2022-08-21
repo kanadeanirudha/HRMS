@@ -1,0 +1,36 @@
+﻿@model AMS.ViewModel.GeneralUnitMasterViewModel
+<form id="FormDeleteGeneralUnitMaster" method="post" style="width:233px;height:144px;">
+    @Html.HiddenFor(model => model.ID)
+    <div class="widget-block" style="width:230px;">
+        <div class="widget-head">
+            <h5> @Resources.FormDelete_UnitMaster </h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+
+                <div class="control-group" style="padding:10px;">
+                    &nbsp;&nbsp;<img src="~/Content/images/warning.png" />&nbsp;&nbsp;Do you want to delete?
+                    <div class="controls">
+                    </div>
+                </div>
+
+                <div class="control-group" style="padding:10px;text-align:right;margin-bottom:0px;border: 1px solid #e5e5e5;">
+                    <input type="button" id="DeleteGeneralUnitMasterRecord" value="@Resources.ButtonAction_Delete" class="btn btn-primary" />
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+<div id="update-message" class="error invisible"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralUnitMaster.Initialize();
+    });
+</script>
+
+
+
+

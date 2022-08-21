@@ -1,0 +1,30 @@
+﻿@model IEnumerable<AERP.ViewModel.EmployeePersonalDetailsViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+@Styles.Render("~/Content/Vendors")
+@*@Html.Partial("_LeftMenu")*@
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Employee/EmployeePersonalDetails.js")" type="text/javascript"></script>
+
+<div id="ListViewModel">
+  <input type="hidden" value="@ViewBag.EmployeeID" />
+  <input type="hidden" value="@ViewBag.EmployeeDetailsType" />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+       
+      var EmployeeID = aoData.push({ "name": "EmployeeID", "value": $('input[name=EmployeeID]').val() });
+      var EmployeeDetailsType = aoData.push({ "name": "EmployeeDetailsType", "value": $('input[name=EmployeeDetailsType]').val() });
+      alert(EmployeeID, EmployeeDetailsType);
+            //aoData.push({ "name": "SelectedAccountType", "value": $('#AccountType').val() });
+      if (EmployeeDetailsType == "") {
+          EmployeePersonalDetails.LoadContactDetailsList(EmployeeID);
+      }
+      else {
+          EmployeePersonalDetails.LoadPersonalDetailsList(EmployeeID);
+      }
+    });
+</script>

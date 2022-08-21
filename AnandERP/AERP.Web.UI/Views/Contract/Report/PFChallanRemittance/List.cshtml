@@ -1,0 +1,304 @@
+﻿@model AERP.ViewModel.PFChallanRemittanceViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Contract/Report/PFChallanRemittance.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+<style>
+    table td {
+        font-weight: bold;
+    }
+
+    table th {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    table tbody tr td:not(:first-child), table thead tr th:not(:first-child) {
+        text-align: right;
+    }
+
+    #addressTable td {
+        border-top: none;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        @Html.HiddenFor(m => m.ID)
+                        <label>@Html.LabelFor(model => model.TransactionDate, new { })</label>
+                        @Html.TextBoxFor(m => m.TransactionDate, new { @class = "form-control input-sm", Value = "" + DateTime.UtcNow.ToString("d MMM yyyy") + "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.TransactionDate)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        <label>@Html.LabelFor(model => model.ChallanRemmittanceDate, new { })</label>
+                        @Html.TextBoxFor(model => model.ChallanRemmittanceDate, new { @class = "form-control input-sm typeahead" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ChallanRemmittanceDate)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        <label>@Html.LabelFor(model => model.PaymentMode, new { })</label>
+                        @Html.DropDownListFor(model => model.PaymentMode, ViewData["PayementMode"] as IEnumerable<SelectListItem>, new { style = "", @class = "form-control" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PaymentMode)
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        <label>@Html.LabelFor(model => model.ReferenceNumber, new { })</label>
+                        @Html.TextBoxFor(model => model.ReferenceNumber, new { maxlength = "12", @class = "form-control input-sm typeahead" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ReferenceNumber)
+                </div>
+            </div>
+        </div>
+        <div id="DownloadExcelView">
+            <br />
+            <table class="table" id="addressTable">
+                <tr><td colspan="6" style="text-align:center">COMBINED CHALLAN OF A/C NO. 1,2,10,21, & 22 </td><td> ORIG./DUPL./TRIP./QUA.</td></tr>
+                <tr><td colspan="6" style="text-align:center">(  STATE BANK OF INDIA  )</td><td></td></tr>
+                <tr><td colspan="6" style="text-align:center">EMPLOYEES PROVIDENT FUND ORGANISATION </td><td></td></tr>
+                <tr><td colspan="6" style="text-align:center">( use seprate challan for each month )</td><td></td></tr>
+            </table>
+            <table class="table" id="addressTable">
+                <tr>
+                    <td>ESTABLISHMENT CODE NO:</td>
+                    <td>ENG/NAG/63397</td>
+                    <td>ACCOUNT GROUP NO:</td>
+                    <td></td>
+                    <td>PAID BY CHEQUE /CASH</td>
+                    <td></td>
+                </tr>
+            </table>
+            <table class="table">
+                <tr>
+                    <td></td>
+                    <td><span style="float:left">{</span>Employees Share</td>
+                    <td><span style="float:left">|</span>11 2017</td>
+                    <td><span style="float:left">|</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        DUE FOR THE MONTH OF
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>DATE OF PAYMENT</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><span style="float:left">{</span>Employer Share</td>
+                    <td><span style="float:left">|</span>11 2017</td>
+                    <td><span style="float:left">|</span></td>
+                </tr>
+            </table>
+            @if (Model.PFChallanRemittanceDetailListForparticulars.Count > 0)
+            {
+                <table class="table">
+                    <tr>
+                        <td>Total No. of Subscribers</td>
+                        <td><span style="float:left">{</span>   @Model.PFChallanRemittanceDetailListForparticulars[0].TotalEmployeeCount</td>
+                        <td><span style="float:left">{ </span>  @Model.PFChallanRemittanceDetailListForparticulars[0].TotalEmployeeCountNotAged</td>
+                        <td><span style="float:left">{ </span>  @Model.PFChallanRemittanceDetailListForparticulars[0].TotalEmployeeCount</td>
+                    </tr>
+                    <tr>
+                        <td><span style="float:right">A/C 1</span></td>
+                        <td><span style="float:left">{</span>   A/C 10</td>
+                        <td><span style="float:left">{</span>   A/C 21</td>
+                        <td><span style="float:left">{</span> </td>
+                    </tr>
+                    <tr>
+                        <td>Total Wages Due Monthly </td>
+                        <td><span style="float:left">{</span>   @Model.PFChallanRemittanceDetailListForparticulars[0].TotalWagesAmount</td>
+                        <td><span style="float:left">{</span>   @Model.PFChallanRemittanceDetailListForparticulars[0].TotalNotAgedWagesAmount</td>
+                        <td><span style="float:left">{</span>   @Model.PFChallanRemittanceDetailListForparticulars[0].TotalWagesAmount</td>
+                    </tr>
+                </table>
+
+                <div id="DivAddRowTable1" style="padding-bottom:30px;">
+                    <div class="table-responsive">
+                        <table id="tblDataPRQ" class="table" border="1">
+                            <thead>
+                                <tr>
+                                    <th>Particulars</th>
+                                    <th>A/C NO.01</th>
+                                    <th>A/C NO.02</th>
+                                    <th>A/C NO.10</th>
+                                    <th>A/C NO.21</th>
+                                    <th>A/C NO.22</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="aaaa" style="overflow: auto">
+
+                                <tr>
+                                    @if (1 == 1)
+                                    {
+                                        decimal Total = 0;
+                                        Total = Model.PFChallanRemittanceDetailListForparticulars[0].Acc01 + Model.PFChallanRemittanceDetailListForparticulars[0].Acc10 + Model.PFChallanRemittanceDetailListForparticulars[0].Acc21;
+
+                                        <td>1.   EMPLOYERS SHARE OF CONT.</td>
+                                        <td><input type="hidden" id="Acc01" value="@Model.PFChallanRemittanceDetailListForparticulars[0].Acc01" />@Model.PFChallanRemittanceDetailListForparticulars[0].Acc01</td>
+                                        <td></td>
+                                        <td><input type="hidden" id="Acc10" value="@Model.PFChallanRemittanceDetailListForparticulars[0].Acc10" />@Model.PFChallanRemittanceDetailListForparticulars[0].Acc10</td>
+                                        <td><input type="hidden" id="Acc21" value="@Model.PFChallanRemittanceDetailListForparticulars[0].Acc21" />@Model.PFChallanRemittanceDetailListForparticulars[0].Acc21</td>
+                                        <td></td>
+                                        <td>@Total</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>2.   EMPLOYEES SHARE OF CONT.</td>
+                                    <td><input type="hidden" id="WorkersShare" value="@Model.PFChallanRemittanceDetailListForparticulars[0].WorkersShare" />@Model.PFChallanRemittanceDetailListForparticulars[0].WorkersShare</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Model.PFChallanRemittanceDetailListForparticulars[0].WorkersShare</td>
+                                </tr>
+                                <tr>
+                                    @if (1 == 1)
+                                    {
+                                        decimal TotalAdmCharges = Model.PFChallanRemittanceDetailListForparticulars[0].Acc02 + Model.PFChallanRemittanceDetailListForparticulars[0].Acc22;
+                                        <td>3.   ADM CHARGES</td>
+                                        <td></td>
+                                        <td><input type="hidden" id="Acc02" value="@Model.PFChallanRemittanceDetailListForparticulars[0].Acc02" />@Model.PFChallanRemittanceDetailListForparticulars[0].Acc02</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><input type="hidden" id="Acc22" value="@Model.PFChallanRemittanceDetailListForparticulars[0].Acc22" />@Model.PFChallanRemittanceDetailListForparticulars[0].Acc22</td>
+                                        <td>@TotalAdmCharges</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>4.   INSP. CHARGES</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>5.   PENAL DAMAGES</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>6.   MISC. PAYMENT (7Q)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    @if (1 == 1)
+                                    {
+                                        decimal TotalAcc01 = Model.PFChallanRemittanceDetailListForparticulars[0].Acc01 + Model.PFChallanRemittanceDetailListForparticulars[0].WorkersShare;
+                                        decimal TotalPF = TotalAcc01 + Model.PFChallanRemittanceDetailListForparticulars[0].Acc02 + Model.PFChallanRemittanceDetailListForparticulars[0].Acc21 + Model.PFChallanRemittanceDetailListForparticulars[0].Acc10 + Model.PFChallanRemittanceDetailListForparticulars[0].Acc22;
+
+                                        <td style="font-size:16px">Total</td>
+                                        <td style="font-size:16px">@TotalAcc01</td>
+                                        <td style="font-size:16px">@Model.PFChallanRemittanceDetailListForparticulars[0].Acc02</td>
+                                        <td style="font-size:16px">@Model.PFChallanRemittanceDetailListForparticulars[0].Acc10</td>
+                                        <td style="font-size:16px">@Model.PFChallanRemittanceDetailListForparticulars[0].Acc21</td>
+                                        <td style="font-size:16px">@Model.PFChallanRemittanceDetailListForparticulars[0].Acc22</td>
+                                        <td style="font-size:16px"><input type="hidden" id="TotalAmountRemited" value="@TotalPF" />@TotalPF</td>
+                                    }
+                                </tr>
+                                <tr><td colspan="7" style="font-size:14px">Amount In Words Rs. <span>@Model.PFAmountInWords </span></td> </tr>
+                            </tbody>
+                        </table>
+                        <table class="table" id="addressTable" style="width:80%">
+                            <tr>
+                                <td style="width:20%">NAME OF ESTABLISTMENT</td>
+                                <td style="width:29%;text-align:left">DUST BLOWERS F.M.S. PVT. LTD</td>
+                                <td style="width:19%;text-align:left"> Amount Received Rs.</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">ADDRESS</td>
+                                <td style="width:29%;text-align:left">OPP. PATWARDHAN HIGH SCHOOL,</td>
+                                <td style="width:19%;text-align:left">For Checque only</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="width:29%;text-align:left">SONI LAIN,SITABULDI,</td>
+                                <td style="width:19%;text-align:left">Date of Presentation</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="width:29%;text-align:left">NAGPUR-440012</td>
+                                <td style="width:19%;text-align:left">Date of Realisation</td>
+                            </tr>
+                        </table>
+                        <table class="table" id="addressTable" style="width:85%">
+                            <tr>
+                                <td> NAME OF DEPOSITER</td>
+                                <td> .................................</td>
+                                <td>Branch Name</td>
+                                <td>.................................</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> SIGNATURE OF THE DEPOSITOR</td>
+                                <td>.................................</td>
+                                <td>Branch Code No.</td>
+                                <td>.................................</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" align="center">(TO BE FILLED IN BY EMPLOYER)</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>NAME OF THE BANK</td>
+                                <td>.................................</td>
+                                <td>CHEQUE NO.</td>
+                                <td>.................................</td>
+                                <td>DATE</td>
+                                <td>.................................</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+        @if (Model.ID == 0 && Model.PFChallanRemittanceDetailListForparticulars.Count > 0)
+        {
+            <div class="form-group" style="margin-left:1%;margin-bottom:1%;padding-bottom:1%;">
+                <input class="btn bgm-blue btn-sm m-t-10 waves-effect" value="Add Opening balance" id="CreatePFChallanRemittanceRecord" type="button" />
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        PFChallanRemittance.Initialize();
+        $('#ChallanRemmittanceDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+
+        });
+
+    });
+
+
+
+</script>

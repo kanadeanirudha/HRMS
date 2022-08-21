@@ -1,0 +1,348 @@
+﻿@model AERP.ViewModel.SaleContractBillingTransactionViewModel
+<style>
+    #tblData th {
+        font-size: 13px;
+    }
+</style>
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Sale Contract Invoice</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">x</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="displayErrorMessage1"></div>
+            <form id="FormCreateSaleContractMaster" role="form" class="row">
+                @Html.HiddenFor(m => m.SaleContractMasterID)
+                @Html.HiddenFor(m => m.SaleContractBillingSpanID)
+                @Html.HiddenFor(m => m.CustomerBranchMasterID)
+                @Html.HiddenFor(m => m.CreatedBy)
+                <div class="col-sm-12">
+                    @if (Model.IsCanceled == false)
+                    {
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect pull-right" value="Cancel Invoice" id="CancelSalesInvoiceRecord" type="button" />
+                    }
+                    else
+                    {
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect pull-right" value="Canceled" id="" type="button" />
+                    }
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ContractNumber, new { })
+                            @Html.TextBoxFor(model => model.ContractNumber, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.SaleContractBillingSpanName, new { })
+                            @Html.TextBoxFor(model => model.SaleContractBillingSpanName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CustomerMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerMasterName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CustomerBranchMasterName, new { })
+                            @Html.TextBoxFor(model => model.CustomerBranchMasterName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.CustomerInvoiceNumber, new { })
+                            @Html.TextBoxFor(model => model.CustomerInvoiceNumber, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.LocationName, new { })
+                            @Html.TextBoxFor(model => model.LocationName, new { @class = "form-control input-sm typeahead", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <table id="tblData" class="table">
+                        <thead>
+                            <tr>
+                                <th>Item Description</th>
+                                <th>HSN/SAC Code</th>
+                                <th>Quantity</th>
+                                <th>Units</th>
+                                <th>Rate</th>
+                                <th>Tax</th>
+                                <th>Taxable Amount</th>
+                                <th>Tax Amount</th>
+                                <th>Net Amount</th>
+                                <th style="display:none">Action</th>
+
+                            </tr>
+                        </thead>
+                        @if (Model.SaleContractBillingTransactionList.Count > 0)
+                        {
+                            decimal TotalBillAmount = 0; decimal TotalTaxableAmount = 0; decimal TotalTaxAmount = 0; decimal TotalTaxableManPowerAmountAmount = 0; decimal TotalTaxableManPowerGrossAmount = 0; decimal TotalFixAmountPerManPowerRate = 0;
+                            bool IsTaxExempted = Model.SaleContractBillingTransactionList[0].IsTaxExempted;
+                            byte ReasonForExemption = Model.SaleContractBillingTransactionList[0].ReasonForExemption;
+                            string TaxExemptionRemark = Model.SaleContractBillingTransactionList[0].TaxExemptionRemark;
+                            <tbody>
+                                @foreach (var item in Model.SaleContractBillingTransactionList)
+                                {
+                                    if (item.SaleContractRequiredTypeID != 6 && item.SaleContractRequiredTypeID != 8 && item.Quantity > 0)
+                                    {
+                                        TotalBillAmount = TotalBillAmount + item.NetAmount;
+                                        TotalTaxableAmount = TotalTaxableAmount + item.TaxableAmount;
+                                        TotalTaxableManPowerGrossAmount = TotalTaxableManPowerGrossAmount + item.TaxableAmount;
+                                        TotalTaxAmount = TotalTaxAmount + item.TaxAmount;
+
+                                        decimal OriginalTaxableAmount = 0; decimal OriginalTaxAmount = 0; decimal OriginalNetAmount = 0;
+
+                                        if (item.BillingType == 2 && (item.FixedQuantity != item.OriginalQuantity))
+                                        {
+                                            OriginalTaxableAmount = Math.Round(item.Quantity * item.Rate);
+                                            OriginalTaxAmount = 0;
+                                            if (IsTaxExempted == false)
+                                            {
+                                                OriginalTaxAmount = Math.Round((OriginalTaxableAmount * item.TaxRate) / 100);
+                                            }
+                                            OriginalNetAmount = OriginalTaxableAmount+OriginalTaxAmount;
+
+
+                                            decimal DiffQuantity = Math.Abs(item.FixedQuantity - item.OriginalQuantity);
+                                            byte DiffQuantityIsPositive = (item.FixedQuantity > item.OriginalQuantity) ? Convert.ToByte(1) : Convert.ToByte(0);
+                                            decimal DiffTaxableAmount = Math.Round(DiffQuantity * item.ShortExtraRate);
+                                            decimal DiffTaxAmount = 0;
+                                            if (IsTaxExempted == false)
+                                            {
+                                                DiffTaxAmount = Math.Round((DiffTaxableAmount * item.TaxRate) / 100);
+                                            }
+                                            decimal DiffNetAmount = DiffTaxableAmount + DiffTaxAmount;
+
+                                            //if (DiffQuantityIsPositive == 1)
+                                            //{
+                                            //    TotalTaxableAmount = TotalTaxableAmount + DiffTaxableAmount;
+                                            //    TotalTaxAmount = TotalTaxAmount + DiffTaxAmount;
+                                            //    TotalBillAmount = TotalBillAmount + DiffNetAmount;
+                                            //}
+                                            //else
+                                            //{
+                                            //    TotalTaxableAmount = TotalTaxableAmount - DiffTaxableAmount;
+                                            //    TotalTaxAmount = TotalTaxAmount - DiffTaxAmount;
+                                            //    TotalBillAmount = TotalBillAmount - DiffNetAmount;
+                                            //}
+                                        }
+
+                                        <tr>
+                                            <td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.SaleContractRequirementDetailsID"></td>
+                                            <td style="vertical-align:middle;">@item.ItemDescription</td>
+                                            <td style="vertical-align:middle;">@item.HSNCode</td>
+                                            @*@if (item.BillingType == 2 && (item.Quantity != item.OriginalQuantity))
+                                            {
+                                                <td style="vertical-align:middle;">1</td>
+                                            }
+                                            else
+                                            {*@
+                                                <td style="vertical-align:middle;">@item.Quantity</td>
+                                            @*}*@
+                                            <td style="vertical-align:middle;">@item.UOMCode</td>
+                                            <td style="vertical-align:middle;">@item.Rate</td>
+                                            <td style="vertical-align:middle;">@(IsTaxExempted == false ? item.GeneralTaxGroupMasterName : "")</td>
+                                            @if (item.BillingType == 2 && (item.FixedQuantity != item.OriginalQuantity))
+                                            {
+                                                <td style="vertical-align:middle;">@OriginalTaxableAmount</td>
+                                                <td style="vertical-align:middle;">@OriginalTaxAmount</td>
+                                                <td style="vertical-align:middle;">@OriginalNetAmount</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="vertical-align:middle;">@item.TaxableAmount</td>
+                                                <td style="vertical-align:middle;">@item.TaxAmount</td>
+                                                <td style="vertical-align:middle;">@item.NetAmount</td>
+                                            }
+                                            <td style="display:none"><i class='zmdi zmdi-delete zmdi-hc-fw deleteEnq' style='cursor:pointer' title='Delete' /></td>
+                                        </tr>
+                                        if (item.BillingType == 2 && (item.FixedQuantity != item.OriginalQuantity))
+                                        {
+                                            decimal DiffQuantity = Math.Abs(item.FixedQuantity - item.OriginalQuantity);
+                                            byte DiffQuantityIsPositive = (item.FixedQuantity > item.OriginalQuantity) ? Convert.ToByte(1) : Convert.ToByte(0);
+                                            decimal DiffTaxableAmount = Math.Round(DiffQuantity * item.ShortExtraRate);
+                                            decimal DiffTaxAmount = 0;
+                                            if (IsTaxExempted == false)
+                                            {
+                                                DiffTaxAmount = Math.Round((DiffTaxableAmount * item.TaxRate) / 100);
+                                            }
+                                            decimal DiffNetAmount = DiffTaxableAmount + DiffTaxAmount;
+                                            <tr>
+                                                @if (DiffQuantityIsPositive == 1)
+                                                {
+                                                    if (item.SaleContractRequiredTypeID == 5 && item.FixedBillingType == 3)
+                                                    {
+                                                        TotalTaxableManPowerGrossAmount = TotalTaxableManPowerGrossAmount - DiffTaxableAmount;
+                                                    }
+                                                    <td colspan="2">Short Posting</td>
+                                                    <td>@DiffQuantity</td>
+                                                    <td>Pstgs</td>
+                                                    <td>@item.ShortExtraRate</td>
+                                                    <td></td>
+                                                    <td style="vertical-align:middle;">@DiffTaxableAmount</td>
+                                                    <td style="vertical-align:middle;">@DiffTaxAmount</td>
+                                                    <td style="vertical-align:middle;">@DiffNetAmount</td>
+                                                }
+                                                else
+                                                {
+                                                    if (item.SaleContractRequiredTypeID == 5 && item.FixedBillingType == 3)
+                                                    {
+                                                        TotalTaxableManPowerGrossAmount = TotalTaxableManPowerGrossAmount + DiffTaxableAmount;
+                                                    }
+                                                    <td colspan="2">Extra Posting</td>
+                                                    <td>@DiffQuantity</td>
+                                                    <td>Pstgs</td>
+                                                    <td>@item.ShortExtraRate</td>
+                                                    <td></td>
+                                                    <td style="vertical-align:middle;">@DiffTaxableAmount</td>
+                                                    <td style="vertical-align:middle;">@DiffTaxAmount</td>
+                                                    <td style="vertical-align:middle;">@DiffNetAmount</td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                }
+                                @foreach (var item in Model.SaleContractBillingTransactionList)
+                                {
+                                    if (item.SaleContractRequiredTypeID == 8 && item.IsServiceChargesAppliedToServiceItem == true)
+                                    {
+                                        TotalBillAmount = TotalBillAmount + item.NetAmount;
+                                        TotalTaxableAmount = TotalTaxableAmount + item.TaxableAmount;
+                                        TotalTaxableManPowerGrossAmount = TotalTaxableManPowerGrossAmount + item.TaxableAmount;
+                                        TotalTaxAmount = TotalTaxAmount + item.TaxAmount;
+
+                                        <tr>
+                                            <td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.SaleContractRequirementDetailsID"></td>
+                                            <td style="vertical-align:middle;">@item.ItemDescription</td>
+                                            <td style="vertical-align:middle;">@item.HSNCode</td>
+                                            <td style="vertical-align:middle;">@item.Quantity</td>
+                                            <td style="vertical-align:middle;">@item.UOMCode</td>
+                                            <td style="vertical-align:middle;">@item.Rate</td>
+                                            <td style="vertical-align:middle;">@(IsTaxExempted == false ? item.GeneralTaxGroupMasterName : "")</td>
+                                            <td style="vertical-align:middle;">@item.TaxableAmount</td>
+                                            <td style="vertical-align:middle;">@item.TaxAmount</td>
+                                            <td style="vertical-align:middle;">@item.NetAmount</td>
+                                            <td style="display:none"><i class='zmdi zmdi-delete zmdi-hc-fw deleteEnq' style='cursor:pointer' title='Delete' /></td>
+                                        </tr>
+                                    }
+                                }
+                                @foreach (var item in Model.SaleContractBillingTransactionList)
+                                {
+                                    if (item.SaleContractRequiredTypeID == 6)
+                                    {
+                                        TotalBillAmount = TotalBillAmount + item.NetAmount;
+                                        TotalTaxableAmount = TotalTaxableAmount + item.TaxableAmount;
+                                        TotalTaxAmount = TotalTaxAmount + item.TaxAmount;
+
+                                        <tr>
+                                            <td style="display:none"></td>
+                                            <td style="vertical-align:middle;">Sub Total</td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;">@TotalTaxableManPowerGrossAmount</td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="vertical-align:middle;"></td>
+                                            <td style="display:none"></td>
+                                            <td style="display:none"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.SaleContractRequirementDetailsID"></td>
+                                            <td style="vertical-align:middle;">@item.ItemDescription</td>
+                                            <td style="vertical-align:middle;">@item.HSNCode</td>
+                                            <td style="vertical-align:middle;">@item.Quantity</td>
+                                            <td style="vertical-align:middle;">@item.UOMCode</td>
+                                            <td style="vertical-align:middle;">@item.Rate</td>
+                                            <td style="vertical-align:middle;">@(IsTaxExempted == false ? item.GeneralTaxGroupMasterName : "")</td>
+                                            <td style="vertical-align:middle;">@item.TaxableAmount</td>
+                                            <td style="vertical-align:middle;">@item.TaxAmount</td>
+                                            <td style="vertical-align:middle;">@item.NetAmount</td>
+                                            <td style="display:none"><i class='zmdi zmdi-delete zmdi-hc-fw deleteEnq' style='cursor:pointer' title='Delete' /></td>
+                                        </tr>
+                                    }
+                                }
+                                @foreach (var item in Model.SaleContractBillingTransactionList)
+                                {
+                                    if (item.SaleContractRequiredTypeID == 8 && item.IsServiceChargesAppliedToServiceItem == false)
+                                    {
+                                        TotalBillAmount = TotalBillAmount + item.NetAmount;
+                                        TotalTaxableAmount = TotalTaxableAmount + item.TaxableAmount;
+                                        TotalTaxAmount = TotalTaxAmount + item.TaxAmount;
+
+                                        <tr>
+                                            <td style="display:none">@item.ItemNumber<input type="hidden" style="display:none" value="@item.SaleContractRequirementDetailsID"></td>
+                                            <td style="vertical-align:middle;">@item.ItemDescription</td>
+                                            <td style="vertical-align:middle;">@item.HSNCode</td>
+                                            <td style="vertical-align:middle;">@item.Quantity</td>
+                                            <td style="vertical-align:middle;">@item.UOMCode</td>
+                                            <td style="vertical-align:middle;">@item.Rate</td>
+                                            <td style="vertical-align:middle;">@(IsTaxExempted == false?item.GeneralTaxGroupMasterName:"")</td>
+                                            <td style="vertical-align:middle;">@item.TaxableAmount</td>
+                                            <td style="vertical-align:middle;">@item.TaxAmount</td>
+                                            <td style="vertical-align:middle;">@item.NetAmount</td>
+                                            <td style="display:none"><i class='zmdi zmdi-delete zmdi-hc-fw deleteEnq' style='cursor:pointer' title='Delete' /></td>
+                                        </tr>
+                                    }
+                                }
+                                @if (IsTaxExempted == true)
+                                {
+                                    if ((ReasonForExemption == 1) && TaxExemptionRemark != "")
+                                    {
+                                        <tr>
+                                            <td colspan="11">Note:- "@TaxExemptionRemark"</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" style="text-align: right;">Total</td>
+                                    <td>@TotalTaxableAmount<input type="hidden" id="TotalTaxableAmount" value="@TotalTaxableAmount"></td>
+                                    <td>@TotalTaxAmount</td>
+                                    <td>@Math.Round(TotalBillAmount)<input type="hidden" id="TotalBillAmount" value="@TotalBillAmount"></td>
+                                </tr>
+                            </tfoot>
+                        }
+                    </table>
+                </div>
+                <div class="col-sm-12">
+                    @if (Model.SaleContractBillingTransactionList.Count > 0 && Model.SaleContractBillingTransactionList[0].IsTaxExempted == false)
+                    {
+                        { Html.RenderAction("GetTaxSummaryForDisplay", "GeneralTaxGroupMaster", new { IsOtherState = Model.SaleContractBillingTransactionList[0].IsOtherState, FromMasterID = Model.SalesInvoiceMasterID, FromDetailTable = "SaleContractInvoiceDetails" }); }
+                    }
+                    @*<div class="col-sm-2" style="float:right;">
+                            <div class="form-group fg-line">
+                                <button type="button" class="btn btn-primary m-t-20" id="CreateSaleContractBillingTransaction">@Resources.ButtonAction_Submit</button>
+                            </div>
+                        </div>*@
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractBillingTransaction.Initialize();
+
+    });
+</script>

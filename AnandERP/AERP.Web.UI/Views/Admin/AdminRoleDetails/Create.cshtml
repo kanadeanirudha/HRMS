@@ -1,0 +1,43 @@
+﻿@model AMS.ViewModel.AdminRoleDetailsViewModel
+
+@using (Ajax.BeginForm("Create", "AdminRoleDetails", null,
+        new AjaxOptions
+        {
+            UpdateTargetId = "update-message",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnSuccess = "createSuccess"
+        }, new
+        {
+            @id = "FormAdminRole"
+        }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div id="update-message" class="error invisible"></div>
+    
+    <fieldset>
+
+        <legend>Create New Admin Role</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AdminRoleCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AdminRoleCode)
+            @Html.ValidationMessageFor(model => model.AdminRoleCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsActive)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsActive)
+            @Html.ValidationMessageFor(model => model.IsActive)
+        </div>
+
+    </fieldset>
+}
+
+

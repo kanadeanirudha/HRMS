@@ -1,0 +1,457 @@
+﻿@*@model AMS.ViewModel.EmployeeProjectWorksMasterViewModel
+@{
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div class="widget-block">
+    <div class="widget-head">
+        <h5 id="hFive">
+            @Resources.FormUpdate_EmployeeProjectWorksMaster
+        </h5>
+
+    </div>
+
+
+    <form id="FormEditEmployeeProjectWorksMaster" method="post" class="form-horizontal well">
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.EmployeeProjectWorksDetailsID)
+        @Html.HiddenFor(m => m.CentreCode)
+
+        <div class="row">
+            <div class="span10">
+                <div class="row control-group">
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.ProjectWorkName, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span7">
+                        @Html.TextBoxFor(model => model.ProjectWorkName, new { style = "width:106%;", maxlength = "500", disabled = "disabled" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.ProjectWorkName)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span10">
+                <div class="row control-group">
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.FundingAgency, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span7">
+                        @Html.TextBoxFor(model => model.FundingAgency, new { style = "width:106%;", maxlength = "150", disabled = "disabled" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.FundingAgency)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span10">
+                <div class="row control-group">
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.ProjectCost, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span3">
+                        @Html.TextBoxFor(model => model.ProjectCost, new { @class = "txtbox", style = "text-align:right", disabled = "disabled"})
+                        <br />
+                        @Html.ValidationMessageFor(m => m.ProjectCost)
+                    </div>
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.ProjectWorkDate, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span2">
+                        @Html.TextBoxFor(model => model.ProjectWorkDate, new { @class = "txtbox", disabled = "disabled" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.ProjectWorkDate)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span10">
+                <div class="row control-group">
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.Duration, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span3">
+                        @Html.TextBoxFor(model => model.Duration, new { @class = "txtbox", disabled = "disabled" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Duration)
+                    </div>
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.DurationUnit, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span2">
+                        @Html.DropDownList("DurationUnit", ViewData["DurationUnit"] as List<SelectListItem>, new { style = "width:210px; font-Weight:Bold;", @class = "dropdown1" , disabled = "disabled"})
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span10">
+                <div class="row control-group">
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.AssignmentFromDate, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span3">
+
+                        @Html.TextBoxFor(model => model.AssignmentFromDate, new { @class = "txtbox", disabled = "disabled" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.AssignmentFromDate)
+
+                    </div>
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.AssignmentToDate, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span2">
+                        @Html.TextBoxFor(model => model.AssignmentToDate, new { @class = "txtbox", disabled = "disabled" })
+                        <br />
+                        @Html.ValidationMessageFor(m => m.AssignmentToDate)
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span10">
+                <div class="row control-group">
+                    <div class="spanFullName">
+                        @Html.LabelFor(model => model.ProjectStatus, new { style = "font-Weight:Bold;" })
+                    </div>
+                    <div class="span3">
+                        @Html.DropDownList("ProjectStatus", ViewData["ProjectStatus"] as List<SelectListItem>, new { style = "width:210px; font-Weight:Bold;", @class = "dropdown1" , disabled = "disabled"})
+                    </div>
+                    <div class="spanFullName">
+                     
+                    </div>
+                    <div class="span2">
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <fieldset>
+            <legend><h6>Assign Task Details</h6></legend>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.ProjectWorkFromDate, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+
+                            @Html.TextBoxFor(model => model.ProjectWorkFromDate, new { @class = "txtbox" })
+                            <br />
+                            @Html.ValidationMessageFor(m => m.ProjectWorkFromDate)
+
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.ProjectWorkToDate, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.TextBoxFor(model => model.ProjectWorkToDate, new { @class = "txtbox"})
+                            <br />
+                            @Html.ValidationMessageFor(m => m.ProjectWorkToDate)
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.WorkAsDesignation, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span3">
+
+                            @Html.TextBoxFor(model => model.WorkAsDesignation, new { @class = "txtbox", maxlength = "100" })
+                            <br />
+                            @Html.ValidationMessageFor(m => m.WorkAsDesignation)
+
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.IndividualProjectStatus, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span2">
+                            @Html.DropDownList("IndividualProjectStatus", ViewData["IndividualProjectStatus"] as List<SelectListItem>, new { style = "width:210px; font-Weight:Bold;", @class = "dropdown1"})
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.EmployeeRemark, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span7">
+                            @Html.TextAreaFor(model => model.EmployeeRemark, new { style = "width:106%;", maxlength = "100" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(model => model.IsActive, new { style = "font-Weight:Bold;" })
+                        </div>
+                        <div class="span7">
+                            @Html.CheckBoxFor(model => model.IsActive)
+                            <br />
+                            @Html.ValidationMessageFor(m => m.IsActive)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+            <button type="button" id="btnEditEmployeeProjectWorksMaster" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        EmployeeProjectWorksMaster.Initialize();
+        $('#ProjectWorkFromDate').on("keydown", function (e) {
+            var keyCode = (e.keyCode ? e.keyCode : e.which)
+            if (keyCode == 9) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        });
+        $('#ProjectWorkToDate').on("keydown", function (e) {
+            var keyCode = (e.keyCode ? e.keyCode : e.which)
+            if (keyCode == 9) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+
+    });
+</script>*@
+
+
+@*--------------------------------------------*@
+
+@model AMS.ViewModel.EmployeeProjectWorksMasterViewModel
+@{
+
+    Layout = null;
+}
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormUpdate_EmployeeProjectWorksMaster</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:650px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+            <form id="FormEditEmployeeProjectWorksMaster" method="post">
+                @Html.HiddenFor(m => m.ID)
+                @Html.HiddenFor(m => m.EmployeeProjectWorksDetailsID)
+                @Html.HiddenFor(m => m.CentreCode)
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ProjectWorkName, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.ProjectWorkName, new { @class = "form-control", style = "", maxlength = "500" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ProjectWorkName)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.FundingAgency, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.FundingAgency, new { @class = "form-control", style = "", maxlength = "150" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.FundingAgency)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ProjectCost, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.ProjectCost, new { @class = "form-control", style = "", maxlength = "60" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ProjectCost)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ProjectWorkDate, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ProjectWorkDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ProjectWorkDate)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.Duration, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.Duration, new { @class = "form-control", style = "", maxlength = "2" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Duration)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.DurationUnit, new { style = "" })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("DurationUnit", ViewData["DurationUnit"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.AssignmentFromDate, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.AssignmentFromDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.AssignmentFromDate)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.AssignmentToDate, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.AssignmentToDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.AssignmentToDate)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ProjectWorkFromDate, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ProjectWorkFromDate, new { @class = "form-control", style = "background-color:#fff;", @readonly = "readonly" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ProjectWorkFromDate)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.ProjectWorkToDate, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(model => model.ProjectWorkToDate, new { @class = "form-control", @readonly = "readonly", style = "background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ProjectWorkToDate)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.ProjectStatus, new { style = "" })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownList("ProjectStatus", ViewData["ProjectStatus"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(model => model.WorkAsDesignation, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.WorkAsDesignation, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.WorkAsDesignation)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(model => model.EmployeeRemark, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextAreaFor(model => model.EmployeeRemark, new { style = "", @class = "form-control", maxlength = "200" })
+                        </div>
+                    </div>
+                    @if (Model.IsActive == true)
+                    {
+                        <div class="col-sm-6">
+                            <div class="checkbox m-b-15" style="padding-top:5%;">
+                                <label>
+                                    <input type="checkbox" id="IsActive" checked>
+                                    <i class="input-helper"></i>
+                                    @Html.LabelFor(model => model.IsActive)
+                                </label>
+                            </div>
+                        </div>
+                    }
+                    else { 
+                            <div class="col-sm-6">
+                                <div class="checkbox m-b-15" style="padding-top:5%;">
+                                    <label>
+                                        <input type="checkbox" id="IsActive">
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.IsActive)
+                                    </label>
+                                </div>
+                            </div>
+                    }
+                    
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" id="btnEditEmployeeProjectWorksMaster" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        EmployeeProjectWorksMaster.Initialize();
+        $('#ProjectWorkFromDate').on("keydown", function (e) {
+            var keyCode = (e.keyCode ? e.keyCode : e.which)
+            if (keyCode == 9) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        });
+        $('#ProjectWorkToDate').on("keydown", function (e) {
+            var keyCode = (e.keyCode ? e.keyCode : e.which)
+            if (keyCode == 9) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+
+    });
+</script>
+

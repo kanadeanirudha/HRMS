@@ -1,0 +1,21 @@
+﻿@model AERP.ViewModel.SaleContractDashboardReportViewModel
+@Html.HiddenFor(m => m.ReportList, new { @id = "ReportListColdAccounts" })
+<div class="col-sm-6 col-md-3">
+    @*<a href="@Url.Action("Index", "CRMSaleEnquiryAccountMaster", new {SearchQuery="Cold"})">*@
+        <div class="mini-charts-item bgm-red">
+            <div class="clearfix">
+                @*<div class="chart myBarClassColdAccounts col-sm-6 text-center"></div>*@
+                <div class="count text-center">
+                    <small>Total Sale Contract</small>
+                    <h2>@Html.DisplayFor(m => m.ReportCount)</h2>
+                    <small>&nbsp;</small>
+                </div>
+            </div>
+        </div>
+    @*</a>*@
+</div>
+<script>
+    $(document).ready(function () {
+        sparklineBar('myBarClassColdAccounts', $("#ReportListColdAccounts").val().split(','), '45px', 3, '#fff', 2);
+    });
+</script>

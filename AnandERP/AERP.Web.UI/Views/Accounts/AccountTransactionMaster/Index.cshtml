@@ -1,0 +1,172 @@
+﻿@model AERP.ViewModel.AccountTransactionMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Account/AccountTransactionMaster.js")" type="text/javascript"></script>
+<style>
+    .dropdown-menu {
+        margin: 2px 0 0;
+        min-width: 250px;
+        padding: 5px 10px;
+    }
+</style>
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Voucher</h2>
+    </div>
+        <div class="card">
+
+            <div class="lv-header-alt clearfix">
+                <ul class="lv-actions actions">
+                    <li>
+                        Financial Year :&nbsp;
+
+                        @if (Model.SessionName != "Session not defined !")
+                        {
+                            <b>@Html.DisplayFor(m => m.SessionName, new { style = "font-size: 12px;" })</b>
+                        }
+                        else
+                        {
+                            <b style="color: red;">@Html.DisplayFor(m => m.SessionName, new { style = "font-size: 12px;" })</b>
+                        }
+                     
+                    </li>&nbsp;&nbsp;
+                    <li>
+                        <input type="text" style="display: none" id="aaa" value="0" />
+                        <button id="IconShowList" class="btn bgm-lightblue waves-effect" title="Post Voucher List"><i class="zmdi zmdi-view-headline zmdi-hc-fw"></i></button>
+                        <button id="IconShowPostVoucher" style="display: none" class="btn bgm-lightblue waves-effect" title="Post Voucher"><i class="zmdi zmdi-plus zmdi-hc-fw"></i></button>
+
+                    </li>
+                    
+                    <li class="dropdown" >
+                    
+                        <a href="" data-toggle="dropdown" aria-expanded="true" title="Shortcut Keys">
+                            <i class="zmdi zmdi-info"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" >
+                            <li><p style="font-weight: bold;text-align:center;">Shortcut Keys</p></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F2 : </span><span style="">Credit Note</span></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F3 : </span><span style="">Debit Note</span></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F4 : </span><span style="">Contra </span></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F5 : </span><span style="">Payment</span></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F6 : </span><span style="">Receipt</span></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F7 : </span><span style="">Journal</span></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F8 : </span><span style="">Sale</span></li>
+                            <li><span style="color: #0088cc;">Sht+Ctrl+F9 : </span><span style="">Purchase</span></li>
+                            <li><span style="color: #0088cc;">Sht+Enter &nbsp;&nbsp;&nbsp;&nbsp: </span><span style="">Process Entry</span></li>
+                            <li><span style="color: #0088cc;">Alt+X&nbsp;&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp;&nbsp: </span><span style="">Reset voucher</span></li>
+                            <li><span style="color: #0088cc;">ALT+L&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp;&nbsp: </span><span style="">Show List</span></li>
+                            <li><span style="color: #0088cc;">ALT+R&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp;&nbsp: </span><span style="">Add Row</span></li>
+                            <li><span style="color: #0088cc;">ALT+A&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp;&nbsp;: </span><span style="">Add Voucher</span></li>
+                        </ul>
+                    </li> 
+                </ul>
+            </div>
+            @Html.HiddenFor(m => m.AccSessionID)
+            <div class="card-body card-padding">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line select">
+                                @Html.DropDownListFor(model => model.SelectedTransactionType, Model.ListAccountTransactionTypeMasterItems, "---Select Transaction Type---", new { @class = "form-control", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Voucher Type" })
+                            </div>
+                        </div>
+                        <div class="col-sm-1" id="divBtnShowList" style="display:none;">
+                            <button type="button" value="@Resources.GlobalProperties_ShowList" style="display:none;" class="btn btn-primary" id="btnShowList">@Resources.GlobalProperties_ShowList</button>
+                        </div>
+
+
+                        <div class="col-sm-8" id="DivVoucherDate" style="padding:0px; padding-top:1px">
+                            <div class="col-sm-12" style="padding:0px;">
+                                <div class="col-sm-2" style="padding:2%;">
+                                    <b>Transaction Date :</b>
+                                </div>
+                                <div class="col-sm-3" style="padding-left:0px">
+                                    <div class="form-group  fg-line dtp-container">
+                                        @Html.TextBoxFor(m => m.TransactionDate, new { Value = Model.IsPosted == 0 ? "" + DateTime.Now.ToString("d-MMM-yyyy") + "":""+Model.TransactionDate+"", @class = "form-control input-sm", @readonly = "readonly", style = "background-color: #ffffff;", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Voucher Date" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group  fg-line">
+                                        @Html.TextBoxFor(m => m.NarrationDescription, new { @class = "form-control input-sm", placeholder = "Reference", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Voucher References" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 pull-left">
+                                    <button type="button" class="btn btn-login btn-success btn-float waves-effect waves-circle waves-float" id="btnAdd" style="height: 40px; width: 40px; line-height: 35px !important;" disabled="disabled" value="Add Row" title="Add Row"><i class="zmdi zmdi-plus"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+                <div class="row">
+                    @if (Model.IsPosted == 0)
+                    {
+                        <div id="ListViewModel">
+                            @{Html.RenderAction("Create", "AccountTransactionMaster"); }
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="ListViewModelEdit">
+                            @{Html.RenderAction("Edit", "AccountTransactionMaster",new { TransactionID  = Model.TransactionMainID, AccSessionID = Model.AccSessionID, TransactionTypeWithCode = Model.TransactionTypeWithCode }); }
+                        </div>
+                    }
+                </div>
+
+            </div>
+    
+    </div>
+
+        
+
+        
+
+
+    </div>
+
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        AccountTransactionMaster.Initialize();
+
+        $('#TransactionDate').attr("readonly", true);
+
+        $('#TransactionDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            maxDate: moment(),
+            ignoreReadonly: true,
+        })
+
+        //$(function () {
+        //    var moveLeft = -230;
+        //    var moveDown = -50;
+
+        //    $('a#trigger').hover(function (e) {
+        //        $('div#pop-up').show();
+                
+        //    }, function () {
+        //        $('div#pop-up').hide();
+        //    });
+
+        //    $('a#trigger').mousemove(function (e) {
+        //        $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+        //    });
+
+        //});
+    });
+</script>
+

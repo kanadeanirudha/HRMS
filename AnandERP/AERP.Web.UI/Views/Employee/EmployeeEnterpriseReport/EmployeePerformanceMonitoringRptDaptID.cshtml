@@ -1,0 +1,290 @@
+﻿
+@*<style type="text/css">
+    .ui-widget-header {
+        color: #333;
+        font-weight: bold;
+    }
+</style>
+<div class="container-fluid">
+    <ul class="breadcrumb">
+        <li><a href="#">@Resources.MainMenu_MonitoringSystem</a><span class="divider">»</span></li>
+        <li>@Html.ActionLink(@Resources.FormName_PerformanceReport, "Index")<span class="divider">»</span></li>
+        <li class="active">@Resources.DisplayName_CentreDepartmentFaculty</li>
+    </ul>
+    <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-block">
+                <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+
+                <div class="widget-head">
+                    
+                    <h5 id="hFive"><i class="black-icons users"></i>&nbsp;@Resources.DisplayName_CentreDepartmentFaculty</h5>
+
+                </div>
+                <div class="widget-content">
+                    <div class="widget-box">
+                        <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                            <div class="table_content">
+                                <table id="myDataTable2" class="table user-tbl">
+                                    <thead>
+                                        <tr>
+                                           
+                                            <th class="center" style="font-weight:bold;color:#000;width:20%" rowspan="3">@Resources.TableHeaders_Employee</th>
+                                            <th class="center" style="font-weight:bold;color:#000" rowspan="3">@Resources.TableHeaders_Department</th>
+                                           
+                                            <th class="center" style="font-weight:bold;color:#000;" rowspan="2" colspan="2">@Resources.TableHeaders_Education</th>
+                                            <th class="center" style="font-weight:bold;color:#000" rowspan="3">@Resources.TableHeaders_Experience</th>
+                                            <th class="center" style="font-weight:bold;color:#000" rowspan="3">@Resources.TableHeaders_Specialisation</th>
+                                            <th class="center" style="font-weight:bold;color:#000" colspan="4">@Resources.TableHeaders_Publication</th>
+
+                                            <th class="center" style="font-weight:bold;color:#000" rowspan="3">@Resources.TableHeaders_AverageRanking</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="center" style="font-weight:bold;color:#000" colspan="2">@Resources.TableHeaders_JournalPaper</th>
+                                            <th class="center" style="font-weight:bold;color:#000" colspan="2">@Resources.TableHeaders_Conference</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="center" style="font-weight:bold;color:#000">@Resources.TableHeaders_Doctorate</th>
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_PostGraduation</th>
+                                            
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_International</th>
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_National</th>
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_International</th>
+                                            <th class="center" style="font-weight:bold;color:#000" >@Resources.TableHeaders_National</th>
+                                        </tr>
+                                    </thead>
+                                    @if (ViewBag.Data == 1)
+                                    {
+                                        foreach (var item in ViewBag.ListEmployeePerformanceMonitoringReport)
+                                        {
+                                           
+                                        <tbody id="Level0" style="overflow: scroll;">
+                                            <tr>
+                                                
+                                                <td id="Faculty" style="text-align: left;width:20%">
+                                                    <a href="#" class="@item.EmployeeID">@item.EmployeeFullName</a>
+                                                </td>
+                                                <td style="text-align: left;">
+                                                   @item.DepartmentName
+                                                </td>
+                                                
+                                                
+                                               
+                                                <td style="text-align: right">
+                                                   @item.DoctorateCount
+                                                </td>
+                                                <td style="text-align: right">
+                                                    @item.PostGraduationCount
+                                                </td>
+                                                <td style="text-align: right">
+                                                    @item.ExperinceInMonthCount
+                                                </td>
+                                                <td style="text-align: right">
+                                                    @item.SpecialResearchArea
+                                                </td>
+                                                
+                                                <td style="text-align: right">@item.PaperPresentCount_Journal_International
+                                                </td>
+                                                <td style="text-align: right">@item.PaperPresentCount_Journal_National
+                                                </td>
+                                                
+                                                <td style="text-align: right">
+                                                    @item.PaperPresentCount_Conference_International
+                                                </td>
+                                                <td style="text-align: right">
+                                                    @item.PaperPresentCount_Conference_National
+                                                </td>
+                                                <td class="center">
+                                                   <span>
+                                                        <h4 style="color:#2f6d91">
+                                                      @string.Format("{0:F2}", item.AverageRanking)
+                                                        </h4>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tbody style="overflow: scroll;">
+                                            <tr>
+                                                <td colspan="16">@Resources.Message_Nodataavailable
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    }
+                                </table>
+                            </div>
+                            <div class="widget-bottom">
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeEnterpriseReport.Initialize();
+    });
+
+
+</script>*@
+
+
+@*------------new code--------*@
+
+
+
+
+@*@model AMS.ViewModel.ToolTemplateRegistrationViewModel
+
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>*@
+
+
+@*<div class="container">*@
+<div class="block-header">
+    <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.DisplayName_CentreDepartmentFaculty</h2>
+</div>
+
+<div class="card">
+
+
+
+    <div class="card-header">
+        <ol class="breadcrumb" style="padding-left: 0%; padding-right: 10%;">
+            <li><a href="#">@Resources.MainMenu_MonitoringSystem</a></li>
+            <li>@Html.ActionLink(@Resources.FormName_PerformanceReport, "Index")</li>
+            <li class="active">@Resources.DisplayName_CentreDepartmentFaculty</li>
+        </ol>	
+    </div>
+
+
+
+    <div class="bootgrid-header container-fluid" id="data-table-command-header">
+        <div class="row">
+            <div class="col-sm-12 actionBar">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive" id="DataTables_Table_1_wrapper" role="grid">
+        <table id="myDataTable2" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+
+                    <th class="warning c-white" style="" rowspan="3">@Resources.TableHeaders_Employee</th>
+                    <th class="warning c-white" style="" rowspan="3">@Resources.TableHeaders_Department</th>
+                    
+                    <th class="warning c-white" style="" rowspan="2" colspan="2">@Resources.TableHeaders_Education</th>
+                    <th class="warning c-white" style="" rowspan="3">@Resources.TableHeaders_Experience</th>
+                    <th class="warning c-white" style="" rowspan="3">@Resources.TableHeaders_Specialisation</th>
+                    <th class="warning c-white" style="" colspan="4">@Resources.TableHeaders_Publication</th>
+
+                    <th class="warning c-white" style="" rowspan="3">@Resources.TableHeaders_AverageRanking</th>
+                </tr>
+                <tr>
+                    <th class="info" style="" colspan="2">@Resources.TableHeaders_JournalPaper</th>
+                    <th class="info" style="" colspan="2">@Resources.TableHeaders_Conference</th>
+                </tr>
+                <tr>
+                    <th class="success c-white" style="">@Resources.TableHeaders_Doctorate</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_PostGraduation</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_International</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_National</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_International</th>
+                    <th class="success c-white" style="">@Resources.TableHeaders_National</th>
+                </tr>
+            </thead>
+
+            @if (ViewBag.Data == 1)
+            {
+                foreach (var item in ViewBag.ListEmployeePerformanceMonitoringReport)
+                {
+
+                    <tbody id="Level0" style="">
+                        <tr>
+
+                            <td id="Faculty" style="">
+                                <a href="#" class="@item.EmployeeID">@item.EmployeeFullName</a>
+                            </td>
+                            <td style="">
+                                @item.DepartmentName
+                            </td>
+
+
+
+                            <td style="">
+                                @item.DoctorateCount
+                            </td>
+                            <td style="">
+                                @item.PostGraduationCount
+                            </td>
+                            <td style="">
+                                @item.ExperinceInMonthCount
+                            </td>
+                            <td style="">
+                                @item.SpecialResearchArea
+                            </td>
+
+                            <td style="">
+                                @item.PaperPresentCount_Journal_International
+                        </td>
+                        <td style="">
+                            @item.PaperPresentCount_Journal_National
+                    </td>
+
+                    <td style="">
+                        @item.PaperPresentCount_Conference_International
+                    </td>
+                    <td style="">
+                        @item.PaperPresentCount_Conference_National
+                    </td>
+                    <td>
+                        <span>
+                            <h4 style="color:#2f6d91">
+                                @string.Format("{0:F2}", item.AverageRanking)
+                            </h4>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+                }
+            }
+            else
+            {
+                <tbody style="">
+                    <tr>
+                        <td colspan="16">
+                            @Resources.Message_Nodataavailable
+                    </td>
+                </tr>
+            </tbody>
+            }
+
+
+        </table>
+
+    </div>
+</div>
+@*</div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeEnterpriseReport.Initialize();
+    });
+
+
+</script>
+
+
+
+
+

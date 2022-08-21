@@ -1,0 +1,182 @@
+﻿@model AMS.ViewModel.InventoryProductionMasterAndTransactionViewModel
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/InventoryProductionMasterAndTransaction.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+<div id="custom-content">
+    @Html.HiddenFor(model => model.InventoryVariationMasterID)
+    @Html.HiddenFor(model => model.CentreCode)
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Inventory Production</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateInventoryProductionMasterAndTransaction" role="form">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.TransactionDate, new { })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.TransactionDate, new { maxlength = "80", @class = "form-control input-sm"})
+                        </div>
+                    </div>
+                   
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group fg-line">
+                                @Html.HiddenFor(model => model.ItemNumber)
+                                @Html.HiddenFor(model => model.GeneralItemMasterID)
+                                @Html.HiddenFor(model => model.GeneralUnitsID)
+                                @Html.HiddenFor(model => model.SalePrice)
+                                @Html.LabelFor(model => model.ItemDescription, new { })
+                                @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @*@Html.LabelFor(model => model.AltQty, new { })*@
+                                @Html.LabelFor(model => model.Quantity, new { })
+                                @Html.TextBoxFor(model => model.Quantity, new { maxlength = "8", @class = "form-control input-sm typeahead" })
+
+                            </div>
+                        </div>
+                      
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                @*@Html.LabelFor(model => model.AltQty, new { })*@
+                                @Html.HiddenFor(model => model.BaseUomCode)
+                                @Html.LabelFor(model => model.UoMCode, new { })
+                                @Html.DropDownListFor(model => model.UoMCode, Enumerable.Empty<SelectListItem>(), "---Select UomCode ---", new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = ""})
+                            </div>
+                        </div>
+                        <div class="col-sm-1" id="btnAdd1" style="margin-bottom:-5%;">
+                            <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                            <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAdd"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+                    </div>
+                
+                <table id="tblData" class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Description</th>
+                            <th>Quantity</th>
+                            <th>UoM</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+                <br/>
+                    <div class="form-group" style="margin-left:2%;">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateInventoryProductionMasterAndTransactionRecord" type="button" />
+                    </div>
+</form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate-1.15.0.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="~/Content/materialtheme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#TransactionDate").datetimepicker({
+            format: 'DD MMM YYYY',
+            maxDate: moment()
+        });
+      
+        InventoryProductionMasterAndTransaction.Initialize();
+
+        debugger
+        var map = {};
+        var getData1 = function () {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+                debugger;
+                $.ajax({
+                    url: "/InventoryProductionMasterAndTransaction/GetItemSearchList",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: q, CentreCode: $('#CentreCode').val() },
+                    success: function (data) {
+                        debugger;
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(data, function (i, response1) {
+                            // if (substrRegex.test(response.name)) {
+                            map[response1.ItemName] = response1;
+                            matches.push(response1.ItemName);
+                            // }
+                        });
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+        };
+
+
+        $('#ItemDescription').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+
+            source: getData1()
+        }).on("typeahead:selected", function (obj, item) {
+            debugger
+            $('#GeneralItemMasterID').val(map[item].id);
+            $('#ItemDescription').val(map[item].name);
+            $('#ItemName').val(map[item].ItemName);
+            $('#ItemNumber').val(map[item].ItemNumber);
+            $('#GeneralUnitsID').val(map[item].GeneralUnitsID);
+            $('#SalePrice').val(map[item].SalePrice);
+
+           
+            $.ajax({
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: { "ItemNumber": map[item].ItemNumber },
+                url: '/InventoryProductionMasterAndTransaction/GetUoMCodeByItemNumber',
+                success: function (data) {
+                    var $ddlExam = $("#UoMCode");
+                    $ddlExam.html('');
+                    $ddlExam.append('<option value="">------Select UoM Code-----</option>');
+                    if (data.length != 0) {
+                        $.each(data, function (id, option) {
+                            $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+                            $('#BaseUomCode').val(data[0].BaseUomCode);
+                        });
+                    }
+                    else {
+                        $ddlExam.append('<option value="EA">EA</option>');
+                    }
+                }
+            });
+           
+        });
+    });
+</script>

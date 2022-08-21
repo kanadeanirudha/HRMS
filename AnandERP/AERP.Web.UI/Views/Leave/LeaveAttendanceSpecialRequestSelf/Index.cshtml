@@ -1,0 +1,39 @@
+﻿@*@model IEnumerable<AMS.ViewModel.LeaveAttendanceSpecialRequestViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/Vendors")
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Leave/LeaveAttendanceSpecialRequestSelf.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/admin/jquery-ui-1.css")" rel="stylesheet" type="text/css" />
+<div id="ListViewModel">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveAttendanceSpecialRequestSelf.LoadList();
+    });
+</script>*@
+
+@model IEnumerable<AERP.ViewModel.LeaveAttendanceSpecialRequestViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Leave/LeaveAttendanceSpecialRequestSelf.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<div id="ListViewModel" class="container">
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeaveAttendanceSpecialRequestSelf.LoadList();
+    });
+</script>

@@ -1,0 +1,62 @@
+﻿@model AERP.ViewModel.AccountGroupMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Account Group</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:215px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateAccountGroupMaster" method="post">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <div class="col-sm-12">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group  fg-line select">
+                        @Html.LabelFor(m => m.CategoryID, new { })
+                        @Html.DropDownListFor(model => model.CategoryID, (IEnumerable<SelectListItem>)ViewBag.AccountCategoryNameList, Resources.ddlHeaders_AccountCategory, new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CategoryID)
+                </div>
+
+                <div class="col-sm-6">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(m => m.GroupDescription, new { })
+                        @Html.TextBoxFor(model => model.GroupDescription, new { maxlength = "50", @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GroupDescription)
+                </div>
+                <div class="col-sm-6">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(m => m.GroupCode, new { })
+                        @Html.TextBoxFor(model => model.GroupCode, new { maxlength = "5", @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GroupCode)
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateAccountGroupMasterRecord" type="button" />
+                        <input name="reset" id="reset" type="button" class="btn btn-default btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Reset" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountGroupMaster.Initialize();
+    });
+</script>

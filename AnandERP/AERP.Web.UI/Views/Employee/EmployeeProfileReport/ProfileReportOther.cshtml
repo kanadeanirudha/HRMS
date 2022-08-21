@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "ProfileReportOther";
+    Layout = null;
+}
+
+<style>
+    #profile-main {
+        /*min-height: initial;*/
+        min-height: 880px;
+        position: initial;
+    }
+        #profile-main .pm-overview {
+            background: #f8f8f8 none repeat scroll 0 0;
+            border-right: 1px solid #eee;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+        }
+</style>
+
+
+<link href="~/Content/Derek/derek.css" rel="stylesheet" />
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Employee/ProfileReportOther.js")" type="text/javascript"></script>
+
+<section id="content">
+    @*<div class="container">*@
+
+        
+
+        <div class="" id="profile-main">
+@*card*@
+           @* <div class="pm-overview c-overflow">
+    <div class="pmo-pic">*@
+                    
+                    @{ Html.RenderAction("PersonalInformation", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    
+                <div class="col-sm-12" style="padding-top:0px;">
+                
+                    
+                    <!-- Qualification Details div 12-->
+                    @*@{ Html.RenderAction("_EmployeeQualificationDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- Qualification Details container -->
+                    <!-- Specialization Details -->
+                    @{ Html.RenderAction("_EmployeeSpecializationResearchAreaDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- Specialization Details container -->
+                    <!-- Experience Details -->
+                    @{ Html.RenderAction("_EmployeeExperienceDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- Experience Details container -->
+                    <!-- Course/ Subject Taught Details div 6-->
+                    @{ Html.RenderAction("_CourseSubjectTaughtDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- Course/ Subject Taught Details container -->
+                    <!-- For Membership of Learned Society  -->
+                    @{ Html.RenderAction("_EmployeeElectionNomineeBodyDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- For Membership of Learned Society -->
+                    <!-- For Membership of Learned Society  -->
+                    @{ Html.RenderAction("_EmployeePaperPresentDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- For Membership of Learned Society -->
+                    <!-- For Ph. D. Thesis Guidence  -->
+                    @{ Html.RenderAction("_EmployeePHdGuideRecognisationDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- ForPh. D. Thesis Guidence -->
+                    <!-- For Invited Lectures/Other College Special Lecture Details   -->
+                    @{ Html.RenderAction("_EmployeeOtherCollegeSpecialLectureDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- For Invited Lectures/Other College Special Lecture Details -->
+                    <!-- For Project Work Details -->
+                    @{ Html.RenderAction("_EmployeeProjectWorkDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- For Project Work Details -->
+                    <!-- For Associates Professional Bodies Details -->
+                    @{ Html.RenderAction("_EmployeeAssociatesProfessionalBodiesDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- For Associates Professional Bodies Details -->
+                    <!-- For Patent Received Details -->
+                    @{ Html.RenderAction("_EmployeePatentReceivedDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- For Patent Received Details -->
+                    <!-- For Prizes Won Details -->
+                    @{ Html.RenderAction("_EmployeePrizesWonDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }
+
+                    <!-- For Prizes Won Details -->
+                    <!-- For Consultancy Details -->
+                    @{ Html.RenderAction("_EmployeeConsultancyMasterDetails", "EmployeeProfileReport", new { EmployeeID = HttpContext.Current.Session["CurrentEmployeeID"].ToString() }); }*@
+
+                    <!-- For Consultancy Details -->
+                    
+
+
+                </div>
+            </div>
+    @*</div>*@
+</section>

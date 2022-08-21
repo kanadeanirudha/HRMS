@@ -1,0 +1,766 @@
+﻿@model AERP.ViewModel.SaleContractManPowerItemViewModel
+<style type="text/css">
+    .mfp-content {
+        width: 90% !important;
+    }
+
+    #SalaryRules th, #SelectedRules th {
+        font-size: 12px;
+    }
+</style>
+<link href="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css")" rel="stylesheet" type="text/css" />
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Revise Contract Posts Rules</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            @if (Convert.ToInt32(HttpContext.Current.Session["Admin Manager"]) > 0)
+            {
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormCreateSaleContractManPowerItemRules">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    @Html.HiddenFor(m => m.ID)
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.CustomerMasterID, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Model.CustomerMasterName
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.CustomerBranchMasterID, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Model.CustomerBranchMasterName
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.DesignationMasterID, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Model.DesignationMasterName
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.BasicSalayAmount, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Model.BasicSalayAmount
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.BasicSalayAmount, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.BasicSalayAmount, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.BasicSalayAmount)
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.FixedSalaryAmount, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.FixedSalaryAmount, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FixedSalaryAmount)
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.RuleType, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.DropDownList("RuleType", (SelectList)ViewBag.RuleType, "---Select Rule Type---", new { style = "", @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.RuleType)
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.HiddenFor(m => m.HeadID)
+                            @Html.HiddenFor(m => m.HeadType)
+                            @Html.LabelFor(model => model.HeadName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.HeadName, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.HeadName)
+                        </div>
+                    </div>
+
+                    <table id="SalaryRules" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Fixed Amount</th>
+                                <th>Percentage</th>
+                                <th>Calculated On</th>
+                                <th>Calculate On Amount</th>
+                                <th>Is Gender Specific</th>
+                                <th>Gender</th>
+                                <th>Effected Date</th>
+                                <th>Range From</th>
+                                <th>Range Upto</th>
+                                <th>Contributed By</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <hr />
+                    <table id="SelectedRules" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Rule Type</th>
+                                <th>Head Name</th>
+                                <th>Fixed Amount</th>
+                                <th>Percentage</th>
+                                <th>Calculated On</th>
+                                <th>Calculate On Amount</th>
+                                <th>Is Gender Specific</th>
+                                <th>Gender</th>
+                                <th>Effected Date</th>
+                                <th>Range From</th>
+                                <th>Range Upto</th>
+                                <th>Contributed By</th>
+                                <th>Actual Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SaleContractManPowerItemList)
+                            {
+                                var CalculateOnValue = item.CalculateOnString.Replace(", ", ",").Split(',');
+                                var calOnVal = string.Empty; var calOnText = string.Empty;
+                                <tr>
+                                    <td>
+                                        <input type='hidden' value='@item.RuleID' class='SelectedRuleID'>
+                                        <input type='hidden' class='SelectedRuleType' value='@item.RuleType'>@item.RuleType
+                                    </td>
+                                    <td>
+                                        <input type='hidden' class='SelectedHeadID' value='@item.HeadID'>@item.HeadName
+                                    </td>
+                                    <td>
+                                        <input type='text' class="RuleFixedAmount form-control input-sm" value='@item.FixedAmount'>
+                                    </td>
+                                    <td>
+                                        <input type='text' class="RulePercentage form-control input-sm" value='@item.Percentage'>
+                                    </td>
+                                    <td>
+                                        @if (item.CalculateOnString != string.Empty)
+                                        {
+                                            foreach (var CalOn in CalculateOnValue)
+                                            {
+                                                var ReferenceID = CalOn.Split('~');
+                                                calOnVal = (calOnVal == string.Empty ? calOnVal : calOnVal + ",") + ReferenceID[0] + "~" + ReferenceID[1] + "~" + ReferenceID[2];
+                                                calOnText = (calOnText == string.Empty ? calOnText : calOnText + ", ") + ReferenceID[3];
+                                            }
+                                        }
+                                        <input type='hidden' class='SelectedCalcultedOn' value='@calOnVal'>@calOnText
+                                    </td>
+                                    <td>
+                                        <input type='text' class="RuleCalculateOnFixedAmount form-control input-sm" value='@item.CalculateOnFixedAmount'>
+                                    </td>
+                                    <td>@item.IsGenderSpecific</td>
+                                    @if (item.Gender == 1)
+                                    {
+                                        <td>Male</td>
+                                    }
+                                    else if (item.Gender == 2)
+                                    {
+                                        <td>Female</td>
+                                    }
+                                    else if (item.Gender == 3)
+                                    {
+                                        <td>Third Gender</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td></td>
+                                    <td>@item.RangeFrom</td>
+                                    <td>@item.RangeUpto</td>
+
+                                    @if (item.ContributionType == 1)
+                                    {
+                                        <td>Employee</td>
+                                    }
+                                    else if (item.ContributionType == 2)
+                                    {
+                                        <td>Employer</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td>
+                                        <input type='hidden' value='@item.HeadType'>
+                                        <input type='hidden' class="TotalHeadAmount" value='@item.CalculatedAmount'>
+                                        <span class='ActualAmountCalculated'>@item.CalculatedAmount</span>
+                                    </td>
+                                    <td><input type='button' class='btn btn-primary RemoveRulesToManPowerItem' value='Remove'>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="7" style="text-align:right;">Net Amount</th>
+                                <th colspan="2">
+                                    <input type="text" class="form-control" value="@Model.SaleContractManPowerItemList[0].NetSalaryAmount" id="NetSalaryAmount" disabled="disabled" />
+                                </th>
+                                <th colspan="2" style="text-align:right;">Total Amount</th>
+                                <th colspan="2">
+                                    <input type="text" class="form-control" value="@Model.SaleContractManPowerItemList[0].TotalAmount" id="TotalSalaryAmount" disabled="disabled" />
+                                    <input type="hidden" class="form-control" value="@Model.SaleContractManPowerItemList[0].GrossSalaryAmount" id="GrossSalaryAmount" disabled="disabled" />
+                                </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="col-sm-12 m-t-15">
+                        <div class="col-sm-3" style="display:none;">
+                            <div class="form-group  fg-line">
+                                @Html.LabelFor(model => model.CalculateArrears, new { style = "" })
+                                <div class="checkbox">
+                                    <label>
+                                        @if (Model.CalculateArrears == true)
+                                        {
+                                            <input type="checkbox" value="" id="CalculateArrears" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" value="" id="CalculateArrears">
+                                        }
+                                        <i class="input-helper"></i>
+
+                                    </label>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CalculateArrears)
+                        </div>
+                        <div class="col-sm-3" style="display:none;">
+                            <div class="form-group  fg-line">
+                                @Html.LabelFor(model => model.GenerateSeperateInvoice, new { style = "" })
+                                <div class="checkbox">
+                                    <label>
+                                        @if (Model.GenerateSeperateInvoice == true)
+                                        {
+                                            <input type="checkbox" value="" id="GenerateSeperateInvoice" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" value="" id="GenerateSeperateInvoice">
+                                        }
+                                        <i class="input-helper"></i>
+
+                                    </label>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GenerateSeperateInvoice)
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.LabelFor(model => model.WithEffectiveFromDate, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.WithEffectiveFromDate, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.WithEffectiveFromDate)
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.LabelFor(model => model.WithEffectiveUptoDate, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.WithEffectiveUptoDate, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.WithEffectiveUptoDate)
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 2%; ">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditsSaleContractManPowerItemRulesRecord" type="button" />
+                    </div>
+                </form>
+            }
+            else
+            {
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent">Unauthorized Access!</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        SaleContractManPowerItem.Initialize();
+
+        $('#WithEffectiveFromDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        });
+
+        $('#WithEffectiveUptoDate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            //minDate: moment(),
+            ignoreReadonly: true,
+        });
+
+        mapHeadName = [];
+        var getDataHeadName = function () {
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/SaleContractManPowerItem/GetHeadNameSearchList",
+                    type: "POST",
+                    data: { term: q, RuleType: $("#RuleType").val() },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.HeadName)) {
+                                mapHeadName[response.HeadName] = response;
+                                matches.push(response.HeadName);
+
+                            }
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#HeadName").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataHeadName()
+        }).on("typeahead:selected", function (obj, item) {
+            $("#HeadID").val(mapHeadName[item].HeadID);
+            $("#HeadName").val(mapHeadName[item].HeadName);
+            $("#HeadType").val(mapHeadName[item].HeadType);
+
+            $.ajax({
+                url: "/SaleContractManPowerItem/GetHeadNameRulesSearchList",
+                type: "POST",
+                data: { HeadID: $("#HeadID").val(), RuleType: $("#RuleType").val() },
+                dataType: "json",
+                success: function (data) {
+
+                    // iterate through the pool of strings and for any string that
+                    // contains the substring `q`, add it to the `matches` array
+                    //alert(data);
+                    //console.log(data);
+                    $("#SalaryRules tbody").html('');
+                    $.each(data, function (i, response) {
+
+                        var tr = "<tr>";
+                        tr += "<td><input type='hidden' value='" + response.RuleID + "'></td>";
+                        tr += "<td><input type='text' class='form-control' value='" + response.FixedAmount + "'></td>";
+                        tr += "<td><input type='text' class='form-control' value='" + response.Percentage + "'</td>";
+                        //tr += "<td><select class='form-control'>";
+
+                        $.ajax({
+                            url: "/SaleContractManPowerItem/GetRulesCalculateOnSearchList",
+                            type: "POST",
+                            data: { RuleID: response.RuleID, RuleType: $("#RuleType").val() },
+                            dataType: "json",
+                            success: function (data) {
+                                tr += "<td><span class='selectedCalOn' style='display:none;'></span><select class='form-group CalculateOnList' id='CalculateOn' multiple name='selectCalculateOn'>";
+                                $.each(data, function (i, response1) {
+                                    tr += "<option value='" + response1.ReferenceID + "~" + response1.AllowanceOrDeduction + "~" + response1.SalarySumOfID + "' " + response1.SelectedStatusFlag + ">" + response1.CalculateOnName + "</option>";
+                                });
+                                tr += "</select></td>";
+
+                            },
+                            async: false,
+                        })
+                        tr += "<td><input type='text' class='form-control' value='" + response.CalculateOnFixedAmount + "'</td>";
+                        //if (response.CalculateOn == 1) {
+                        //    tr += "<option value=''>---Select---</option><option value='1' selected='selected'>Basic</option><option value='2'>Gross Pay</option><option value='3'>Total</option>";
+                        //} else if (response.CalculateOn == 2) {
+                        //    tr += "<option value=''>---Select---</option><option value='1'>Basic</option><option value='2' selected='selected'>Gross Pay</option><option value='3'>Total</option>";
+                        //} else if (response.CalculateOn == 3) {
+                        //    tr += "<option value=''>---Select---</option><option value='1>Basic</option><option value='2'>Gross Pay</option><option value='3' selected='selected'>Total</option>";
+                        //} else {
+                        //    tr += "<option value=''>---Select---</option><option value='1'>Basic</option><option value='2'>Gross Pay</option><option value='3'>Total</option>";
+                        //}
+                        //tr += "</select></td>";
+                        tr += "<td>" + response.IsGenderSpecific + "</td>";
+
+                        if (response.Gender == 1) {
+                            tr += "<td>Male</td>";
+                        } else if (response.Gender == 2) {
+                            tr += "<td>Female</td>";
+                        } else if (response.Gender == 3) {
+                            tr += "<td>Third Gender</td>";
+                        } else {
+                            tr += "<td></td>";
+                        }
+
+                        tr += "<td>" + response.EffectedDate + "</td>";
+                        tr += "<td>" + response.RangeFrom + "</td>";
+                        tr += "<td>" + response.RangeUpto + "</td>";
+
+                        if (response.ContributionType == 1) {
+                            tr += "<td>Employee</td>";
+                        } else if (response.ContributionType == 2) {
+                            tr += "<td>Employer</td>";
+                        } else {
+                            tr += "<td></td>";
+                        }
+
+                        tr += "<td><input type='button' class='btn btn-primary AddRulesToManPowerItem' value='Add'></td>";
+                        tr += "</tr>";
+
+                        $("#SalaryRules tbody").append(tr);
+                    });
+                    $('.CalculateOnList').selectpicker();
+
+                    $(".CalculateOnList").each(function () {
+                        var SelectedCalculatedOn = '';
+                        $(this).children('option').each(function () {
+                            if ($(this).val() != "on") {
+                                if (this.selected == true) {
+                                    SelectedCalculatedOn = (SelectedCalculatedOn == '' ? SelectedCalculatedOn : SelectedCalculatedOn + ', ') + $(this).text();
+                                }
+                            }
+                        });
+                        $(this).prev('span.selectedCalOn').text(SelectedCalculatedOn);
+                    });
+
+                    $(".CalculateOnList").change(function () {
+                        var SelectedCalculatedOn = '';
+                        $(this).children('option').each(function () {
+                            if ($(this).val() != "on") {
+                                if (this.selected == true) {
+                                    SelectedCalculatedOn = (SelectedCalculatedOn == '' ? SelectedCalculatedOn : SelectedCalculatedOn + ', ') + $(this).text();
+                                }
+                            }
+                        });
+                        $(this).prev('span.selectedCalOn').text(SelectedCalculatedOn);
+                    });
+
+                    $(".AddRulesToManPowerItem").click(function () {
+                        var isPresent = false; var TotalHeadAmount = 0; debugger
+                        var RuleID = $(this).parent().parent("tr").children("td:eq(0)").children().val();
+                        $("#SelectedRules tbody tr td .SelectedRuleID").each(function () {
+
+                            if ((RuleID == $(this).val()) && ($("#RuleType").val() == $(this).next("input").val())) {
+                                $("#displayErrorMessage").text("This rule is already selected.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                                isPresent = true;
+                            }
+                        });
+                        if (isPresent == true) {
+                            return false;
+                        }
+
+                        if ($(this).parent().parent("tr").children("td:eq(1)").children().val() > 0 && $(this).parent().parent("tr").children("td:eq(2)").children().val() > 0) {
+                            $("#displayErrorMessage").text("Please select either Fixed Amount or Percentage.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                            $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                            return false;
+                        }
+
+                        if (!$.isNumeric($(this).parent().parent("tr").children("td:eq(1)").children().val()) || !$.isNumeric($(this).parent().parent("tr").children("td:eq(2)").children().val())) {
+                            $("#displayErrorMessage").text("Please enter correct values.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                            $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                            return false;
+                        }
+
+                        if ($(this).parent().parent("tr").children("td:eq(1)").children().val() > 0) {
+                            TotalHeadAmount = $(this).parent().parent("tr").children("td:eq(1)").children().val();
+                        }
+
+                        if ($(this).parent().parent("tr").children("td:eq(2)").children().val() > 0 && ($(this).parent().parent("tr").children("td:eq(3)").children('select').val() == null && $(this).parent().parent("tr").children("td:eq(4)").children().val() == 0)) {
+                            $("#displayErrorMessage").text("You have selected Percentage. Please select Percentage Calculated on or Calculate On Amount.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                            $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                            return false;
+                        }
+                        if ($(this).parent().parent("tr").children("td:eq(2)").children().val() > 0 && ($(this).parent().parent("tr").children("td:eq(3)").children('select').val() != null && $(this).parent().parent("tr").children("td:eq(4)").children().val() > 0)) {
+                            $("#displayErrorMessage").text("You have selected Percentage. Please select either Percentage Calculated on or Calculate On Amount.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                            $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                            return false;
+                        }
+                        if ($(this).parent().parent("tr").children("td:eq(2)").children().val() > 0 && $(this).parent().parent("tr").children("td:eq(4)").children().val() > 0) {
+                            var Percentage = $(this).parent().parent("tr").children("td:eq(2)").children().val();
+                            var CalculateOnValue = $(this).parent().parent("tr").children("td:eq(4)").children().val();
+                            TotalHeadAmount = (CalculateOnValue * Percentage) / 100;
+                        }
+                        if ($(this).parent().parent("tr").children("td:eq(2)").children().val() > 0 && $(this).parent().parent("tr").children("td:eq(3)").children('select').val() != null) {
+
+                            var Percentage = $(this).parent().parent("tr").children("td:eq(2)").children().val();
+                            var CalculateOnValue = $(this).parent().parent("tr").children("td:eq(3)").children('select').val().toString();
+                            var splitedCalculateOnValue = CalculateOnValue.split(',');
+                            var AllHeadDefined = true; var SumAmount = 0;
+                            for (i = 0; i < splitedCalculateOnValue.length; i++) {
+                                var HeadDefined = false;
+                                var ReferenceID = splitedCalculateOnValue[i].split('~');
+                                if (ReferenceID[0] == 0) {
+                                    HeadDefined = true;
+                                    SumAmount = parseFloat(SumAmount) + parseFloat($("#BasicSalayAmount").val());
+                                } else {
+                                    $("#SelectedRules tbody tr td .SelectedHeadID").each(function () {
+                                        var RuleType = $(this).parent().prev().children('.SelectedRuleType').val();
+
+                                        if (ReferenceID[0] == $(this).val() && ((ReferenceID[1] == 2 && RuleType == 'Allowance') || (ReferenceID[1] == 3 && RuleType == 'Deduction'))) {
+                                            HeadDefined = true;
+                                            var HeadAmount = parseFloat($(this).parent().parent("tr").children("td:eq(12)").children('span').text());
+                                            SumAmount = SumAmount + HeadAmount;
+                                        }
+                                    })
+                                }
+                                if (HeadDefined == false) {
+                                    AllHeadDefined = false;
+                                    break;
+                                }
+                            }
+                            if (AllHeadDefined == false) {
+                                $("#displayErrorMessage").text("Pecentage Calculated On selected for this rule are not defined.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                                return false;
+                            } else {
+                                TotalHeadAmount = (SumAmount * Percentage) / 100;
+                            }
+                        }
+
+                        var Selectedtr = "<tr>";
+                        Selectedtr += "<td><input type='hidden' value='" + RuleID + "' class='SelectedRuleID'><input type='hidden' class='SelectedRuleType' value='" + $("#RuleType").val() + "'>" + $("#RuleType").val() + "</td>";
+                        Selectedtr += "<td><input type='hidden' class='SelectedHeadID' value='" + $("#HeadID").val() + "'>" + $("#HeadName").val() + "</td>";
+                        Selectedtr += "<td><input type='text' class='RuleFixedAmount form-control input-sm' value='" + $(this).parent().parent("tr").children("td:eq(1)").children().val() + "'></td>";
+                        Selectedtr += "<td><input type='text' class='RulePercentage form-control input-sm' value='" + $(this).parent().parent("tr").children("td:eq(2)").children().val() + "'>" + $(this).parent().parent("tr").children("td:eq(2)").children().val() + "</td>";
+
+                        //var SelectedCalculatedOn = '';
+                        //if ($(this).parent().parent("tr").children("td:eq(3)").children().val() == 1) {
+                        //    SelectedCalculatedOn = 'Basic';
+                        //} else if ($(this).parent().parent("tr").children("td:eq(3)").children().val() == 2) {
+                        //    SelectedCalculatedOn = 'Gross Pay';
+                        //} else if ($(this).parent().parent("tr").children("td:eq(3)").children().val() == 3) {
+                        //    SelectedCalculatedOn = 'Total';
+                        //}
+
+                        Selectedtr += "<td><input type='hidden' class='SelectedCalcultedOn' value='" + $(this).parent().parent("tr").children("td:eq(3)").children('select').val() + "'>" + $(this).parent().parent("tr").children("td:eq(3)").children('span.selectedCalOn').text() + "</td>";
+                        Selectedtr += "<td><input type='hidden' value='" + $(this).parent().parent("tr").children("td:eq(4)").children().val() + "'>" + $(this).parent().parent("tr").children("td:eq(4)").children().val() + "</td>";
+                        Selectedtr += "<td>" + $(this).parent().parent("tr").children("td:eq(5)").text() + "</td>";
+                        Selectedtr += "<td>" + $(this).parent().parent("tr").children("td:eq(6)").text() + "</td>";
+                        Selectedtr += "<td>" + $(this).parent().parent("tr").children("td:eq(7)").text() + "</td>";
+                        Selectedtr += "<td>" + $(this).parent().parent("tr").children("td:eq(8)").text() + "</td>";
+                        Selectedtr += "<td>" + $(this).parent().parent("tr").children("td:eq(9)").text() + "</td>";
+                        Selectedtr += "<td>" + $(this).parent().parent("tr").children("td:eq(10)").text() + "</td>";
+                        Selectedtr += "<td><input type='hidden' value='" + $("#HeadType").val() + "'><input type='hidden' class='TotalHeadAmount' value='" + parseFloat(TotalHeadAmount).toFixed() + "'><span class='ActualAmountCalculated'>" + parseFloat(TotalHeadAmount).toFixed() + "</span></td>";
+
+                        Selectedtr += "<td><input type='button' class='btn btn-primary RemoveRulesToManPowerItem' value='Remove'></td>";
+                        Selectedtr += "</tr>";
+
+                        $("#SelectedRules tbody").append(Selectedtr);
+
+                        CalculateTotalAmount();
+                        $(".RemoveRulesToManPowerItem").unbind("click").click(function () {
+
+                            var SelectedHeadID = $(this).parent().parent("tr").children("td:eq(1)").children('.SelectedHeadID').val();
+                            var SelectedRuleType = $(this).parent().parent("tr").children("td:eq(0)").children('.SelectedRuleType').val();
+                            var IsHeadUsed = false;
+                            $("#SelectedRules tbody tr td .SelectedCalcultedOn").each(function () {
+                                var CalculateOnValue = $(this).val();
+                                var splitedCalculateOnValue = CalculateOnValue.split(',');
+                                var IsUsed = false;
+                                for (i = 0; i < splitedCalculateOnValue.length; i++) {
+                                    ReferenceID = splitedCalculateOnValue[i].split('~');
+
+                                    if (ReferenceID[0] == SelectedHeadID && ((ReferenceID[1] == 2 && SelectedRuleType == 'Allowance') || (ReferenceID[1] == 3 && SelectedRuleType == 'Deduction'))) {
+                                        var IsUsed = true;
+                                        break;
+                                    }
+                                }
+
+                                if (IsUsed == true) {
+                                    IsHeadUsed = true;
+                                    return false;
+                                }
+                            });
+
+                            if (IsHeadUsed == true) {
+                                $("#displayErrorMessage").text("This Head is used in other rule for Pecentage Calculated On.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                            } else {
+                                $(this).closest("tr").remove();
+                                CalculateTotalAmount();
+                            }
+                        })
+                    });
+                },
+                async: false
+            })
+        });
+
+        $(".RemoveRulesToManPowerItem").unbind("click").click(function () {
+            debugger
+            var SelectedHeadID = $(this).parent().parent("tr").children("td:eq(1)").children('.SelectedHeadID').val();
+            var SelectedRuleType = $(this).parent().parent("tr").children("td:eq(0)").children('.SelectedRuleType').val();
+            var IsHeadUsed = false;
+            $("#SelectedRules tbody tr td .SelectedCalcultedOn").each(function () {
+                var CalculateOnValue = $(this).val();
+                var splitedCalculateOnValue = CalculateOnValue.split(',');
+                var IsUsed = false;
+                for (i = 0; i < splitedCalculateOnValue.length; i++) {
+                    ReferenceID = splitedCalculateOnValue[i].split('~');
+
+                    if (ReferenceID[0] == SelectedHeadID && ((ReferenceID[1] == 2 && SelectedRuleType == 'Allowance') || (ReferenceID[1] == 3 && SelectedRuleType == 'Deduction'))) {
+                        var IsUsed = true;
+                        break;
+                    }
+                }
+
+                if (IsUsed == true) {
+                    IsHeadUsed = true;
+                    return false;
+                }
+            });
+
+            if (IsHeadUsed == true) {
+                $("#displayErrorMessage").text("This Head is used in other rule for Pecentage Calculated On.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+            } else {
+                $(this).closest("tr").remove();
+                CalculateTotalAmount();
+            }
+        })
+
+        $('#HeadName').on("keydown", function (e) {
+
+            if ($("#RuleType").val() == "") {
+                $("#displayErrorMessage").text("Please Select Rule Type.").closest('div').fadeIn().closest('div').addClass('alert-' + "warning");
+                $("#displayErrorMessage").delay(400).slideDown(400).delay(1500).slideUp(400).css('background-color', "#FFCC80");
+                return false;
+            }
+
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#HeadName').typeahead('val', '');
+                $("#HeadName").val("");
+                $("#HeadID").val("");
+                $("#HeadType").val("");
+            }
+        });
+
+        $("#RuleType").change(function () {
+            $('#HeadName').typeahead('val', '');
+            $("#HeadName").val("");
+            $("#HeadID").val("");
+            $("#HeadType").val("");
+        });
+    });
+
+    function CalculateTotalAmount() {
+        var TotalSalary = $("#BasicSalayAmount").val();
+        var NetSalary = $("#BasicSalayAmount").val();
+        var GrossSalary = $("#BasicSalayAmount").val();
+
+        $('.ActualAmountCalculated').each(function () {
+            debugger
+            var SelectedRuleType = $(this).parent().parent("tr").children("td:eq(0)").children('.SelectedRuleType').val();
+            var ContributionType = $(this).parent().parent("tr").children("td:eq(11)").text();
+            if (SelectedRuleType == 'Allowance') {
+                TotalSalary = parseFloat(TotalSalary) + parseFloat($(this).text());
+                NetSalary = parseFloat(NetSalary) + parseFloat($(this).text());
+                GrossSalary = parseFloat(GrossSalary) + parseFloat($(this).text());
+            } else if (SelectedRuleType == 'Deduction' && ContributionType == 'Employee') {
+                NetSalary = parseFloat(NetSalary) - parseFloat($(this).text());
+            } else if (SelectedRuleType == 'Deduction' && ContributionType == 'Employer') {
+                TotalSalary = parseFloat(TotalSalary) + parseFloat($(this).text());
+            }
+        })
+        $("#TotalSalaryAmount").val(parseFloat(TotalSalary).toFixed());
+        $("#NetSalaryAmount").val(parseFloat(NetSalary).toFixed());
+        $("#GrossSalaryAmount").val(parseFloat(GrossSalary).toFixed());
+    }
+
+    $(".RuleFixedAmount").keyup(function () {
+        if ($(this).val() != "" && $(this).val() != "0") {
+            $(this).parent().next().children('.RulePercentage').val(0);
+            CalculateRuleWieseActualAmount();
+        }
+    })
+
+    $(".RulePercentage").keyup(function () {
+        if ($(this).val() != "" && $(this).val() != "0") {
+            $(this).parent().prev().children('.RuleFixedAmount').val(0);
+            CalculateRuleWieseActualAmount();
+        }
+    })
+
+    $("#BasicSalayAmount").keyup(function () {
+        if ($(this).val() != "" && $(this).val() != "0") {
+            CalculateRuleWieseActualAmount();
+        }
+    })
+
+    function CalculateRuleWieseActualAmount() {
+        var BasicSalayAmount = $("#BasicSalayAmount").val();
+
+        $('.ActualAmountCalculated').each(function () {
+            
+            var RulePercentage = parseFloat($(this).closest('tr').find('.RulePercentage').val());
+            var RuleFixedAmount = parseFloat($(this).closest('tr').find('.RuleFixedAmount').val());
+            var SelectedCalcultedOn = $(this).closest('tr').find('.SelectedCalcultedOn').val();
+
+            if (RuleFixedAmount != "" && RuleFixedAmount != 0) {
+                $(this).closest('tr').find('.TotalHeadAmount').val(RuleFixedAmount);
+                $(this).closest('tr').find('.ActualAmountCalculated').text(RuleFixedAmount);
+            }
+            if (RulePercentage != "" && RulePercentage != 0) {
+                var RuleCalculateOnFixedAmount = parseFloat($(this).closest('tr').find('.RuleCalculateOnFixedAmount').val());
+                if (RuleCalculateOnFixedAmount > 0) {
+                    TotalHeadAmount = Math.round((RuleCalculateOnFixedAmount * RulePercentage) / 100);
+                } else {
+                    var splitedCalculateOnValue = SelectedCalcultedOn.split(',');
+                    var SumAmount = 0;
+                    for (i = 0; i < splitedCalculateOnValue.length; i++) {
+                        var ReferenceID = splitedCalculateOnValue[i].split('~');
+                        if (ReferenceID[0] == 0) {
+                            SumAmount = parseFloat(SumAmount) + parseFloat($("#BasicSalayAmount").val());
+                        } else {
+                            $("#SelectedRules tbody tr td .SelectedHeadID").each(function () {
+                                var RuleType = $(this).parent().prev().children('.SelectedRuleType').val();
+
+                                if (ReferenceID[0] == $(this).val() && ((ReferenceID[1] == 2 && RuleType == 'Allowance') || (ReferenceID[1] == 3 && RuleType == 'Deduction'))) {
+                                    var HeadAmount = parseFloat($(this).parent().parent("tr").children("td:eq(12)").children('span').text());
+                                    SumAmount = SumAmount + HeadAmount;
+                                }
+                            })
+                        }
+                    }
+                    TotalHeadAmount = Math.round((SumAmount * RulePercentage) / 100);
+                }
+                
+                $(this).closest('tr').find('.TotalHeadAmount').val(TotalHeadAmount);
+                $(this).closest('tr').find('.ActualAmountCalculated').text(TotalHeadAmount);
+            }
+        });
+        CalculateTotalAmount();
+    }
+
+</script>
+

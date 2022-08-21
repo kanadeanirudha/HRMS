@@ -1,0 +1,216 @@
+﻿@*@model AMS.ViewModel.EmployeeOtherCollegeSpecialLectureDetailsViewModel
+@{
+    Layout = null;
+}
+
+
+<div class="widget-block">
+    <div class="widget-head">
+        <h5 id="hFive">
+
+            <script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+            <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+          
+
+
+           @Resources.FormCreate_OtherCollegeSpecialLectureDetails
+            
+        </h5>
+
+    </div>
+
+    <div class="widget-content">
+        <form id="FormCreateEmployeeOtherCollegeSpecialLectureDetails" method="post" class="form-horizontal well">
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(m => m.InstituteName, new { @class = "control-label", style = "font-weight:bold" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(m => m.InstituteName, new { @class = "input-large", MaxLength = "255" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.InstituteName)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(m => m.InstituteAddress, new { @class = "control-label", style = "font-weight:bold" })
+                        </div>
+                        <div class="span2">
+                            @Html.TextBoxFor(m => m.InstituteAddress, new { @class = "input-large", MaxLength = "255" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.InstituteAddress)
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(m => m.TopicOfLecture, new { @class = "control-label", style = "font-weight:bold" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextAreaFor(m => m.TopicOfLecture, new { @class = "input-large", MaxLength = "255" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.TopicOfLecture)
+                        </div>
+                        <div class="spanFullName">
+                            @Html.LabelFor(m => m.Remarks, new { @class = "control-label", style = "font-weight:bold" })
+                        </div>
+                        <div class="span2">
+                            @Html.TextAreaFor(m => m.Remarks, new { @class = "input-large", MaxLength = "255" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span10">
+                    <div class="row control-group">
+                        <div class="spanFullName">
+                            @Html.LabelFor(m => m.DateOfLectureDelivered, new { @class = "control-label", style = "font-weight:bold" })
+                        </div>
+                        <div class="span3">
+                            @Html.TextBoxFor(m => m.DateOfLectureDelivered, new { @class = "input-large", ReadOnly = "True" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.DateOfLectureDelivered)
+                        </div>
+
+                        <div class="spanFullName">
+                            @Html.LabelFor(m => m.IsActive, new { @class = "control-label", style = "font-weight:bold" })
+                        </div>
+                        <div class="span2">
+                            @Html.CheckBoxFor(m => m.IsActive)
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-actions" style="padding-left: 0px; padding-bottom: 0px; text-align: right">
+                <input type="button" id="CreateEmployeeOtherCollegeSpecialLectureDetailsRecord" value="@Resources.ButtonAction_Submit" class="btn btn-primary" />
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeOtherCollegeSpecialLectureDetails.Initialize();
+    });
+</script>*@
+
+@*----------------new code----------------------*@
+
+@model AMS.ViewModel.EmployeeOtherCollegeSpecialLectureDetailsViewModel
+@{
+
+    Layout = null;
+}
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;@Resources.FormCreate_OtherCollegeSpecialLectureDetails </h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:350px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+            <form id="FormCreateEmployeeOtherCollegeSpecialLectureDetails" method="post">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(m => m.InstituteName, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(m => m.InstituteName, new { @class = "form-control", MaxLength = "255" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.InstituteName)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>@Html.LabelFor(m => m.InstituteAddress, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(m => m.InstituteAddress, new { @class = "form-control", MaxLength = "255" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.InstituteAddress)
+                    </div>
+                </div>
+                
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color:red">*</span>
+                        @Html.LabelFor(m => m.TopicOfLecture, new {  })
+                        <div class="form-group fg-line">
+                            @Html.TextAreaFor(m => m.TopicOfLecture, new { @class = "form-control", MaxLength = "255" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.TopicOfLecture)
+                    </div>
+
+                    <div class="col-sm-6">
+                        @Html.LabelFor(m => m.Remarks, new {  })
+                        <div class="form-group fg-line">
+                            @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control", MaxLength = "255" })
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        @Html.LabelFor(m => m.DateOfLectureDelivered, new { style = "" })
+                        <div class="form-group fg-line dtp-container">
+                            @Html.TextBoxFor(m => m.DateOfLectureDelivered, new { @class = "form-control", ReadOnly = "True",style="background-color:#fff;" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DateOfLectureDelivered)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="checkbox m-b-15" style="padding-top:5%;">
+                            <label>
+                                <input type="checkbox" id="IsActive">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.IsActive)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" id="CreateEmployeeOtherCollegeSpecialLectureDetailsRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                        <button type="button" id="reset" class="btn btn-default">@Resources.ButtonAction_Reset</button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeOtherCollegeSpecialLectureDetails.Initialize();
+    });
+</script>
+
+
+
+
+

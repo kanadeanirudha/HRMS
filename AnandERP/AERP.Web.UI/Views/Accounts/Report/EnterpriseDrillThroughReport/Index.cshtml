@@ -1,0 +1,29 @@
+﻿@model AMS.ViewModel.EnterpriseDrillThroughReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<div class="container">
+    @using (Html.BeginForm("Index", "EnterpriseDrillThroughReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div id="SuccessMessage" style="display:none;color:#000;" class="alert"></div>
+
+    }
+</div>
+
+
+<div class="container">
+    <div class="block-header">
+        <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Account Report</h2>
+    </div>
+    <div id="aaa">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.Partial("/Views/Accounts/EnterpriseDrillThroughReport/EnterpriseDrillThroughReport.aspx")
+            </div>
+        </div>
+    </div>
+</div>
+

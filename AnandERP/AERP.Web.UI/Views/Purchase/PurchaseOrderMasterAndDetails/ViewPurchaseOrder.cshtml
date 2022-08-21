@@ -1,0 +1,135 @@
+﻿@model AERP.ViewModel.PurchaseOrderMasterAndDetailsViewModel
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Purchase/PurchaseOrderMasterAndDetails.js")" type="text/javascript"></script>
+<div id="custom-content">
+    @Html.HiddenFor(model => model.PurchaseRequisitionMasterID)
+    @Html.HiddenFor(model => model.VendorID)
+    @Html.HiddenFor(model => model.PurchaseOrderType)
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Purchase Order Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreatePurchaseOrderMasterAndDetails" role="form">
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.PurchaseOrderTypeDescription, new { })
+                        @Html.TextBoxFor(model => model.PurchaseOrderTypeDescription, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Vendor, new { })
+                        @Html.TextBoxFor(model => model.Vendor, new { maxlength = "12", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group fg-line">
+                        <br />
+                    </div>
+                </div>
+
+                <h4>Item Details</h4>
+                <table id="myDataTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Convertion</th>
+                            <th>Rate</th>
+                            <th>Location Name</th>
+                            <th>Delivery Date</th>
+                            <th>Tax</th> 
+                            <th>Amount</th>
+                            <th>Tax Amount</th>
+                            <th> Gross Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.PurchaseRequisitionList)
+                        {
+                            decimal GrossAmount = @Math.Round((@item.Rate * @item.Quantity), 2) + @Math.Round((@item.TaxAmount), 2);
+                            <tr>
+                                
+                                <td>@item.ItemName</td>
+                                <td>@Math.Round(@item.Quantity, 3)</td>
+                                <td>@Math.Round(@item.Quantity, 2) * @item.BaseUOMQuantity = @Math.Round((@item.Quantity * @item.BaseUOMQuantity), 2)  @item.BaseUOMCode</td>
+                                <td>@Math.Round(@item.Rate, 2)</td>
+                                <td>@item.LocationName</td>
+                                <td>@item.ExpectedDeliveryDate</td>
+                                <td>@item.TaxGroupName</td>
+                                <td>@Math.Round((@item.Rate * @item.Quantity), 2)</td>
+                                <td>@Math.Round((@item.TaxAmount), 2)</td>
+                                <td>@GrossAmount</td>
+
+                            </tr>
+                            Model.Amount = @Math.Round(Model.Amount + (item.Rate * item.Quantity), 2);
+                            Model.Freight = @Math.Round(item.Freight, 2);
+                            Model.TotalTaxAmount = @Math.Round(item.TotalTaxAmount, 2);
+                            Model.Discount = @Math.Round(item.Discount, 2);
+                            Model.ShippingHandling = @Math.Round(item.ShippingHandling, 2);
+                            Model.GrossAmount = @Math.Round(Model.Amount + Model.TotalTaxAmount, 2);
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7" align="right" style="font-size:14px" ><b>@Html.LabelFor(model => model.Amount, new { })</b></td>
+                            <td style="font-size:13px"><b>@Model.Amount</b></td>
+                            <td style="font-size:13px"><b>@Model.TotalTaxAmount</b></td>
+                            <td style="font-size:13px"><b>@Model.GrossAmount</b></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                @*<div class="col-sm-6">
+                        <div class="form-group fg-line">
+
+
+                        </div>
+                    </div>*@
+                <div class="col-sm-4">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Freight, new { })
+                        @Html.TextBoxFor(model => model.Freight, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.Discount, new { })
+                        @Html.TextBoxFor(model => model.Discount, new { maxlength = "80", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(model => model.ShippingHandling, new { })
+                        @Html.TextBoxFor(model => model.ShippingHandling, new { maxlength = "12", @class = "form-control input-sm typeahead", disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-left:2%;">
+                    <br />
+                    @*<input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreatePurchaseOrderMasterAndDetailsRecord" type="button" />*@
+                </div>
+                @if(Model.PurchaseOrderType!=3)
+                { 
+               { Html.RenderAction("GetTaxSummaryForDisplay", "GeneralTaxGroupMaster", new { IsOtherState = Model.IsOtherState, FromMasterID = Model.PurchaseRequisitionMasterID, FromDetailTable = "PurchaseRequisitionDetails" }); }
+                   }
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      //  PurchaseOrderMasterAndDetails.Initialize();
+    });
+</script>

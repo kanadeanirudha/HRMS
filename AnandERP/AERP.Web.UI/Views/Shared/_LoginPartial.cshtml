@@ -1,0 +1,173 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <div class="profile-menu">
+        <a href="">
+            <div class="profile-pic">
+                @if (HttpContext.Current.Session["ProfilePhoto"] != null)
+                {
+                    <img alt="" class="" style="" id="" src="data:image/jpeg;base64,@Convert.ToBase64String((byte[])(HttpContext.Current.Session["ProfilePhoto"]), 0, Convert.ToInt32(HttpContext.Current.Session["ProfilePhotoSize"]))" />
+                }
+                else
+                {
+                    <img alt="" style="" id="" src="~/Content/Theme/img/login.png" />
+                }
+                @*<img src="~/Content/materialtheme/img/profile-pics/1.jpg" alt="">*@
+            </div>
+
+            <div class="profile-info" id="LoginPartialID">
+                @HttpContext.Current.Session["UserName"]
+                <i class="zmdi zmdi-caret-down"></i>
+            </div>
+        </a>
+
+        <ul class="main-menu">
+            <li>
+                <a href="/EmployeeInformation/PersonalInformationHome/@HttpContext.Current.Session["PersonID"]"><i class="zmdi zmdi-account"></i>@Resources.DisplayName_ViewProfile</a>
+            </li>
+            @*<li>
+                    <a id="NotificationsIDV2" href="#" ><i class="zmdi zmdi-input-antenna"></i>Notifications <button class='btn bgm-orange btn-xs'><span id="NotiCount"></span></button></a>
+                </li>*@
+            <li>
+                <a class="mfpAjaxModal" href="@Url.Action("_ChangePassword", "EmployeeInformation", new { ID = Convert.ToInt32(HttpContext.Current.Session["UserID"]) })"><i class="zmdi zmdi-settings"></i>Change Password</a>
+            </li>
+            @if (Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["IsOffLineApp"]) == 1)
+            {
+                <li>
+                    <a href="#" id="sync">
+                        <i class="zmdi zmdi-time-restore"></i>
+                        <img src="~/Content/images/Sync-Cloud-icon1.png" style="width: 23px; height: 22px" />
+                        Sync
+                    </a>
+                </li>
+            }
+            @if (Convert.ToInt32(HttpContext.Current.Session["AdmMgr"]) >= 1 && System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"] == "Inventory")
+            {
+                <li>
+                    <a href="#" id="DayEndJob"><i class="zmdi zmdi-time-restore"></i>Day End Job</a>
+                </li>
+            }
+            <li>
+                @*<a id="Logout" href=""><i class="zmdi zmdi-time-restore"></i> @Resources.DisplayName_Logout</a>*@
+                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="zmdi zmdi-time-restore"></i><strong>@Resources.DisplayName_Logout</strong></a>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "margin: 0px;background-color:#808080; color:#fff;" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="latitude" value="" />
+                    <input type="hidden" id="longitude" value="" />
+                }
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+
+    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+
+}
+<div id="dialog" title="" style="display: none">
+    <div class="widget-block" style="width: auto; height: auto;">
+        <div class="widget-head">
+            <h5>Sync </h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+
+                <div class="control-group" style="padding: 10px;">
+                    &nbsp;&nbsp;<img src="~/Content/images/sync-loader.gif" style="width: 23px; height: 22px" />&nbsp;&nbsp;<b>Sync is in progress....</b>
+                    <div class="controls">
+                    </div>
+                </div>
+
+                <div class="control-group" style="padding: 10px; text-align: right; margin-bottom: 0px;">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirmationDiv" title="" style="display: none">
+    <div class="widget-block" style="width: auto; height: auto;">
+        <div class="widget-head">
+            <h5>Sync </h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+
+                <div class="control-group" style="padding: 10px;">
+                    &nbsp;&nbsp;<img src="~/Content/images/warning.png" />&nbsp;&nbsp;<b>Are you sure to sync data ?</b>
+                    <div class="controls">
+                    </div>
+                </div>
+
+                <div class="control-group" style="padding: 10px; text-align: right; margin-bottom: 0px;">
+                    <input type="button" id="btnNo" style="" value="No" class="btn btn-primary" />
+                    <input type="button" id="btnYes" style="" value="Yes" class="btn btn-primary" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmationDivForEndJob" title="" style="display: none">
+    <div class="widget-block" style="width: auto; height: auto;">
+        <div class="widget-head">
+            <h5>Day End Job </h5>
+        </div>
+        <div class="widget-content">
+            <div class="widget-box">
+
+                <div class="control-group" style="padding: 10px;">
+                    &nbsp;&nbsp;<img src="~/Content/images/warning.png" />&nbsp;&nbsp;<b>Are you sure to Fire Day End Job?</b>
+                    <div class="controls">
+                    </div>
+                </div>
+
+                <div class="control-group" style="padding: 10px; text-align: right; margin-bottom: 0px;">
+                    <input type="button" id="btnNoEndJob" style="" value="No" class="btn btn-primary" />
+                    <input type="button" id="btnYesEndJob" style="" value="Yes" class="btn btn-primary" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#NotificationsIDV2').click(function () {
+            $('.profile-menu .main-menu').hide();
+            $('.profile-menu ').removeClass('toggled');
+            $.ajax(
+           {
+               cache: false,
+               type: "POST",
+               dataType: "html",
+               url: '/Home/NotificationList',
+             //  url: '/Home/Index',
+               success: function (data) {
+                   //Rebind Grid Data
+                   $('#content').html(data);
+               }
+           });
+        });
+
+        //$('#LoginPartialID').click(function () {
+        //    // alert("dfsg");
+        //    $.ajax(
+        //   {
+        //       cache: false,
+        //       type: "POST",
+        //       dataType: "html",
+        //       url: '/Home/NotificationListCount',
+        //       success: function (data) {
+        //           $('#NotiCount').html(data);
+        //       }
+        //   });
+
+        //    //  getLocation();
+        //});
+    });
+</script>

@@ -1,0 +1,45 @@
+﻿@model AMS.ViewModel.AccountVoucherSettingMasterViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 50%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Account/AccountVoucherSettingMaster.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //AccountVoucherSettingMaster.Initialize();
+        if ($('#selectedBalsheetID').val() == 0 || $('#selectedBalsheetID').val() == null)
+        {
+            notify("Please Select Balancesheet", "danger");
+            return false;
+        }
+        else
+        {
+            AccountVoucherSettingMaster.LoadList();
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,221 @@
+﻿@model AERP.ViewModel.SaleContractAttendanceViewModel
+
+@if (Model.SaleContractAttendanceList.Count > 0)
+{
+    if (Model.SaleContractAttendanceList[0].TotalDays < 26 || Model.SaleContractAttendanceList[0].TotalBillingDays < 26 || Model.SaleContractAttendanceList[0].TotalOverTimeSalaryDays < 26 || Model.SaleContractAttendanceList[0].TotalOverTimeBillingDays < 26)
+    {
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+                <div class="select form-group fg-line">
+                    <label>Total Days</label>
+                    <input type="text" class="form-control input-sm" id="RandomDays" value="0" />
+                </div>
+            </div>
+        </div>
+    }
+}
+<div class="col-sm-12">
+    <table id="tblAttendanceData" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Employee Name</th>
+                <th>Total Salary Days</th>
+                <th>Total Billing Days</th>
+                <th>Total Off Salary Days</th>
+                <th>Total Off Billing Days</th>
+                <th>Attendance</th>
+                <th>Over Time</th>
+            </tr>
+        </thead>
+        @if (Model.SaleContractAttendanceList.Count > 0)
+        {
+            decimal TotalDaysSum = 0; decimal TotalBillingDaysSum = 0; decimal TotalAttendanceSum = 0; decimal OvertimeHoursSum = 0; decimal WeeklyOffDaysSum = 0; decimal WeeklyOffBillingDaysSum = 0;int Count = 1;
+            <tbody>
+
+                @foreach (var item in Model.SaleContractAttendanceList)
+                {
+                    TotalDaysSum = TotalDaysSum + item.TotalDays;
+                    TotalBillingDaysSum = TotalBillingDaysSum + item.TotalBillingDays;
+                    TotalAttendanceSum = TotalAttendanceSum + item.TotalAttendance;
+                    OvertimeHoursSum = OvertimeHoursSum + item.OvertimeHours;
+                    WeeklyOffDaysSum = WeeklyOffDaysSum + item.TotalWeeklyOffDays;
+                    WeeklyOffBillingDaysSum = WeeklyOffBillingDaysSum + item.TotalWeeklyOffBillingDays;
+                    <tr>
+                        <td>@Count</td>
+                        <td>
+                            <input type="hidden" value="@item.ID">
+                            <input type="hidden" value="@item.SaleContractManPowerItemID">
+                            <input type="hidden" value="@item.SaleContractEmployeeMasterID">
+                            <span class="SaleContractEmployeeMasterName">@item.SaleContractEmployeeMasterName</span>
+                        </td>
+                        <td>
+                            <span class="IsOverTimeDaysFix hidden">@(item.IsOverTimeDaysFix == true ? 1 : 0)</span>
+                            <span class="OriTotalOverTimeSalaryDays hidden">@item.TotalOverTimeSalaryDays</span>
+                            <input type="hidden" class="TotalOverTimeSalaryDays" value="@item.TotalOverTimeSalaryDays" />
+                            <span class="IsSalaryDaysCountFix hidden">@(item.IsSalaryDaysCountFix == true ? 1 : 0)</span>
+                            <span class="OriTotalDays hidden">@item.TotalDays</span>
+                            <input type="text" class="form-control input-sm TotalDays" value="@item.TotalDays" disabled>
+                        </td>
+                        <td>
+                            <span class="IsOverTimeBillingDaysFix hidden">@(item.IsOverTimeBillingDaysFix == true ? 1 : 0)</span>
+                            <span class="OriTotalOverTimeBillingDays hidden">@item.TotalOverTimeBillingDays</span>
+                            <input type="hidden" class="TotalOverTimeBillingDays" value="@item.TotalOverTimeBillingDays" />
+                            <span class="IsBillingDaysFixed hidden">@(item.IsBillingDaysFixed == true ? 1 : 0)</span>
+                            <span class="OriTotalBillingDays hidden">@item.TotalBillingDays</span>
+                            <input type="text" class="form-control input-sm TotalBillingDays" value="@item.TotalBillingDays" disabled>
+                        </td>
+                        <td>
+                            <input type="hidden" class="IsSalaryDaysOnWeeklyOff" value="@(item.IsSalaryDaysOnWeeklyOff == true ? '1' : '0')" />
+                            <input type="hidden" class="IsBillingDaysOnWeeklyOff" value="@(item.IsBillingDaysOnWeeklyOff == true ? '1' : '0')" />
+                            <input type="hidden" class="IsOTDaysOnTotalOff" value="@(item.IsOTDaysOnTotalOff == true ? '1' : '0')" />
+                            <input type="hidden" class="IsOTBillingDaysOnTotalOff" value="@(item.IsOTBillingDaysOnTotalOff == true ? '1' : '0')" />
+                            @if (item.IsSalaryDaysOnWeeklyOff == true || item.IsOTDaysOnTotalOff == true)
+                            {
+                                <input type="text" class="form-control input-sm TotalWeeklyOffDays" value="@item.TotalWeeklyOffDays">
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control input-sm TotalWeeklyOffDays" value="@item.TotalWeeklyOffDays" disabled>
+                            }
+                        </td>
+                        <td>
+                            @if (item.IsBillingDaysOnWeeklyOff == true || item.IsOTBillingDaysOnTotalOff == true)
+                            {
+                                <input type="text" class="form-control input-sm TotalWeeklyOffBillingDays" value="@item.TotalWeeklyOffBillingDays">
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control input-sm TotalWeeklyOffBillingDays" value="@item.TotalWeeklyOffBillingDays" disabled>
+                            }
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm TotalAttendance" value="@item.TotalAttendance">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-sm OvertimeHours" value="@item.OvertimeHours">
+                            <input type="hidden" class="form-control input-sm" value="@item.SaleContractManPowerAssignID">
+                        </td>
+                    </tr>
+                    Count++;
+                }
+
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Total</th>
+                    <th><span>@TotalDaysSum</span></th>
+                    <th><span>@TotalBillingDaysSum</span></th>
+                    <th><span id="TotalWeeklyOffDaysSum">@WeeklyOffDaysSum</span></th>
+                    <th><span id="TotalWeeklyOffBillingDaysSum">@WeeklyOffBillingDaysSum</span></th>
+                    <th><span id="TotalAttendanceSum">@TotalAttendanceSum</span></th>
+                    <th><span id="OvertimeHoursSum">@OvertimeHoursSum</span></th>
+                </tr>
+            </tfoot>
+        }
+    </table>
+</div>
+<div class="col-sm-12">
+    <div class="form-group fg-line">
+        <button type="button" class="btn btn-primary m-t-20" id="SaveSaleContractAttendanceMonthWise">@Resources.ButtonAction_Save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        SaleContractAttendance.Initialize();
+
+        $(".TotalAttendance").keyup(function () {
+            var TotalAttendanceSum = 0.0;
+            $(".TotalAttendance").each(function () {
+                TotalAttendanceSum = (parseFloat(TotalAttendanceSum) + parseFloat($(this).val())).toFixed(2);
+            });
+            $("#TotalAttendanceSum").text(TotalAttendanceSum);
+        });
+
+        $(".TotalWeeklyOffBillingDays").keyup(function () {
+            var TotalWeeklyOffBillingDaysSum = 0;
+            $(".TotalWeeklyOffBillingDays").each(function () {
+                TotalWeeklyOffBillingDaysSum = Math.round(TotalWeeklyOffBillingDaysSum) + Math.round($(this).val());
+            });
+            $("#TotalWeeklyOffBillingDaysSum").text(TotalWeeklyOffBillingDaysSum);
+        });
+        $(".TotalWeeklyOffDays").keyup(function () {
+            var TotalWeeklyOffDaysSum = 0;
+            $(".TotalWeeklyOffDays").each(function () {
+                TotalWeeklyOffDaysSum = Math.round(TotalWeeklyOffDaysSum) + Math.round($(this).val());
+            });
+            $("#TotalWeeklyOffDaysSum").text(TotalWeeklyOffDaysSum);
+        });
+
+        $(".OvertimeHours").keyup(function () {
+            var OvertimeHoursSum = 0.0;
+            $(".OvertimeHours").each(function () {
+                OvertimeHoursSum = (parseFloat(OvertimeHoursSum) + parseFloat($(this).val())).toFixed(2);
+            });
+            $("#OvertimeHoursSum").text(OvertimeHoursSum);
+        });
+
+        $("#SearchEmpForAttendance").keyup(function () {
+            var SearchWord = $(this).val().toLowerCase().trim();
+
+            //if (SearchWord == "") {
+            //    $(".SaleContractEmployeeMasterName").each(function () {
+            //        $(this).closest("tr").show();
+            //    })
+            //}
+            $(".SaleContractEmployeeMasterName").each(function () {
+                var EmpName = $(this).text().toLowerCase().trim();
+                if (~EmpName.indexOf(SearchWord) != 0) {
+                    $(this).closest("tr").show();
+                }
+                else {
+                    $(this).closest("tr").hide();
+                }
+            })
+        });
+
+        $("#RandomDays").keyup(function () {
+            var randomDays = $(this).val();
+            
+            $(".TotalOverTimeSalaryDays").each(function () {
+                if ($(this).prev().prev('.IsOverTimeDaysFix').text() == '0' && parseInt(randomDays) > 0) {
+                    $(this).val(randomDays);
+                } else {
+                    $(this).val($(this).prev(".OriTotalOverTimeSalaryDays").text());
+                }
+            })
+            $(".TotalDays").each(function () {
+                if ($(this).prev().prev('.IsSalaryDaysCountFix').text() == '0' && parseInt(randomDays) > 0) {
+                    $(this).val(randomDays);
+                } else {
+                    $(this).val($(this).prev(".OriTotalDays").text());
+                }
+            })
+            $(".TotalOverTimeBillingDays").each(function () {
+                if ($(this).prev().prev('.IsOverTimeBillingDaysFix').text() == '0' && parseInt(randomDays) > 0) {
+                    $(this).val(randomDays);
+                } else {
+                    $(this).val($(this).prev(".OriTotalOverTimeBillingDays").text());
+                }
+            })
+            $(".TotalBillingDays").each(function () {
+                if ($(this).prev().prev('.IsBillingDaysFixed').text() == '0' && parseInt(randomDays) > 0) {
+                    $(this).val(randomDays);
+                } else {
+                    $(this).val($(this).prev(".OriTotalBillingDays").text());
+                }
+            })
+        });
+
+        $("#RandomDays").blur(function () {
+            if (parseInt($(this).val()) <= 0 || $(this).val() == '') {
+                $(this).val(0);
+                $("#RandomDays").keyup();
+            }
+        })
+    });
+</script>

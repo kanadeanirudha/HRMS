@@ -1,0 +1,98 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<input type="hidden" id="TaskCode" value="GeneralItemIngridentsData" />
+
+@{ Layout = null;}
+<style>
+    .actions > li > a::before, .actions > a::before {
+        height: 0;
+    }
+
+
+    .btn-float {
+        border-radius: 50%;
+        height: 40px;
+        line-height: 35px !important;
+        width: 40px;
+    }
+
+    .mfp-content {
+        width: 20%;
+    }
+</style>
+
+
+<div id="custom-content">
+    <div class="card">
+        <div class="card-body card-padding">
+            <form id="FormCreateInventoryIngridentsDetail" role="form" class="row">
+                <div class="row col-sm-12">
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @Html.HiddenFor(model => model.ItemNumber)
+                            @Html.LabelFor(model => model.ItemDescription, new { })
+                            @Html.TextBoxFor(model => model.ItemDescription, new { @class = "form-control input-sm typeahead" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1" style=" margin-left:-20px">
+                        <div class="form-group fg-line">
+                            @*@Html.LabelFor(model => model.AltQty, new { })*@
+                            <label class="fg-label">Units</label>
+                            @Html.TextBoxFor(model => model.Quantity, new { maxlength = "4", @class = "form-control input-sm typeahead"})
+
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group fg-line">
+                            @*@Html.LabelFor(model => model.AltQty, new { })*@
+                            <label class="fg-label">&nbsp;UoM</label>
+                            @Html.TextBoxFor(model => model.UomCode, new { @class = "form-control input-sm typeahead"})
+
+                        </div>
+                    </div>
+                    <div class="col-sm-1" id="btnAddForIngridents">
+                        <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                        <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAddForIngridents"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="col-sm-12 row">
+                    <div id="ListViewModel" class="table-responsive">
+                        <div id="DivAddRowTable">
+                            <table id="tblData" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size:small;display:none">GeneralItemcodeID</th>
+                                        <th style="font-size:small">Ingridents</th>
+                                        <th style="font-size:small">Units </th>
+                                        <th style="font-size:small">UoM code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table><br /><br /><br /><br />
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/fnReloadAjax.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralItemMaster.Initialize();
+    });
+</script>
+
+
+

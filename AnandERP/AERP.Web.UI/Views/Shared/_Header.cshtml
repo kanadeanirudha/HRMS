@@ -1,0 +1,71 @@
+﻿
+<header id="header" class="clearfix" data-current-skin="bluegray">
+    <ul class="header-inner">
+        <li id="menu-trigger" data-trigger="#sidebar">
+            <div class="line-wrap">
+                <div class="line top"></div>
+                <div class="line center"></div>
+                <div class="line bottom"></div>
+            </div>
+        </li>
+
+        <li class="logo hidden-xs">
+            @if (Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"]) != "")
+            {
+                <a href="#"> @Resources.ResourceManager.GetString(string.Concat(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["ProjectEnvoirnment"])))</a>
+            }
+            else
+            {
+                <a href="#">  @Resources.ProjectEnvoirnment_AIS</a>
+            }
+
+        </li>
+
+        <li class="pull-right">
+            <ul class="top-menu">
+                <li id="toggle-width">
+                    <div class="toggle-switch">
+                        <input id="tw-switch" type="checkbox" hidden="hidden">
+                        <label for="tw-switch" class="ts-helper"></label>
+                    </div>
+                </li>
+
+                @*<li id="top-search">
+                        <a href=""><i class="tm-icon zmdi zmdi-search"></i></a>
+                    </li>*@
+                <li class="dropdown">
+                    <a data-toggle="dropdown" href="" id="NotiCountHeaderDiv">
+                        <i class="tm-icon zmdi zmdi-notifications"></i>
+                        <i class="tmn-counts" id="NotiCountHeader" style="display: none;"></i>
+                    </a>
+                </li>
+                @*-------------------Jump to _RoleList action method of _Header Controller for fetching roles--------------------*@
+                <li id="ddlRole" class="dropdown">
+                    <a data-toggle="dropdown" href="#"><i class="zmdi tm-icon zmdi-accounts-alt zmdi-hc-fw"></i></a>
+                    <ul id="ddlRoles" class="dropdown-menu dm-icon pull-right">
+                        @{ Html.RenderAction("_RoleList", "_Header", new { PersonID = @HttpContext.Current.Session["PersonId"] }); }
+
+                    </ul>
+                </li>
+
+                @*-------------------Jump to _ModuleList action method of _Header Controller for fetching modules--------------------*@
+
+                <li id="ddlModule" class="dropdown">
+                    @{ Html.RenderAction("_ModuleList", "_Header", new { AdminRoleMasterID = @HttpContext.Current.Session["RoleID"] != null ? @HttpContext.Current.Session["RoleID"] : @HttpContext.Current.Session["DefaultRoleID"] }); }
+
+                </li>
+
+                @*-------------------Jump to _BalancesheetList action method of _Header Controller for fetching Balancesheet List--------------------*@
+                @if (HttpContext.Current.Session["UserType"] != null)
+                {
+                    if (HttpContext.Current.Session["UserType"].ToString() == "E")
+                    {
+                        <li id="ddlMfdsodule" class="dropdown">
+                            @{Html.RenderAction("_BalancesheetList", "_Header", new { ModuleName = @HttpContext.Current.Session["ModuleName"] });}
+                        </li>
+                                    }
+                                }
+            </ul>
+        </li>
+    </ul>
+</header>

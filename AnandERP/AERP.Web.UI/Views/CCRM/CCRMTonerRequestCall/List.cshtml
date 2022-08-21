@@ -1,0 +1,639 @@
+﻿@model AERP.ViewModel.CCRMTonerRequestCallViewModel
+
+
+<section id="main" data-layout="layout-1" style="background:#bfc6ca;height:820px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="text-transform: none;background: #607d8b;margin-top: -100px;line-height: 2.5;color: white;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Toner Request Call</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="background:#bfc6ca;margin-top:-24px;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormCreateCCRMTonerRequestCall">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="col-sm-12" style="border:solid 2px black;height:500px;background: white;margin-left: -9px;">
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                @Html.LabelFor(model => model.CallDate, new { style = "" })
+                                <div class="form-group fg-line dtp-container">
+                                    @Html.TextBoxFor(model => model.CallDate, new { Value = "" + DateTime.UtcNow.ToString("dd MMM yyyy") + "", Readonly = "True", @class = "form-control", style = "background-color:#fff", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "Date" })
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <span style="color:red">*</span>@Html.LabelFor(model => model.CallTktNo, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.CallTktNo, new { @class = "form-control", maxlength = "100", style = "", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CallTktNo)
+                            </div>
+                            <div class="col-sm-4">
+                                <span style="color:red">*</span>
+
+                                @Html.HiddenFor(model => model.ID)
+                                @Html.LabelFor(model => model.SerialNo, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.SerialNo, new { @class = "form-control", maxlength = "100", style = "", placeholder = "Search By SerialNo..." })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.SerialNo)
+                            </div>
+                            <div class="col-sm-4">
+                                @Html.HiddenFor(model => model.ContractTypeID)
+                                @Html.LabelFor(model => model.ContractCode, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.ContractCode, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ContractCode)
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <span style="color:red">*</span> @Html.LabelFor(model => model.MIFName, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.MIFName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.MIFName)
+                            </div>
+                            <div class="col-sm-4">
+                                @Html.HiddenFor(model => model.ModelNo)
+                                @Html.LabelFor(model => model.ModelNo, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.ItemDescription, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ItemDescription)
+                            </div>
+                            <div class="col-sm-4">
+                                @Html.HiddenFor(model => model.MachineFamilyID)
+                                @Html.LabelFor(model => model.MachineFamilyName, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.MachineFamilyName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.MachineFamilyName)
+                            </div>
+                            @*<div class="col-sm-4">
+                                <span style="color:red">*</span> @Html.LabelFor(model => model.MachineFamilyID, new { })
+                                <div class="form-group fg-line">
+                                    @Html.DropDownListFor(model => model.MachineFamilyID, (SelectList)ViewBag.CCRMMachineFamilyMasterList, "-----Select Family-----", new { @class = "form-control input-sm" })
+                                </div>
+                            </div>*@
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                @Html.HiddenFor(model => model.ItemNumber)
+                                @Html.LabelFor(model => model.PartNO, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.PartNO, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", placeholder = "Search By PartNO..." })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PartNO)
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.BalanceQuantity, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.BalanceQuantity, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.BalanceQuantity)
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.PartName, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.PartName, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PartName)
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.Quantity, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.Quantity, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Quantity)
+                            </div>
+                            <div class="col-sm-4">
+
+                                <div class="checkbox col-sm-12" style="padding-top: 2%; padding-left: 2%;">
+                                    <label>
+                                        <input type="checkbox" id="FOC" , disabled = "disabled">
+                                        <i class="input-helper"></i>
+                                        @Html.LabelFor(model => model.FOC, new { style = "" })
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.FOC)
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.CurrentMeterRead, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.CurrentMeterRead, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CurrentMeterRead)
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <span style="color:red">*</span>
+
+                                @*@Html.HiddenFor(model => model.CallID)*@
+                                @Html.LabelFor(model => model.CallerName, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.CallerName, new { @class = "form-control", maxlength = "100", style = "", placeholder = "Search By Caller Name..." })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CallerName)
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.CallerPh, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.CallerPh, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CallerPh)
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+
+                                @Html.LabelFor(model => model.Remarks, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.Remarks, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Remarks)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="border:solid 2px black;height:200px;background: white;margin-left: -9px;margin-top: 4px;">
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.LastCallNo, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.LastCallNo, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LastCallNo)
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.LastCallDate, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.LastCallDate, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LastCallDate)
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.LastQuantity, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.LastQuantity, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LastQuantity)
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.LastMtrRead, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.LastMtrRead, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.LastMtrRead)
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.Consumption, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.Consumption, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Consumption)
+                            </div>
+                            <div class="col-sm-4">
+
+                                @Html.LabelFor(model => model.StandardCopy, new { style = "" })
+                                <div class="form-group  fg-line">
+                                    @Html.TextBoxFor(model => model.StandardCopy, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;", disabled = "disabled" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.StandardCopy)
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-left: 2%; ">
+                            <input class="btn btn-info" value="@Resources.ButtonAction_Submit" id="CreateCCRMTonerRequestCallRecord" type="button" style="margin-left:15px;" />
+
+                        </div>
+                    </div>
+</form>
+
+            </div>
+        </div>
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CCRMTonerRequestCall.Initialize();
+
+            //SerialNo serachlist
+            mapSerialNo = [];
+            var getDataSerialNo = function () {
+
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+
+                    $.ajax({
+                        url: "/CCRMMIFMasterAndDetails/GetCCRMMIFSerialNoSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.SerialNo)) {
+                                    mapSerialNo[response.SerialNo] = response;
+                                    matches.push(response.SerialNo);
+
+                                }
+
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#SerialNo").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataSerialNo()
+            }).on("typeahead:selected", function (obj, item) {
+                debugger;
+
+                $("#SerialNo").val(mapSerialNo[item].SerialNo);
+
+                $("#MIFName").val(mapSerialNo[item].MIFTitle);
+              //  $("#MCAddress").val(mapSerialNo[item].MIFAddress);
+                $("#ModelNo").val(mapSerialNo[item].ModelNo);
+               // $("#CallDate").val(mapSerialNo[item].CallDate);
+               // $("#CustomertID").val(mapSerialNo[item].CustomerMasterID);
+                // $("#CustomerAddress").val(mapSerialNo[item].CustomerAddress);
+                $("#ItemDescription").val(mapSerialNo[item].ItemDescription);
+                $("#ID").val(mapSerialNo[item].ID);
+                $("#ContractCode").val(mapSerialNo[item].ContractCode);
+              //  $("#CallTktNo").val(mapSerialNo[item].CallTktNo);
+               // $("#KeyOperatorID").val(mapSerialNo[item].MifcallID);
+               // $("#ContractTypeId").val(mapSerialNo[item].ContractTypeId);
+               // $("#ContractNo").val(mapSerialNo[item].ContractNo);
+               // $("#ContractType").val(mapSerialNo[item].ContractName);
+               // $("#ContOpDate").val(mapSerialNo[item].ContractOpDate);
+               // $("#ContClDate").val(mapSerialNo[item].ContractClosingDate);
+                // $("#CallerPh").val(mapSerialNo[item].MobileNo);
+                //$("#eMail").val(mapSerialNo[item].EmailServices);
+               $("#MachineFamilyID").val(mapSerialNo[item].MachineFamilyID);
+               $("#MachineFamilyName").val(mapSerialNo[item].MachineFamilyName);
+              //  $("#CallCharges").val(mapSerialNo[item].CallCharges);
+
+            });
+            $('#SerialNo').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#SerialNo').typeahead('val', '');
+                    $('#SerialNo').val("");
+
+                    // $('#CustomerAddress').val("");
+                    $("#MIFName").val("");
+                  //  $("#CallDate").val("");
+                    $("#ModelNo").val("");
+                  //  $("#CustomerName").val("");
+                    $('#MachineFamilyID').val('0');
+                    $("#MachineFamilyName").val("");
+                    $("#ItemDescription").val("");
+                    $("#ContractCode").val("");
+                //    $("#CallTktNo").val("");
+                  //  $('#KeyOperatorID').val('0');
+                  //  $('#ContractTypeId').val('0');
+                  //  $("#ContractNo").val("");
+                  //  $("#ContractType").val("");
+                   // $("#ContOpDate").val("");
+                  //  $("#ContClDate").val("");
+                   // $("#EnggMobNo").val("");
+                  //  $("#CallCharges").val("");
+                }
+            });
+            //SerialNo serachlist by mif name
+            mapMIFTitle = [];
+            var getDataMIFTitle = function () {
+
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+
+                    $.ajax({
+                        url: "/CCRMMIFMasterAndDetails/GetCCRMMIFSerialNoSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.MIFTitle)) {
+                                    mapMIFTitle[response.MIFTitle] = response;
+                                    matches.push(response.MIFTitle);
+
+                                }
+
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#MIFName").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataMIFTitle()
+            }).on("typeahead:selected", function (obj, item) {
+                debugger;
+
+                $("#SerialNo").val(mapMIFTitle[item].SerialNo);
+
+                $("#MIFName").val(mapMIFTitle[item].MIFTitle);
+                $("#MCAddress").val(mapMIFTitle[item].MIFAddress);
+                $("#ModelNo").val(mapMIFTitle[item].ModelNo);
+                $("#CallDate").val(mapMIFTitle[item].CallDate);
+              //  $("#CustomertID").val(mapMIFTitle[item].CustomerMasterID);
+                // $("#CustomerAddress").val(mapSerialNo[item].CustomerAddress);
+                $("#ItemDescription").val(mapMIFTitle[item].ItemDescription);
+                $("#ID").val(mapMIFTitle[item].ID);
+                $("#ContractCode").val(mapMIFTitle[item].ContractCode);
+                $("#CallTktNo").val(mapMIFTitle[item].CallTktNo);
+               // $("#KeyOperatorID").val(mapMIFTitle[item].MifcallID);
+               // $("#ContractTypeId").val(mapMIFTitle[item].ContractTypeId);
+               // $("#ContractNo").val(mapMIFTitle[item].ContractNo);
+               // $("#ContractType").val(mapMIFTitle[item].ContractName);
+                //$("#ContOpDate").val(mapMIFTitle[item].ContractOpDate);
+               // $("#ContClDate").val(mapMIFTitle[item].ContractClosingDate);
+                // $("#CallerPh").val(mapSerialNo[item].MobileNo);
+                //$("#eMail").val(mapSerialNo[item].EmailServices);
+                $("#MIFID").val(mapMIFTitle[item].ID);
+                $("#MachineFamilyName").val(mapMIFTitle[item].MachineFamilyName);
+                $("#MachineFamilyID").val(mapMIFTitle[item].MachineFamilyID);
+
+            });
+            $('#MIFName').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#MIFName').typeahead('val', '');
+                    $('#MIFName').val("");
+
+                    $('#CallDate').val("");
+                    $('#SerialNo').val("");
+                    //$("#MIFName").val("");
+                   // $("#MCAddress").val("");
+                    $("#ModelNo").val("");
+                  //  $("#CustomerName").val("");
+                   // $('#CustomertID').val('0');
+                    //$("#CustomerAddress").val("");
+                    $("#ItemDescription").val("");
+                    $("#ContractCode").val("");
+                   // $("#CallTktNo").val("");
+                    $('#MachineFamilyID').val('0');
+                    $("#MachineFamilyName").val("");
+                   // $('#KeyOperatorID').val('0');
+                   // $('#ContractTypeId').val('0');
+                   // $("#ContractNo").val("");
+                    //$("#ContractType").val("");
+                   // $("#ContOpDate").val("");
+                   // $("#ContClDate").val("");
+                   // $("#EnggMobNo").val("");
+                    //$("#CallCharges").val("");
+                }
+            });
+            // GeneralItemMaster serachlist
+            mapItemCategoryCode = [];
+            var getDataItemCategoryCode = function () {
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+                    debugger;
+                    $.ajax({
+                        url: "/GeneralItemMaster/GetCCRMPartNoSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.ItemCategoryCode)) {
+                                    mapItemCategoryCode[response.ItemCategoryCode] = response;
+                                    matches.push(response.ItemCategoryCode);
+
+                                }
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#PartNO").typeahead({
+
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataItemCategoryCode()
+            }).on("typeahead:selected", function (obj, item) {
+                debugger;
+                $("#PartName").val(mapItemCategoryCode[item].ItemDescription);
+                $("#ItemNumber").val(mapItemCategoryCode[item].ItemNumber);
+                $("#PartNO").val(mapItemCategoryCode[item].ItemCategoryCode);
+                $("#PartNOID").val(mapItemCategoryCode[item].ID);
+                $("#ModelNo").val(mapItemCategoryCode[item].ItemNumber);
+                $("#StandardCopy").val(mapItemCategoryCode[item].lifeInCopies);
+                //$("#LastCallDate").val(mapItemCategoryCode[item].LastCallDate);
+                //$("#LastQuantity").val(mapItemCategoryCode[item].LastQuantity);
+                //$("#LastMtrRead").val(mapItemCategoryCode[item].LastMtrRead);
+
+                var ModelNoForLastCall = $("#ModelNo").val();
+                //alert(ModelNoForLastCall)
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        dataType: "json",
+                        data: { "ModelNo": ModelNoForLastCall },
+                        url: '/CCRMTonerRequestCall/GetLastCallByModelNo',
+                        success: function (data) {
+                            debugger;
+                       console.log(data)
+                            //  $ddlExam.append('<option value=""></option>');
+                            //if (data.length != 0) {
+                                //$.each(data, function (id, option) {
+                                //   // $ddlExam.append($('<option></option>').val(option.name).html(option.name));
+                       if (data.length >0) {
+                               // $("#PartNO").val(data.PartNO);
+                                $("#LastCallNo").val(data[0].LastCallNo);
+                                $("#LastCallDate").val(data[0].LastCallDate);
+                                $("#LastQuantity").val(data[0].LastQuantity);
+                                $("#LastMtrRead").val(data[0].LastMtrRead);
+                       }
+                       
+
+                        }
+                    });
+
+
+
+                
+            });
+            $('#PartNO').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#PartNO').typeahead('val', '');
+                    $('#PartNO').val("");
+
+                    $('#PartName').val("");
+                    $('#ItemNumber').val("");
+                    //$("#MIFName").val("");
+                    // $("#MCAddress").val("");
+                    $("#PartNO").val("");
+                    $("#StandardCopy").val("");
+                    // $('#CustomertID').val('0');
+                    $("#LastCallNo").val('0');
+                    $("#LastCallDate").val("");
+                    $("#LastQuantity").val('0');
+                    $("#LastMtrRead").val('0');
+                   
+                }
+            });
+            
+
+            //CallerName serachlist
+            mapCallerName = [];
+            var getDataCallerName = function () {
+
+                return function findMatches(q, cb) {
+
+                    var matches, substringRegex;
+
+                    // an array that will be populated with substring matches
+                    matches = [];
+
+                    // regex used to determine if a string contains the substring `q`
+                    substrRegex = new RegExp(q, 'i');
+
+                    $.ajax({
+                        url: "/CCRMComplaintLoggingMaster/GetCCRMCallerSearchList",
+                        type: "POST",
+                        data: { term: q },
+                        dataType: "json",
+                        success: function (data) {
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            //alert(data);
+                            //console.log(data);
+                            $.each(data, function (i, response) {
+
+                                if (substrRegex.test(response.CallerName)) {
+                                    mapCallerName[response.CallerName] = response;
+                                    matches.push(response.CallerName);
+
+                                }
+
+
+                            });
+
+                        },
+                        async: false
+                    })
+                    cb(matches);
+                };
+
+            };
+
+            $("#CallerName").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: getDataCallerName()
+            }).on("typeahead:selected", function (obj, item) {
+                debugger;
+
+                $("#CallerName").val(mapCallerName[item].CallerName);
+                $("#CallerPh").val(mapCallerName[item].CallerPh);
+                //$("#EmailID").val(mapCallerName[item].EmailID);
+                $("#ID").val(mapCallerName[item].ID);
+
+            });
+            $('#CallerName').on("keydown", function (e) {
+                if (e.keyCode == 8 || e.keyCode == 46) {
+                    $('#CallerName').typeahead('val', '');
+                    $('#CallerName').val("");
+                    $('#CallerPh').val("");
+                  //  $('#EmailID').val("");
+
+
+                }
+            });
+
+        });
+       
+    </script>
+    </section>

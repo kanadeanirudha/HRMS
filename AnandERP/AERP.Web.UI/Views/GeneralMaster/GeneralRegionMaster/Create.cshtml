@@ -1,0 +1,88 @@
+﻿@model AERP.ViewModel.GeneralRegionMasterViewModel
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create State</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateGeneralRegionMaster">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.SelectedCountryID, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownListFor(m => m.SelectedCountryID, (SelectList)ViewBag.GenNationalityMaster, Resources.ddlHeaders_CountryName, new { @class = "form-control", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.SelectedCountryID)
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.RegionName, new { style = "" })
+                        <div class="form-group fg-line">
+                            @Html.TextBoxFor(model => model.RegionName, new { @class = "form-control", maxlength = "50", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.RegionName)
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.ShortName, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.ShortName, new { @class = "form-control", maxlength = "50", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ShortName)
+                    </div>
+                    <div class="col-sm-4">
+                        <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                        @Html.LabelFor(model => model.TinNumber, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.TinNumber, new { @class = "form-control", maxlength = "5", style = "" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.TinNumber)
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="checkbox m-b-15" style="padding-top:8%;">
+                            <label>
+                                <input type="checkbox" id="DefaultFlag">
+                                <i class="input-helper"></i>
+                                @Html.LabelFor(model => model.DefaultFlag)
+                            </label>
+                            @Html.ValidationMessageFor(model => model.DefaultFlag)
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="form-group" style="margin-left: 2%; ">
+                    <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="CreateGeneralRegionMasterRecord" type="button" />
+                    <input name="" id="reset" type="button" class="btn btn-default btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Reset" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralRegionMaster.Initialize();
+    });
+
+</script>
+
+

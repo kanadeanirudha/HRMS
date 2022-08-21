@@ -1,0 +1,63 @@
+﻿@model AERP.ViewModel.AccountCategoryMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Account Category</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding" style="padding-bottom:215px;">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormEditAccountCategoryMaster" method="post">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.IsActive)
+
+                <div class="col-sm-12">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group  fg-line select">
+                        @Html.LabelFor(m => m.HeadID, new { })
+                        @Html.DropDownListFor(model => model.HeadID, (IEnumerable<SelectListItem>)ViewBag.AccountHeadNameList, Resources.ddlHeader_AccountHead, new { @class = "form-control input-sm" })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.HeadID)
+                </div>
+
+                <div class="col-sm-6">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group fg-line">
+                        @Html.LabelFor(m => m.CategoryDescription, new { })
+                        @Html.TextBoxFor(model => model.CategoryDescription, new { maxlength = "50", @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CategoryDescription)
+                </div>
+                <div class="col-sm-6">
+                    <span style="color: red; float: left; padding-left: 1px; font-weight: bold">*</span>
+                    <div class="form-group  fg-line">
+                        @Html.LabelFor(m => m.CategoryCode, new { })
+                        @Html.TextBoxFor(model => model.CategoryCode, new { maxlength = "5", @class = "form-control input-sm" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CategoryCode)
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-sm m-t-10 waves-effect" value="@Resources.ButtonAction_Submit" id="EditAccountCategoryMasterRecord" type="button" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        AccountCategoryMaster.Initialize();
+     });
+</script>

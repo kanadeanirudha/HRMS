@@ -1,0 +1,94 @@
+﻿@model AERP.ViewModel.InventoryUoMMasterViewModel
+<div id="custom-content">
+    <div class="block-header">
+        @Html.HiddenFor(model => model.InventoryDimentionUnitMasterID)
+        @*@Html.HiddenFor(model => model.IsDefaultCount)*@
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp; &nbsp;Create Units Of Measure</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding">
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <form id="FormCreateInventoryUoMMaster" role="form" class="row">
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.UomCode, new { })
+                        @Html.TextBoxFor(model => model.UomCode, new { maxlength = "20", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.UomCode)
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.UoMDescription, new { })
+                        @Html.TextBoxFor(model => model.UoMDescription, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.UoMDescription)
+                </div>
+                <div class="form-group col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.CommercialDescription, new { })
+                        @Html.TextBoxFor(model => model.CommercialDescription, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CommercialDescription)
+                </div>
+                <div class="form-group col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.ConvertionFactor, new { })
+                        @Html.TextBoxFor(model => model.ConvertionFactor, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ConvertionFactor)
+                </div>
+                <div class="form-group col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.AdditiveConstant, new { })
+                        @Html.TextBoxFor(model => model.AdditiveConstant, new { maxlength = "30", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AdditiveConstant)
+                </div>
+                <div class="form-group col-sm-6" style="display:none" >
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.DecimalPlacesUpto, new { })
+                        @Html.TextBoxFor(model => model.DecimalPlacesUpto, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.DecimalPlacesUpto)
+                </div>
+                <div class="form-group col-sm-6" style="display:none">
+                    <div class="form-group fg-line">
+                        <span style="color:red">*</span> @Html.LabelFor(model => model.DecimalRounding, new { })
+                        @Html.TextBoxFor(model => model.DecimalRounding, new { maxlength = "50", @class = "form-control input-sm " })
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.DecimalRounding)
+                </div>
+                @*<div class="checkbox col-sm-6" style="margin-top:2%;">
+                    <label style="margin-top: 2%; margin-bottom: 3%;">
+                        <input type="checkbox" value="" id="IsAlternativeUom">
+                        <i class="input-helper"></i>
+                        @Html.LabelFor(model => model.IsAlternativeUom, new { style = "padding-left: 0px; margin-top:2%;" })
+                    </label>
+                </div>*@
+                <div class="form-group col-sm-12">
+                    <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateInventoryUoMMasterRecord" type="button" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        InventoryUoMMaster.Initialize();
+    });
+</script>
+

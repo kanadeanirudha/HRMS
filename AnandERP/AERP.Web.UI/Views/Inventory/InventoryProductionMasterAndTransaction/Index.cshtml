@@ -1,0 +1,27 @@
+﻿@model AMS.ViewModel.InventoryProductionMasterAndTransactionViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutV2.cshtml";
+}
+<style type="text/css">
+    .mfp-content {
+        width: 60%;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/AMS_Scripts/Inventory_1/InventoryProductionMasterAndTransaction.js")" type="text/javascript"></script>
+
+<div id="ListViewModel" class="container">
+    <input type="hidden" id="StatusFlag" value=0 />
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //InventoryProductionMasterAndTransaction.Initialize();
+        InventoryProductionMasterAndTransaction.LoadList();
+
+    });
+</script>
+
+
+
+
+

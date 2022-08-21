@@ -1,0 +1,83 @@
+﻿using AERP.Base.DTO;
+
+namespace AERP.DTO
+{
+    public class AdminRoleMasterSearchRequest : Request
+    {
+        public int ID
+        {
+            get;
+            set;
+        }
+
+        public string CentreCode
+        {
+            get;
+            set;
+        }
+
+        public int DepartmentID
+        {
+            get;
+            set;
+        }
+
+        public int AdmSnPostID
+        {
+            get;
+            set;
+        }
+
+        public string AdminRoleDomainFor
+        {
+            get;set;
+        }
+
+        public int AdminRoleDomainForID
+        {
+            get;set;
+        }
+
+        public string SortOrder
+        {
+            get;
+            set;
+        }
+
+
+        public string SortBy
+        {
+            get;
+            set;
+        }
+
+        public int StartRow
+        {
+            get;
+            set;
+        }
+
+        public int RowLength
+        {
+            get;
+            set;
+        }
+
+        public int EndRow
+        {
+            get;
+            set;
+        }
+        public string SearchBy
+        { 
+            get;
+            set;
+        }
+        public string SortDirection
+        { 
+            get;
+            set;
+        }
+    }
+}
+

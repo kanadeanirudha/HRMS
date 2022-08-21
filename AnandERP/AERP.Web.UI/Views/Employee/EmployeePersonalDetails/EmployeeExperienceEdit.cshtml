@@ -1,0 +1,239 @@
+﻿@model AERP.ViewModel.EmployeeExperienceViewModel
+@{
+    Layout = null;
+}
+<style type="text/css">
+    .mfp-content {
+        width: 75%;
+    }
+</style>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div id="custom-content">
+    <div class="block-header">
+        <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Create Experience Details</h2>
+    </div>
+    <div class="card">
+        <div class="card-body card-padding"> @*style="padding-bottom:760px;">*@
+            <div id="displayErrorMessage" role="alert" hidden class="alert">
+                <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                <p id="messageContent"></p>
+            </div>
+            <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+            <div class="" id="EmployeeExperience">
+            </div>
+
+            <div id="EmployeeServiceDetails">
+                <form id="FormEditEmployeeExperience" method="post">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m => m.ID)
+                    @Html.HiddenFor(model => model.ExperienceID)
+                    @Html.HiddenFor(model => model.EmployeeID)
+
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.PreviousOrganisationName, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.PreviousOrganisationName, new { @class = "form-control", style = "", maxlength = "255" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PreviousOrganisationName)
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.PreviousOrganisationAddress, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextAreaFor(model => model.PreviousOrganisationAddress, new { @class = "form-control", maxlength = "255" })
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.ExperienceFromYear, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.ExperienceFromYear, new { @class = "form-control", maxlength = "255" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ExperienceFromYear)
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.ExperienceToYear, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.ExperienceToYear, new { @class = "form-control", maxlength = "255" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.ExperienceToYear)
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.ExperienceInMonth, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.ExperienceInMonth, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.Designation, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.Designation, new { @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Designation)
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.GeneralExperienceTypeMasterID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.GeneralExperienceTypeMasterID, (SelectList)ViewBag.GeneralExperienceTypeMaster, "---Select Experience Type---", new { @class = "form-control", style = "", })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GeneralExperienceTypeMasterID)
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.GeneralJobStatusID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.GeneralJobStatusID, (SelectList)ViewBag.GeneralJobStatus, "---Select Job Status---", new { @class = "form-control", style = "", })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GeneralJobStatusID)
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-sm-12" style="display:none">
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.NatureOfAppointment, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.NatureOfAppointment, new { @class = "form-control", maxlength = 255 })
+                            </div>
+                            <label for="input01" style="color: gray; font-style: italic"> (For Ex:Teaching for Std. X & XII)</label>
+                            @Html.ValidationMessageFor(model => model.NatureOfAppointment)
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.LastPayDrawnPayScale, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.LastPayDrawnPayScale, new { @class = "form-control", style = "text-align:right;", maxlength = "100" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.AppointmentOrderDate, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.AppointmentOrderDate, new { @class = "form-control", Readonly = "True", style = "background-color:#fff;" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12" style="display:none">
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.AppointmentOrderNumber, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.AppointmentOrderNumber, new { @class = "form-control", maxlength = "50" })
+                            </div>
+                        </div>
+
+                        @*<div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.GeneralBoardUniversityID, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownListFor(m => m.GeneralBoardUniversityID, (SelectList)ViewBag.GeneralBoardUniversityMaster, "---Select University OR Board---", new { @class = "form-control", style = "", })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.GeneralBoardUniversityID)
+                        </div>*@
+
+                        <div class="col-sm-4">
+                            <span style="color:red">*</span>@Html.LabelFor(model => model.UniversityApprovalType, new { style = "" })
+                            <div class="form-group  fg-line select">
+                                @Html.DropDownList("UniversityApprovalType", ViewData["UniversityApprovalType"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.UniversityApprovalType)
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-sm-12" style="display:none">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.UniversityApprovalDate, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.UniversityApprovalDate, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.UniversityApprovalNumber, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.UniversityApprovalNumber, new { @class = "form-control", maxlength = "30" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.YearOfApproval, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.YearOfApproval, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12" style="display:none">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.MonthOfApproval, new { style = "" })
+                            <div class="form-group  fg-line dtp-container">
+                                @Html.TextBoxFor(model => model.MonthOfApproval, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.SubjectForApproval, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.SubjectForApproval, new { @class = "form-control", maxlength = "50" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.Remarks, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control", maxlength = "100" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="button" id="EditEmployeeExperienceRecord" class="btn btn-primary">@Resources.ButtonAction_SaveChanges</button>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        EmployeeExperience.Initialize();
+    });
+
+</script>
+
+
+
+
+
+

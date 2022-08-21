@@ -1,0 +1,343 @@
+﻿@model AERP.ViewModel.GeneralItemMasterViewModel
+<input type="hidden" id="TaskCode" value="GeneralItemRestaurantData" />
+@Html.HiddenFor(model => model.GeneralItemMasterID)
+@Html.HiddenFor(model => model.InventoryRecipeMasterID)
+@Html.HiddenFor(model => model.ItemNumber)
+
+<div id="custom-content">
+    <input type="hidden" id="TaskCode" value="GeneralItemRestaurantData" />
+    <div class="card">
+        <div class="card-body card-padding">
+            @*<div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>*@
+            <form id="FormCreateGeneralItemMaster" role="form" class="row">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.InventoryRecipeMasterTitle, new { })
+                            @Html.TextBoxFor(model => model.InventoryRecipeMasterTitle, new { @class = "form-control input-sm typeahead" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.ArabicTransalationForMainMenu, new { })
+                            @Html.TextBoxFor(model => model.ArabicTransalationForMainMenu, new { @class = "form-control input-sm typeahead", style = "font-size:large" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ArabicTransalationForMainMenu)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.Description, new { })
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control input-sm typeahead", rows = "2" })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                    <div class="col-sm-6">
+
+                        @*@Html.Partial("~/Views/Inventory_1/GeneralItemMaster/ArticleImageUpload.cshtml")*@
+                        <label class="col-sm-5" style="padding: 14px 16px; width: 35%;" for="inputEmail3">Upload menu Image</label>
+                        @Html.HiddenFor(model => model.CroppedImagePath)
+                        <a class="mfpAjaxModal" title="Upload Image" id="ArticleImageUpload" href="/GeneralItemMaster/ArticleImageUpload">
+                            @*Upload Image*@
+
+                            @if (Model.CroppedImagePath == null || Model.CroppedImagePath == "")
+                            {
+                                <img src="~/Content/images/recipe-default.png" width="100" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/UploadedFiles/ArticleImage/@Model.CroppedImagePath"  width="100" />
+                            }
+                        </a>
+                    </div>
+
+                </div>
+                <div class="row">
+                    @*<div class="col-sm-6" style="display:none">
+                            <div class="form-group fg-line">
+                                @Html.LabelFor(model => model.MenuPhotoFile, new { }) <br />
+                                <span class="btn-file" style="">
+                                    <img alt="Photo" style="height: 127px; width: 220px;" id="previewMenuPhoto" src="~/Content/images/DefaultReceipeImage.png" />
+                                    @Html.FileFor(model => model.MenuPhotoFile)
+                                </span>
+                            </div>
+                        </div>*@
+
+
+                    <div class="col-sm-6">
+                        @*       <span style="float: left; padding-left: 1px; font-weight: bold">*</span>*@
+                        <div class="form-group" style="padding-top: 1%;">
+                            @Html.LabelFor(model => model.DefineVariants, new { style = "" }) &nbsp;
+                            @if (Model.DefineVariants == "1")
+                            {
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.DefineVariants, true, new { @checked = true, id = "Yes" })&nbsp;Yes &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.DefineVariants, false, new { id = "No", disabled = "disabled" })&nbsp;No
+                                    <i class="input-helper"></i>
+                                </label>
+
+                            }
+                            else
+                            {
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.DefineVariants, true, new { id = "Yes" })&nbsp;Yes &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.DefineVariants, false, new { @checked = true, id = "No" })&nbsp;No
+                                    <i class="input-helper"></i>
+                                </label>
+
+                            }
+                        </div>
+                    </div>
+                    @if (Model.DefineVariants == "1")
+                    {
+                        <div class="col-sm-2" style="padding-top: 1%;display:none;" id="Price_div">
+                            @Html.LabelFor(model => model.PriceForRecipe, new { style = "" }) &nbsp;
+                            @Html.TextBoxFor(model => model.PriceForRecipe, new { @class = "form-control input-sm typeahead", maxlength = "9" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-2" style="padding-top: 1%;" id="Price_div">
+                            @Html.LabelFor(model => model.PriceForRecipe, new { style = "" }) &nbsp;
+                            @Html.TextBoxFor(model => model.PriceForRecipe, new { @class = "form-control input-sm typeahead", maxlength = "9", @Value = Math.Round(Model.PriceForRecipe, 2) })
+                        </div>
+                    }
+                    @*<div class="col-sm-2">
+
+                        </div>*@
+                    <div class="col-sm-4">
+                        <div class="form-group select fg-line">
+                            @Html.HiddenFor(model => model.InventoryRecipeMenuCategoryID)
+                            @Html.HiddenFor(model => model.InventoryRecipeMenuMasterID)
+                            @Html.LabelFor(model => model.RecipeMenuCategoryID, new { })
+                            @Html.DropDownListFor(model => model.RecipeMenuCategoryID, (SelectList)ViewBag.GetListRecipeMenuCategoryList, "--Select Recipe Menu Category--", new { @class = "form-control input-sm" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.RecipeMenuCategoryID)
+                    </div>
+                </div>
+                <hr />
+                @if (Model.DefineVariants == "1")
+                {
+                    <div class="row col-sm-12" id="DefineVarients">
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                <label class="fg-label">Sub Menu Name</label>
+                                @Html.TextBoxFor(model => model.RecipeVariationTitle, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <div class="form-group fg-line">
+                                @*@Html.LabelFor(model => model.AltQty, new { })*@
+                                <label class="fg-label">Sub Menu Description</label>
+                                @Html.TextBoxFor(model => model.MenuDescription, new { @class = "form-control input-sm typeahead" })
+
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group fg-line">
+                                @*@Html.LabelFor(model => model.AltQty, new { })*@
+                                <label class="fg-label">&nbsp;Price</label>
+                                @Html.TextBoxFor(model => model.Cost, new { @class = "form-control input-sm typeahead", maxlength = "8" })
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-1" id="btnAdd2">
+                            <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                            <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAdd2"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12 row" id="DefineVarientsAppend">
+                        <div id="ListViewModel" class="table-responsive">
+                            <div id="DivAddRowTable">
+                                <table id="tblDataForDefineVarient" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-size:small">Sub Menu Item</th>
+                                            <th style="font-size:small">Sub Menu Description</th>
+                                            <th style="font-size:small">Active Variant</th>
+                                            <th style="font-size:small">Price </th>
+                                            @*<th style="font-size:small">Action</th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.GeneralItemMasterListForVarientDetails)
+                                        {
+                                            <tr>
+                                                <td style="display:none"><input type="text" style="display:none" value="@item.InventoryVariationMasterID"></td>
+                                                <td>@item.RecipeVariationTitle<input type="text" style="display:none" value="@item.RecipeVariationTitle"></td>
+                                                <td>@item.RecipeVariationDescription<input type="text" style="display:none" value="@item.RecipeVariationDescription"></td>
+                                                @if(@item.IsActive == true)
+                                                {
+                                                 <td><input type="checkbox" id ="IsActive" checked></td>
+                                                }
+                                                else
+                                                {
+                                                  <td><input type="checkbox" id ="IsActive"></td>
+                                                }
+                                                    @*<td>@item.PriceForVariation<input type="text" style="display:none" value="@item.PriceForVariation"></td>*@
+                                                <td><input type="text" style="display:inline;border:1px;" value="@item.PriceForVariation" maxlength="8" class="form-control" id="PriceForVariation" /></td>
+                                                @*<td>
+                                                    <a onclick="fancyBoxPopUpAjax('Deactive  varient','Do you want to de-activate the varient?','warning','btn-warning 0.','Yes!','/GeneralItemMaster/EditVarient/@item.InventoryVariationMasterID','content','page-loader','GeneralItemMaster')">
+                                                        <i class="zmdi zmdi-edit btn btn-default waves-effect"></i>
+                                                    </a>
+                                                </td>*@
+                                             </tr>
+                                        }
+                                    </tbody>
+                                </table><br /><br />
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row col-sm-12" id="DefineVarients" style="display:none">
+                        <div class="col-sm-3">
+                            <div class="form-group fg-line">
+                                <label class="fg-label">Sub Menu Name</label>
+                                @Html.TextBoxFor(model => model.RecipeVariationTitle, new { @class = "form-control input-sm typeahead" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <div class="form-group fg-line">
+                                @*@Html.LabelFor(model => model.AltQty, new { })*@
+                                <label class="fg-label">Sub Menu Description</label>
+                                @Html.TextBoxFor(model => model.MenuDescription, new { @class = "form-control input-sm typeahead" })
+
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group fg-line">
+                                @*@Html.LabelFor(model => model.AltQty, new { })*@
+                                <label class="fg-label">&nbsp;Price</label>
+                                @Html.TextBoxFor(model => model.Cost, new { @class = "form-control input-sm typeahead", maxlength = "8" })
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-1" id="btnAdd2">
+                            <!-- <button type="button" class="btn btn-primary" id="btnAdd">Add Row</button> -->
+                            <button type="button" title="Add row" class="btn bgm-cyan btn-float waves-effect waves-circle waves-float" id="btnAdd2"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 row" id="DefineVarientsAppend" style="display:none">
+                        <div id="ListViewModel" class="table-responsive">
+                            <div id="DivAddRowTable">
+                                <table id="tblDataForDefineVarient" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-size:small">Sub Menu Item</th>
+                                            <th style="font-size:small">Sub Menu Description</th>
+                                            <th style="font-size:small">Active Variant</th>
+                                            <th style="font-size:small">Price </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.GeneralItemMasterListForVarientDetails)
+                                        {
+                                            <tr>
+                                                <td style="display:none"><input type="text" style="display:none" value="@item.InventoryVariationMasterID"></td>
+                                                <td>@item.RecipeVariationTitle<input type="text" style="display:none" value="@item.RecipeVariationTitle"></td>
+                                                <td>@item.RecipeVariationTitle<input type="text" style="display:none" value="@item.RecipeVariationTitle"></td>
+                                                <td>@item.PriceForVariation<input type="text" style="display:none" value="@item.PriceForVariation"></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table><br /><br />
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-sm-6">
+                        @*       <span style="float: left; padding-left: 1px; font-weight: bold">*</span>*@
+                        <div class="form-group" style="padding-top: 1%;">
+                            @Html.LabelFor(model => model.BOMRelevant, new { style = "" }) &nbsp;&nbsp;&nbsp;
+                            @if (Model.BOMRelevant == "1")
+                            {
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.BOMRelevant, true, new { @checked = true, id = "BOMRelevantYes" })&nbsp;Yes &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.BOMRelevant, false, new { id = "BOMRelevantNo" })&nbsp;No
+                                    <i class="input-helper"></i>
+                                </label>
+                            }
+                            else
+                            {
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.BOMRelevant, true, new { id = "BOMRelevantYes" })&nbsp;Yes &nbsp;&nbsp;&nbsp;
+                                    <i class="input-helper"></i>
+                                </label>
+
+                                <label class="radio radio-inline m-r-20">
+                                    @Html.RadioButtonFor(model => model.BOMRelevant, false, new { @checked = true, id = "BOMRelevantNo" })&nbsp;No
+                                    <i class="input-helper"></i>
+                                </label>
+                            }
+
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group fg-line">
+                            @Html.LabelFor(model => model.BillingItemName, new { })
+                            @Html.TextBoxFor(model => model.BillingItemName, new { @class = "form-control input-sm typeahead" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group select fg-line">
+                            @Html.LabelFor(model => model.IsRelatedWithCafe, new { })
+                            @*@Html.TextBoxFor(model => model.IsRelatedWithCafe, new { @class = "form-control input-sm typeahead" })*@
+                            @Html.DropDownList("IsRelatedWithCafe", ViewData["IsRelatedWithCafe"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "IsRelatedWith*" })
+
+                        </div>
+                    </div>
+                </div>
+
+
+                @*<div class="form-group col-sm-12">
+                        <input class="btn btn-primary" style="margin-left:1%" value="@Resources.ButtonAction_Submit" id="CreateGeneralItemMasterRecord" type="button" />
+                    </div>*@
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="~/Content/Theme/js/demo.js"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Content/plugins/cropper-master/dist/cropper.min.js")" type="text/javascript"></script>*@
+<script src="@Url.Content("~/Content/Theme/vendors/fileinput/fileinput.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GeneralItemMaster.Initialize();
+    });
+</script>
+
+

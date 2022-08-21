@@ -1,0 +1,78 @@
+﻿
+
+@model AERP.ViewModel.CCRMCauseMasterViewModel
+<style>
+    .mfp-close-btn-in .mfp-close {
+        color: #eee;
+    }
+</style>
+<div class="mfp-content" style="background :#bfc6ca;width: 902px;margin: -10px 0px -10px -10px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2 style="background :#607d8b;color:white;margin-top: -10px;line-height: 2.5;width: 902px;margin-left: -10px;">&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Update Cause Type</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="background:white;margin-top:-25px;margin-left: -10px;width: 902px;">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <form id="FormEditCCRMCauseType">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.ID)
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.CauseTypeTitle, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CauseTypeTitle, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CauseTypeTitle)
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.CauseTypeCode, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CauseTypeCode, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CauseTypeCode)
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.LabelFor(model => model.CauseTypeDescription, new { style = "" })
+                            <div class="form-group  fg-line">
+                                @Html.TextBoxFor(model => model.CauseTypeDescription, new { maxlength = "100", @class = "form-control", style = "background-color:#fff;" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CauseTypeDescription)
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group" style="margin-left: 2%; ">
+                        <input class="btn btn-info" value="@Resources.ButtonAction_Submit" id="EditCCRMCauseTypeRecord" type="button" style="margin-left:15px;" />
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js") " type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CCRMCauseMaster.Initialize();
+        });
+    </script>
+</div>
+
+
+
+
+
+
+
+
+

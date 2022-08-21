@@ -1,0 +1,948 @@
+﻿@model AERP.ViewModel.EmpEmployeeMasterViewModel
+@{
+    ViewBag.Title = "PersonalInformationHome";
+    Layout = "~/Views/Employee/EmployeeInformation/Profile.cshtml";
+}
+
+<style>
+    #main {
+        padding-bottom: 0;
+        padding-top: 60px;
+        position: relative;
+    }
+</style>
+<div id="ListViewModel" class="container" style="padding-top: 0px;">
+    <div id="custom-content">
+        <div class="block-header">
+            <h2>&nbsp;<i class="zmdi zmdi-view-toc"></i>&nbsp;Personal Information</h2>
+        </div>
+        <div class="card">
+            <div class="card-body card-padding" style="">
+                <div id="displayErrorMessage" role="alert" hidden class="alert">
+                    <button class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <p id="messageContent"></p>
+                </div>
+                <div id="update-message" class="alert" style="display: none; color: #000"></div>
+
+                <div id="SuccessMessageShiftDetails" style="display: none; color: #000;" class="alert"></div>
+
+
+                <div class="panel-group" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-collapse">
+
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#accordionOfficialInfo" aria-expanded="true" aria-controls="accordionOfficialInfo">
+                                    Personal Information
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="accordionOfficialInfo" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <form id="FormEditPersonalInformationHome" method="post">
+                                    @Html.HiddenFor(m => m.ID)
+                                    @Html.HiddenFor(m => m.IsNameChangedBefore)
+                                    @Html.HiddenFor(m => m.GenderCode)
+                                    <div class="row" style="">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-12">
+                                                <label><b>Full Name :</b></label>
+                                                <br>
+                                            </div>
+
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.NameTitle, new { Style = "" })</label>
+                                                <div class="form-group fg-line select">
+                                                    @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, Resources.ddlHeaders_Select, new { id = "EmployeeNameTitle", style = "", @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.NameTitle)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.EmployeeFirstName, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.EmployeeFirstName, new { id = "EmpFirstName", @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.EmployeeFirstName)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.EmployeeMiddleName, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.EmployeeMiddleName, new { @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.EmployeeMiddleName)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.EmployeeLastName, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.EmployeeLastName, new { @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.EmployeeLastName)
+                                            </div>
+                                        </div>
+
+
+                                        @if (Model.NameTitle == "Mrs")
+                                        {
+                                            <div class="col-sm-12" id="divMaidenName" style="display: block">
+                                                <div class="col-sm-12">
+                                                    <label for="input01"><b>Maiden Name :</b></label>
+                                                    <br>
+                                                </div>
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.NameTitle, new { Style = "" })</label>
+                                                    <div class="form-group fg-line select">
+                                                        @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, Resources.ddlHeaders_Select, new { style = "", @class = "form-control" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.MaidenFirstName, new { Style = "" })</label>
+                                                    <div class="form-group fg-line">
+                                                        @Html.TextBoxFor(model => model.MaidenFirstName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.MaidenMiddleName, new { Style = "" })</label>
+                                                    <div class="form-group fg-line">
+                                                        @Html.TextBoxFor(model => model.MaidenMiddleName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.MaidenLastName, new { Style = "" })</label>
+                                                    <div class="form-group fg-line">
+                                                        @Html.TextBoxFor(model => model.MaidenLastName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+
+                                            <div class="col-sm-12" id="divMaidenName" style="display: none">
+                                                <div class="col-sm-12">
+                                                    <label for="input01"><b>Maiden Name :</b></label>
+                                                    <br>
+                                                </div>
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.NameTitle, new { Style = "" })</label>
+                                                    <div class="form-group fg-line select">
+                                                        @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, Resources.ddlHeaders_Select, new { style = "", @class = "form-control" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.MaidenFirstName, new { Style = "" })</label>
+                                                    <div class="form-group fg-line">
+                                                        @Html.TextBoxFor(model => model.MaidenFirstName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.MaidenMiddleName, new { Style = "" })</label>
+                                                    <div class="form-group fg-line">
+                                                        @Html.TextBoxFor(model => model.MaidenMiddleName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3 m-b-20">
+                                                    <label>@Html.LabelFor(model => model.MaidenLastName, new { Style = "" })</label>
+                                                    <div class="form-group fg-line">
+                                                        @Html.TextBoxFor(model => model.MaidenLastName, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div class="col-sm-12">
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.EmployeeCode, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    <input type="text" id="EmployeeCode" value="@Model.EmployeeCode" placeholder="@Html.DisplayFor(model => model.EmployeeCode, new { @class = "form-control" })" disabled="disabled" class="form-control">
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.EmployeeCode)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>Employee ID</label>
+                                                <div class="form-group fg-line">
+                                                    <input type="text" id="input02" placeholder="@Html.DisplayFor(model => model.ID, new { @class = "form-control" })" disabled="disabled" class="form-control">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.EmailID, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @if (ViewBag.IsFieldDisabled == "")
+                                                    {
+                                                        @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", disabled = ViewBag.IsFieldDisabled })
+                                                    }
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.EmailID)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.OtherEmailID, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @if (ViewBag.IsFieldDisabled == "")
+                                                    {
+                                                        @Html.TextBoxFor(model => model.OtherEmailID, new { @class = "form-control" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(model => model.OtherEmailID, new { @class = "form-control", disabled = ViewBag.IsFieldDisabled })
+                                                    }
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.OtherEmailID)
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-sm-12">
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.Birthdate, new { Style = "" })</label>
+                                                <div class="form-group fg-line dtp-container">
+                                                    @if (ViewBag.IsFieldDisabled == "")
+                                                    {
+                                                        @Html.TextBoxFor(model => model.Birthdate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(model => model.Birthdate, new { @class = "form-control", ReadOnly = "True", Style = "background-color:#fff;", disabled = ViewBag.IsFieldDisabled })
+                                                    }
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.Birthdate)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                @Html.LabelFor(model => model.GenderCode, new { style = "" })
+                                                <div class="form-group">
+                                                    @if (Model.NameTitle == "Mr")
+                                                    {
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.GenderCode, true, new { @checked = true, id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.GenderCode, false, new { id = "Female" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Female
+                                                            <i class="input-helper"></i>
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.GenderCode, true, new { id = "Male" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Male &nbsp;&nbsp;&nbsp;
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.GenderCode, false, new { @checked = true, id = "Female" })&nbsp;&nbsp;&nbsp; @Resources.DisplayName_Female
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                <label>@Html.LabelFor(model => model.NickName, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.NickName, new { @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.NickName)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.MarritalStaus, new { Style = "" })</label>
+                                                <div class="form-group fg-line select">
+                                                    @Html.DropDownList("MarritalStaus", ViewData["EmployeeMaritalStatus"] as List<SelectListItem>, new { style = "", @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.MarritalStaus)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                @Html.LabelFor(model => model.IsNameChangedBefore, new { style = "" })
+                                                <div class="form-group">
+                                                    @if (Model.IsNameChangedBefore == true)
+                                                    {
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsNameChangedBefore, true, new { @checked = true, id = "IsNameChangedBefore_Yes" })&nbsp;&nbsp;&nbsp; Yes &nbsp;&nbsp;&nbsp;
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsNameChangedBefore, false, new { id = "IsNameChangedBefore_No" })&nbsp;&nbsp;&nbsp; No
+                                                            <i class="input-helper"></i>
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsNameChangedBefore, true, new { id = "IsNameChangedBefore_Yes" })&nbsp;&nbsp;&nbsp; Yes &nbsp;&nbsp;&nbsp;
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsNameChangedBefore, false, new { @checked = true, id = "IsNameChangedBefore_No" })&nbsp;&nbsp;&nbsp; No
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.EmployeeNameAsPerTC, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.EmployeeNameAsPerTC, new { @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.EmployeeNameAsPerTC)
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                <label>@Html.LabelFor(model => model.NameTitle, new { Style = "" })</label>
+                                                <div class="form-group fg-line select">
+                                                    @Html.DropDownListFor(m => m.NameTitle, (SelectList)ViewBag.GeneralTitleMasterList, Resources.ddlHeaders_Select, new { style = "", @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                <label>@Html.LabelFor(model => model.PriorFirstName, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.PriorFirstName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                <label>@Html.LabelFor(model => model.PriorMiddleName, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.PriorMiddleName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                <label>@Html.LabelFor(model => model.PriorLastName, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.PriorLastName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.NationalityID, new { Style = "" })</label>
+                                                <div class="form-group fg-line select">
+                                                    @Html.DropDownListFor(m => m.NationalityID, (SelectList)ViewBag.GeneralNationalityMaster, "---Select Nationality---", new { id = "EmployeeNationalityID", style = "", @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20">
+                                                <label>@Html.LabelFor(model => model.IMEI, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @if (ViewBag.IsFieldDisabled == "")
+                                                    {
+                                                       
+                                                        @Html.TextBoxFor(model => model.IMEI, new { @class = "form-control" })
+
+                                                    }
+                                                    else
+                                                    {
+                                           
+                                                        @Html.TextBoxFor(model => model.IMEI, new { @class = "form-control", disabled = ViewBag.IsFieldDisabled })
+
+                                                    }
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.IMEI)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                <label>@Html.LabelFor(model => model.EthanicRaceCode, new { Style = "" })</label>
+                                                <div class="form-group fg-line">
+                                                    @Html.TextBoxFor(model => model.EthanicRaceCode, new { @class = "form-control" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.EthanicRaceCode)
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-20" style="display:none">
+                                                @Html.LabelFor(model => model.IsEmployeeSmoker, new { style = "" })
+                                                <div class="form-group">
+                                                    @if (Model.IsEmployeeSmoker == true)
+                                                    {
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsEmployeeSmoker, true, new { @checked = true, id = "IsEmployeeSmoker_Yes" })&nbsp;&nbsp;&nbsp; Yes &nbsp;&nbsp;&nbsp;
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsEmployeeSmoker, false, new { id = "IsEmployeeSmoker_No" })&nbsp;&nbsp;&nbsp; No
+                                                            <i class="input-helper"></i>
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsEmployeeSmoker, true, new { id = "IsEmployeeSmoker_Yes" })&nbsp;&nbsp;&nbsp; Yes &nbsp;&nbsp;&nbsp;
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                        <label class="radio radio-inline m-r-20">
+                                                            @Html.RadioButtonFor(model => model.IsEmployeeSmoker, false, new { @checked = true, id = "IsEmployeeSmoker_No" })&nbsp;&nbsp;&nbsp; No
+                                                            <i class="input-helper"></i>
+                                                        </label>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-sm-12">
+                                            <button type="button" id="UpdatePersonalInformationHome" class="btn btn-primary">@Resources.ButtonAction_SaveChanges</button>
+                                            <button type="button" class="btn btn-default">@Resources.ButtonAction_Cancel</button>
+                                        </div>
+
+
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-collapse">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" id="" data-parent="#accordion" href="#accordionUploadImages" aria-expanded="false" aria-controls="accordionUploadImages">
+                                    Office Details
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="accordionUploadImages" class="collapse out" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body" id="">
+                                @{ Html.RenderAction("EmployeeOfficeDetails", "EmployeeInformation", new { empEmployeeMastermodel = Model }); }
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-collapse" style="display:none;">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" id="HideShowEmployeeServiceDetails" data-parent="#accordion" href="#accordionGuardianPersonalInformation" aria-expanded="false" aria-controls="accordionGuardianPersonalInformation">
+                                    Service Details
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="accordionGuardianPersonalInformation" class="collapse out" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body" id="EmployeeServiceDetails">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-collapse">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" id="HideShowEmployeeContactDetails" data-parent="#accordion" href="#accordionFatherHusbandPersonalInformation" aria-expanded="false" aria-controls="accordionUploadImages">
+                                    Contact Details
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="accordionFatherHusbandPersonalInformation" class="collapse out" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body" id="EmployeeContactDetails">
+
+                            </div>
+                        </div>
+                        <!--accordionFatherHusbandPersonalInformation-->
+                    </div>
+
+                    <div class="panel panel-collapse">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" id="HideShowEmployeeQualificationDetails" data-parent="#accordion" href="#accordionLeavingCertificatePersonalInformation" aria-expanded="false" aria-controls="accordionLeavingCertificatePersonalInformation">
+                                    Qualification Details
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="accordionLeavingCertificatePersonalInformation" class="collapse out" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body" id="EmployeeQualification">
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="panel panel-collapse">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" id="HideShowEmployeeExperienceDetails" data-parent="#accordion" href="#accordionExperienceDetails" aria-expanded="false" aria-controls="accordionExperienceDetails">
+                                    Experience Details
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="accordionExperienceDetails" class="collapse out" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body" id="EmployeeExperience">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-collapse">
+                        <div class="panel-heading" role="tab" id="headingFive">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" id="HideShowEmployeFamilyDetails" data-parent="#accordion" href="#accordionFamilyDetails" aria-expanded="false" aria-controls="accordionFamilyDetails">
+                                    Family Details
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="accordionFamilyDetails" class="collapse out" role="tabpanel" aria-labelledby="headingFive">
+                            <div class="panel-body" id="EmployeeFamily">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                @*</form>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/AERP_Scripts/Employee/EmployeeInformation.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/materialtheme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>*@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#Birthdate').attr("readonly", true);
+        $('#Birthdate').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+            maxDate: moment(),
+        });
+        var c = 0;
+
+        $('#UpdatePersonalInformationHome').on("click", function () {
+            //debugger;
+            EmployeeInformation.ActionName = "EditPersonalInformation";
+            EmployeeInformation.AjaxCallEmployeeInformation();
+        })
+
+        $("#HideShowEmployeeOfficeDetails").click(function () {
+
+
+            if (c == 0) {
+                $('#EmployeeOfficeDetails').show();
+                $('#iconOffice').removeClass("icon-plus");
+                $('#iconOffice').addClass("icon-minus");
+
+                $('#EmployeePersonalInformation').hide();
+                $('#iconPersonalInformation').removeClass("icon-minus");
+                $('#iconPersonalInformation').addClass("icon-plus");
+
+                $('#EmployeePersonalInformation').hide();
+                $('#iconPersonalInformation').removeClass("icon-minus");
+                $('#iconPersonalInformation').addClass("icon-plus");
+
+                //$('#EmployeeLanguageDetails').hide();
+                //$('#iconLanguageDetails').removeClass("icon-minus");
+                //$('#iconLanguageDetails').addClass("icon-plus");
+
+                $('#EmployeeServiceDetails').hide();
+                $('#iconServiceDetails').removeClass("icon-minus");
+                $('#iconServiceDetails').addClass("icon-plus");
+
+                $('#EmployeeContactDetails').hide();
+                $('#iconContactDetails').removeClass("icon-minus");
+                $('#iconContactDetails').addClass("icon-plus");
+
+                $('#EmployeeQualification').hide();
+                $('#iconQualificationDetails').removeClass("icon-minus");
+                $('#iconQualificationDetails').addClass("icon-plus");
+
+                $('#EmployeeExperience').hide();
+                $('#iconExperienceDetails').removeClass("icon-minus");
+                $('#iconExperienceDetails').addClass("icon-plus");
+
+                $('#EmployeeFamily').hide();
+                $('#iconFamilyDetails').removeClass("icon-minus");
+                $('#iconFamilyDetails').addClass("icon-plus");
+                c = 1;
+            }
+            else {
+                $('#EmployeeOfficeDetails').hide();
+                $('#iconOffice').removeClass("icon-minus");
+                $('#iconOffice').addClass("icon-plus");
+
+                c = 0;
+            }
+        });
+
+
+        var b = 0;
+        $("#HideShowEmployeePersonalInformation").click(function () {
+
+
+            if (b == 0) {
+                $('#EmployeePersonalInformation').show();
+                //$('#iconPersonalInformation').removeClass("icon-plus");
+                //$('#iconPersonalInformation').addClass("icon-minus");
+
+                //$('#EmployeeOfficeDetails').hide();
+                //$('#iconOffice').removeClass("icon-minus");
+                //$('#iconOffice').addClass("icon-plus");
+
+                //$('#EmployeeLanguageDetails').hide();
+                //$('#iconLanguageDetails').removeClass("icon-minus");
+                //$('#iconLanguageDetails').addClass("icon-plus");
+
+                //$('#EmployeeServiceDetails').hide();
+                //$('#iconServiceDetails').removeClass("icon-minus");
+                //$('#iconServiceDetails').addClass("icon-plus");
+
+                //$('#EmployeeContactDetails').hide();
+                //$('#iconContactDetails').removeClass("icon-minus");
+                //$('#iconContactDetails').addClass("icon-plus");
+
+                //$('#EmployeeQualification').hide();
+                //$('#iconQualificationDetails').removeClass("icon-minus");
+                //$('#iconQualificationDetails').addClass("icon-plus");
+
+                //$('#EmployeeExperience').hide();
+                //$('#iconExperienceDetails').removeClass("icon-minus");
+                //$('#iconExperienceDetails').addClass("icon-plus");
+                b = 1;
+            }
+            else {
+                //$('#EmployeePersonalInformation').hide();
+                // $('#iconOffice').removeClass("icon-minus");
+                //$('#iconOffice').addClass("icon-plus");
+
+                b = 0;
+            }
+        });
+
+        //      SCRIPT FOR SERVICE DETAILS
+        var ShowEmployeeServiceDetails = 0;
+        $("#HideShowEmployeeServiceDetails").click(function () {
+
+
+
+            if (ShowEmployeeServiceDetails == 0) {
+
+                $('#EmployeeServiceDetails').show();
+                //$('#iconServiceDetails').removeClass("icon-plus");
+                //$('#iconServiceDetails').addClass("icon-minus");
+
+                var EmployeeID = $('input[name=ID]').val();
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { EmployeeID: EmployeeID },
+                     dataType: "html",
+                     url: '/EmployeeInformation/EmployeeServiceDetails',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#EmployeeServiceDetails').html(data);
+
+                         //$('#EmployeePersonalInformation').hide();
+                         //$('#iconPersonalInformation').removeClass("icon-minus");
+                         //$('#iconPersonalInformation').addClass("icon-plus");
+
+                         //$('#EmployeeLanguageDetails').hide();
+                         //$('#EmployeeLanguageDetails').removeClass("icon-minus");
+                         //$('#EmployeeLanguageDetails').addClass("icon-plus");
+
+                         //$('#EmployeeOfficeDetails').hide();
+                         //$('#iconOffice').removeClass("icon-minus");
+                         //$('#iconOffice').addClass("icon-plus");
+
+                         //$('#EmployeeContactDetails').hide();
+                         //$('#iconContactDetails').removeClass("icon-minus");
+                         //$('#iconContactDetails').addClass("icon-plus");
+
+                         //$('#EmployeeQualification').hide();
+                         //$('#iconQualificationDetails').removeClass("icon-minus");
+                         //$('#iconQualificationDetails').addClass("icon-plus");
+
+                         //$('#EmployeeExperience').hide();
+                         //$('#iconExperienceDetails').removeClass("icon-minus");
+                         //$('#iconExperienceDetails').addClass("icon-plus");
+                         ShowEmployeeServiceDetails = 1;
+                     }
+                 });
+            }
+            else {
+                //debugger;
+                $('#EmployeeServiceDetails').hide();
+                //$('#iconServiceDetails').removeClass("icon-minus");
+                //$('#iconServiceDetails').addClass("icon-plus");
+                ShowEmployeeServiceDetails = 0;
+            }
+        });
+
+
+        //FOR CONTACT DETAILS
+        var ShowEmployeeContactDetails = 0;
+        $("#HideShowEmployeeContactDetails").click(function () {
+
+            if (ShowEmployeeContactDetails == 0) {
+
+                $('#EmployeeContactDetails').show();
+                // $('#iconContactDetails').removeClass("icon-plus");
+                // $('#iconContactDetails').addClass("icon-minus");
+
+                var EmployeeID = $('input[name=ID]').val();
+                var EmployeeDetailsType = "EmployeeContactDetails";
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { EmployeeID: EmployeeID },
+                     dataType: "html",
+                     url: '/EmployeePersonalDetails/EmployeeContactList',
+                     success: function (data) {
+                         //Rebind Grid Data
+
+                         $('#EmployeeContactDetails').html(data);
+                         //$('#accordionFatherHusbandPersonalInformation').html(data);
+
+
+                         //$('#EmployeePersonalInformation').hide();
+                         //$('#iconPersonalInformation').removeClass("icon-minus");
+                         //$('#iconPersonalInformation').addClass("icon-plus");
+
+                         //$('#EmployeeLanguageDetails').hide();
+                         //$('#EmployeeLanguageDetails').removeClass("icon-minus");
+                         //$('#EmployeeLanguageDetails').addClass("icon-plus");
+
+                         //$('#EmployeeOfficeDetails').hide();
+                         //$('#iconOffice').removeClass("icon-minus");
+                         //$('#iconOffice').addClass("icon-plus");
+
+                         ///$('#EmployeeServiceDetails').hide();
+                         //$('#iconServiceDetails').removeClass("icon-minus");
+                         //$('#iconServiceDetails').addClass("icon-plus");
+
+                         //$('#EmployeeQualification').hide();
+                         //$('#iconQualificationDetails').removeClass("icon-minus");
+                         //$('#iconQualificationDetails').addClass("icon-plus");
+
+                         //$('#EmployeeExperience').hide();
+                         //$('#iconExperienceDetails').removeClass("icon-minus");
+                         //$('#iconExperienceDetails').addClass("icon-plus");
+                         ShowEmployeeContactDetails = 1;
+                     }
+                 });
+            }
+            else {
+                //debugger;
+                $('#EmployeeContactDetails').hide();
+                //$('#iconContactDetails').removeClass("icon-minus");
+                //$('#iconContactDetails').addClass("icon-plus");
+                ShowEmployeeContactDetails = 0;
+            }
+        });
+
+        //FOR QUALIFICATION DETAILS
+        var ShowQualificationExperience = 0;
+        $("#HideShowEmployeeQualificationDetails").click(function () {
+
+            if (ShowQualificationExperience == 0) {
+
+                $('#EmployeeQualification').show();
+                //$('#iconQualificationDetails').removeClass("icon-plus");
+                //$('#iconQualificationDetails').addClass("icon-minus");
+
+                var EmployeeID = $('input[name=ID]').val();
+                var EmployeeDetailsType = "EmployeeQualification";
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { EmployeeID: EmployeeID },
+                     dataType: "html",
+                     url: '/EmployeeQualification/EmployeeQualificationList',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#EmployeeQualification').html(data);
+
+                         //$('#EmployeePersonalInformation').hide();
+                         //$('#iconPersonalInformation').removeClass("icon-minus");
+                         //$('#iconPersonalInformation').addClass("icon-plus");
+
+                         //$('#EmployeeLanguageDetails').hide();
+                         //$('#EmployeeLanguageDetails').removeClass("icon-minus");
+                         //$('#EmployeeLanguageDetails').addClass("icon-plus");
+
+                         //$('#EmployeeOfficeDetails').hide();
+                         //$('#iconOffice').removeClass("icon-minus");
+                         //$('#iconOffice').addClass("icon-plus");
+
+                         //$('#EmployeeServiceDetails').hide();
+                         //$('#iconServiceDetails').removeClass("icon-minus");
+                         //$('#iconServiceDetails').addClass("icon-plus");
+
+                         //$('#EmployeeContactDetails').hide();
+                         //$('#iconContactDetails').removeClass("icon-minus");
+                         //$('#iconContactDetails').addClass("icon-plus");
+
+                         //$('#EmployeeExperience').hide();
+                         //$('#iconExperienceDetails').removeClass("icon-minus");
+                         //$('#iconExperienceDetails').addClass("icon-plus");
+                         ShowQualificationExperience = 1;
+                     }
+                 });
+            }
+            else {
+
+                $('#EmployeeQualification').hide();
+                //$('#iconQualificationDetails').removeClass("icon-minus");
+                //$('#iconQualificationDetails').addClass("icon-plus");
+                ShowQualificationExperience = 0;
+            }
+        });
+
+        //FOR EXPERIENCE DETAILS
+        var ShowEmployeeExperience = 0;
+        $("#HideShowEmployeeExperienceDetails").click(function () {
+
+            if (ShowEmployeeExperience == 0) {
+
+                $('#EmployeeExperience').show();
+                //$('#iconExperienceDetails').removeClass("icon-plus");
+                //$('#iconExperienceDetails').addClass("icon-minus");
+
+                var EmployeeID = $('input[name=ID]').val();
+                var EmployeeDetailsType = "EmployeeExperience";
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { EmployeeID: EmployeeID },
+                     dataType: "html",
+                     url: '/EmployeeExperience/EmployeeExperienceList',
+                     success: function (data) {
+                         //Rebind Grid Data
+                         $('#EmployeeExperience').html(data);
+
+                         //$('#EmployeePersonalInformation').hide();
+                         //$('#iconPersonalInformation').removeClass("icon-minus");
+                         //$('#iconPersonalInformation').addClass("icon-plus");
+
+                         //$('#EmployeeLanguageDetails').hide();
+                         //$('#EmployeeLanguageDetails').removeClass("icon-minus");
+                         //$('#EmployeeLanguageDetails').addClass("icon-plus");
+
+                         //$('#EmployeeOfficeDetails').hide();
+                         //$('#iconOffice').removeClass("icon-minus");
+                         //$('#iconOffice').addClass("icon-plus");
+
+                         //$('#EmployeeServiceDetails').hide();
+                         //$('#iconServiceDetails').removeClass("icon-minus");
+                         //$('#iconServiceDetails').addClass("icon-plus");
+
+                         //$('#EmployeeContactDetails').hide();
+                         //$('#iconContactDetails').removeClass("icon-minus");
+                         //$('#iconContactDetails').addClass("icon-plus");
+
+                         //$('#EmployeeQualification').hide();
+                         //$('#iconQualificationDetails').removeClass("icon-minus");
+                         //$('#iconQualificationDetails').addClass("icon-plus");
+
+                         ShowEmployeeExperience = 1;
+                     }
+                 });
+            }
+            else {
+
+                $('#EmployeeExperience').hide();
+                //$('#iconExperienceDetails').removeClass("icon-minus");
+                //$('#iconExperienceDetails').addClass("icon-plus");
+                ShowEmployeeExperience = 0;
+            }
+        });
+
+        //For FAMILY DETAILS
+        var ShowEmployeeFamily = 0;
+        $("#HideShowEmployeFamilyDetails").click(function () {
+            debugger;
+
+            if (ShowEmployeeFamily == 0) {
+
+                $('#EmployeeFamily').show();
+                //$('#iconExperienceDetails').removeClass("icon-plus");
+                //$('#iconExperienceDetails').addClass("icon-minus");
+
+                var EmployeeID = $('input[name=ID]').val();
+                var EmployeeDetailsType = "EmployeeFamily";
+
+                $.ajax(
+                 {
+                     cache: false,
+                     type: "GET",
+                     data: { EmployeeID: EmployeeID },
+                     dataType: "html",
+                     url: '/EmployeeDependents/List',
+                     success: function (data) {
+                         debugger;
+                         //Rebind Grid Data
+                         $('#EmployeeFamily').html(data);
+                         ShowEmployeeFamily = 1;
+                     }
+                 });
+            }
+            else {
+
+                $('#EmployeeFamily').hide();
+                ShowEmployeeFamily = 0;
+            }
+        });
+
+
+
+
+
+
+    });
+</script>

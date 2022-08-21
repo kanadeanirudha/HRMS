@@ -1,0 +1,55 @@
+﻿@model AMS.ViewModel.OrganisationDepartmentMasterViewModel
+
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+
+<div id="update-message" class="error invisible"></div>
+
+<div class="editor-label">
+   Department Name
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.DepartmentName)
+</div>
+
+<div class="editor-label">
+   Department Short Code
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.DeptShortCode)
+</div>
+
+<div class="editor-label">
+  Print Short Code
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.PrintShortDesc)
+</div>
+
+
+<div class="editor-label">
+   Department Sequence No.
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.DepartmentSeqNo)
+</div>
+
+
+<div class="editor-label">
+   Academic/Nonacademic
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.AcademicNonacademic)
+</div>
+
+
+<div class="editor-label">
+    Teaching Activity
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.TeachingActivity)
+</div>
+
+
+

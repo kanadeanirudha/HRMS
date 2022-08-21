@@ -1,0 +1,270 @@
+﻿@model AERP.ViewModel.EmployeePictureDetailsViewModel
+@{
+    Layout = null;
+}
+
+
+<link href="@Url.Content("~/Content/ImageArea.css")" rel="stylesheet" />
+
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+<script src="~/Scripts/jquery.imgareaselect.-1.0.0.js"></script>
+<div class="profile-menu">
+    <a id="sidebarprofile" href="" title="@HttpContext.Current.Session["CurrentEmployeeID"].ToString()">
+        <div class="profile-pic" id="upload-choices">
+            @if (Model.EmployeePicture != null)
+            {
+
+                <img class="fileinput-preview" alt="Field for image cutting" style="" id="preview" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.EmployeePicture,0,Convert.ToInt32(Model.EmployeePicFileSize))" />
+
+            }
+            else
+            {
+                <img class="fileinput-preview" alt="Field for image cutting" style="" id="preview" src="~/Content/images/Avatar.png" />
+            }
+        </div>
+
+        <div class="profile-info" id="EmployeeName">
+            @HttpContext.Current.Session["EmployeeFullName"].ToString()
+            <i class="zmdi zmdi-caret-down"></i>
+        </div>
+    </a>
+
+    <ul class="main-menu">
+
+        <li>
+            <a href="/"><i class="zmdi zmdi-home"></i>&nbsp;Home</a>
+        </li>
+        <li>
+            <a class="mfpAjaxModal" href="@Url.Action("_ChangePassword", "EmployeeInformation", new { ID = Convert.ToInt32(HttpContext.Current.Session["UserID"]) })">
+                <i class="zmdi zmdi-settings"></i>
+                Change Password
+            </a>
+        </li>
+
+        <li>
+            <a href="javascript:document.getElementById('logoutForm').submit()"><i class="zmdi zmdi-time-restore"></i><strong>@Resources.DisplayName_Logout</strong></a>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", style = "margin: 0px;background-color:#808080; color:#fff;" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="latitude" value="" />
+                <input type="hidden" id="longitude" value="" />
+            }
+        </li>
+
+        <li>
+            @using (Html.BeginForm("_EmployeePictureDetails", "EmployeeInformation", FormMethod.Post, new { enctype = "multipart/form-data", style = "" }))
+            {
+                @Html.HiddenFor(model => model.X)
+                @Html.HiddenFor(model => model.Y)
+                @Html.HiddenFor(model => model.Width)
+                @Html.HiddenFor(model => model.Height)
+                @Html.HiddenFor(model => model.Flickr)
+                @Html.HiddenFor(model => model.EmployeeID)
+                //  @Html.AntiForgeryToken()
+
+
+                <div class="btn-group btn-group-justified" role="group" aria-label="..." style="padding-right: 3px; padding-left: 1px;">
+                    <span class="btn btn-group btn-file m-r-10">
+                        <span class="fileinput-new">
+                            <i class="zmdi zmdi-refresh zmdi-hc-fw"></i> Select file
+                        </span>
+                        @*<span class="fileinput-exists" style="">Choose File</span>*@
+                        @Html.FileFor(model => model.File)
+                    </span>
+                    @Html.ValidationMessageFor(model => model.File)
+                    @Model.errorMessage
+
+
+
+                    <div class="btn-group" role="group" id="UploadEmployeePhoto">
+                        <button type="submit" class="btn btn-default" value="Upload Photo" style="padding-right:5px;">
+                            <i class="zmdi zmdi-trending-up"></i> Upload Photo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-row">
+                    @Html.ValidationSummary(true)
+                </div>
+            }
+        </li>
+
+    </ul>
+
+
+</div>
+
+
+
+<script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+
+        var boxes = $('input[name=checkbox]');
+        //var boxes = $('input[type=checkbox]').attr('disabled', true);
+        //What happens if the File changes?
+        $('#File').change(function (evt) {
+            //debugger;
+            //alert();
+
+            var f = evt.target.files[0];
+            var reader = new FileReader();
+            var image = new Image();
+
+            if (!f.type.match('image.*')) {
+                // alert("The selected file does not appear to be an image.");
+                ajaxRequest.GeneralMessageAlertForJS("JsAlertMessages_selectedfiledoesnotapper");
+                return;
+            }
+            var maxSize = ValidateFileUpload();
+            if (maxSize == 1) {
+                //alert("Maximum file size exceeds,Your photo size should be less than 50 kb");
+                ajaxRequest.GeneralMessageAlertForJS("JsAlertMessages_MaximumFilesizeexceed");
+
+            }
+            else {
+                setBox('#IsFile');
+                reader.onload = function (e) { preview.attr('src', e.target.result); };
+                reader.readAsDataURL(f);
+            }
+        });
+
+        function ValidateFileUpload() {
+
+            var fuData = document.getElementById('File');
+            var FileUploadPath = fuData.value;
+
+
+            if (FileUploadPath == '') {
+                // alert("Please upload an image");
+                ajaxRequest.GeneralMessageAlertForJS("JsAlertMessages_PleaseUploadimage");
+
+            } else {
+                var Extension = FileUploadPath.substring(FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+
+
+                if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+                            || Extension == "jpeg" || Extension == "jpg") {
+
+
+                    if (fuData.files && fuData.files[0]) {
+
+                        var size = fuData.files[0].size;
+                        //alert(size);
+
+                        if (size > 50000) {
+                            return 1;
+                        } else {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                $('#blah').attr('src', e.target.result);
+                            }
+
+                            reader.readAsDataURL(fuData.files[0]);
+                        }
+                    }
+
+                }
+
+
+                else {
+                    //alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+                    ajaxRequest.GeneralMessageAlertForJS("JsAlertMessages_PhotoOnlyallowfiletypeof");
+                }
+            }
+        }
+        //Check one of the checkboxes
+        var setBox = function (filter) {
+            $('button').attr('disabled', false);
+            boxes.attr('checked', false)
+            .filter(filter).attr({ 'checked': true, 'disabled': false });
+        };
+
+        //What happens if any checkbox is checked ?!
+        boxes.change(function () {
+            setBox(this);
+            $('#' + this.id.substr(2)).change();
+        });
+
+        var preview = $('#preview').load(function () {
+            setPreview();
+            ias.setOptions({
+                x1: 0,
+                y1: 0,
+                x2: $(this).width(),
+                y2: $(this).height(),
+                show: true
+            });
+        });
+
+        //Set the 4 coordinates for the cropping
+        var setPreview = function (x, y, w, h) {
+            $('#X').val(x || 0);
+            $('#Y').val(y || 0);
+            $('#Width').val(w || preview[0].naturalWidth);
+            $('#Height').val(h || preview[0].naturalHeight);
+        };
+        var ias = preview.imgAreaSelect({
+            handles: true,
+            instance: true,
+            parent: 'body',
+            onSelectEnd: function (s, e) {
+                var scale = preview[0].naturalWidth / preview.width();
+                var _f = Math.floor;
+                setPreview(_f(scale * e.x1), _f(scale * e.y1), _f(scale * e.width), _f(scale * e.height));
+            }
+        });
+
+        //Fetch Flickr images
+        var fetchImages = function (query) {
+            $.getJSON('http://www.flickr.com/services/feeds/photos_public.gne?jsoncallback=?', {
+                tags: query,
+                tagmode: "any",
+                format: "json"
+            }, function (data) {
+                var screen = $('<div />').addClass('waitScreen').click(function () {
+                    $(this).remove();
+                }).appendTo('body');
+                var box = $('<div />').addClass('flickrImages').appendTo(screen);
+                $.each(data.items, function (i, v) {
+                    console.log(data.items[i]);
+                    $('<img />').addClass('flickrImage').attr('src', data.items[i].media.m).click(function () {
+                        $('#Flickr').val(this.src).change();
+                        screen.remove();
+                    }).appendTo(box);
+                });
+            });
+        };
+
+        //Flickr
+        $('#FlickrQuery').change(function () {
+            fetchImages(this.value);
+        });
+
+        $('#Flickr').change(function () {
+            setBox('#IsFlickr');
+            preview.attr('src', this.value);
+        });
+
+        //What happens if the URL changes?
+        $('#Url').change(function () {
+            setBox('#IsUrl');
+            preview.attr('src', this.value);
+        });
+        //Initial state of X, Y, Width and Height is 0 0 1 1
+        setPreview(0, 0, 1, 1);
+    //    $('button').attr('disabled', true);
+        $('form').submit(function () {
+            $('button').attr('disabled', true).text('Please wait ...');
+        });
+
+
+
+</script>
+
+

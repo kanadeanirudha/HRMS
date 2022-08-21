@@ -1,0 +1,184 @@
+﻿@model AERP.ViewModel.LeavePostViewModel
+<script src="@Url.Content("~/Scripts/fnGetColumnData.js")" type="text/javascript"></script>
+
+<style type="text/css">
+    .ui-widget-header {
+        color: #333;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container-fluid">
+    <form id="LeavePostAtOpening">
+        <ul class="breadcrumb">
+            <li><a href="#">@Resources.Mainheading_Leave</a><span class="divider">»</span></li>
+            <li class="active">@Resources.FormName_LeavePostForCurrentLeaveSession</li>
+        </ul>
+        <ul class="breadcrumb" style="height: 30px;">
+            <li>
+                &nbsp;&nbsp;&nbsp;
+                <span style="color: red; padding-left: 1px; font-weight: bold">*</span>
+                <span style="font-size: 12px; font-weight: bold;">@Resources.TableHeaders_CentreName &nbsp; &nbsp;&nbsp;</span>
+                @Html.DropDownListFor(m => m.CentreCode, Model.ListGetAdminRoleApplicableCentreItems, "----Select Centre----", new { id = "CentreCode", @class = "form-control chosen-select", style = "font-weight:bold;" })
+                @Html.HiddenFor(m => m.CentreCode)
+                @Html.HiddenFor(m => m.CentreName)
+                @Html.HiddenFor(m => m.LeaveSessionID)
+            </li>
+            <li>
+                &nbsp;&nbsp;
+                <button type="button" id="ShowList" class="btn btn-primary" style="margin-bottom: 10%;">@Resources.GlobalProperties_ShowList</button>
+            </li>
+        </ul>
+        <div id="SuccessMessage" style="display: none; color: #000;" class="alert"></div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-block">
+                    <div style="display: none">@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "ajax", title = "Create" })</div>
+
+                    <div class="widget-head">
+                        <h5 id="hFive"><i class="black-icons users"></i>&nbsp; @Resources.TableHeaders_ManageLeavePost</h5>
+
+                        <div class="pull-right" style="margin: -24px 60px 0px 10px;">
+                            <div class="input-append" id="" style="float: right;">
+                                <div style="display: none;">
+                                    <input type="hidden" name="_method" value="POST">
+                                </div>
+                                <div>
+                                    <select name="data[User][searchby]" class="" id="showrecord" tabindex="16" style="float: left;">
+                                        <option value="10">@Resources.GlobalProperties_ShowRecords</option>
+                                        <option value="10">10</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    &nbsp;&nbsp;
+                                    <input type="text" name="data[User][search]" class="search_query input-medium" placeholder="@Resources.GlobalProperties_Search..." size="16" autocomplete="off" id="UserSearch">
+                                    <button class="btn" type="button" id="searchBtn"><i class="icon-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="widget-box">
+                            <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper" role="grid">
+                                <div class="table_content">
+                                    <table id="myDataTable" class="table user-tbl">
+                                        <thead id="myDataTable_thead">
+                                            <tr>
+
+                                                <th style="text-align: center; font-weight: bold; color: #000; line-height: 40px">@Resources.TableHeaders_EmployeeName</th>
+                                                @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                {
+                                                    for (int i = 0; i < Convert.ToInt32(ViewBag.numberOfcolumn); i++)
+                                                    {
+                                                        <th style="text-align: center; font-weight: bold; color: #000; line-height: 40px">@ViewBag.listLeaveType[i]</th>
+                                                    }
+                                                }
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                            {
+                                                for (int j = 0; j < Convert.ToInt32(ViewBag.TotalRecords); j++)
+                                                {
+                                                    <tr>
+                                                        <td>@ViewBag.ListLeavePost[j].EmployeeFirstName &nbsp; @ViewBag.ListLeavePost[j].EmployeeLastName</td>
+
+                                                        @if (Convert.ToInt32(ViewBag.numberOfcolumn) > 0)
+                                                        {
+                                                            var splitedLeaveList = ViewBag.ListLeavePost[j].LeaveList.Split(',');
+                                                            for (int k = 0; k < Convert.ToInt32(splitedLeaveList.Length); k++)
+                                                            {
+                                                                var splitedLeaveAndNumber = splitedLeaveList[k].Split('#');
+                                                                if (splitedLeaveAndNumber[5] == "0")
+                                                                {
+                                                                    <td style="text-align: center; font-weight: bold; color: #000;padding:3px 0px 0px 0px"><input type="text" class="NumberOnly" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@splitedLeaveAndNumber[1]~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="" style="width:15%;text-align:right;" maxlength="3" /></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="text-align: center; font-weight: bold; color: #000;padding:3px 0px 0px 0px"><input type="text" class="NumberOnly" id="@ViewBag.ListLeavePost[j].EmployeeID~@splitedLeaveAndNumber[0]~@splitedLeaveAndNumber[1]~@splitedLeaveAndNumber[2]~@splitedLeaveAndNumber[3]~@splitedLeaveAndNumber[4]" value="@splitedLeaveAndNumber[1]" style="width:15%;text-align:right;" maxlength="3" /></td>
+                                                                }
+                                                            }
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr><td>No data available in table</td></tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="widget-bottom" style="padding-top:1%;text-align:right;padding-right:10px;">
+                                    <button type="button" id="CreateLeavePostForCurrentSessionRecord" class="btn btn-primary">@Resources.ButtonAction_Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LeavePostForCurrentSession.Initialize();
+        //var isReloadedFromCookies;
+        //var oTable = $('#myDataTable').dataTable({
+        //    "bServerSide": true,
+        //    "sAjaxSource": "LeavePost/AjaxHandler",
+        //    "bJQueryUI": true,
+        //    "sScrollY": false,
+        //    "bProcessing": true,
+        //    "fnServerParams": function (aoData) {
+        //        aoData.push({ "name": "CentreCode", "value": $('input[name=CentreCode]').val() });
+
+        //    },
+        //    "sPaginationType": "full_numbers",
+        //    "oLanguage": {
+        //        "sInfoEmpty": "No entries to show",
+        //    },
+        @* "columnDefs": [
+
+                             {
+                                 "targets": 0,
+                                 "bSearchable": true,
+                             },
+                             {
+                                 "targets": 1,
+                                 "bSearchable": true,
+                             },
+                            {
+                                "targets": 2,
+                                "bSearchable": true,
+                            },
+                            {
+                               "targets": 3,
+                               "bSortable": false,
+                               "data": null,
+                               "render": function (data, type, full, meta) {
+                                   var result1 = '@Html.ActionLink("Edit1", "Edit", new { ID = '1',EmployeeName="L1"}, new { @class = "ajax  cboxElement" })';
+                                   result1 = result1.replace('1', data[1]);
+                                   result1 = result1.replace('L1', data[0].replace(/ /g, "~"));
+                                   result1 = result1.replace("Edit1", '<i class="icon-list-alt" title="@Resources.ToolTip_View"></i>');
+                                   *@
+        @* var result2 = '@Html.ActionLink("Delete1", "Delete", new { ID = '1' }, new { @class = "ajax  cboxElement" })';
+                                    result2 = result2.replace('1', data[5]);
+                                    result2 = result2.replace("Delete1", '<i class="icon-trash" title="@Resources.ToolTip_Delete"></i>');*@
+
+
+        //                           var result = "<p  style='text-align: center; height:5px;padding-left:10px'>" + result1 + "</p>";
+        //                            return result;
+        //                        }
+        //                   },
+
+        //    ]
+        //});
+    });
+
+</script>
+

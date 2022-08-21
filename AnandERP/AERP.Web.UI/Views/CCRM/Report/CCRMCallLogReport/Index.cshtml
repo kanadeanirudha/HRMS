@@ -1,0 +1,233 @@
+﻿@model AERP.ViewModel.CCRMCallLogReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/AERP_Scripts/CCRM/Report/CCRMCallLogReport.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/moment/min/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/Theme/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+
+
+<script src="~/Content/Theme/vendors/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<div class="container">
+    @using (Html.BeginForm("Index", "CCRMCallLogReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="block-header">
+            <h2 style="text-transform: none;"><i class="zmdi zmdi-view-toc"></i>&nbsp;Call Log Report</h2>
+        </div>
+
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body card-padding">
+                @Html.HiddenFor(m => m.IsPosted)
+
+
+                <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            <label>@Html.LabelFor(model => model.DateFrom, new { })</label>
+                            @Html.TextBoxFor(model => model.DateFrom, new { maxlength = "12", @class = "form-control input-sm typeahead" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DateFrom)
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group fg-line">
+                            <label>@Html.LabelFor(model => model.DateTo, new { })</label>
+                            @Html.TextBoxFor(model => model.DateTo, new { maxlength = "12", @class = "form-control input-sm typeahead" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DateTo)
+                    </div>
+                    <div class="col-sm-3">
+
+                       @Html.LabelFor(model => model.CallTypeCode, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.CallTypeID, (SelectList)ViewBag.CCRMServiceCallTypesList, "", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+
+                        @Html.LabelFor(model => model.EnggName, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.EngineerID, (SelectList)ViewBag.EmpEmployeeMasterList, " ", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                   
+                   
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-3">
+                      
+                        @*@Html.HiddenFor(model => model.ID)*@
+                        @Html.LabelFor(model => model.SerialNo, new { style = "" })
+                        <div class="form-group  fg-line">
+                            @Html.TextBoxFor(model => model.SerialNo, new { @class = "form-control", maxlength = "100", style = "" })
+                        </div>
+                        @*@Html.ValidationMessageFor(model => model.SerialNo)*@
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.ContractType, new { })
+                        <div class="form-group select fg-line select">
+
+                            @Html.DropDownListFor(model => model.ContractTypeId, (SelectList)ViewBag.CCRMContractTypesMasterList, " ", new { @class = "form-control input-sm " })
+                        </div>
+                        @*@Html.ValidationMessageFor(model => model.ContractTypeId)*@
+                    </div>
+                   
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.MIFType, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("MIFType", ViewData["MIFType"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "MIFType*" })
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        @Html.LabelFor(model => model.CCRMLocationTypeID, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.CCRMLocationTypeID, (SelectList)ViewBag.CCRMLocationTypeMasterList, " ", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-2">
+                        @Html.LabelFor(model => model.SCNSubmitted, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("SCNSubmitted", ViewData["SCNSubmitted"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "SCNSubmitted*" })
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.LabelFor(model => model.CallStatus, new { style = "" })
+                        <div class="form-group  fg-line select">
+                            @Html.DropDownList("CallStatus", ViewData["CallStatus"] as List<SelectListItem>, new { @class = "form-control input-sm", data_val = "true", data_toggle = "tooltip", data_placement = "top", data_original_title = "CallStatus*" })
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2">
+                      @Html.LabelFor(model => model.UserID, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.AllotUserID, (SelectList)ViewBag.CCRMCallAllotmentMasterList, " ", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.LabelFor(model => model.LoggID, new { })
+                        <div class="form-group fg-line select">
+                            @Html.DropDownListFor(model => model.LoggID, (SelectList)ViewBag.CCRMComplaintLoggingMasterList, " ", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+                        @*<div class="col-sm-4">
+
+                <span style="color:red">*</span>@Html.LabelFor(model => model.AreaPatchName, new { style = "" })
+                <div class="form-group  fg-line">
+                    @Html.DropDownListFor(model => model.CCRMAreaPatchMasterID, (SelectList)ViewBag.CCRMAreaPatchMasterList, "-----Select Area-----", new { @class = "form-control input-sm" })
+                </div>
+                @Html.ValidationMessageFor(model => model.CCRMAreaPatchMasterID)
+            </div>*@
+
+                        <div class="col-sm-2" style="margin-top:7px">
+                            <div class="fg-line">
+                                <button type="submit" name="submit" id="btnCCRMCallLogReportSubmit" class="btn-primary btn">Show</button>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    }
+</div>
+<div class="container">
+
+    <div id="aaa">
+        <div class="card">
+            @*<div class="card-header"></div>*@
+            <div class="card-body card-padding">
+
+                @Html.Partial("/Views/CCRM/Report/CCRMCallLogReport/CCRMCallLogReport.aspx");
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        CCRMCallLogReport.Initialize();
+        $('#DateFrom').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+        $('#DateTo').datetimepicker({
+            format: 'DD MMMM YYYY',
+            ignoreReadonly: true,
+        });
+        //SerialNo serachlist
+        mapSerialNo = [];
+        var getDataSerialNo = function () {
+
+            return function findMatches(q, cb) {
+
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                $.ajax({
+                    url: "/CCRMMIFMasterAndDetails/GetCCRMMIFSerialNoSearchList",
+                    type: "POST",
+                    data: { term: q },
+                    dataType: "json",
+                    success: function (data) {
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        //alert(data);
+                        //console.log(data);
+                        $.each(data, function (i, response) {
+
+                            if (substrRegex.test(response.SerialNo)) {
+                                mapSerialNo[response.SerialNo] = response;
+                                matches.push(response.SerialNo);
+
+                            }
+
+
+                        });
+
+                    },
+                    async: false
+                })
+                cb(matches);
+            };
+
+        };
+
+        $("#SerialNo").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: getDataSerialNo()
+        }).on("typeahead:selected", function (obj, item) {
+            debugger;
+
+            $("#SerialNo").val(mapSerialNo[item].SerialNo);
+
+            //$("#MIFName").val(mapSerialNo[item].MIFTitle);
+            
+
+        });
+        $('#SerialNo').on("keydown", function (e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                $('#SerialNo').typeahead('val', '');
+                $('#SerialNo').val("");
+
+                
+            }
+        });
+    });
+</script>
